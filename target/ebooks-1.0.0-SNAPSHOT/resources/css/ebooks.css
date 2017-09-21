@@ -1,0 +1,41 @@
+@CHARSET "ISO-8859-1";	
+
+body {
+	padding-top: 80px;
+}
+span.glyphicon {
+	font-size: 1em;
+}
+.titulo-painel {
+	padding-left:10px;
+	font-size: 1em;
+	font-weight: bold;
+}
+.btn-icone {
+	padding: 9px 12px;
+}
+.btn-adicionar {
+	padding-left: 0px;
+}
+.icone-engrenagem {
+	padding-left: 10px;
+}
+.tabela-clientes {
+	padding-top: 30px;
+	border: 0;
+}
+.painel {
+	padding-left: 0;
+	padding-right: 0;
+}
+.primeiro {
+	margin-top: 5px;
+}
+.pesquisa {
+	padding-top: 30px;
+}
+@media(min-width: 768px) {
+	.painel {
+		height:350px;
+	}
+}
