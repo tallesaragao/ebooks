@@ -34,6 +34,9 @@ span.glyphicon {
 .pesquisa {
 	padding-top: 30px;
 }
+.categorias {
+	height: 95px;
+}
 @media(min-width: 768px) {
 	.painel {
 		height:350px;

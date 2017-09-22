@@ -10,11 +10,17 @@ public class Livro extends EntidadeDominio {
 	private String numeroPaginas;
 	private Boolean ativo;
 	private Long quantidade;
-	private String codigoBarras;
+	private String codigo;
+	private String sinopse;
 	private Dimensoes dimensoes;
-	private Categoria categoria;
-	private Subcategoria subcategoria;
+	private List<Categoria> categorias;
+	private List<Subcategoria> subcategorias;
 	private List<Autor> autores;
+	private Editora editora;
+	private GrupoPrecificacao grupoPrecificacao;
+	private Precificacao precificacao;
+	private List<Ativacao> ativacoes;
+	private List<Inativacao> inativacoes;
 
 	public String getAno() {
 		return ano;
@@ -72,12 +78,20 @@ public class Livro extends EntidadeDominio {
 		this.quantidade = quantidade;
 	}
 
-	public String getCodigoBarras() {
-		return codigoBarras;
+	public String getCodigo() {
+		return codigo;
 	}
 
-	public void setCodigoBarras(String codigoBarras) {
-		this.codigoBarras = codigoBarras;
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getSinopse() {
+		return sinopse;
+	}
+
+	public void setSinopse(String sinopse) {
+		this.sinopse = sinopse;
 	}
 
 	public Dimensoes getDimensoes() {
@@ -88,20 +102,20 @@ public class Livro extends EntidadeDominio {
 		this.dimensoes = dimensoes;
 	}
 
-	public Categoria getCategoria() {
-		return categoria;
+	public List<Categoria> getCategorias() {
+		return categorias;
 	}
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
 	}
 
-	public Subcategoria getSubcategoria() {
-		return subcategoria;
+	public List<Subcategoria> getSubcategorias() {
+		return subcategorias;
 	}
 
-	public void setSubcategoria(Subcategoria subcategoria) {
-		this.subcategoria = subcategoria;
+	public void setSubcategorias(List<Subcategoria> subcategorias) {
+		this.subcategorias = subcategorias;
 	}
 
 	public List<Autor> getAutores() {
@@ -110,5 +124,45 @@ public class Livro extends EntidadeDominio {
 
 	public void setAutores(List<Autor> autores) {
 		this.autores = autores;
+	}
+
+	public Editora getEditora() {
+		return editora;
+	}
+
+	public void setEditora(Editora editora) {
+		this.editora = editora;
+	}
+
+	public GrupoPrecificacao getGrupoPrecificacao() {
+		return grupoPrecificacao;
+	}
+
+	public void setGrupoPrecificacao(GrupoPrecificacao grupoPrecificacao) {
+		this.grupoPrecificacao = grupoPrecificacao;
+	}
+
+	public Precificacao getPrecificacao() {
+		return precificacao;
+	}
+
+	public void setPrecificacao(Precificacao precificacao) {
+		this.precificacao = precificacao;
+	}
+
+	public List<Ativacao> getAtivacoes() {
+		return ativacoes;
+	}
+
+	public void setAtivacoes(List<Ativacao> ativacoes) {
+		this.ativacoes = ativacoes;
+	}
+
+	public List<Inativacao> getInativacoes() {
+		return inativacoes;
+	}
+
+	public void setInativacoes(List<Inativacao> inativacoes) {
+		this.inativacoes = inativacoes;
 	}
 }
