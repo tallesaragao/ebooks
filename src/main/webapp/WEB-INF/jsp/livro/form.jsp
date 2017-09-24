@@ -71,9 +71,18 @@
 							value="${livro.numeroPaginas}" class="form-control"/>
 						</div>
 					</div>
-					<div class="col-xs-12 col-md-2">
+					<div class="col-xs-12 col-md-2">					
 						<div class="form-group">
-							<label for="grupoPrecificacao" class="control-label">Grupo Precificação</label>
+							<label for="isbn" class="control-label">ISBN</label>						
+							<input type="text" name="isbn" placeholder="ISBN"
+							value="${livro.isbn}" class="form-control"/>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-md-1">
+						<div class="form-group">
+							<label for="grupoPrecificacao" class="control-label">Grupo Prec</label>
 							<select required name="grupoPrecificacao" class="form-control">
 								<option selected disabled value="">Escolha um grupo</option>
 								<c:forEach items="${gruposPrecificacao}" var="gp">
@@ -92,17 +101,14 @@
 								<option value="4">B</option>
 								<option value="5">A</option>
 								<option value="6">S</option>
-								<option value="7">S+</option>
 							</select>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12 col-md-3">					
+					<div class="col-xs-12 col-md-2">
 						<div class="form-group">
-							<label for="isbn" class="control-label">ISBN</label>						
-							<input type="text" name="isbn" placeholder="ISBN"
-							value="${livro.isbn}" class="form-control"/>
+							<label for="precoCusto" class="control-label">Preço Custo</label>						
+							<input type="number" step="any" name="precoCusto" placeholder="Preço Custo"
+							value="${livro.precificacao.precoCusto}" class="form-control"/>
 						</div>
 					</div>
 					<div class="col-xs-12 col-md-1">

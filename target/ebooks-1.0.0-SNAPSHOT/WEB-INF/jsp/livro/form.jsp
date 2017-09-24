@@ -54,7 +54,7 @@
 						<div class="form-group">
 							<label for="ano" class="control-label">Ano</label>						
 							<input type="number" name="ano" placeholder="Ano"
-							value="${livro.ano}" class="form-control"/>
+							value="${livro.ano}" class="form-control ano"/>
 						</div>
 					</div>
 					<div class="col-xs-12 col-md-2">
@@ -114,28 +114,28 @@
 					</div>
 					<div class="col-xs-12 col-md-2">					
 						<div class="form-group">
-							<label for="altura" class="control-label">Altura</label>						
+							<label for="altura" class="control-label">Altura (cm)</label>						
 							<input type="number" step="any" name="altura" placeholder="Altura"
 							value="${livro.dimensoes.altura}" class="form-control"/>
 						</div>
 					</div>
 					<div class="col-xs-12 col-md-2">					
 						<div class="form-group">
-							<label for="largura" class="control-label">Largura</label>						
+							<label for="largura" class="control-label">Largura (cm)</label>						
 							<input type="number" step="any" name="largura" placeholder="Largura"
 							value="${livro.dimensoes.largura}" class="form-control"/>
 						</div>
 					</div>
 					<div class="col-xs-12 col-md-2">					
 						<div class="form-group">
-							<label for="profundidade" class="control-label">Profundidade</label>						
+							<label for="profundidade" class="control-label">Profundidade (cm)</label>						
 							<input type="number" step="any" name="profundidade" placeholder="Profundidade"
 							value="${livro.dimensoes.profundidade}" class="form-control"/>
 						</div>
 					</div>
 					<div class="col-xs-12 col-md-2">					
 						<div class="form-group">
-							<label for="peso" class="control-label">Peso</label>						
+							<label for="peso" class="control-label">Peso (g)</label>						
 							<input type="number" step="any" name="peso" placeholder="Peso"
 							value="${livro.peso}" class="form-control"/>
 						</div>
@@ -145,7 +145,7 @@
 					<div class="col-xs-12 col-md-3">
 						<div class="form-group">
 							<label for="categorias" class="control-label">Categorias</label>
-							<select multiple name="categorias" class="form-control">
+							<select multiple required name="categorias" class="form-control">
 								<c:forEach items="${categorias}" var="cat">
 									<c:choose>
 										<c:when test="${bebida.categoria.id eq cat.id}">

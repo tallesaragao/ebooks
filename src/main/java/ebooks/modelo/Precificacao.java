@@ -1,13 +1,22 @@
 package ebooks.modelo;
 
 public class Precificacao extends EntidadeDominio {
-	private Double preco;
+	private Double precoCusto;
+	private Double precoVenda;
 
-	public Double getPreco() {
-		return preco;
+	public Double getPrecoCusto() {
+		return precoCusto;
 	}
 
-	public void setPreco(Double preco) {
-		this.preco = preco;
+	public void setPrecoCusto(Double precoCusto) {
+		this.precoCusto = precoCusto;
+	}
+
+	public Double getPrecoVenda() {
+		return precoVenda;
+	}
+
+	public void setPrecoVenda(Double precoVenda) {
+		this.precoVenda = precoVenda;
 	}
 }

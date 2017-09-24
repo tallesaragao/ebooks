@@ -19,6 +19,7 @@ import ebooks.modelo.Editora;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.GrupoPrecificacao;
 import ebooks.modelo.Livro;
+import ebooks.modelo.Precificacao;
 
 public class LivroVH implements IViewHelper {
 	
@@ -41,6 +42,7 @@ public class LivroVH implements IViewHelper {
 			String numeroPaginas = request.getParameter("numeroPaginas");
 			String grupoPrecificacaoId = request.getParameter("grupoPrecificacao");
 			String isbn = request.getParameter("isbn");
+			String precoCusto = request.getParameter("precoCusto");
 			String quantidade = request.getParameter("quantidade");
 			String altura = request.getParameter("altura");
 			String largura = request.getParameter("largura");
@@ -70,6 +72,12 @@ public class LivroVH implements IViewHelper {
 			livro.setGrupoPrecificacao(grupoPrecificacao);
 			livro.setIsbn(isbn);
 			
+			Precificacao precificacao = new Precificacao();
+			if(precoCusto != null && !precoCusto.equals("")) {
+				precificacao.setPrecoCusto(Double.valueOf(precoCusto));				
+			}
+			livro.setPrecificacao(precificacao);
+			
 			//Se nenhuma quantidade for informada, seta o valor como zero
 			livro.setQuantidade(Long.valueOf(0));
 			if(quantidade != null && !quantidade.equals("")) {
@@ -97,6 +105,8 @@ public class LivroVH implements IViewHelper {
 			if(peso != null && !peso.equals("")) {
 				dimensoes.setPeso(Double.valueOf(peso));				
 			}
+			
+			livro.setDimensoes(dimensoes);
 			
 			//Criando as categorias com base nos IDs selecionados
 			List<Categoria> categorias = new ArrayList<Categoria>();
