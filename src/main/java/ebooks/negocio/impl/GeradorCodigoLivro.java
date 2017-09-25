@@ -6,11 +6,6 @@ import ebooks.modelo.Livro;
 import ebooks.negocio.IStrategy;
 
 public class GeradorCodigoLivro implements IStrategy {
-	
-	public static void main(String[] args) {
-		Livro livro = new Livro();
-		System.out.println(livro.hashCode());
-	}
 
 	@Override
 	public String processar(EntidadeDominio entidade) {

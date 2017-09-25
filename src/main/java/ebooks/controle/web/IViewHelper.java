@@ -11,5 +11,5 @@ import ebooks.modelo.EntidadeDominio;
 public interface IViewHelper {
 	public EntidadeDominio getEntidade(HttpServletRequest request);
 
-	public void setView(Object obj, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
+	public void setView(Object object, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
 }

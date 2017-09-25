@@ -10,9 +10,7 @@ import java.util.List;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.GrupoPrecificacao;
 
-public class GrupoPrecificacaoDAO implements IDAO {
-	private Connection conexao;
-	private ConnectionFactory factory = new ConnectionFactory();
+public class GrupoPrecificacaoDAO extends AbstractDAO {
 
 	@Override
 	public boolean salvar(EntidadeDominio entidade) {

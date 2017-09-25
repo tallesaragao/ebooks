@@ -1,7 +1,5 @@
 package ebooks.dao;
 
-import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +10,8 @@ import java.util.List;
 import ebooks.modelo.Categoria;
 import ebooks.modelo.EntidadeDominio;
 
-public class CategoriaDAO implements IDAO {
+public class CategoriaDAO extends AbstractDAO {
 	
-	private Connection conexao;
-	private ConnectionFactory factory = new ConnectionFactory();
 
 	@Override
 	public boolean salvar(EntidadeDominio entidade) {

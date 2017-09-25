@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WeBooze</title>
+<title>Livraria Online</title>
 <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="resources/bootstrap/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="resources/css/ebooks.css">
@@ -57,7 +57,7 @@
 							value="${livro.ano}" class="form-control ano"/>
 						</div>
 					</div>
-					<div class="col-xs-12 col-md-2">
+					<div class="col-xs-12 col-md-1">
 						<div class="form-group">
 							<label for="edicao" class="control-label">Edição</label>						
 							<input type="text" name="edicao" placeholder="Edição"
@@ -71,9 +71,25 @@
 							value="${livro.numeroPaginas}" class="form-control"/>
 						</div>
 					</div>
+					<div class="col-xs-12 col-md-2">					
+						<div class="form-group">
+							<label for="isbn" class="control-label">ISBN</label>						
+							<input type="text" name="isbn" placeholder="ISBN"
+							value="${livro.isbn}" class="form-control"/>
+						</div>
+					</div>
+					<div class="col-xs-12 col-md-1">
+						<div class="form-group">
+							<label for="quantidade" class="control-label">Quantidade</label>						
+							<input type="number" name="quantidade" placeholder="0"
+							value="${livro.quantidade}" class="form-control"/>
+						</div>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-xs-12 col-md-2">
 						<div class="form-group">
-							<label for="grupoPrecificacao" class="control-label">Grupo Precificação</label>
+							<label for="grupoPrecificacao" class="control-label">Grupo</label>
 							<select required name="grupoPrecificacao" class="form-control">
 								<option selected disabled value="">Escolha um grupo</option>
 								<c:forEach items="${gruposPrecificacao}" var="gp">
@@ -86,30 +102,14 @@
 										</c:otherwise>									
 									</c:choose>
 								</c:forEach>
-								<option value="1">E</option>
-								<option value="2">D</option>
-								<option value="3">C</option>
-								<option value="4">B</option>
-								<option value="5">A</option>
-								<option value="6">S</option>
-								<option value="7">S+</option>
 							</select>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12 col-md-3">					
+					<div class="col-xs-12 col-md-2">
 						<div class="form-group">
-							<label for="isbn" class="control-label">ISBN</label>						
-							<input type="text" name="isbn" placeholder="ISBN"
-							value="${livro.isbn}" class="form-control"/>
-						</div>
-					</div>
-					<div class="col-xs-12 col-md-1">
-						<div class="form-group">
-							<label for="quantidade" class="control-label">Quantidade</label>						
-							<input type="number" name="quantidade" placeholder="0"
-							value="${livro.quantidade}" class="form-control"/>
+							<label for="precoCusto" class="control-label">Preço de custo</label>						
+							<input type="number" step="any" name="precoCusto" placeholder="Preço de custo"
+							value="${livro.precificacao.precoCusto}" class="form-control"/>
 						</div>
 					</div>
 					<div class="col-xs-12 col-md-2">					
@@ -137,7 +137,7 @@
 						<div class="form-group">
 							<label for="peso" class="control-label">Peso (g)</label>						
 							<input type="number" step="any" name="peso" placeholder="Peso"
-							value="${livro.peso}" class="form-control"/>
+							value="${livro.dimensoes.peso}" class="form-control"/>
 						</div>
 					</div>
 				</div>
@@ -176,21 +176,21 @@
 						<div class="form-group">
 							<label for="nomeAutor" class="control-label">Nome</label>						
 							<input type="text" name="nomeAutor" placeholder="Nome do autor"
-							value="${livro.autor.nome}" class="form-control"/>
+							value="${autor.nome}" class="form-control"/>
 						</div>
 					</div>
 					<div class="col-xs-12 col-md-3">
 						<div class="form-group">
 							<label for="dataNascimento" class="control-label">Data de Nascimento</label>
 							<input type="date" name="dataNascimento" class="form-control"
-							value="<fmt:formatDate value="${livro.autor.dataNascimento}" pattern="yyyy-MM-dd"/>"/>
+							value="<fmt:formatDate value="${autor.dataNascimento}" pattern="yyyy-MM-dd"/>"/>
 						</div>
 					</div>
 					<div class="col-xs-12 col-md-3">					
 						<div class="form-group">
 							<label for="cpf" class="control-label">CPF</label>						
 							<input type="text" name="cpf" placeholder="CPF"
-							value="${livro.autor.cpf}" class="form-control cpf"/>
+							value="${autor.cpf}" class="form-control cpf"/>
 						</div>
 					</div>
 				</div>
@@ -218,7 +218,7 @@
 						<div class="form-group">
 							<label for="razaoSocial" class="control-label">Razão Social</label>						
 							<input type="text" name="razaoSocial" placeholder="Razão Social"
-							value="${livro.autor.razaoSocial}" class="form-control"/>
+							value="${livro.editora.razaoSocial}" class="form-control"/>
 						</div>
 					</div>
 				</div>

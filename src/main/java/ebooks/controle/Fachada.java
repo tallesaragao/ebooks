@@ -7,11 +7,17 @@ import java.util.Map;
 
 import ebooks.dao.CategoriaDAO;
 import ebooks.dao.IDAO;
+import ebooks.dao.LivroDAO;
 import ebooks.modelo.Categoria;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.Livro;
 import ebooks.negocio.IStrategy;
+import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
 import ebooks.negocio.impl.ComplementarDtCadastro;
+import ebooks.negocio.impl.GeradorCodigoLivro;
+import ebooks.negocio.impl.GeradorPrecoLivro;
 import ebooks.negocio.impl.ValidarCamposCategoria;
+import ebooks.negocio.impl.ValidarCamposLivro;
 
 public class Fachada implements IFachada {
 
@@ -26,6 +32,10 @@ public class Fachada implements IFachada {
 	public Fachada() {
 		ComplementarDtCadastro compDtCad = new ComplementarDtCadastro();
 		ValidarCamposCategoria valCampCat = new ValidarCamposCategoria();
+		ValidarCamposLivro valCampLivro = new ValidarCamposLivro();
+		GeradorCodigoLivro gerCodLivro = new GeradorCodigoLivro();
+		GeradorPrecoLivro gerPrecLivro = new GeradorPrecoLivro();
+		AtivadorLivroPrimeiroCadastro ativLivroPrimCad = new AtivadorLivroPrimeiroCadastro();
 
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
 		lSalvarCat.add(compDtCad);
@@ -43,12 +53,32 @@ public class Fachada implements IFachada {
 		contextoCat.put(ALTERAR, lAlterarCat);
 		contextoCat.put(EXCLUIR, lExcluirCat);
 		contextoCat.put(CONSULTAR, lConsultarCat);
+		
+		List<IStrategy> lSalvarLivro = new ArrayList<IStrategy>();
+		lSalvarLivro.add(compDtCad);
+		lSalvarLivro.add(valCampLivro);
+		lSalvarLivro.add(gerCodLivro);
+		lSalvarLivro.add(gerPrecLivro);
+		lSalvarLivro.add(ativLivroPrimCad);
+		
+		List<IStrategy> lAlterarLivro = new ArrayList<IStrategy>();
+		List<IStrategy> lExcluirLivro = new ArrayList<IStrategy>();
+		List<IStrategy> lConsultarLivro = new ArrayList<IStrategy>();
+		
 
+		Map<String, List<IStrategy>> contextoLivro = new HashMap<String, List<IStrategy>>();
+		contextoLivro.put(SALVAR, lSalvarLivro);
+		contextoLivro.put(ALTERAR, lAlterarLivro);
+		contextoLivro.put(EXCLUIR, lExcluirLivro);
+		contextoLivro.put(CONSULTAR, lConsultarLivro);
+		
 		requisitos = new HashMap<String, Map<String, List<IStrategy>>>();
 		requisitos.put(Categoria.class.getName(), contextoCat);
+		requisitos.put(Livro.class.getName(), contextoLivro);
 		
 		daos = new HashMap<String, IDAO>();
 		daos.put(Categoria.class.getName(), new CategoriaDAO());
+		daos.put(Livro.class.getName(), new LivroDAO());
 	}
 
 	@Override

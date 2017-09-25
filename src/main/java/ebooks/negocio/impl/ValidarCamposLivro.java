@@ -33,16 +33,16 @@ public class ValidarCamposLivro implements IStrategy {
 			sb.append("ISBN do livro é obrigatório:");
 		}
 		else {
-			String isbn = livro.getIsbn().trim().replace("-", "");
+			String isbn = livro.getIsbn();
 			for(int i = 0; i < isbn.length(); i++) {
 				//se o caracter iterado dentro da String isbn não for numérico
 				if(!Character.isDigit(isbn.charAt(i))) {
-					sb.append("ISBN deve ser numérico");
+					sb.append("ISBN deve ser numérico:");
 					break;
 				}
 			}
 			if(isbn.length() != 13) {
-				sb.append("ISBN deve ter 13 dígitos");
+				sb.append("ISBN deve ter 13 dígitos:");
 			}
 		}
 		if(livro.getNumeroPaginas() == null || livro.getNumeroPaginas().equals("")) {
@@ -115,6 +115,7 @@ public class ValidarCamposLivro implements IStrategy {
 		Precificacao precificacao = livro.getPrecificacao();
 		if(precificacao.getPrecoCusto() == null || precificacao.getPrecoCusto() <= 0) {
 			sb.append("Preço de custo do livro deve ser maior que zero:");
+			precificacao.setPrecoCusto(Double.valueOf(0));
 		}
 		livro.getGrupoPrecificacao();
 		if(sb.length() > 0) {

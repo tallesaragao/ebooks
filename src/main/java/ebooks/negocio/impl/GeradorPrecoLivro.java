@@ -9,7 +9,7 @@ import ebooks.modelo.Livro;
 import ebooks.modelo.Precificacao;
 import ebooks.negocio.IStrategy;
 
-public class GerarPrecoLivro implements IStrategy {
+public class GeradorPrecoLivro implements IStrategy {
 
 	@Override
 	public String processar(EntidadeDominio entidade) {
@@ -28,6 +28,7 @@ public class GerarPrecoLivro implements IStrategy {
 		precoVenda = precoCusto + (precoCusto * (margemLucro / 100));
 		precificacao.setPrecoVenda(precoVenda);
 		livro.setPrecificacao(precificacao);
+		entidade = livro;
 		return null;
 	}
 	

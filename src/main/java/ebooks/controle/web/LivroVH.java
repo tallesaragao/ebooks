@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ebooks.dao.CategoriaDAO;
+import ebooks.dao.GrupoPrecificacaoDAO;
 import ebooks.modelo.Autor;
 import ebooks.modelo.Categoria;
 import ebooks.modelo.Dimensoes;
@@ -148,7 +149,7 @@ public class LivroVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object obj, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
@@ -159,6 +160,36 @@ public class LivroVH implements IViewHelper {
 			categoria.setNome("");
 			List<EntidadeDominio> categorias = catDAO.consultar(categoria);
 			request.setAttribute("categorias", categorias);
+			GrupoPrecificacaoDAO gpDAO = new GrupoPrecificacaoDAO();
+			GrupoPrecificacao gpConsulta = new GrupoPrecificacao();
+			gpConsulta.setNome("");
+			List<EntidadeDominio> gruposPrecificacao = gpDAO.consultar(gpConsulta);
+			request.setAttribute("gruposPrecificacao", gruposPrecificacao);
+			request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/livroSalvar")) {
+			if(object == null) {
+				String sucesso = "Livro cadastrado com sucesso";
+				request.setAttribute("sucesso", sucesso);
+				request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
+				return;
+			}
+			CategoriaDAO catDAO = new CategoriaDAO();
+			Categoria categoria = new Categoria();
+			categoria.setNome("");
+			List<EntidadeDominio> categorias = catDAO.consultar(categoria);
+			request.setAttribute("categorias", categorias);
+			GrupoPrecificacaoDAO gpDAO = new GrupoPrecificacaoDAO();
+			GrupoPrecificacao gpConsulta = new GrupoPrecificacao();
+			gpConsulta.setNome("");
+			List<EntidadeDominio> gruposPrecificacao = gpDAO.consultar(gpConsulta);
+			request.setAttribute("gruposPrecificacao", gruposPrecificacao);
+			String mensagem = (String) object;
+			String[] mensagens = mensagem.split(":");
+			Livro livro = (Livro) this.getEntidade(request);
+			request.setAttribute("livro", livro);
+			request.setAttribute("autor", livro.getAutores().get(0));
+			request.setAttribute("mensagens", mensagens);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
 		}
 	}

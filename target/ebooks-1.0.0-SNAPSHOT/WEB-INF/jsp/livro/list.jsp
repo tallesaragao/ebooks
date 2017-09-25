@@ -5,15 +5,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WeBooze</title>
+<title>Livraria Online</title>
 <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="resources/bootstrap/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="resources/css/hmweb.css">
+<link rel="stylesheet" href="resources/css/ebooks.css">
 </head>
 <body>
 	<c:import url="../cabecalho.jsp"/>
 	<div class="container">
-		<h1 class="page-header titulo">Lista de bebidas</h1>
+		<h1 class="page-header titulo">Lista de livros</h1>
 		<c:if test="${sucesso != null}">
 			<div class="row">
 				<div class="col-md-5">
@@ -121,6 +121,6 @@
 	<script src="resources/js/jquery-3.1.1.js"></script>
 	<script src="resources/bootstrap/js/bootstrap.js"></script>
 	<script src="resources/js/jquery.mask.js"></script>
-	<script src="resources/js/webooze.js"></script>
+	<script src="resources/js/ebooks.js"></script>
 </body>
 </html>
