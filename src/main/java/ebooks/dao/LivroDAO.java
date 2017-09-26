@@ -207,13 +207,155 @@ public class LivroDAO extends AbstractDAO {
 
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) {
-		String sql = "select l.titulo, d.peso, pEd.nome, pjEd.cnpj, gp.nome from livro l"
-					+ "join dimensoes d on (l.id_dimensoes = d.id_dimensoes)"
-					+ "join editora ed on (l.id_editora = ed.id_editora)"
-					+ "join pessoa_juridica pjEd on (ed.id_pessoa_juridica = pjEd.id_pessoa_juridica)"
-				    + "join pessoa pEd on (pjEd.id_pessoa = pEd.id_pessoa)"
-				    + "join grupo_precificacao gp on (l.id_grupo_precificacao = gp.id_grupo_precificacao)";
-		return null;
+		Livro livroConsulta = (Livro) entidade;
+		Categoria categoriaConsulta = livroConsulta.getCategorias().get(0);
+		//Autor autorConsulta = livroConsulta.getAutores().get(0);
+		List<Autor> autores = new ArrayList<>();
+		List<Categoria> categorias = new ArrayList<>();
+		List<Livro> livros = new ArrayList<>();
+		List<EntidadeDominio> resultado = new ArrayList<>();
+		conexao = factory.getConnection();
+		String sql = "select * from autor a "
+				+ "join pessoa_fisica pfa on (a.id_pessoa_fisica = pfa.id_pessoa_fisica) "
+				+ "join pessoa pa on (pfa.id_pessoa = pa.id_pessoa)";
+		try {
+			PreparedStatement ps = conexao.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Autor autor = new Autor();
+				autor.setId(rs.getLong("a.id_autor"));
+				autor.setCpf(rs.getString("pfa.cpf"));
+				autor.setDataNascimento(rs.getDate("pfa.dt_nascimento"));
+				autor.setDataCadastro(rs.getDate("pa.dt_cadastro"));
+				autor.setNome(rs.getString("pa.nome"));
+				autores.add(autor);
+			}
+			ps.close();
+			
+			sql = "select * from categoria c where c.nome like ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setString(1, "%" + categoriaConsulta.getNome() + "%");
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Categoria categoria = new Categoria();
+				categoria.setId(rs.getLong("c.id_categoria"));
+				categoria.setNome(rs.getString("c.nome"));
+				categoria.setDataCadastro(rs.getDate("c.dt_cadastro"));
+				categorias.add(categoria);
+			}
+			ps.close();
+
+			sql = "select * from livro l "
+					+ "join dimensoes d on (l.id_dimensoes = d.id_dimensoes) "
+					+ "join editora ed on (l.id_editora = ed.id_editora) "
+					+ "join pessoa_juridica pjEd on (ed.id_pessoa_juridica = pjEd.id_pessoa_juridica) "
+					+ "join pessoa pEd on (pjEd.id_pessoa = pEd.id_pessoa) "
+					+ "join grupo_precificacao gp on (l.id_grupo_precificacao = gp.id_grupo_precificacao) ";
+			ps = conexao.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Livro livro = new Livro();
+				livro.setId(rs.getLong("l.id_livro"));
+				livro.setAno(rs.getString("l.ano"));
+				livro.setAtivo(rs.getBoolean("l.fl_ativo"));
+				livro.setCodigo(rs.getString("l.codigo"));
+				livro.setDataCadastro(rs.getDate("l.dt_cadastro"));
+				livro.setEdicao(rs.getString("l.edicao"));
+				livro.setIsbn(rs.getString("l.isbn"));
+				livro.setNumeroPaginas(rs.getString("l.num_paginas"));
+				livro.setQuantidade(rs.getLong("l.quantidade"));
+				livro.setSinopse(rs.getString("l.sinopse"));
+				livro.setTitulo(rs.getString("l.titulo"));
+				
+				Dimensoes dimensoes = new Dimensoes();
+				dimensoes.setId(rs.getLong("d.id_dimensoes"));
+				dimensoes.setAltura(rs.getDouble("d.altura"));
+				dimensoes.setLargura(rs.getDouble("d.largura"));
+				dimensoes.setProfundidade(rs.getDouble("d.profundidade"));
+				dimensoes.setPeso(rs.getDouble("d.peso"));
+				livro.setDimensoes(dimensoes);
+				
+				Precificacao precificacao = new Precificacao();
+				precificacao.setId(rs.getLong("p.id_precificacao"));
+				precificacao.setPrecoCusto(rs.getDouble("p.preco_custo"));
+				precificacao.setPrecoVenda(rs.getDouble("p.preco_venda"));
+				livro.setPrecificacao(precificacao);
+				
+				GrupoPrecificacao grupoPrecificacao = new GrupoPrecificacao();
+				grupoPrecificacao.setId(rs.getLong("gp.id_grupo_precificacao"));
+				grupoPrecificacao.setMargemLucro(rs.getDouble("gp.margem_lucro"));
+				grupoPrecificacao.setNome(rs.getString("gp.nome"));
+				livro.setGrupoPrecificacao(grupoPrecificacao);
+				
+				Editora editora = new Editora();
+				editora.setId(rs.getLong("ed.id_editora"));
+				editora.setNome(rs.getString("pEd.nome"));
+				editora.setDataCadastro(rs.getDate("pEd.dt_cadastro"));
+				editora.setCnpj(rs.getString("pjEd.cnpj"));
+				editora.setRazaoSocial(rs.getString("pjEd.razao_social"));
+				livro.setEditora(editora);
+				
+				List<Categoria> categoriasInitialize = new ArrayList<>();
+				livro.setCategorias(categoriasInitialize);
+				
+				List<Autor> autoresInitialize = new ArrayList<>();
+				livro.setAutores(autoresInitialize);
+				
+				livros.add(livro);
+			}
+			ps.close();
+			
+			sql = "select * from livro_autor";
+			ps = conexao.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				long idLivro = rs.getLong("id_livro");
+				long idAutor = rs.getLong("id_autor");
+				for(Livro livro : livros) {
+					if(livro.getId() == idLivro) {
+						for(Autor autor : autores) {
+							if(autor.getId() == idAutor) {
+								livro.getAutores().add(autor);
+							}
+						}
+					}
+				}				
+			}
+			ps.close();
+			
+			sql = "select * from livro_categoria";
+			ps = conexao.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				long idLivro = rs.getLong("id_livro");
+				long idCategoria = rs.getLong("id_categoria");
+				for(Livro livro : livros) {
+					if(livro.getId() == idLivro) {
+						for(Categoria categoria : categorias) {
+							if(categoria.getId() == idCategoria) {
+								livro.getCategorias().add(categoria);
+							}
+						}
+					}
+				}				
+			}
+			ps.close();
+			
+			for(Livro livro : livros) {
+				resultado.add(livro);
+			}		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return resultado;
 	}
 	
 }

@@ -50,15 +50,15 @@
 								<input type="text" name="busca" placeholder="Faça sua busca" class="form-control"/>
 								<div class="input-group-btn">
 									<button type="submit" class="btn btn-md btn-primary btn-icone"
-									name="operacao" value="CONSULTAR" formaction="bebidaConsultar">
+									name="operacao" value="CONSULTAR" formaction="livroConsultar">
 										<span class="glyphicon glyphicon-search"></span>
 									</button>
 								</div>
 							</div>
 						</div>
 						<div class="col-xs-2 col-md-3 btn-adicionar">			  	
-							<button class="btn btn-primary btn-icone" type="submit" formaction="bebidaForm"
-							data-toggle="tooltip" title="Adicionar bebida">
+							<button class="btn btn-primary btn-icone" type="submit" formaction="livroForm"
+							data-toggle="tooltip" title="Adicionar livro">
 								<span class="glyphicon glyphicon-plus"></span>
 							</button>
 						</div>
@@ -73,11 +73,11 @@
 							<table class="table table-striped table-condensed">
 								<thead>
 									<tr>
-										<th>NOME</th>
+										<th>CÓDIGO</th>
+										<th>TÍTULO</th>
+										<th>AUTOR</th>
 										<th>CATEGORIA</th>
-										<th>FORNECEDOR</th>
-										<th>FABRICAÇÃO</th>
-										<th>VALIDADE</th>
+										<th>EDITORA</th>
 										<th>QUANTIDADE</th>
 										<th>PREÇO (R$)</th>
 										<th>
@@ -86,24 +86,24 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${consulta}" var="bebida">
+									<c:forEach items="${consulta}" var="livro">
 										<tr>
-											<td>${bebida.nome}</td>
-											<td>${bebida.categoria.nome}</td>
-											<td>${bebida.fornecedor}</td>
-											<td>${bebida.dataFabricacao}</td>
-											<td>${bebida.dataValidade}</td>
-											<td>${bebida.estoque.quantidadeAtual}</td>
-											<td>${bebida.preco}</td>											
+											<td>${livro.codigo}</td>
+											<td>${livro.titulo}</td>
+											<td>${autor}</td>
+											<td>${livro.categoria.nome}</td>
+											<td>${livro.editora}</td>
+											<td>${livro.quantidade}</td>
+											<td>${livro.precificacao.precoVenda}</td>											
 											<td>
 												<button type="submit" data-toggle="tooltip" title="Editar"
 												class="btn btn-sm btn-default btn-icone" method="get"
-												formaction="bebidaEdit?operacao=CONSULTAR&id=${bebida.id}">
+												formaction="livroEdit?operacao=CONSULTAR&id=${livro.id}">
 													<span class="glyphicon glyphicon-pencil"></span>
 												</button>
 												<button type="submit" name="operacao" method="get" data-toggle="tooltip"
 												title="Excluir" value="EXCLUIR"	onclick="return excluir()"
-												class="btn btn-sm btn-danger botao-excluir btn-icone" formaction="bebidaExcluir?id=${bebida.id}">
+												class="btn btn-sm btn-danger botao-excluir btn-icone" formaction="livroExcluir?id=${livro.id}">
 													<span class="glyphicon glyphicon-trash"></span>
 												</button>
 											</td>

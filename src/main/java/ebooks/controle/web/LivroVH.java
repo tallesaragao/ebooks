@@ -36,6 +36,13 @@ public class LivroVH implements IViewHelper {
 		if(operacao == null) {
 			operacao = "";
 		}
+		if(operacao.equals(CONSULTAR)) {
+			List<Categoria> categorias = new ArrayList<>();
+			Categoria categoria = new Categoria();
+			categoria.setNome("");
+			categorias.add(categoria);
+			livro.setCategorias(categorias);
+		}
 		if(operacao.equals(SALVAR)) {
 			String titulo = request.getParameter("titulo");
 			String ano = request.getParameter("ano");
@@ -167,6 +174,9 @@ public class LivroVH implements IViewHelper {
 			request.setAttribute("gruposPrecificacao", gruposPrecificacao);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
 		}
+		if(uri.equals(contexto + "/livroList")) {
+			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
+		}
 		if(uri.equals(contexto + "/livroSalvar")) {
 			if(object == null) {
 				String sucesso = "Livro cadastrado com sucesso";
@@ -191,6 +201,18 @@ public class LivroVH implements IViewHelper {
 			request.setAttribute("autor", livro.getAutores().get(0));
 			request.setAttribute("mensagens", mensagens);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/livroConsultar")) {
+
+			if(object == null) {
+				String erro = "Nenhum livro encontrado";
+				request.setAttribute("erro", erro);
+				request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
+				return;
+			}
+			List<Livro> consulta = (List<Livro>) object;
+			request.setAttribute("consulta", consulta);
+			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 		}
 	}
 
