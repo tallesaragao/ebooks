@@ -208,8 +208,9 @@ public class LivroDAO extends AbstractDAO {
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) {
 		Livro livroConsulta = (Livro) entidade;
+		Editora editoraConsulta = livroConsulta.getEditora();
 		Categoria categoriaConsulta = livroConsulta.getCategorias().get(0);
-		//Autor autorConsulta = livroConsulta.getAutores().get(0);
+		Autor autorConsulta = livroConsulta.getAutores().get(0);
 		List<Autor> autores = new ArrayList<>();
 		List<Categoria> categorias = new ArrayList<>();
 		List<Livro> livros = new ArrayList<>();
@@ -217,9 +218,11 @@ public class LivroDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		String sql = "select * from autor a "
 				+ "join pessoa_fisica pfa on (a.id_pessoa_fisica = pfa.id_pessoa_fisica) "
-				+ "join pessoa pa on (pfa.id_pessoa = pa.id_pessoa)";
+				+ "join pessoa pa on (pfa.id_pessoa = pa.id_pessoa) "
+				+ "where pa.nome like ?";
 		try {
 			PreparedStatement ps = conexao.prepareStatement(sql);
+			ps.setString(1, "%" + autorConsulta.getNome() +"%");
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				Autor autor = new Autor();
@@ -250,8 +253,20 @@ public class LivroDAO extends AbstractDAO {
 					+ "join editora ed on (l.id_editora = ed.id_editora) "
 					+ "join pessoa_juridica pjEd on (ed.id_pessoa_juridica = pjEd.id_pessoa_juridica) "
 					+ "join pessoa pEd on (pjEd.id_pessoa = pEd.id_pessoa) "
-					+ "join grupo_precificacao gp on (l.id_grupo_precificacao = gp.id_grupo_precificacao) ";
+					+ "join grupo_precificacao gp on (l.id_grupo_precificacao = gp.id_grupo_precificacao) "
+					+ "join precificacao p on (l.id_precificacao = p.id_precificacao) "
+					+ "where l.titulo like ? and l.codigo like ? and l.isbn like ? and pEd.nome like ? ";
+			if(livroConsulta.getId() != null) {
+				sql += "and l.id_livro = ?";
+			}
 			ps = conexao.prepareStatement(sql);
+			ps.setString(1, "%" + livroConsulta.getTitulo() + "%");
+			ps.setString(2, "%" + livroConsulta.getCodigo() + "%");
+			ps.setString(3, "%" + livroConsulta.getIsbn() + "%");
+			ps.setString(4, "%" + editoraConsulta.getNome() + "%");
+			if(livroConsulta.getId() != null) {
+				ps.setLong(5, livroConsulta.getId());
+			}
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				Livro livro = new Livro();
@@ -342,7 +357,9 @@ public class LivroDAO extends AbstractDAO {
 			ps.close();
 			
 			for(Livro livro : livros) {
-				resultado.add(livro);
+				if(!livro.getAutores().isEmpty() && !livro.getCategorias().isEmpty()) {
+					resultado.add(livro);					
+				}
 			}		
 		} catch (SQLException e) {
 			e.printStackTrace();

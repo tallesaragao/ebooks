@@ -42,43 +42,79 @@
 			</div>
 		</c:if>
 		<form action="#" method="post">
-			<div class="row pesquisa">
-				<div class="col-xs-12">
-					<div class="row">
-						<div class="col-xs-10 col-sm-6 col-md-4">
-							<div class="input-group input-group-md">
-								<input type="text" name="busca" placeholder="Faça sua busca" class="form-control"/>
-								<div class="input-group-btn">
-									<button type="submit" class="btn btn-md btn-primary btn-icone"
-									name="operacao" value="CONSULTAR" formaction="livroConsultar">
-										<span class="glyphicon glyphicon-search"></span>
-									</button>
-								</div>
-							</div>
+			<fieldset>
+				<legend>Faça sua pesquisa</legend>
+				<div class="row">
+					<div class="col-xs-12 col-md-4">
+						<div class="form-group">
+							<label for="titulo" class="control-label">Título</label>
+							<input type="text" name="titulo" placeholder="Título" class="form-control"/>
 						</div>
-						<div class="col-xs-2 col-md-3 btn-adicionar">			  	
-							<button class="btn btn-primary btn-icone" type="submit" formaction="livroForm"
-							data-toggle="tooltip" title="Adicionar livro">
-								<span class="glyphicon glyphicon-plus"></span>
+					</div>
+					<div class="col-xs-12 col-md-4">						
+						<div class="form-group">
+							<label for="codigo" class="control-label">Código</label>
+							<input type="text" name="codigo" placeholder="Código" class="form-control"/>	
+						</div>			
+					</div>
+					<div class="col-xs-12 col-md-4">
+						<div class="form-group">
+							<label for="isbn" class="control-label">ISBN</label>
+							<input type="text" name="isbn" placeholder="ISBN" class="form-control"/>
+						</div>				
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-md-4">
+						<div class="form-group">
+							<label for="categoria" class="control-label">Categoria</label>
+							<input type="text" name="categoria" placeholder="Categoria" class="form-control"/>
+						</div>
+					</div>
+					<div class="col-xs-12 col-md-4">
+						<div class="form-group">
+							<label for="autor" class="control-label">Autor</label>
+							<input type="text" name="autor" placeholder="Autor" class="form-control"/>	
+						</div>			
+					</div>
+					<div class="col-xs-12 col-md-4">
+						<div class="form-group">
+							<label for="editora" class="control-label">Editora</label>
+							<input type="text" name="editora" placeholder="Editora" class="form-control"/>		
+						</div>		
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+					<div class="row">
+						<div class="col-xs-6 col-sm-6 col-md-2">							
+							<button type="submit" class="btn btn-md btn-primary"
+							name="operacao" value="CONSULTAR" formaction="livroConsultar">
+								<span class="glyphicon glyphicon-search"></span> Pesquisar
+							</button>
+						</div>
+						<div class="col-xs-6 col-md-2 btn-adicionar">			  	
+							<button class="btn btn-primary" type="submit" formaction="livroForm">
+								<span class="glyphicon glyphicon-plus"></span> Novo Livro
 							</button>
 						</div>
 					</div>
 				</div>
-			</div>	
-			
+				</div>
+			</fieldset>
 			<c:if test="${not empty consulta}">
 				<div class="row">
 					<div class="table-responsive tabela-clientes">
-						<div class="col-sm-11 col-sm-7 col-md-8">
+						<div class="col-sm-11 col-sm-12 col-md-12">
 							<table class="table table-striped table-condensed">
 								<thead>
 									<tr>
 										<th>CÓDIGO</th>
+										<th>ISBN</th>
 										<th>TÍTULO</th>
 										<th>AUTOR</th>
 										<th>CATEGORIA</th>
 										<th>EDITORA</th>
-										<th>QUANTIDADE</th>
 										<th>PREÇO (R$)</th>
 										<th>
 											<span class="glyphicon glyphicon-cog icone-engrenagem"></span> AÇÕES
@@ -89,11 +125,19 @@
 									<c:forEach items="${consulta}" var="livro">
 										<tr>
 											<td>${livro.codigo}</td>
+											<td>${livro.isbn}</td>
 											<td>${livro.titulo}</td>
-											<td>${autor}</td>
-											<td>${livro.categoria.nome}</td>
-											<td>${livro.editora}</td>
-											<td>${livro.quantidade}</td>
+											<td>
+												<c:forEach items="${livro.autores}" var="autor" varStatus="status">
+													<span>${autor.nome}<c:if test="${!status.last}">, </c:if></span>
+												</c:forEach>
+											</td>
+											<td>
+												<c:forEach items="${livro.categorias}" var="categoria" varStatus="status">
+													<span>${categoria.nome}<c:if test="${!status.last}">, </c:if></span>
+												</c:forEach>
+											</td>
+											<td>${livro.editora.nome}</td>
 											<td>${livro.precificacao.precoVenda}</td>											
 											<td>
 												<button type="submit" data-toggle="tooltip" title="Editar"

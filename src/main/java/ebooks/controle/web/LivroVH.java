@@ -37,11 +37,55 @@ public class LivroVH implements IViewHelper {
 			operacao = "";
 		}
 		if(operacao.equals(CONSULTAR)) {
+			String id = request.getParameter("id");
+			String titulo = request.getParameter("titulo");
+			String codigo = request.getParameter("codigo");
+			String isbn = request.getParameter("isbn");
+			String categoriaNome = request.getParameter("categoria");
+			String autorNome = request.getParameter("autor");
+			String editoraNome = request.getParameter("editora");
+			
+			if(id != null && !id.equals("")) {
+				livro.setId(Long.valueOf(id));
+			}
+			
+			livro.setTitulo("");
+			if(titulo != null) {
+				livro.setTitulo(titulo);
+			}
+			livro.setCodigo("");
+			if(codigo != null) {
+				livro.setCodigo(codigo);
+			}
+			livro.setIsbn("");
+			if(isbn != null) {
+				livro.setIsbn(isbn);
+			}
 			List<Categoria> categorias = new ArrayList<>();
 			Categoria categoria = new Categoria();
 			categoria.setNome("");
+			if(categoriaNome != null) {
+				categoria.setNome(categoriaNome);
+			}
 			categorias.add(categoria);
 			livro.setCategorias(categorias);
+			
+			List<Autor> autores = new ArrayList<>();
+			Autor autor = new Autor();
+			autor.setNome("");
+			if(autorNome != null) {
+				autor.setNome(autorNome);
+			}
+			autores.add(autor);
+			livro.setAutores(autores);
+			
+			Editora editora = new Editora();
+			editora.setNome("");
+			if(editoraNome != null) {
+				editora.setNome(editoraNome);
+			}
+			livro.setEditora(editora);
+			
 		}
 		if(operacao.equals(SALVAR)) {
 			String titulo = request.getParameter("titulo");
@@ -176,6 +220,23 @@ public class LivroVH implements IViewHelper {
 		}
 		if(uri.equals(contexto + "/livroList")) {
 			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/livroEdit")) {
+			CategoriaDAO catDAO = new CategoriaDAO();
+			Categoria categoria = new Categoria();
+			categoria.setNome("");
+			List<EntidadeDominio> categorias = catDAO.consultar(categoria);
+			request.setAttribute("categorias", categorias);
+			GrupoPrecificacaoDAO gpDAO = new GrupoPrecificacaoDAO();
+			GrupoPrecificacao gpConsulta = new GrupoPrecificacao();
+			gpConsulta.setNome("");
+			List<EntidadeDominio> gruposPrecificacao = gpDAO.consultar(gpConsulta);
+			request.setAttribute("gruposPrecificacao", gruposPrecificacao);
+			List<Livro> listaLivros = (List<Livro>) object;
+			Livro livro = listaLivros.get(0);
+			request.setAttribute("livro", livro);
+			request.setAttribute("autor", livro.getAutores().get(0));
+			request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/livroSalvar")) {
 			if(object == null) {
