@@ -36,6 +36,23 @@ public class LivroVH implements IViewHelper {
 		if(operacao == null) {
 			operacao = "";
 		}
+		if(operacao.equals(EXCLUIR)) {
+			String id = request.getParameter("id");
+			livro.setId(Long.valueOf(id));
+			List<Categoria> categorias = new ArrayList<>();
+			Categoria categoria = new Categoria();
+			categoria.setNome("");
+			categorias.add(categoria);
+			livro.setCategorias(categorias);
+			List<Autor> autores = new ArrayList<>();
+			Autor autor = new Autor();
+			autor.setNome("");
+			autores.add(autor);
+			livro.setAutores(autores);
+			Editora editora = new Editora();
+			editora.setNome("");
+			livro.setEditora(editora);
+		}
 		if(operacao.equals(CONSULTAR)) {
 			String id = request.getParameter("id");
 			String titulo = request.getParameter("titulo");
@@ -87,7 +104,11 @@ public class LivroVH implements IViewHelper {
 			livro.setEditora(editora);
 			
 		}
-		if(operacao.equals(SALVAR)) {
+		if(operacao.equals(SALVAR) || operacao.equals(ALTERAR)) {
+			if(operacao.equals(ALTERAR)) {
+				String id = request.getParameter("id");
+				livro.setId(Long.valueOf(id));
+			}
 			String titulo = request.getParameter("titulo");
 			String ano = request.getParameter("ano");
 			String edicao = request.getParameter("edicao");
@@ -236,6 +257,7 @@ public class LivroVH implements IViewHelper {
 			Livro livro = listaLivros.get(0);
 			request.setAttribute("livro", livro);
 			request.setAttribute("autor", livro.getAutores().get(0));
+			request.setAttribute("operacao", ALTERAR);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/livroSalvar")) {
@@ -273,6 +295,35 @@ public class LivroVH implements IViewHelper {
 			}
 			List<Livro> consulta = (List<Livro>) object;
 			request.setAttribute("consulta", consulta);
+			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/livroAlterar")) {
+			if (object != null) {
+				Categoria categoria = new Categoria();
+				categoria.setNome("");
+				CategoriaDAO dao = new CategoriaDAO();
+				GrupoPrecificacaoDAO gpDAO = new GrupoPrecificacaoDAO();
+				GrupoPrecificacao gpConsulta = new GrupoPrecificacao();
+				gpConsulta.setNome("");
+				List<EntidadeDominio> gruposPrecificacao = gpDAO.consultar(gpConsulta);
+				request.setAttribute("gruposPrecificacao", gruposPrecificacao);
+				String mensagem = (String) object;
+				String[] mensagens = mensagem.split(":");
+				Livro livro = (Livro) this.getEntidade(request);
+				request.setAttribute("livro", livro);
+				request.setAttribute("autor", livro.getAutores().get(0));
+				request.setAttribute("mensagens", mensagens);
+				request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
+				return;
+			}
+			String sucesso = "Alteração efetuada com sucesso";
+			request.setAttribute("sucesso", sucesso);
+			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
+			return;
+		}
+		if(uri.equals(contexto + "/livroExcluir")) {
+			String sucesso = (String) object;
+			request.setAttribute("sucesso", sucesso);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 		}
 	}

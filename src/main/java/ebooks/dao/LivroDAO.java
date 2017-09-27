@@ -132,7 +132,7 @@ public class LivroDAO extends AbstractDAO {
 				autor.setId(idAutor);
 				ps.close();
 			}
-			sql = "insert into livro(ano, titulo, edicao, isbn, num_paginas, fl_ativo, quantidade, codigo, id_dimensoes, "
+			sql = "insert into livro(ano, titulo, edicao, isbn, num_paginas, fl_ativo, quantidade, codigo, sinopse, id_dimensoes, "
 					+ "id_grupo_precificacao, id_precificacao, id_editora, dt_cadastro) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, livro.getAno());
@@ -143,11 +143,12 @@ public class LivroDAO extends AbstractDAO {
 			ps.setBoolean(6, livro.getAtivo());
 			ps.setLong(7, livro.getQuantidade());
 			ps.setString(8, livro.getCodigo());
-			ps.setLong(9, idDimensoes);
-			ps.setLong(10, grupoPrecificacao.getId());
-			ps.setLong(11, idPrecificacao);
-			ps.setLong(12, idEditora);
-			ps.setDate(13, new Date(livro.getDataCadastro().getTime()));
+			ps.setString(9, livro.getSinopse());
+			ps.setLong(10, idDimensoes);
+			ps.setLong(11, grupoPrecificacao.getId());
+			ps.setLong(12, idPrecificacao);
+			ps.setLong(13, idEditora);
+			ps.setDate(14, new Date(livro.getDataCadastro().getTime()));
 			ps.execute();
 			generatedKeys = ps.getGeneratedKeys();
 			Long idLivro = Long.valueOf(0);
@@ -197,12 +198,225 @@ public class LivroDAO extends AbstractDAO {
 
 	@Override
 	public boolean alterar(EntidadeDominio entidade) {
-		return false;
+		Livro livro = (Livro) entidade;
+		List<EntidadeDominio> listaLivroOld = consultar(livro);
+		Livro livroOld = (Livro) listaLivroOld.get(0);
+		List<Autor> autores = livro.getAutores();
+		List<Categoria> categorias = livro.getCategorias();
+		GrupoPrecificacao grupoPrecificacao = livro.getGrupoPrecificacao();
+		Precificacao precificacao = livro.getPrecificacao();
+		Dimensoes dimensoes = livro.getDimensoes();
+		Editora editora = livro.getEditora();
+		try {
+			conexao = factory.getConnection();
+			conexao.setAutoCommit(false);
+			String sql = "update dimensoes d set altura = ?, largura = ?, peso = ?, profundidade = ? where d.id_dimensoes = ?";
+			PreparedStatement ps = conexao.prepareStatement(sql);
+			dimensoes.setId(livroOld.getDimensoes().getId());
+			ps.setDouble(1, dimensoes.getAltura());
+			ps.setDouble(2, dimensoes.getLargura());
+			ps.setDouble(3, dimensoes.getPeso());
+			ps.setDouble(4, dimensoes.getProfundidade());
+			ps.setLong(5, dimensoes.getId());
+			ps.execute();
+			ps.close();
+			
+			sql = "select * from editora e "
+					+ "join pessoa_juridica pj on (e.id_pessoa_juridica = pj.id_pessoa_juridica) "
+					+ "join pessoa p on (pj.id_pessoa = p.id_pessoa) "
+					+ " where id_editora = ?";
+			ps = conexao.prepareStatement(sql);
+			editora.setId(livroOld.getEditora().getId());
+			ps.setLong(1, editora.getId());
+			ResultSet rs = ps.executeQuery();
+			Long idPessoaJuridicaEditora = Long.valueOf(0);
+			Long idPessoaEditora = Long.valueOf(0);
+			while(rs.next()) {
+				idPessoaJuridicaEditora = rs.getLong("pj.id_pessoa_juridica");
+				idPessoaEditora = rs.getLong("p.id_pessoa");
+			}
+			
+			sql = "update pessoa set nome = ? where id_pessoa = ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setString(1, editora.getNome());
+			ps.setLong(2, idPessoaEditora);
+			ps.execute();
+			ps.close();
+			
+			sql = "update pessoa_juridica set cnpj = ?, razao_social = ? where id_pessoa_juridica = ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setString(1, editora.getCnpj());
+			ps.setString(2, editora.getRazaoSocial());
+			ps.setLong(3, idPessoaJuridicaEditora);
+			ps.execute();
+			ps.close();
+			
+			sql = "update precificacao set preco_custo = ?, preco_venda = ? where id_precificacao = ?";
+			ps = conexao.prepareStatement(sql);
+			precificacao.setId(livroOld.getPrecificacao().getId());
+			ps.setDouble(1, precificacao.getPrecoCusto());
+			ps.setDouble(2, precificacao.getPrecoVenda());
+			ps.setLong(3, precificacao.getId());
+			ps.execute();
+			ps.close();
+			
+			for(Autor autor : autores) {
+				for(Autor autorOld : livroOld.getAutores()) {
+					if(autor.getCpf().equals(autorOld.getCpf())) {
+						autor.setId(autorOld.getId());
+					}
+				}
+				
+				sql = "select * from autor a "
+						+ "join pessoa_fisica pf on (a.id_pessoa_fisica = pf.id_pessoa_fisica) "
+						+ "join pessoa p on (pf.id_pessoa = p.id_pessoa) "
+						+ "where id_autor = ?";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, autor.getId());
+				rs = ps.executeQuery();
+				Long idPessoaAutor = Long.valueOf(0);
+				Long idPessoaFisicaAutor = Long.valueOf(0);;
+				while(rs.next()) {
+					idPessoaAutor = rs.getLong("p.id_pessoa");
+					idPessoaFisicaAutor = rs.getLong("pf.id_pessoa_fisica");
+				}
+				ps.close();
+				
+				sql = "update pessoa set nome =? where id_pessoa = ?";
+				ps = conexao.prepareStatement(sql);
+				ps.setString(1, autor.getNome());
+				ps.setLong(2, idPessoaAutor);
+				ps.execute();
+				ps.close();
+				
+				sql = "update pessoa_fisica set cpf = ?, dt_nascimento = ? where id_pessoa_fisica = ?";
+				ps = conexao.prepareStatement(sql);
+				ps.setString(1, autor.getCpf());
+				ps.setDate(2, new Date(autor.getDataNascimento().getTime()));
+				ps.setLong(3, idPessoaFisicaAutor);
+				ps.execute();
+				ps.close();
+			}
+			
+			sql = "update livro set ano = ?, titulo = ?, edicao = ?, isbn = ?, num_paginas = ?, quantidade = ?, sinopse = ?, "
+					+ "id_dimensoes = ?, id_grupo_precificacao = ?, id_precificacao = ?, id_editora = ? where id_livro = ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setString(1, livro.getAno());
+			ps.setString(2, livro.getTitulo());
+			ps.setString(3, livro.getEdicao());
+			ps.setString(4, livro.getIsbn());
+			ps.setString(5, livro.getNumeroPaginas());
+			ps.setLong(6, livro.getQuantidade());
+			ps.setString(7, livro.getSinopse());
+			ps.setLong(8, dimensoes.getId());
+			ps.setLong(9, grupoPrecificacao.getId());
+			ps.setLong(10, precificacao.getId());
+			ps.setLong(11, editora.getId());
+			ps.setLong(12, livro.getId());
+			ps.execute();
+			ps.close();
+			
+			sql = "delete from livro_categoria where id_livro = ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setLong(1, livro.getId());
+			ps.execute();
+			ps.close();
+			
+			for(Categoria categoria : categorias) {
+				sql = "insert into livro_categoria(id_livro, id_categoria) values(?,?)";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, livro.getId());
+				ps.setLong(2, categoria.getId());
+				ps.execute();
+				ps.close();
+			}
+			
+			sql = "delete from livro_autor where id_livro = ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setLong(1, livro.getId());
+			ps.execute();
+			ps.close();
+			
+			for(Autor autor : autores) {
+				sql = "insert into livro_autor(id_livro, id_autor) values(?,?)";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, livro.getId());
+				ps.setLong(2, autor.getId());
+				ps.execute();
+				ps.close();
+			}
+			conexao.commit();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				conexao.rollback();
+				return false;
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				return false;
+			}
+		}
+		finally {
+			try {
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public boolean excluir(EntidadeDominio entidade) {
-		return false;
+		Livro livro = (Livro) consultar(entidade).get(0);
+		String sql = "delete from precificacao where id_precificacao = ?";
+		conexao = factory.getConnection();
+		try {
+			conexao.setAutoCommit(false);
+			PreparedStatement ps = conexao.prepareStatement(sql);
+			ps.setLong(1, livro.getPrecificacao().getId());
+			ps.execute();
+			ps.close();
+			
+			sql = "delete from livro_autor where id_livro = ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setLong(1, livro.getId());
+			ps.execute();
+			ps.close();
+			
+			sql = "delete from livro_categoria where id_livro = ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setLong(1, livro.getId());
+			ps.execute();
+			ps.close();
+			
+			sql = "delete from livro where id_livro = ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setLong(1, livro.getId());
+			ps.execute();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			try {
+				conexao.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				return false;
+			}
+			return false;
+		}
+		finally {
+			try {
+				conexao.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -235,8 +449,11 @@ public class LivroDAO extends AbstractDAO {
 			}
 			ps.close();
 			
-			sql = "select * from categoria c where c.nome like ?";
+			sql = "select * from categoria c where c.nome like ? ";
 			ps = conexao.prepareStatement(sql);
+			if(categoriaConsulta.getNome() == null) {
+				categoriaConsulta.setNome("");
+			}
 			ps.setString(1, "%" + categoriaConsulta.getNome() + "%");
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -265,6 +482,10 @@ public class LivroDAO extends AbstractDAO {
 			ps.setString(3, "%" + livroConsulta.getIsbn() + "%");
 			ps.setString(4, "%" + editoraConsulta.getNome() + "%");
 			if(livroConsulta.getId() != null) {
+				ps.setString(1, "%%");
+				ps.setString(2, "%%");
+				ps.setString(3, "%%");
+				ps.setString(4, "%%");
 				ps.setLong(5, livroConsulta.getId());
 			}
 			rs = ps.executeQuery();

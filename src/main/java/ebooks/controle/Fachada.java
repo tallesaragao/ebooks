@@ -62,6 +62,9 @@ public class Fachada implements IFachada {
 		lSalvarLivro.add(ativLivroPrimCad);
 		
 		List<IStrategy> lAlterarLivro = new ArrayList<IStrategy>();
+		lAlterarLivro.add(valCampLivro);
+		lAlterarLivro.add(gerPrecLivro);
+		
 		List<IStrategy> lExcluirLivro = new ArrayList<IStrategy>();
 		List<IStrategy> lConsultarLivro = new ArrayList<IStrategy>();
 		
