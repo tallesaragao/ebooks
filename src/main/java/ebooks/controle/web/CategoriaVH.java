@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import ebooks.modelo.Categoria;
 import ebooks.modelo.EntidadeDominio;
@@ -77,7 +78,14 @@ public class CategoriaVH implements IViewHelper {
 			request.setAttribute("categoria", categoria);
 			request.setAttribute("operacao", ALTERAR);
 			request.getRequestDispatcher("WEB-INF/jsp/categoria/form.jsp").forward(request, response);
-		}	
+		}
+		
+		if(uri.equals(contexto + "/livroFormCategorias")) {
+			List<Categoria> categorias = (List<Categoria>) object;
+			HttpSession session = request.getSession();
+			session.setAttribute("categorias", categorias);
+			request.getRequestDispatcher("livroFormGruposPrecificacao?operacao=CONSULTAR").forward(request, response);
+		}
 		
 		if(uri.equals(contexto + "/categoriaSalvar")) {
 			if(object == null) {

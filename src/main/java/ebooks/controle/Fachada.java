@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import ebooks.dao.CategoriaDAO;
+import ebooks.dao.GrupoPrecificacaoDAO;
 import ebooks.dao.IDAO;
 import ebooks.dao.LivroDAO;
 import ebooks.modelo.Categoria;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.GrupoPrecificacao;
 import ebooks.modelo.Livro;
 import ebooks.negocio.IStrategy;
 import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
@@ -82,6 +84,7 @@ public class Fachada implements IFachada {
 		daos = new HashMap<String, IDAO>();
 		daos.put(Categoria.class.getName(), new CategoriaDAO());
 		daos.put(Livro.class.getName(), new LivroDAO());
+		daos.put(GrupoPrecificacao.class.getName(), new GrupoPrecificacaoDAO());
 	}
 
 	@Override

@@ -226,33 +226,12 @@ public class LivroVH implements IViewHelper {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/livroForm")) {
-			//Consulta as categorias para serem disponibilizadas no formulário
-			CategoriaDAO catDAO = new CategoriaDAO();
-			Categoria categoria = new Categoria();
-			categoria.setNome("");
-			List<EntidadeDominio> categorias = catDAO.consultar(categoria);
-			request.setAttribute("categorias", categorias);
-			GrupoPrecificacaoDAO gpDAO = new GrupoPrecificacaoDAO();
-			GrupoPrecificacao gpConsulta = new GrupoPrecificacao();
-			gpConsulta.setNome("");
-			List<EntidadeDominio> gruposPrecificacao = gpDAO.consultar(gpConsulta);
-			request.setAttribute("gruposPrecificacao", gruposPrecificacao);
-			request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
+			request.getRequestDispatcher("livroFormCategorias?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/livroList")) {
 			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/livroEdit")) {
-			CategoriaDAO catDAO = new CategoriaDAO();
-			Categoria categoria = new Categoria();
-			categoria.setNome("");
-			List<EntidadeDominio> categorias = catDAO.consultar(categoria);
-			request.setAttribute("categorias", categorias);
-			GrupoPrecificacaoDAO gpDAO = new GrupoPrecificacaoDAO();
-			GrupoPrecificacao gpConsulta = new GrupoPrecificacao();
-			gpConsulta.setNome("");
-			List<EntidadeDominio> gruposPrecificacao = gpDAO.consultar(gpConsulta);
-			request.setAttribute("gruposPrecificacao", gruposPrecificacao);
 			List<Livro> listaLivros = (List<Livro>) object;
 			Livro livro = listaLivros.get(0);
 			request.setAttribute("livro", livro);

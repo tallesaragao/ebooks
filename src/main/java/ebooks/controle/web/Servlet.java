@@ -41,6 +41,8 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/categoriaAlterar", new CategoriaVH());
 		vhs.put(contextoApp + "/categoriaExcluir", new CategoriaVH());
 		vhs.put(contextoApp + "/livroForm", new LivroVH());
+		vhs.put(contextoApp + "/livroFormCategorias", new CategoriaVH());
+		vhs.put(contextoApp + "/livroFormGruposPrecificacao", new GrupoPrecificacaoVH());
 		vhs.put(contextoApp + "/livroList", new LivroVH());
 		vhs.put(contextoApp + "/livroEdit", new LivroVH());
 		vhs.put(contextoApp + "/livroSalvar", new LivroVH());
