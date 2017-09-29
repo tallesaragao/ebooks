@@ -17,6 +17,7 @@
 			</div>
 			<div id="menu-collapse" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
+					<li><a href="loginCliente">Login</a></li>
 					<li><a href="categoriaList">Categoria</a></li>
 					<li><a href="livroList">Livro</a></li>
 				</ul>

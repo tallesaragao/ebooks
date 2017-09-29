@@ -1,23 +1,23 @@
 package ebooks.modelo;
 
 public class Telefone extends EntidadeDominio {
-	private DDD ddd;
-	private String tipoTelefone;
+	private String ddd;
+	private TipoTelefone tipoTelefone;
 	private String numero;
 
-	public DDD getDdd() {
+	public String getDdd() {
 		return ddd;
 	}
 
-	public void setDdd(DDD ddd) {
+	public void setDdd(String ddd) {
 		this.ddd = ddd;
 	}
 
-	public String getTipoTelefone() {
+	public TipoTelefone getTipoTelefone() {
 		return tipoTelefone;
 	}
 
-	public void setTipoTelefone(String tipoTelefone) {
+	public void setTipoTelefone(TipoTelefone tipoTelefone) {
 		this.tipoTelefone = tipoTelefone;
 	}
 

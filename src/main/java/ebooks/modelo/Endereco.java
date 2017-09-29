@@ -2,8 +2,10 @@ package ebooks.modelo;
 
 public class Endereco extends EntidadeDominio {
 	private TipoEndereco tipoEndereco;
+	private String identificacao;
 	private String logradouro;
 	private String numero;
+	private String complemento;
 	private String bairro;
 	private String cep;
 	private String cidade;
@@ -19,6 +21,14 @@ public class Endereco extends EntidadeDominio {
 		this.tipoEndereco = tipoEndereco;
 	}
 	
+	public String getIdentificacao() {
+		return identificacao;
+	}
+
+	public void setIdentificacao(String identificacao) {
+		this.identificacao = identificacao;
+	}
+
 	public String getLogradouro() {
 		return logradouro;
 	}
@@ -33,6 +43,14 @@ public class Endereco extends EntidadeDominio {
 
 	public void setNumero(String numero) {
 		this.numero = numero;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
 	}
 
 	public String getBairro() {

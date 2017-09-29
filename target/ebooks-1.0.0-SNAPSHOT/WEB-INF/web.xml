@@ -63,6 +63,16 @@
   
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/livroFormCategorias</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/livroFormGruposPrecificacao</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
   	<url-pattern>/livroList</url-pattern>
   </servlet-mapping>
   
@@ -89,6 +99,31 @@
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
   	<url-pattern>/livroExcluir</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/loginCliente</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/loginForm</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/loginSalvar</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/loginConsultar</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/loginAlterar</url-pattern>
   </servlet-mapping>
   
   <resource-ref>

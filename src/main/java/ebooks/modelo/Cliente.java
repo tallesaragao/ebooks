@@ -58,4 +58,12 @@ public class Cliente extends PessoaFisica {
 	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
 	}
+
+	public List<CartaoCredito> getCartoesCredito() {
+		return cartoesCredito;
+	}
+
+	public void setCartoesCredito(List<CartaoCredito> cartoesCredito) {
+		this.cartoesCredito = cartoesCredito;
+	}
 }

@@ -1,6 +1,6 @@
 package ebooks.modelo;
 
-public class TipoLogradouro extends EntidadeDominio {
+public class TipoTelefone extends EntidadeDominio {
 	private String nome;
 
 	public String getNome() {
