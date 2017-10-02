@@ -1,6 +1,5 @@
 $(document).ready(function() {
 	
-	$('.data').mask("00/00/0000");
 	$('.cpf').mask("000.000.000-00", {reverse:true});
 	$('.estado').mask("AA");
 	$('.cep').mask("00000-000");
@@ -14,11 +13,11 @@ $(document).ready(function() {
 
     function limpa_formulario_cep() {
         // Limpa valores do formulário de cep.
-        $("#rua").val("");
+        $("#logradouro").val("");
         $("#bairro").val("");
         $("#cidade").val("");
         $("#estado").val("");
-        $("#ibge").val("");
+        $("#pais").val("");
     }
     
     //Quando o campo cep perde o foco.
@@ -37,22 +36,22 @@ $(document).ready(function() {
             if(validacep.test(cep)) {
 
                 //Preenche os campos com "..." enquanto consulta webservice.
-                $("#rua").val("...");
+                $("#logradouro").val("...");
                 $("#bairro").val("...");
                 $("#cidade").val("...");
                 $("#estado").val("...");
-                $("#ibge").val("...");
+                $("#pais").val("...");
 
                 //Consulta o webservice viacep.com.br/
                 $.getJSON("http://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
 
                     if (!("erro" in dados)) {
                         //Atualiza os campos com os valores da consulta.
-                        $("#rua").val(dados.logradouro);
+                        $("#logradouro").val(dados.logradouro);
                         $("#bairro").val(dados.bairro);
                         $("#cidade").val(dados.localidade);
                         $("#estado").val(dados.uf);
-                        $("#ibge").val(dados.ibge);
+                        $("#pais").val("Brasil");
                         $("#numeroEnd").focus();
                     } //end if.
                     else {

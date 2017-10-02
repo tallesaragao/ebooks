@@ -1,3 +1,4 @@
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\EnderecoDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Precificacao.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Endereco.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\GrupoPrecificacaoDAO.java
@@ -18,6 +19,7 @@ D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\PessoaFisica.
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Inativacao.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\GrupoPrecificacao.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\IStrategy.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\AutorDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\web\LivroVH.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\IFachada.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\LivroDAO.java
@@ -25,13 +27,16 @@ D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\web\Servlet
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Dimensoes.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Livro.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Editora.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\EditoraDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\IDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\EntidadeDominio.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Subcategoria.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\TipoTelefone.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Bandeira.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\ExcluirCommand.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\ClienteDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\web\IViewHelper.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\web\ClienteVH.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\web\CategoriaVH.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Categoria.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Login.java
@@ -41,12 +46,12 @@ D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\web\LoginVH
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\AtivadorLivroPrimeiroCadastro.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\CartaoCredito.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\GeradorPrecoLivro.java
-D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\SalvarCommand.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\TipoEndereco.java
-D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\AbstractDAO.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\SalvarCommand.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\PessoaJuridica.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\AbstractDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\ValidarCamposCategoria.java
-D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\ComplementarDtCadastro.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Pessoa.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\ComplementarDtCadastro.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\ValidarCamposLivro.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\ConsultarCommand.java

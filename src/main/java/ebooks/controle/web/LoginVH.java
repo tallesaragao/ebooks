@@ -1,10 +1,12 @@
 package ebooks.controle.web;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Login;
@@ -56,9 +58,9 @@ public class LoginVH implements IViewHelper {
 		}
 		if(uri.equals(contexto + "/loginSalvar")) {
 			if(object == null) {
-				String sucesso = "Categoria cadastrada com sucesso";
+				String sucesso = "Login cadastrado com sucesso";
 				request.setAttribute("sucesso", sucesso);
-				request.getRequestDispatcher("WEB-INF/jsp/categoria/list.jsp").forward(request, response);
+				request.getRequestDispatcher("WEB-INF/jsp/login/login.jsp").forward(request, response);
 				return;
 			}
 			String mensagem = (String) object;
@@ -69,6 +71,17 @@ public class LoginVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/login/form.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/loginConsultar")) {
+			if(object != null) {
+				response.reset();
+				List<Login> resultado = (List<Login>) object;
+				Login login = resultado.get(0);
+				HttpSession session = request.getSession();
+				session.setAttribute("login", login);
+				request.setAttribute("operacao", "");
+				response.sendRedirect("clienteForm");
+				return;
+			}
+			request.setAttribute("erro", "Usuário ou senha incorretos");
 			request.getRequestDispatcher("WEB-INF/jsp/login/login.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/loginAlterar")) {

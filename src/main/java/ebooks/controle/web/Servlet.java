@@ -54,6 +54,13 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/loginSalvar", new LoginVH());
 		vhs.put(contextoApp + "/loginConsultar", new LoginVH());
 		vhs.put(contextoApp + "/loginAlterar", new LoginVH());
+		vhs.put(contextoApp + "/clienteForm", new ClienteVH());
+		vhs.put(contextoApp + "/clienteList", new ClienteVH());
+		vhs.put(contextoApp + "/clienteEdit", new ClienteVH());
+		vhs.put(contextoApp + "/clienteSalvar", new ClienteVH());
+		vhs.put(contextoApp + "/clienteAlterar", new ClienteVH());
+		vhs.put(contextoApp + "/clienteExcluir", new ClienteVH());
+		vhs.put(contextoApp + "/clienteConsultar", new ClienteVH());
 	}
 		
 	@Override

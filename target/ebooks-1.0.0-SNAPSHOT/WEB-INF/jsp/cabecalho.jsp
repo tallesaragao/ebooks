@@ -6,6 +6,7 @@
 				<a href="#" class="navbar-brand navbar-logo">
 					Livraria Online
 				</a>
+				<p class="navbar-text">Olá, <c:out value="${login.usuario}" default="visitante"></c:out></p>
 				<button type="button" class="navbar-left navbar-toggle collapsed"
 				data-toggle="collapse" data-target="#menu-collapse"
 				aria-expanded="false">

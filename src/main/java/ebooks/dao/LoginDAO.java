@@ -16,61 +16,74 @@ public class LoginDAO extends AbstractDAO {
 	public boolean salvar(EntidadeDominio entidade) throws SQLException {
 		Login login = (Login) entidade;
 		conexao = factory.getConnection();
-		conexao.setAutoCommit(false);
-		String sql = "insert into login(usuario, senha, dt_cadastro) values(?,?,?)";
-		PreparedStatement ps = conexao.prepareStatement(sql);
-		ps.setString(1, login.getUsuario());
-		ps.setString(2, login.getSenha());
-		ps.setDate(3, new Date(login.getDataCadastro().getTime()));
-		if(ps.execute()) {
+		try {
+			conexao.setAutoCommit(false);
+			String sql = "insert into login(usuario, senha, dt_cadastro) values(?,?,?)";
+			PreparedStatement ps = conexao.prepareStatement(sql);
+			ps.setString(1, login.getUsuario());
+			ps.setString(2, login.getSenha());
+			ps.setDate(3, new Date(login.getDataCadastro().getTime()));
+			ps.execute();
 			ps.close();
 			conexao.commit();
-			conexao.close();
 			return true;
 		}
-		conexao.rollback();
-		conexao.close();
-		return false;
+		catch(SQLException e) {
+			conexao.rollback();
+			return false;
+		}
+		finally {
+			conexao.close();
+		}
 	}
 
 	@Override
 	public boolean alterar(EntidadeDominio entidade) throws SQLException {
 		Login login = (Login) entidade;
 		conexao = factory.getConnection();
-		conexao.setAutoCommit(false);
-		String sql = "update login set usuario=?, senha=? where id_login=?";
-		PreparedStatement ps = conexao.prepareStatement(sql);
-		ps.setString(1, login.getUsuario());
-		ps.setString(2, login.getSenha());
-		ps.setLong(3, login.getId());
-		if(ps.execute()) {
+		try {
+			conexao.setAutoCommit(false);
+			String sql = "update login set usuario=?, senha=? where id_login=?";
+			PreparedStatement ps = conexao.prepareStatement(sql);
+			ps.setString(1, login.getUsuario());
+			ps.setString(2, login.getSenha());
+			ps.setLong(3, login.getId());
+			ps.execute();
 			ps.close();
 			conexao.commit();
-			conexao.close();
 			return true;
 		}
-		conexao.rollback();
-		conexao.close();
-		return false;
+		catch(SQLException e) {
+			conexao.rollback();
+			return false;
+		}
+		finally {
+			conexao.close();			
+		}
 	}
 
 	@Override
 	public boolean excluir(EntidadeDominio entidade) throws SQLException {
 		Login login = (Login) entidade;
 		conexao = factory.getConnection();
-		conexao.setAutoCommit(false);
-		String sql = "delete from login where id_login=?";
-		PreparedStatement ps = conexao.prepareStatement(sql);
-		ps.setLong(1, login.getId());
-		if(ps.execute()) {
+		try {
+			conexao.setAutoCommit(false);
+			String sql = "delete from login where id_login=?";
+			PreparedStatement ps = conexao.prepareStatement(sql);
+			ps.setLong(1, login.getId());
+			ps.execute();
 			ps.close();
 			conexao.commit();
 			conexao.close();
 			return true;
 		}
-		conexao.rollback();
-		conexao.close();
-		return false;
+		catch(SQLException e) {
+			conexao.rollback();
+			return false;
+		}
+		finally {
+			conexao.close();			
+		}
 	}
 
 	@Override
@@ -78,21 +91,33 @@ public class LoginDAO extends AbstractDAO {
 		Login loginConsulta = (Login) entidade;
 		List<EntidadeDominio> consulta = new ArrayList<>();
 		conexao = factory.getConnection();
-		String sql = "select * from login where id_login=?";
-		PreparedStatement ps = conexao.prepareStatement(sql);
-		ps.setLong(1, loginConsulta.getId());
-		ResultSet rs = ps.executeQuery();
-		while(rs.next()) {
-			Login login = new Login();
-			login.setUsuario(rs.getString("usuario"));
-			login.setSenha(rs.getString("senha"));
-			consulta.add(login);
+		try {
+			Long idLoginConsulta = loginConsulta.getId();
+			String sql = "select * from login where usuario=? AND senha=?";
+			if(idLoginConsulta != null) {
+				sql += "id_login=?";				
+			}
+			PreparedStatement ps = conexao.prepareStatement(sql);
+			ps.setString(1, loginConsulta.getUsuario());
+			ps.setString(2, loginConsulta.getSenha());
+			if(idLoginConsulta != null) {
+				ps.setLong(3, loginConsulta.getId());
+			}
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Login login = new Login();
+				login.setUsuario(rs.getString("usuario"));
+				login.setSenha(rs.getString("senha"));
+				consulta.add(login);
+			}
 		}
-		conexao.close();
-		if(!consulta.isEmpty()) {
-			return consulta;
+		catch(SQLException e) {
+			e.printStackTrace();
 		}
-		return null;
+		finally {
+			conexao.close();
+		}
+		return consulta;
 	}
 
 }
