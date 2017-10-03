@@ -12,9 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.dao.CategoriaDAO;
+import ebooks.dao.GrupoPrecificacaoDAO;
+import ebooks.modelo.Categoria;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.GrupoPrecificacao;
+import ebooks.modelo.Livro;
 import ebooks.modelo.Login;
 import ebooks.modelo.Telefone;
 import ebooks.modelo.TipoEndereco;
@@ -101,6 +106,21 @@ public class ClienteVH implements IViewHelper {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/clienteForm")) {
+			request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/clienteSalvar")) {
+			if(object == null) {
+				String sucesso = "Cliente cadastrado com sucesso";
+				request.setAttribute("sucesso", sucesso);
+				request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
+				return;
+			}
+			String mensagem = (String) object;
+			String[] mensagens = mensagem.split(":");
+			Cliente cliente = (Cliente) this.getEntidade(request);
+			request.setAttribute("cliente", cliente);
+			request.setAttribute("endereco", cliente.getEnderecos().get(0));
+			request.setAttribute("mensagens", mensagens);
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
 		}
 		

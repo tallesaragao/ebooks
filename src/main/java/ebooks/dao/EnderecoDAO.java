@@ -32,20 +32,22 @@ public class EnderecoDAO extends AbstractDAO {
 			ps.setString(7, endereco.getCidade());
 			ps.setString(8, endereco.getEstado());
 			ps.setString(9, endereco.getPais());
-			ps.setBoolean(9, endereco.isPrincipal());
-			ps.setDate(10, new Date(endereco.getDataCadastro().getTime()));
-			ps.setLong(11, endereco.getTipoEndereco().getId());
+			ps.setBoolean(10, endereco.isPrincipal());
+			ps.setDate(11, new Date(endereco.getDataCadastro().getTime()));
+			ps.setLong(12, endereco.getTipoEndereco().getId());
 			ps.execute();
 			ResultSet generatedKeys = ps.getGeneratedKeys();
 			while(generatedKeys.next()) {
-				endereco.setId(generatedKeys.getLong(0));
+				endereco.setId(generatedKeys.getLong(1));
 			}
 			ps.close();
 			
 			sql = "insert into cliente_endereco(id_cliente, id_endereco) values(?,?)";
 			ps = conexao.prepareStatement(sql);
 			ps.setLong(1, endereco.getPessoa().getId());
-			ps.setLong(1, endereco.getId());
+			ps.setLong(2, endereco.getId());
+			ps.execute();
+			ps.close();
 			conexao.commit();
 			return true;
 		}

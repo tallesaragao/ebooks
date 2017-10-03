@@ -65,28 +65,14 @@
 					
 					<div class="col-xs-12 col-md-2">
 						<label for="radios" class="control-label">Gênero</label>
-						<c:choose>
-							<c:when test="${cliente.genero eq 'M'}">
-								<div name="radios" class="form-group">
-									<label class="radio-inline">
-										<input type="radio" name="genero" value="M" checked/>M
-									</label>
-									<label class="radio-inline">
-										<input type="radio" name="genero" value="F"/>F
-									</label>
-								</div>
-							</c:when>
-							<c:otherwise>
-								<div name="radios" class="form-group">
-									<label class="radio-inline">
-										<input type="radio" name="genero" value="M"/>M
-									</label>
-									<label class="radio-inline">
-										<input type="radio" name="genero" value="F" checked/>F
-									</label>
-								</div>
-							</c:otherwise>
-						</c:choose>
+						<div name="radios" class="form-group">
+							<label class="radio-inline">
+								<input type="radio" name="genero" value="M" checked/>M
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="genero" value="F"/>F
+							</label>
+						</div>
 					</div>
 				</div>
 				<div class="row">
@@ -108,31 +94,31 @@
 					
 					<div class="form-group col-xs-12 col-sm-2">
 						<label for="cep" class="control-label">CEP</label>
-						<input type="text" id="cep" name="cep" value="${cliente.endereco.cep}"
+						<input type="text" id="cep" name="cep" value="${endereco.cep}"
 						placeholder="CEP" class="form-control cep"/>
 					</div>
 					
 					<div class="form-group col-xs-9 col-sm-4 col-md-3 col-lg-3">
 						<label for="cidade" class="control-label">Cidade</label>
-						<input type="text" id="cidade" name="cidade" value="${cliente.endereco.cidade}"
+						<input type="text" id="cidade" name="cidade" value="${endereco.cidade}"
 						placeholder="Cidade" class="form-control"/>
 					</div>
 					
 					<div class="form-group col-xs-3 col-sm-2">
 						<label for="estado" class="control-label">Estado</label>
-						<input type="text" id="estado" name="estado" value="${cliente.endereco.estado}"
+						<input type="text" id="estado" name="estado" value="${endereco.estado}"
 						placeholder="Estado" class="form-control estado"/>
 					</div>
 										
 					<div class="form-group col-xs-3 col-sm-2">
 						<label for="pais" class="control-label">País</label>
-						<input type="text" id="pais" name="pais" value="${cliente.endereco.pais}"
+						<input type="text" id="pais" name="pais" value="${endereco.pais}"
 						placeholder="País" class="form-control pais"/>
 					</div>					
 										
 					<div class="form-group col-xs-12 col-sm-3">
 						<label for="bairro" class="control-label">Bairro</label>
-						<input type="text" id="bairro" name="bairro" value="${cliente.endereco.bairro}"
+						<input type="text" id="bairro" name="bairro" value="${endereco.bairro}"
 						placeholder="Bairro" class="form-control"/>
 					</div>
 					
@@ -140,19 +126,19 @@
 				<div class="row">
 					<div class="form-group col-xs-12 col-sm-6">
 						<label for="logradouro" class="control-label">Logradouro</label>
-						<input type="text" id="logradouro" name="logradouro" value="${cliente.endereco.logradouro}"
+						<input type="text" id="logradouro" name="logradouro" value="${endereco.logradouro}"
 						placeholder="Logradouro" class="form-control"/>
 					</div>
 					
 					<div class="form-group col-xs-3 col-sm-2 col-lg-1">
 						<label for="numeroEnd" class="control-label">Número</label>
-						<input type="text" id="numeroEnd" name="numeroEnd" value="${cliente.endereco.numero}"
+						<input type="text" id="numeroEnd" name="numeroEnd" value="${endereco.numero}"
 						placeholder="Número" class="form-control"/>
 					</div>
 					
 					<div class="form-group col-xs-9 col-sm-4 col-md-3 col-lg-5">
 						<label for="complemento" class="control-label">Complemento</label>
-						<input type="text" name="complemento" value="${cliente.endereco.complemento}"
+						<input type="text" name="complemento" value="${endereco.complemento}"
 						placeholder="Complemento" class="form-control"/>
 					</div>
 				</div>
@@ -168,7 +154,7 @@
 					
 					<div class="form-group col-xs-9 col-sm-4 col-md-3 col-lg-4">
 						<label for="identificacao" class="control-label">Identificação</label>
-						<input type="text" name="identificacao" value="${cliente.endereco.identificacao}" 
+						<input type="text" name="identificacao" value="${endereco.identificacao}" 
 						placeholder="Uma frase curta para identificar o endereço" class="form-control"/>
 					</div>
 				</div>
