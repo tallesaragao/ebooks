@@ -7,24 +7,27 @@ import java.util.List;
 import java.util.Map;
 
 import ebooks.dao.CategoriaDAO;
+import ebooks.dao.ClienteDAO;
 import ebooks.dao.GrupoPrecificacaoDAO;
 import ebooks.dao.IDAO;
 import ebooks.dao.LivroDAO;
 import ebooks.dao.LoginDAO;
 import ebooks.modelo.Categoria;
+import ebooks.modelo.Cliente;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.GrupoPrecificacao;
 import ebooks.modelo.Livro;
 import ebooks.modelo.Login;
 import ebooks.negocio.IStrategy;
+import ebooks.negocio.impl.AtivadorClientePrimeiroCadastro;
 import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
 import ebooks.negocio.impl.ComplementarDtCadastro;
 import ebooks.negocio.impl.GeradorCodigoLivro;
 import ebooks.negocio.impl.GeradorPrecoLivro;
 import ebooks.negocio.impl.ValidarCamposCategoria;
+import ebooks.negocio.impl.ValidarCamposCliente;
 import ebooks.negocio.impl.ValidarCamposLivro;
 import ebooks.negocio.impl.ValidarCamposLogin;
-import ebooks.negocio.impl.ValidarSenha;
 
 public class Fachada implements IFachada {
 
@@ -44,6 +47,8 @@ public class Fachada implements IFachada {
 		GeradorPrecoLivro gerPrecLivro = new GeradorPrecoLivro();
 		AtivadorLivroPrimeiroCadastro ativLivroPrimCad = new AtivadorLivroPrimeiroCadastro();
 		ValidarCamposLogin valCampLogin = new ValidarCamposLogin();
+		ValidarCamposCliente valCampCli = new ValidarCamposCliente();
+		AtivadorClientePrimeiroCadastro ativCliPrimCad = new AtivadorClientePrimeiroCadastro();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -88,17 +93,32 @@ public class Fachada implements IFachada {
 		contextoLogin.put(EXCLUIR, lLoginExcluir);
 		contextoLogin.put(CONSULTAR, lLoginConsultar);
 		
+		Map<String, List<IStrategy>> contextoCliente = new HashMap<String, List<IStrategy>>();
+		List<IStrategy> lClienteSalvar = new ArrayList<>();
+		lClienteSalvar.add(compDtCad);
+		lClienteSalvar.add(valCampCli);
+		lClienteSalvar.add(ativCliPrimCad);
+		List<IStrategy> lClienteAlterar = new ArrayList<>();
+		List<IStrategy> lClienteExcluir = new ArrayList<>();
+		List<IStrategy> lClienteConsultar = new ArrayList<>();
+		contextoCliente.put(SALVAR, lClienteSalvar);
+		contextoCliente.put(ALTERAR, lClienteAlterar);
+		contextoCliente.put(EXCLUIR, lClienteExcluir);
+		contextoCliente.put(CONSULTAR, lClienteConsultar);
+		
 		
 		requisitos = new HashMap<String, Map<String, List<IStrategy>>>();
 		requisitos.put(Categoria.class.getName(), contextoCat);
 		requisitos.put(Livro.class.getName(), contextoLivro);
 		requisitos.put(Login.class.getName(), contextoLogin);
+		requisitos.put(Cliente.class.getName(), contextoCliente);
 		
 		daos = new HashMap<String, IDAO>();
 		daos.put(Categoria.class.getName(), new CategoriaDAO());
 		daos.put(Livro.class.getName(), new LivroDAO());
 		daos.put(GrupoPrecificacao.class.getName(), new GrupoPrecificacaoDAO());
 		daos.put(Login.class.getName(), new LoginDAO());
+		daos.put(Cliente.class.getName(), new ClienteDAO());
 	}
 
 	@Override

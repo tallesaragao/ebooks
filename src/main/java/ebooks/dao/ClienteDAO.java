@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import ebooks.modelo.Cliente;
+import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
 
 public class ClienteDAO extends AbstractDAO {
@@ -25,7 +26,7 @@ public class ClienteDAO extends AbstractDAO {
 			ResultSet generatedKeys = ps.getGeneratedKeys();
 			Long idPessoa = Long.valueOf(0);
 			while(generatedKeys.next()) {
-				idPessoa = generatedKeys.getLong(0);
+				idPessoa = generatedKeys.getLong(1);
 			}
 			ps.close();
 			
@@ -38,25 +39,46 @@ public class ClienteDAO extends AbstractDAO {
 			generatedKeys = ps.getGeneratedKeys();
 			Long idPessoaFisica = Long.valueOf(0);
 			while(generatedKeys.next()) {
-				idPessoaFisica = generatedKeys.getLong(0);
+				idPessoaFisica = generatedKeys.getLong(1);
 			}
 			ps.close();
 			
-			sql = "insert into telefone(ddd, numero, id_tipo_telefone)";
+			sql = "insert into telefone(ddd, numero, id_tipo_telefone) values(?,?,?)";
+			ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setString(1, cliente.getTelefone().getDdd());
+			ps.setString(2, cliente.getTelefone().getNumero());
+			ps.setLong(3, cliente.getTelefone().getTipoTelefone().getId());
+			ps.execute();
+			generatedKeys = ps.getGeneratedKeys();
+			Long idTelefone = Long.valueOf(0);
+			while(generatedKeys.next()) {
+				idTelefone = generatedKeys.getLong(1);
+			}
+			ps.close();
 			
-			sql = "insert into cliente (email, fl_ativo, id_pessoa_fisica, id_login, id_telefone) values(?,?,?,?,?)";
-			ps = conexao.prepareStatement(sql);
+			sql = "insert into cliente (email, fl_ativo, genero, id_pessoa_fisica, id_login, id_telefone) values(?,?,?,?,?,?)";
+			ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, cliente.getEmail());
 			ps.setBoolean(2, cliente.isAtivo());
-			ps.setLong(3, cliente.getId());
-			ps.setLong(4, cliente.getLogin().getId());
-			ps.setLong(5, cliente.getTelefone().getId());
+			ps.setString(3, String.valueOf(cliente.getGenero()));
+			ps.setLong(4, idPessoaFisica);
+			ps.setLong(5, cliente.getLogin().getId());
+			ps.setLong(6, idTelefone);
 			ps.execute();
+			generatedKeys = ps.getGeneratedKeys();
+			while(generatedKeys.next()) {
+				cliente.setId(generatedKeys.getLong(1));
+			}
 			ps.close();
 			conexao.commit();
+			Endereco endereco = cliente.getEnderecos().get(0);
+			endereco.setPessoa(cliente);
+			EnderecoDAO endDAO = new EnderecoDAO();
+			endDAO.salvar(endereco);
 			return true;
 		}
 		catch(SQLException e) {
+			e.printStackTrace();
 			conexao.rollback();
 			return false;
 		}

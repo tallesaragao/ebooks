@@ -71,6 +71,7 @@ public class ClienteVH implements IViewHelper {
 				telefone.setNumero(numeroTel);
 				TipoTelefone tipoTelefone = new TipoTelefone();
 				tipoTelefone.setId(Long.valueOf(tipoTelefoneId));
+				telefone.setTipoTelefone(tipoTelefone);
 				
 				cliente.setNome(nome);
 				cliente.setCpf(cpf);

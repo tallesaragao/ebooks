@@ -8,6 +8,7 @@ public class CartaoCredito extends EntidadeDominio {
 	private Date dataVencimento;
 	private String codigoSeguranca;
 	private Bandeira bandeira;
+	private Cliente cliente;
 
 	public String getNumero() {
 		return numero;
@@ -47,5 +48,13 @@ public class CartaoCredito extends EntidadeDominio {
 
 	public void setBandeira(Bandeira bandeira) {
 		this.bandeira = bandeira;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 }

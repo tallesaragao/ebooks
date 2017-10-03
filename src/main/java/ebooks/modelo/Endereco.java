@@ -12,6 +12,7 @@ public class Endereco extends EntidadeDominio {
 	private String estado;
 	private String pais;
 	private boolean principal;
+	private Pessoa pessoa;
 
 	public TipoEndereco getTipoEndereco() {
 		return tipoEndereco;
@@ -99,5 +100,13 @@ public class Endereco extends EntidadeDominio {
 
 	public void setPrincipal(boolean principal) {
 		this.principal = principal;
+	}
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 }

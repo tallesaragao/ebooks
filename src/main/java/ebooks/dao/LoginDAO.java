@@ -106,6 +106,7 @@ public class LoginDAO extends AbstractDAO {
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				Login login = new Login();
+				login.setId(rs.getLong("id_login"));
 				login.setUsuario(rs.getString("usuario"));
 				login.setSenha(rs.getString("senha"));
 				consulta.add(login);

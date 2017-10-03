@@ -1,5 +1,6 @@
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\EnderecoDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Precificacao.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\ValidarCamposCliente.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Endereco.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\GrupoPrecificacaoDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Telefone.java
@@ -9,6 +10,7 @@ D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\Validar
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\ICommand.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\ConnectionFactory.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\CategoriaDAO.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\DefinirEnderecoPrincipal.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\ValidarSenha.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\AbstractCommand.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Autor.java
@@ -29,12 +31,15 @@ D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Livro.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Editora.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\EditoraDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\IDAO.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\ValidarCamposEndereco.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\EntidadeDominio.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\CartaoCreditoDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Subcategoria.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\TipoTelefone.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Bandeira.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\ExcluirCommand.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\ClienteDAO.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\AtivadorClientePrimeiroCadastro.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\web\IViewHelper.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\web\ClienteVH.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\web\CategoriaVH.java
