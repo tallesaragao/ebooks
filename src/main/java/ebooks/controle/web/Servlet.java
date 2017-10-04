@@ -62,6 +62,22 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/clienteAlterar", new ClienteVH());
 		vhs.put(contextoApp + "/clienteExcluir", new ClienteVH());
 		vhs.put(contextoApp + "/clienteConsultar", new ClienteVH());
+		vhs.put(contextoApp + "/cartaoCreditoForm", new CartaoCreditoVH());
+		vhs.put(contextoApp + "/cartaoCreditoList", new CartaoCreditoVH());
+		vhs.put(contextoApp + "/cartaoCreditoEdit", new CartaoCreditoVH());
+		vhs.put(contextoApp + "/cartaoCreditoView", new CartaoCreditoVH());
+		vhs.put(contextoApp + "/cartaoCreditoSalvar", new CartaoCreditoVH());
+		vhs.put(contextoApp + "/cartaoCreditoAlterar", new CartaoCreditoVH());
+		vhs.put(contextoApp + "/cartaoCreditoExcluir", new CartaoCreditoVH());
+		vhs.put(contextoApp + "/cartaoCreditoConsultar", new CartaoCreditoVH());
+		vhs.put(contextoApp + "/enderecoForm", new EnderecoVH());
+		vhs.put(contextoApp + "/enderecoList", new EnderecoVH());
+		vhs.put(contextoApp + "/enderecoEdit", new EnderecoVH());
+		vhs.put(contextoApp + "/enderecoView", new EnderecoVH());
+		vhs.put(contextoApp + "/enderecoSalvar", new EnderecoVH());
+		vhs.put(contextoApp + "/enderecoAlterar", new EnderecoVH());
+		vhs.put(contextoApp + "/enderecoExcluir", new EnderecoVH());
+		vhs.put(contextoApp + "/enderecoConsultar", new EnderecoVH());
 	}
 		
 	@Override

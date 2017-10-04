@@ -21,6 +21,7 @@
 					<li><a href="loginCliente">Login</a></li>
 					<li><a href="categoriaList">Categoria</a></li>
 					<li><a href="livroList">Livro</a></li>
+					<li><a href="clienteList">Cliente</a></li>
 				</ul>
 			</div>
 		</div>

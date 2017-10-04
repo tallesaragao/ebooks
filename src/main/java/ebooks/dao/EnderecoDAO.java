@@ -132,12 +132,19 @@ public class EnderecoDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		PreparedStatement ps = null;
 		try {
-			if(enderecoConsulta.getPessoa() != null || enderecoConsulta.getPessoa().getId() != null) {
+			if(enderecoConsulta.getPessoa() != null && enderecoConsulta.getPessoa().getId() != null) {
 				String sql = "select * from endereco e "
 							+ " join cliente_endereco ce on(e.id_endereco = ce.id_endereco)"
 							+ " where ce.id_cliente=?";
 				ps = conexao.prepareStatement(sql);
 				ps.setLong(1, enderecoConsulta.getPessoa().getId());
+			}
+			else if(enderecoConsulta.getId() != null) {
+				String sql = "select * from endereco e "
+						+ " join cliente_endereco ce on(e.id_endereco = ce.id_endereco)"
+						+ " where e.id_endereco=?";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, enderecoConsulta.getId());
 			}
 			else {
 				Long idEnderecoConsulta = enderecoConsulta.getId();
@@ -149,14 +156,38 @@ public class EnderecoDAO extends AbstractDAO {
 					sql += " and e.id_endereco=? ";				
 				}
 				ps = conexao.prepareStatement(sql);
-				ps.setString(1, enderecoConsulta.getIdentificacao());
-				ps.setString(2, enderecoConsulta.getLogradouro());
-				ps.setString(3, enderecoConsulta.getComplemento());
-				ps.setString(4, enderecoConsulta.getBairro());
-				ps.setString(5, enderecoConsulta.getCep());
-				ps.setString(6, enderecoConsulta.getCidade());
-				ps.setString(7, enderecoConsulta.getEstado());
-				ps.setString(8, enderecoConsulta.getPais());
+				ps.setString(1, "%%");
+				if(enderecoConsulta.getIdentificacao() != null) {
+					ps.setString(1, "%" + enderecoConsulta.getIdentificacao() + "%");
+				}
+				ps.setString(2, "%%");
+				if(enderecoConsulta.getLogradouro() != null) {
+					ps.setString(1, "%" + enderecoConsulta.getLogradouro() + "%");
+				}
+				ps.setString(3, "%%");
+				if(enderecoConsulta.getComplemento() != null) {
+					ps.setString(3, "%" + enderecoConsulta.getComplemento() + "%");
+				}
+				ps.setString(4, "%%");
+				if(enderecoConsulta.getBairro() != null) {
+					ps.setString(4, "%" + enderecoConsulta.getBairro() + "%");
+				}
+				ps.setString(5, "%%");
+				if(enderecoConsulta.getCep() != null) {
+					ps.setString(5, "%" + enderecoConsulta.getCep() + "%");
+				}
+				ps.setString(6, "%%");
+				if(enderecoConsulta.getCidade() != null) {
+					ps.setString(6, "%" + enderecoConsulta.getCidade() + "%");
+				}
+				ps.setString(7, "%%");
+				if(enderecoConsulta.getEstado() != null) {
+					ps.setString(7, "%" + enderecoConsulta.getEstado() + "%");
+				}
+				ps.setString(8, "%%");
+				if(enderecoConsulta.getPais() != null) {
+					ps.setString(8, "%" + enderecoConsulta.getPais() + "%");
+				}
 				if(idEnderecoConsulta != null) {
 					ps.setLong(9, enderecoConsulta.getId());
 				}

@@ -15,17 +15,15 @@
 <body>
 	<c:import url="../cabecalho.jsp"/>
 	<div class="container">
-		<form class="form" role="form" action="#" method="post">
-			<c:choose>
-				<c:when test="${operacao eq 'ALTERAR'}">
-					<h1 class="page-header titulo">Alteração de cliente</h1>	
-				</c:when>
-				<c:otherwise>
-					<h1 class="page-header titulo">Cadastro de cliente</h1>				
-				</c:otherwise>
-			</c:choose>
-			
-			<c:if test="${mensagens != null}">
+		<c:choose>
+			<c:when test="${operacao eq 'ALTERAR'}">
+				<h2 class="page-header">Alteração de endereço</h2>					
+			</c:when>
+			<c:otherwise>
+				<h2 class="page-header">Cadastro de endereço</h2>				
+			</c:otherwise>
+		</c:choose>
+		<c:if test="${mensagens != null}">
 				<div class="alert alert-danger" role="alert">
 					<span class="glyphicon glyphicon-alert"></span><strong> Problema(s) na inserção:</strong>
 					</br>
@@ -36,59 +34,12 @@
 				</div>
 			</c:if>
 			</br>
-			
-			<fieldset>
-				<legend>
-					<span class="legend-logo glyphicon glyphicon-user"></span> Dados pessoais
-				</legend>
-				
-				<input type="hidden" name="id" value="${cliente.id}"/>
-				
-				<div class="row">
-					<div class="form-group col-sm-6 col-md-5">
-						<label for="nome" class="control-label">Nome</label>
-						<input type="text" name="nome" value="${cliente.nome}"
-						placeholder="Nome" class="form-control"/>
-					</div>
-					
-					<div class="form-group col-sm-3 col-md-2">
-						<label for="dataNascimento" class="control-label">Data Nascimento</label>
-						<input type="date" name="dataNascimento" class="form-control data"
-						value="<fmt:formatDate value="${cliente.dataNascimento}" pattern="yyyy-MM-dd"/>"/>
-					</div>
-					
-					<div class="form-group col-sm-3 col-md-2">
-						<label for="cpf" class="control-label">CPF</label>
-						<input type="text" name="cpf" value="${cliente.cpf}"
-						placeholder="CPF" class="form-control cpf"/>
-					</div>
-					
-					<div class="col-xs-12 col-md-2">
-						<label for="radios" class="control-label">Gênero</label>
-						<div name="radios" class="form-group">
-							<label class="radio-inline">
-								<input type="radio" name="genero" value="M" checked/>M
-							</label>
-							<label class="radio-inline">
-								<input type="radio" name="genero" value="F"/>F
-							</label>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12 col-md-4">
-						<div class="form-group">
-							<label for="email" class="control-label">E-mail</label>
-							<input type="email" name="email" class="form-control" value="${cliente.email}" />
-						</div>
-					</div>
-				</div>
-			</fieldset>
-			</br>
-			<c:if test="${operacao != 'ALTERAR' }">
+		<form class="form" role="form" action="#" method="post">
+			<input type="hidden" name="idCliente" value="${idCliente}"/>
+			<input type="hidden" name="id" value="${endereco.id}"/>
 				<fieldset>
 					<legend>
-						<span class="legend-logo glyphicon glyphicon-map-marker"></span> Endereço
+						<span class="legend-logo glyphicon glyphicon-map-marker"></span> Dados do endereço
 					</legend>
 					
 					<div class="row">
@@ -161,48 +112,19 @@
 					</div>
 				</fieldset>
 				</br>
-			</c:if>
 			<fieldset>
-				<legend>
-					<span class="legend-logo glyphicon glyphicon-earphone"></span> Telefone
-				</legend>
-				<input type="hidden" name="idTelefone" value="${cliente.telefone.id}"/>
-				<div class="row">
-					<div class="form-group col-xs-3 col-sm-2 col-md-1">
-						<label for="ddd" class="control-label">DDD</label>
-						<input type="text" name="ddd" value="${cliente.telefone.ddd}"
-						placeholder="(XX)" class="form-control ddd"/>
-					</div>
-					
-					<div class="form-group col-xs-9 col-sm-4 col-md-3">
-						<label for="numeroTel" class="control-label">Número</label>
-						<input type="text" name="numeroTel" value="${cliente.telefone.numero}"
-						placeholder="XXXXX-XXXX" class="form-control numeroTel"/>
-					</div>
-					
-					<div class="form-group col-xs-12 col-sm-4 col-md-2">
-						<label for="tipoTelefone" class="control-label">Tipo de telefone</label>
-						<select name="tipoTelefone" class="form-control" required>
-							<option value="" disabled selected>Escolha um tipo</option>
-							<option value="1">Celular</option>
-							<option value="2">Fixo</option>
-						</select>
-					</div>
-				</div>
-			</fieldset>
-			</br>
 			<div class="row">
 				<c:choose>
 					<c:when test="${operacao eq 'ALTERAR'}">
 						<div class="form-group col-xs-1">
-							<button type="submit" name="operacao" value="ALTERAR" formaction="clienteAlterar" class="btn btn-primary">
+							<button type="submit" name="operacao" value="ALTERAR" formaction="enderecoAlterar" class="btn btn-primary">
 								Alterar
 							</button>
 						</div>					
 					</c:when>
 					<c:otherwise>
 						<div class="form-group col-xs-1">
-							<button type="submit" name="operacao" value="SALVAR" formaction="clienteSalvar" class="btn btn-primary">
+							<button type="submit" name="operacao" value="SALVAR" formaction="enderecoSalvar" class="btn btn-primary">
 								Salvar
 							</button>
 						</div>					

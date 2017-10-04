@@ -22,7 +22,7 @@ public class CartaoCreditoDAO extends AbstractDAO {
 		try {
 			conexao.setAutoCommit(false);
 			String sql = "insert into cartao_credito(numero, nome_titular, dt_vencimento, "
-					+ "codigo_seguranca, id_cliente, id_bandeira, dt_cadastro values(?,?,?,?,?,?,?)";
+					+ "codigo_seguranca, id_cliente, id_bandeira, dt_cadastro) values(?,?,?,?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			ps.setString(1, cartaoCredito.getNumero());
 			ps.setString(2, cartaoCredito.getNomeTitular());
@@ -37,6 +37,7 @@ public class CartaoCreditoDAO extends AbstractDAO {
 			return true;
 		}
 		catch(SQLException e) {
+			e.printStackTrace();
 			conexao.rollback();
 			return false;
 		}
@@ -83,7 +84,7 @@ public class CartaoCreditoDAO extends AbstractDAO {
 			conexao.setAutoCommit(false);
 			String sql = "";
 			PreparedStatement ps = null;
-			if(cartaoCredito.getCliente().getId() != null) {
+			if(cartaoCredito.getCliente() != null && cartaoCredito.getCliente().getId() != null) {
 				sql = "delete from cartao_credito where id_cliente=?";
 				ps = conexao.prepareStatement(sql);
 				ps.setLong(1, cartaoCredito.getCliente().getId());
@@ -116,8 +117,10 @@ public class CartaoCreditoDAO extends AbstractDAO {
 		try {
 			String sql = "";
 			PreparedStatement ps = null;
-			if(cartaoCreditoConsulta.getCliente() != null || cartaoCreditoConsulta.getCliente().getId() != null) {
-				sql = "select * from cartao_credito where id_cliente=?";
+			if(cartaoCreditoConsulta.getCliente() != null && cartaoCreditoConsulta.getCliente().getId() != null) {
+				sql = "select * from cartao_credito c"
+						+ " join bandeira b on (c.id_bandeira = b.id_bandeira)"
+						+ " where id_cliente=?";
 				ps = conexao.prepareStatement(sql);
 				ps.setLong(1, cartaoCreditoConsulta.getCliente().getId());
 			}
@@ -133,6 +136,15 @@ public class CartaoCreditoDAO extends AbstractDAO {
 				ps.setString(1, cartaoCreditoConsulta.getNumero());
 				ps.setString(2, cartaoCreditoConsulta.getNomeTitular());
 				ps.setString(3, cartaoCreditoConsulta.getCodigoSeguranca());
+				if(cartaoCreditoConsulta.getNumero() == null) {
+					ps.setString(1, "%%");
+				}
+				if(cartaoCreditoConsulta.getNomeTitular() == null) {
+					ps.setString(2, "%%");
+				}
+				if(cartaoCreditoConsulta.getCodigoSeguranca() == null) {
+					ps.setString(3, "%%");
+				}
 				if(idCartaoCreditoConsulta != null) {
 					ps.setLong(4, cartaoCreditoConsulta.getId());
 				}
@@ -142,6 +154,7 @@ public class CartaoCreditoDAO extends AbstractDAO {
 				CartaoCredito cartaoCredito = new CartaoCredito();
 				cartaoCredito.setId(rs.getLong("c.id_cartao_credito"));
 				cartaoCredito.setNumero(rs.getString("c.numero"));
+				cartaoCredito.setNomeTitular(rs.getString("c.nome_titular"));
 				cartaoCredito.setDataVencimento(rs.getDate("c.dt_vencimento"));
 				cartaoCredito.setCodigoSeguranca(rs.getString("c.codigo_seguranca"));
 				cartaoCredito.setDataCadastro(rs.getDate("c.dt_cadastro"));
@@ -153,7 +166,6 @@ public class CartaoCreditoDAO extends AbstractDAO {
 				Bandeira bandeira = new Bandeira();
 				bandeira.setId(rs.getLong("b.id_bandeira"));
 				bandeira.setNome(rs.getString("b.nome"));
-				bandeira.setDataCadastro(rs.getDate("b.dt_cadastro"));
 				cartaoCredito.setBandeira(bandeira);
 				
 				consulta.add(cartaoCredito);

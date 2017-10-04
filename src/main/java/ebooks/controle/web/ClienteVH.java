@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
@@ -122,8 +123,10 @@ public class ClienteVH implements IViewHelper {
 				String ddd = request.getParameter("ddd");
 				String numeroTel = request.getParameter("numeroTel");
 				String tipoTelefoneId = request.getParameter("tipoTelefone");
+				String idTelefone = request.getParameter("idTelefone");
 				
 				Telefone telefone = new Telefone();
+				telefone.setId(Long.valueOf(idTelefone));
 				telefone.setDdd(ddd);
 				telefone.setNumero(numeroTel);
 				TipoTelefone tipoTelefone = new TipoTelefone();
@@ -145,6 +148,14 @@ public class ClienteVH implements IViewHelper {
 					}
 				}
 				cliente.setTelefone(telefone);
+				cliente.setEnderecos(new ArrayList<Endereco>());
+			}
+			if(operacao.equals("EXCLUIR")) {
+				String id = request.getParameter("id");
+				cliente.setId(Long.valueOf(id));
+				cliente.setCartoesCredito(new ArrayList<CartaoCredito>());
+				cliente.setEnderecos(new ArrayList<Endereco>());
+				
 			}
 		}
 		return cliente;

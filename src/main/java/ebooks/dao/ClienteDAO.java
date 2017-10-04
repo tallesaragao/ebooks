@@ -168,10 +168,14 @@ public class ClienteDAO extends AbstractDAO {
 	@Override
 	public boolean excluir(EntidadeDominio entidade) throws SQLException {
 		Cliente cliente = (Cliente) entidade;
+		Cliente clienteOld = new Cliente();
+		clienteOld.setId(cliente.getId());
+		List<EntidadeDominio> resultado = consultar(clienteOld);
+		clienteOld = (Cliente) resultado.get(0);
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "select pf.id_pessoa_fisica, p.id_pessoa from cliente c"
+			String sql = "select pf.id_pessoa_fisica, p.id_pessoa, c.id_telefone from cliente c"
 					+ " join pessoa_fisica pf on (c.id_pessoa_fisica = pf.id_pessoa_fisica)"
 					+ " join pessoa p on (pf.id_pessoa = p.id_pessoa)"
 					+ " where c.id_cliente = ?";
@@ -180,29 +184,32 @@ public class ClienteDAO extends AbstractDAO {
 			ResultSet rs = ps.executeQuery();
 			Long idPessoa = Long.valueOf(0);
 			Long idPessoaFisica = Long.valueOf(0);
+			Long idTelefone = Long.valueOf(0);
 			while(rs.next()) {
 				idPessoa = rs.getLong("p.id_pessoa");
 				idPessoaFisica = rs.getLong("pf.id_pessoa_fisica");
+				idTelefone = rs.getLong("c.id_telefone");
 			}
 			ps.close();
 			
 			CartaoCreditoDAO ccDAO = new CartaoCreditoDAO();
-			for(CartaoCredito cartaoCredito : cliente.getCartoesCredito()) {
+			for(CartaoCredito cartaoCredito : clienteOld.getCartoesCredito()) {
 				cartaoCredito.setCliente(cliente);
 				ccDAO.excluir(cartaoCredito);
 			}
 			EnderecoDAO endDAO = new EnderecoDAO();
-			for(Endereco end : cliente.getEnderecos()) {
+			for(Endereco end : clienteOld.getEnderecos()) {
 				end.setPessoa(cliente);
 				endDAO.excluir(end);
 			}
 			if(conexao.isClosed()) {
 				conexao = factory.getConnection();
 			}
+
 			
-			sql = "delete from pessoa where id_pessoa=?";
+			sql = "delete from cliente where id_cliente=?";
 			ps = conexao.prepareStatement(sql);
-			ps.setLong(1, idPessoa);
+			ps.setLong(1, cliente.getId());
 			ps.execute();
 			ps.close();
 			
@@ -212,17 +219,18 @@ public class ClienteDAO extends AbstractDAO {
 			ps.execute();
 			ps.close();
 			
-			sql = "delete from cliente where id_cliente=?";
+			sql = "delete from pessoa where id_pessoa=?";
 			ps = conexao.prepareStatement(sql);
-			ps.setLong(1, cliente.getId());
+			ps.setLong(1, idPessoa);
 			ps.execute();
 			ps.close();
 			
 			sql = "delete from telefone where id_telefone=?";
 			ps = conexao.prepareStatement(sql);
-			ps.setLong(1, cliente.getTelefone().getId());
+			ps.setLong(1, idTelefone);
 			ps.execute();
 			ps.close();
+			conexao.commit();
 			return true;
 		}
 		catch(SQLException e) {

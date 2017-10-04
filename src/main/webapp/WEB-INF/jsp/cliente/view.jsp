@@ -90,12 +90,13 @@
 											<td>
 												<button type="submit" data-toggle="tooltip" title="Editar"
 												class="btn btn-sm btn-default btn-icone" method="get"
-												formaction="clienteEdit?operacao=CONSULTAR&id=${cliente.id}">
+												formaction="enderecoEdit?operacao=CONSULTAR&id=${endereco.id}&idCliente=${cliente.id}">
 													<span class="glyphicon glyphicon-pencil"></span>
 												</button>
 												<button type="submit" name="operacao" method="get" data-toggle="tooltip"
 												title="Excluir" value="EXCLUIR"	onclick="return excluir()"
-												class="btn btn-sm btn-danger botao-excluir btn-icone" formaction="clienteExcluir?id=${cliente.id}">
+												class="btn btn-sm btn-danger botao-excluir btn-icone"
+												 formaction="enderecoExcluir?id=${endereco.id}&idCliente=${cliente.id}">
 													<span class="glyphicon glyphicon-trash"></span>
 												</button>
 											</td>
@@ -147,13 +148,13 @@
 												<td>
 													<button type="submit" data-toggle="tooltip" title="Editar"
 													class="btn btn-sm btn-default btn-icone" method="get"
-													formaction="cartaoCreditoEdit?operacao=CONSULTAR&id=${cartaoCredito.id}">
+													formaction="cartaoCreditoEdit?operacao=CONSULTAR&id=${cartaoCredito.id}&idCliente=${cliente.id}">
 														<span class="glyphicon glyphicon-pencil"></span>
 													</button>
 													<button type="submit" name="operacao" method="get" data-toggle="tooltip"
 													title="Excluir" value="EXCLUIR"	onclick="return excluir()"
 													class="btn btn-sm btn-danger botao-excluir btn-icone"
-													formaction="cartaoCreditoExcluir?id=${cartaoCredito.id}">
+													formaction="cartaoCreditoExcluir?id=${cartaoCredito.id}&idCliente=${cliente.id}">
 														<span class="glyphicon glyphicon-trash"></span>
 													</button>
 												</td>
