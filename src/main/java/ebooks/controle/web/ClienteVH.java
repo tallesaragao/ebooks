@@ -12,14 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ebooks.dao.CategoriaDAO;
-import ebooks.dao.GrupoPrecificacaoDAO;
-import ebooks.modelo.Categoria;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
-import ebooks.modelo.GrupoPrecificacao;
-import ebooks.modelo.Livro;
 import ebooks.modelo.Login;
 import ebooks.modelo.Telefone;
 import ebooks.modelo.TipoEndereco;
@@ -96,6 +91,61 @@ public class ClienteVH implements IViewHelper {
 				cliente.setEnderecos(enderecos);
 				cliente.setTelefone(telefone);
 			}
+			if(operacao.equals("CONSULTAR")) {
+				String id = request.getParameter("id");
+				if(id != null) {
+					cliente.setId(Long.valueOf(id));
+				}
+				else {
+					String nome = request.getParameter("nome");
+					String cpf = request.getParameter("cpf");
+					String email = request.getParameter("email");
+					String genero = request.getParameter("genero");
+					cliente.setNome(nome);
+					cliente.setCpf(cpf);
+					cliente.setEmail(email);
+					if(!genero.isEmpty()) {
+						cliente.setGenero(genero.charAt(0));					
+					}
+				}
+			}
+			if(operacao.equals("ALTERAR")) {
+				String id = request.getParameter("id");
+				if(id != null) {
+					cliente.setId(Long.valueOf(id));
+				}
+				String nome = request.getParameter("nome");
+				String cpf = request.getParameter("cpf");
+				String genero = request.getParameter("genero");
+				String email = request.getParameter("email");
+				String dataNascimento = request.getParameter("dataNascimento");
+				String ddd = request.getParameter("ddd");
+				String numeroTel = request.getParameter("numeroTel");
+				String tipoTelefoneId = request.getParameter("tipoTelefone");
+				
+				Telefone telefone = new Telefone();
+				telefone.setDdd(ddd);
+				telefone.setNumero(numeroTel);
+				TipoTelefone tipoTelefone = new TipoTelefone();
+				tipoTelefone.setId(Long.valueOf(tipoTelefoneId));
+				telefone.setTipoTelefone(tipoTelefone);
+				
+				cliente.setNome(nome);
+				cliente.setCpf(cpf);
+				cliente.setGenero(genero.charAt(0));
+				cliente.setEmail(email);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date dataFormatada;
+				if(dataNascimento != null) {
+					try {
+						dataFormatada = sdf.parse(dataNascimento);
+						cliente.setDataNascimento(dataFormatada);
+					} catch (ParseException e) {
+						cliente.setDataNascimento(null);
+					}
+				}
+				cliente.setTelefone(telefone);
+			}
 		}
 		return cliente;
 	}
@@ -107,6 +157,22 @@ public class ClienteVH implements IViewHelper {
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/clienteForm")) {
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/clienteList")) {
+			request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/clienteEdit")) {
+			List<Cliente> listaCliente = (List<Cliente>) object;
+			Cliente cliente = listaCliente.get(0);
+			request.setAttribute("cliente", cliente);
+			request.setAttribute("operacao", "ALTERAR");
+			request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/clienteView")) {
+			List<Cliente> listaCliente = (List<Cliente>) object;
+			Cliente cliente = listaCliente.get(0);
+			request.setAttribute("cliente", cliente);
+			request.getRequestDispatcher("WEB-INF/jsp/cliente/view.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/clienteSalvar")) {
 			if(object == null) {
@@ -123,7 +189,37 @@ public class ClienteVH implements IViewHelper {
 			request.setAttribute("mensagens", mensagens);
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
 		}
-		
+		if(uri.equals(contexto + "/clienteConsultar")) {
+			if(object == null) {
+				String erro = "Nenhum cliente encontrado";
+				request.setAttribute("erro", erro);
+				request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
+				return;
+			}
+			List<Cliente> consulta = (List<Cliente>) object;
+			request.setAttribute("consulta", consulta);
+			request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/clienteAlterar")) {
+			if (object != null) {
+				String mensagem = (String) object;
+				String[] mensagens = mensagem.split(":");
+				Cliente cliente = (Cliente) this.getEntidade(request);
+				request.setAttribute("cliente", cliente);
+				request.setAttribute("mensagens", mensagens);
+				request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
+				return;
+			}
+			String sucesso = "Alteração efetuada com sucesso";
+			request.setAttribute("sucesso", sucesso);
+			request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
+			return;
+		}
+		if(uri.equals(contexto + "/clienteExcluir")) {
+			String sucesso = (String) object;
+			request.setAttribute("sucesso", sucesso);
+			request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
+		}
 	}
 
 }

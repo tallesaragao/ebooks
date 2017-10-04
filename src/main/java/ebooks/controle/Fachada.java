@@ -99,6 +99,7 @@ public class Fachada implements IFachada {
 		lClienteSalvar.add(valCampCli);
 		lClienteSalvar.add(ativCliPrimCad);
 		List<IStrategy> lClienteAlterar = new ArrayList<>();
+		lClienteAlterar.add(valCampCli);
 		List<IStrategy> lClienteExcluir = new ArrayList<>();
 		List<IStrategy> lClienteConsultar = new ArrayList<>();
 		contextoCliente.put(SALVAR, lClienteSalvar);

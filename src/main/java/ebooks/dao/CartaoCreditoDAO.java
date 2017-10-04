@@ -81,9 +81,18 @@ public class CartaoCreditoDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "delete from cartao_credito where id_cartao_credito=?";
-			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setLong(1, cartaoCredito.getId());
+			String sql = "";
+			PreparedStatement ps = null;
+			if(cartaoCredito.getCliente().getId() != null) {
+				sql = "delete from cartao_credito where id_cliente=?";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, cartaoCredito.getCliente().getId());
+			}
+			else {
+				sql = "delete from cartao_credito where id_cartao_credito=?";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, cartaoCredito.getId());
+			}
 			ps.execute();
 			ps.close();
 			conexao.commit();
@@ -105,19 +114,28 @@ public class CartaoCreditoDAO extends AbstractDAO {
 		List<EntidadeDominio> consulta = new ArrayList<>();
 		conexao = factory.getConnection();
 		try {
-			Long idCartaoCreditoConsulta = cartaoCreditoConsulta.getId();
-			String sql = "select * from cartao_credito c"
-					+ " join bandeira b on (c.id_bandeira = b.id_bandeira) "
-					+ " where c.numero like ? and c.nome_titular like ? and c.codigo_seguranca like ? ";
-			if(idCartaoCreditoConsulta != null) {
-				sql += " and id_cartao_credito=? ";			
+			String sql = "";
+			PreparedStatement ps = null;
+			if(cartaoCreditoConsulta.getCliente() != null || cartaoCreditoConsulta.getCliente().getId() != null) {
+				sql = "select * from cartao_credito where id_cliente=?";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, cartaoCreditoConsulta.getCliente().getId());
 			}
-			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setString(1, cartaoCreditoConsulta.getNumero());
-			ps.setString(2, cartaoCreditoConsulta.getNomeTitular());
-			ps.setString(3, cartaoCreditoConsulta.getCodigoSeguranca());
-			if(idCartaoCreditoConsulta != null) {
-				ps.setLong(4, cartaoCreditoConsulta.getId());
+			else {
+				Long idCartaoCreditoConsulta = cartaoCreditoConsulta.getId();
+				sql = "select * from cartao_credito c"
+						+ " join bandeira b on (c.id_bandeira = b.id_bandeira) "
+						+ " where c.numero like ? and c.nome_titular like ? and c.codigo_seguranca like ? ";
+				if(idCartaoCreditoConsulta != null) {
+					sql += " and id_cartao_credito=? ";			
+				}
+				ps = conexao.prepareStatement(sql);
+				ps.setString(1, cartaoCreditoConsulta.getNumero());
+				ps.setString(2, cartaoCreditoConsulta.getNomeTitular());
+				ps.setString(3, cartaoCreditoConsulta.getCodigoSeguranca());
+				if(idCartaoCreditoConsulta != null) {
+					ps.setLong(4, cartaoCreditoConsulta.getId());
+				}
 			}
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {

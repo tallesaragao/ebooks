@@ -93,15 +93,25 @@ public class LoginDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		try {
 			Long idLoginConsulta = loginConsulta.getId();
-			String sql = "select * from login where usuario=? AND senha=?";
+			String sql = "";
+			PreparedStatement ps = null;
 			if(idLoginConsulta != null) {
-				sql += "id_login=?";				
+				sql = "select * from login where id_login=?";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, loginConsulta.getId());
 			}
-			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setString(1, loginConsulta.getUsuario());
-			ps.setString(2, loginConsulta.getSenha());
-			if(idLoginConsulta != null) {
-				ps.setLong(3, loginConsulta.getId());
+			else {
+				sql = "select * from login where usuario=? AND senha=?";
+				
+				ps = conexao.prepareStatement(sql);
+				ps.setString(1, "%%");
+				if(loginConsulta.getUsuario() != null) {
+					ps.setString(1, loginConsulta.getUsuario());				
+				}
+				ps.setString(2, "%%");
+				if(loginConsulta.getSenha() != null) {
+					ps.setString(2, loginConsulta.getSenha());
+				}
 			}
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {

@@ -143,6 +143,11 @@
   
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/clienteView</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
   	<url-pattern>/clienteSalvar</url-pattern>
   </servlet-mapping>
   

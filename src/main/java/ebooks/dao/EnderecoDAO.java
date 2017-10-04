@@ -19,7 +19,6 @@ public class EnderecoDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			//insert into endereco(identificacao, logradouro, numero, complemento, bairro, cep, cidade, estado, pais, fl_principal, dt_cadastro, id_tipo_endereco)
 			String sql = "insert into endereco(identificacao, logradouro, numero, complemento, bairro, cep, cidade,"
 					+ " estado, pais, fl_principal, dt_cadastro, id_tipo_endereco) values(?,?,?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -133,9 +132,9 @@ public class EnderecoDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		PreparedStatement ps = null;
 		try {
-			if(enderecoConsulta.getPessoa().getId() != null) {
-				String sql = "select * from cliente_endereco ce "
-							+ " join endereco e on(ce.id_endereco = e.id_endereco)"
+			if(enderecoConsulta.getPessoa() != null || enderecoConsulta.getPessoa().getId() != null) {
+				String sql = "select * from endereco e "
+							+ " join cliente_endereco ce on(e.id_endereco = ce.id_endereco)"
 							+ " where ce.id_cliente=?";
 				ps = conexao.prepareStatement(sql);
 				ps.setLong(1, enderecoConsulta.getPessoa().getId());
@@ -168,6 +167,7 @@ public class EnderecoDAO extends AbstractDAO {
 				endereco.setId(rs.getLong("e.id_endereco"));
 				endereco.setIdentificacao(rs.getString("e.identificacao"));
 				endereco.setLogradouro(rs.getString("e.logradouro"));
+				endereco.setNumero(rs.getString("e.numero"));
 				endereco.setComplemento(rs.getString("e.complemento"));
 				endereco.setBairro(rs.getString("e.bairro"));
 				endereco.setCep(rs.getString("e.cep"));
@@ -177,12 +177,6 @@ public class EnderecoDAO extends AbstractDAO {
 				endereco.setDataCadastro(rs.getDate("e.dt_cadastro"));
 				endereco.setPrincipal(rs.getBoolean("e.fl_principal"));
 				
-				TipoEndereco tipoEndereco = new TipoEndereco();
-				tipoEndereco.setId(rs.getLong("te.id_tipo_endereco"));
-				tipoEndereco.setNome(rs.getString("te.nome"));
-				tipoEndereco.setDataCadastro(rs.getDate("te.dt_cadastro"));
-				
-				endereco.setTipoEndereco(tipoEndereco);
 				consulta.add(endereco);
 			}
 		}
