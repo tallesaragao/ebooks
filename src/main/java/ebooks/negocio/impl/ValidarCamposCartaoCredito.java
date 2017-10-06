@@ -17,6 +17,13 @@ public class ValidarCamposCartaoCredito implements IStrategy {
 			if(cartaoCredito.getNumero() == null || cartaoCredito.getNumero().equals("")) {
 				sb.append("Número do cartão é obrigatório:");
 			}
+			else {
+				ValidarNumeroCartaoCredito valNumCarCred = new ValidarNumeroCartaoCredito();
+				String resultado = valNumCarCred.processar(cartaoCredito);
+				if(resultado != null) {
+					sb.append(resultado);
+				}
+			}
 			if(cartaoCredito.getNomeTitular() == null || cartaoCredito.getNomeTitular().equals("")) {
 				sb.append("Nome do titular é obrigatório:");
 			}	

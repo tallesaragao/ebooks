@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -26,18 +27,57 @@
 					<dd>${cliente.nome}</dd>
 					<dt>CPF</dt>
 					<dd>${cliente.cpf}</dd>
-					<dt>Gênero</dt>
+					<dt>GÊNERO</dt>
 					<dd>${cliente.genero}</dd>
 					<dt>DATA NASCIMENTO</dt>
-					<dd>${cliente.dataNascimento}</dd>
+					<dd><fmt:formatDate value="${cliente.dataNascimento}" pattern="dd/MM/yyyy"/></dd>
 					<dt>E-MAIL</dt>
 					<dd>${cliente.email}</dd>
+					<dt>SITUAÇÃO</dt>
+					<dd>
+						<c:set var="ativo" value="Inativo"/>
+						<c:if test="${cliente.ativo}">
+							<c:set var="ativo" value="Ativo"/>
+						</c:if>
+						${ativo}
+					</dd>
 				</dl>
 				<div class="row">
 					<div class="col-xs-12">
-						<button class="botao-voltar btn-icone btn btn-sm btn-default" formaction="clienteList"
+						<button class="botao-voltar btn-icone btn btn-sm btn-default" type="button"
 						data-toggle="tooltip" title="Voltar">
 							<span class="glyphicon glyphicon-arrow-left"></span>
+						</button>
+								
+						<button type="submit" data-toggle="tooltip" title="Editar"
+						class="btn btn-sm btn-default btn-icone" method="get"
+						formaction="clienteEdit?operacao=CONSULTAR&id=${cliente.id}">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</button>
+						
+						<c:choose>
+							<c:when test="${cliente.ativo}">
+								<button type="submit" data-toggle="tooltip" title="Inativar"
+								class="btn btn-sm btn-warning btn-icone" method="get"
+								formaction="clienteInativar?operacao=CONSULTAR&id=${cliente.id}">
+									<span class="glyphicon glyphicon-ban-circle"></span>
+								</button>
+							</c:when>
+							<c:otherwise>
+								<button type="submit" data-toggle="tooltip" title="Ativar"
+								class="btn btn-sm btn-success btn-icone" method="get"
+								formaction="clienteAtivar?operacao=CONSULTAR&id=${cliente.id}">
+									<span class="glyphicon glyphicon-ok-sign"></span>
+								</button>
+							</c:otherwise>
+						</c:choose>
+							
+												
+						<button type="submit" name="operacao" method="get" data-toggle="tooltip"
+						title="Excluir" value="EXCLUIR"	onclick="return excluir()"
+						class="btn btn-sm btn-danger botao-excluir btn-icone"
+						 formaction="clienteExcluir?id=${cliente.id}">
+							<span class="glyphicon glyphicon-trash"></span>
 						</button>
 					</div>
 				</div>
@@ -113,60 +153,60 @@
 				<legend>
 					<span class="legend-logo glyphicon glyphicon-credit-card"></span> Cartões de crédito
 				</legend>
-					<div class="row">
-						<div class="col-xs-12">
-							<button type="submit" class="btn btn-primary "
-							method="get" formaction="cartaoCreditoForm?idCliente=${cliente.id}">
-								<span class="glyphicon glyphicon-plus"></span> Novo cartão
-							</button>
+				<div class="row">
+					<div class="col-xs-12">
+						<button type="submit" class="btn btn-primary "
+						method="get" formaction="cartaoCreditoForm?idCliente=${cliente.id}">
+							<span class="glyphicon glyphicon-plus"></span> Novo cartão
+						</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="table-responsive">
+						<div class="col-sm-11 col-sm-12 col-md-12">
+							<table class="table table-striped table-condensed">
+								<thead>
+									<tr>
+										<th>NÚMERO</th>
+										<th>NOME TITULAR</th>
+										<th>DATA VENCIMENTO</th>
+										<th>CÓDIGO</th>
+										<th>BANDEIRA</th>
+										<th>
+											<span class="glyphicon glyphicon-cog icone-engrenagem"></span> AÇÕES
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${cliente.cartoesCredito}" var="cartaoCredito">
+										<tr>
+											<td>${cartaoCredito.numero}</td>
+											<td>${cartaoCredito.nomeTitular}</td>
+											<td><fmt:formatDate value="${cartaoCredito.dataVencimento}" pattern="dd/MM/yyyy"/></td>
+											<td>${cartaoCredito.codigoSeguranca}</td>
+											<td>${cartaoCredito.bandeira.nome}</td>						
+											<td>
+												<button type="submit" data-toggle="tooltip" title="Editar"
+												class="btn btn-sm btn-default btn-icone" method="get"
+												formaction="cartaoCreditoEdit?operacao=CONSULTAR&id=${cartaoCredito.id}&idCliente=${cliente.id}">
+													<span class="glyphicon glyphicon-pencil"></span>
+												</button>
+												<button type="submit" name="operacao" method="get" data-toggle="tooltip"
+												title="Excluir" value="EXCLUIR"	onclick="return excluir()"
+												class="btn btn-sm btn-danger botao-excluir btn-icone"
+												formaction="cartaoCreditoExcluir?id=${cartaoCredito.id}&idCliente=${cliente.id}">
+													<span class="glyphicon glyphicon-trash"></span>
+												</button>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
 						</div>
 					</div>
-					<div class="row">
-						<div class="table-responsive">
-							<div class="col-sm-11 col-sm-12 col-md-12">
-								<table class="table table-striped table-condensed">
-									<thead>
-										<tr>
-											<th>NÚMERO</th>
-											<th>NOME TITULAR</th>
-											<th>DATA VENCIMENTO</th>
-											<th>CÓDIGO</th>
-											<th>BANDEIRA</th>
-											<th>
-												<span class="glyphicon glyphicon-cog icone-engrenagem"></span> AÇÕES
-											</th>
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach items="${cliente.cartoesCredito}" var="cartaoCredito">
-											<tr>
-												<td>${cartaoCredito.numero}</td>
-												<td>${cartaoCredito.nomeTitular}</td>
-												<td>${cartaoCredito.dataVencimento}</td>
-												<td>${cartaoCredito.codigoSeguranca}</td>
-												<td>${cartaoCredito.bandeira.nome}</td>						
-												<td>
-													<button type="submit" data-toggle="tooltip" title="Editar"
-													class="btn btn-sm btn-default btn-icone" method="get"
-													formaction="cartaoCreditoEdit?operacao=CONSULTAR&id=${cartaoCredito.id}&idCliente=${cliente.id}">
-														<span class="glyphicon glyphicon-pencil"></span>
-													</button>
-													<button type="submit" name="operacao" method="get" data-toggle="tooltip"
-													title="Excluir" value="EXCLUIR"	onclick="return excluir()"
-													class="btn btn-sm btn-danger botao-excluir btn-icone"
-													formaction="cartaoCreditoExcluir?id=${cartaoCredito.id}&idCliente=${cliente.id}">
-														<span class="glyphicon glyphicon-trash"></span>
-													</button>
-												</td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>	
-				</fieldset>
-			</div>
+				</div>	
+			</fieldset>
+		</div>
 	</form>
 	<script src="resources/js/jquery-3.1.1.js"></script>
 	<script src="resources/bootstrap/js/bootstrap.js"></script>

@@ -81,24 +81,20 @@
 			</fieldset>
 			</br>
 			<div class="row">
-				<c:choose>
-					<c:when test="${operacao eq 'ALTERAR'}">
-						<div class="form-group col-xs-1">
+				<div class="col-xs-12">
+					<c:choose>
+						<c:when test="${operacao eq 'ALTERAR'}">
 							<button type="submit" name="operacao" value="ALTERAR" formaction="cartaoCreditoAlterar" class="btn btn-primary">
 								Alterar
-							</button>
-						</div>					
-					</c:when>
-					<c:otherwise>
-						<div class="form-group col-xs-1">
+							</button>			
+						</c:when>
+						<c:otherwise>
 							<button type="submit" name="operacao" value="SALVAR" formaction="cartaoCreditoSalvar" class="btn btn-primary">
 								Salvar
-							</button>
-						</div>					
-					</c:otherwise>
-				</c:choose>
-				<div class="form-group col-xs-1 col-xs-offset-2 col-sm-offset-1 col-md-offset-0">
-					<a href="clienteList" class="btn btn-default">Cancelar</a>
+							</button>				
+						</c:otherwise>
+					</c:choose>
+					<button class="botao-voltar btn btn-default" type="button">Cancelar</button>
 				</div>
 			</div>
 		</form>
@@ -106,6 +102,7 @@
 	<script src="resources/js/jquery-3.1.1.js"></script>
 	<script src="resources/bootstrap/js/bootstrap.js"></script>
 	<script src="resources/js/jquery.mask.js"></script>
+	<script src="resources/js/ebooks.js"></script>
 	<script src="resources/js/clienteForm.js"></script>
 </body>
 </html>

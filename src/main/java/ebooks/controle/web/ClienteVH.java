@@ -10,13 +10,11 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
-import ebooks.modelo.Login;
 import ebooks.modelo.Telefone;
 import ebooks.modelo.TipoEndereco;
 import ebooks.modelo.TipoTelefone;
@@ -47,9 +45,6 @@ public class ClienteVH implements IViewHelper {
 				String pais = request.getParameter("pais");
 				String tipoEnderecoId = request.getParameter("tipoEndereco");
 				String identificacao = request.getParameter("identificacao");
-				
-				HttpSession session = request.getSession();
-				Login login = (Login) session.getAttribute("login");
 
 				Endereco endereco = new Endereco();
 				endereco.setLogradouro(logradouro);
@@ -88,7 +83,6 @@ public class ClienteVH implements IViewHelper {
 						cliente.setDataNascimento(null);
 					}
 				}
-				cliente.setLogin(login);
 				cliente.setEnderecos(enderecos);
 				cliente.setTelefone(telefone);
 			}
@@ -102,6 +96,9 @@ public class ClienteVH implements IViewHelper {
 					String cpf = request.getParameter("cpf");
 					String email = request.getParameter("email");
 					String genero = request.getParameter("genero");
+					if(genero == null) {
+						genero = "";
+					}
 					cliente.setNome(nome);
 					cliente.setCpf(cpf);
 					cliente.setEmail(email);
@@ -115,6 +112,7 @@ public class ClienteVH implements IViewHelper {
 				if(id != null) {
 					cliente.setId(Long.valueOf(id));
 				}
+				String ativo = request.getParameter("ativo");
 				String nome = request.getParameter("nome");
 				String cpf = request.getParameter("cpf");
 				String genero = request.getParameter("genero");
@@ -133,6 +131,9 @@ public class ClienteVH implements IViewHelper {
 				tipoTelefone.setId(Long.valueOf(tipoTelefoneId));
 				telefone.setTipoTelefone(tipoTelefone);
 				
+				if(ativo != null && ativo.equals("true")) {
+					cliente.setAtivo(true);
+				}
 				cliente.setNome(nome);
 				cliente.setCpf(cpf);
 				cliente.setGenero(genero.charAt(0));
@@ -168,9 +169,11 @@ public class ClienteVH implements IViewHelper {
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/clienteForm")) {
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
+			return;
 		}
 		if(uri.equals(contexto + "/clienteList")) {
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
+			return;
 		}
 		if(uri.equals(contexto + "/clienteEdit")) {
 			List<Cliente> listaCliente = (List<Cliente>) object;
@@ -178,12 +181,14 @@ public class ClienteVH implements IViewHelper {
 			request.setAttribute("cliente", cliente);
 			request.setAttribute("operacao", "ALTERAR");
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
+			return;
 		}
 		if(uri.equals(contexto + "/clienteView")) {
 			List<Cliente> listaCliente = (List<Cliente>) object;
 			Cliente cliente = listaCliente.get(0);
 			request.setAttribute("cliente", cliente);
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/view.jsp").forward(request, response);
+			return;
 		}
 		if(uri.equals(contexto + "/clienteSalvar")) {
 			if(object == null) {
@@ -199,6 +204,7 @@ public class ClienteVH implements IViewHelper {
 			request.setAttribute("endereco", cliente.getEnderecos().get(0));
 			request.setAttribute("mensagens", mensagens);
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
+			return;
 		}
 		if(uri.equals(contexto + "/clienteConsultar")) {
 			if(object == null) {
@@ -210,6 +216,7 @@ public class ClienteVH implements IViewHelper {
 			List<Cliente> consulta = (List<Cliente>) object;
 			request.setAttribute("consulta", consulta);
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
+			return;
 		}
 		if(uri.equals(contexto + "/clienteAlterar")) {
 			if (object != null) {
@@ -230,6 +237,38 @@ public class ClienteVH implements IViewHelper {
 			String sucesso = (String) object;
 			request.setAttribute("sucesso", sucesso);
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/clienteAtivar")) {
+			if(object == null) {
+				String erro = "Nenhum cliente encontrado para inativar";
+				request.setAttribute("erro", erro);
+				request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
+				return;
+			}
+			List<Cliente> listaCliente = (List<Cliente>) object;
+			Cliente cliente = listaCliente.get(0);
+			cliente.setAtivo(true);
+			request.setAttribute("entidade", cliente);
+			request.setAttribute("identificacao", cliente.getNome());
+			request.setAttribute("nomeEntidade", "Cliente");
+			request.getRequestDispatcher("WEB-INF/jsp/ativacao/form.jsp").forward(request, response);
+			return;
+		}
+		if(uri.equals(contexto + "/clienteInativar")) {
+			if(object == null) {
+				String erro = "Nenhum cliente encontrado para inativar";
+				request.setAttribute("erro", erro);
+				request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
+				return;
+			}
+			List<Cliente> listaCliente = (List<Cliente>) object;
+			Cliente cliente = listaCliente.get(0);
+			cliente.setAtivo(false);
+			request.setAttribute("entidade", cliente);
+			request.setAttribute("identificacao", cliente.getNome());
+			request.setAttribute("nomeEntidade", "Cliente");
+			request.getRequestDispatcher("WEB-INF/jsp/inativacao/form.jsp").forward(request, response);
+			return;
 		}
 	}
 

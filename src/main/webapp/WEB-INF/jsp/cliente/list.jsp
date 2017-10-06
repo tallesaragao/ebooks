@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -101,7 +102,7 @@
 										<th>TELEFONE</th>
 										<th>EMAIL</th>
 										<th>
-											<span class="glyphicon glyphicon-cog icone-engrenagem"></span> AÇÕES
+											<span class="glyphicon glyphicon-cog icone-engrenagem text-center"></span>
 										</th>
 									</tr>
 								</thead>
@@ -110,24 +111,14 @@
 										<tr>
 											<td>${cliente.nome}</td>
 											<td>${cliente.cpf}</td>
-											<td>${cliente.dataNascimento}</td>
+											<td><fmt:formatDate value="${cliente.dataNascimento}" pattern="dd/MM/yyyy"/></td>
 											<td><span>${cliente.telefone.ddd} ${cliente.telefone.numero}</span></td>
 											<td>${cliente.email}</td>										
 											<td>
-												<button type="submit" data-toggle="tooltip" title="Ver"
+												<button type="submit" data-toggle="tooltip" title="Detalhes"
 												class="btn btn-sm btn-default btn-icone" method="get"
 												formaction="clienteView?operacao=CONSULTAR&id=${cliente.id}">
 													<span class="glyphicon glyphicon-eye-open"></span>
-												</button>
-												<button type="submit" data-toggle="tooltip" title="Editar"
-												class="btn btn-sm btn-default btn-icone" method="get"
-												formaction="clienteEdit?operacao=CONSULTAR&id=${cliente.id}">
-													<span class="glyphicon glyphicon-pencil"></span>
-												</button>
-												<button type="submit" name="operacao" method="get" data-toggle="tooltip"
-												title="Excluir" value="EXCLUIR"	onclick="return excluir()"
-												class="btn btn-sm btn-danger botao-excluir btn-icone" formaction="clienteExcluir?id=${cliente.id}">
-													<span class="glyphicon glyphicon-trash"></span>
 												</button>
 											</td>
 										</tr>

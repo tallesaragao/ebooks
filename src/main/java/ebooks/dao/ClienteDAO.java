@@ -7,14 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ebooks.modelo.Autor;
 import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
-import ebooks.modelo.Login;
 import ebooks.modelo.Telefone;
-import ebooks.modelo.TipoTelefone;
 
 public class ClienteDAO extends AbstractDAO {
 
@@ -62,14 +59,13 @@ public class ClienteDAO extends AbstractDAO {
 			}
 			ps.close();
 			
-			sql = "insert into cliente (email, fl_ativo, genero, id_pessoa_fisica, id_login, id_telefone) values(?,?,?,?,?,?)";
+			sql = "insert into cliente (email, fl_ativo, genero, id_pessoa_fisica, id_telefone) values(?,?,?,?,?)";
 			ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, cliente.getEmail());
 			ps.setBoolean(2, cliente.isAtivo());
 			ps.setString(3, String.valueOf(cliente.getGenero()));
 			ps.setLong(4, idPessoaFisica);
-			ps.setLong(5, cliente.getLogin().getId());
-			ps.setLong(6, idTelefone);
+			ps.setLong(5, idTelefone);
 			ps.execute();
 			generatedKeys = ps.getGeneratedKeys();
 			while(generatedKeys.next()) {
@@ -289,10 +285,6 @@ public class ClienteDAO extends AbstractDAO {
 				cliente.setDataCadastro(rs.getDate("p.dt_cadastro"));
 				cliente.setNome(rs.getString("p.nome"));
 				
-				Login login = new Login();
-				login.setId(rs.getLong("c.id_login"));
-				cliente.setLogin(login);
-				
 				Telefone telefone = new Telefone();
 				telefone.setId(rs.getLong("t.id_telefone"));
 				telefone.setDdd(rs.getString("t.ddd"));
@@ -309,7 +301,6 @@ public class ClienteDAO extends AbstractDAO {
 			
 			CartaoCreditoDAO ccDAO = new CartaoCreditoDAO();
 			EnderecoDAO endDAO = new EnderecoDAO();
-			LoginDAO loginDAO = new LoginDAO();
 			for(Cliente cliente : clientes) {
 				CartaoCredito cartaoCredito = new CartaoCredito();
 				cartaoCredito.setCliente(cliente);
@@ -329,10 +320,6 @@ public class ClienteDAO extends AbstractDAO {
 				}
 				cliente.setEnderecos(enderecos);
 				
-				List<EntidadeDominio> listaLogin = loginDAO.consultar(cliente.getLogin());
-				if(!listaLogin.isEmpty()) {
-					cliente.setLogin((Login) listaLogin.get(0)); 
-				}
 			}
 		}
 		catch(SQLException e) {

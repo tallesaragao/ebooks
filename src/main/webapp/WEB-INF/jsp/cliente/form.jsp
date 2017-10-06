@@ -37,12 +37,13 @@
 			</c:if>
 			</br>
 			
+			<input type="hidden" name="id" value="${cliente.id}"/>
+			<input type="hidden" name="ativo" value="${cliente.ativo}"
 			<fieldset>
 				<legend>
 					<span class="legend-logo glyphicon glyphicon-user"></span> Dados pessoais
 				</legend>
 				
-				<input type="hidden" name="id" value="${cliente.id}"/>
 				
 				<div class="row">
 					<div class="form-group col-sm-6 col-md-5">

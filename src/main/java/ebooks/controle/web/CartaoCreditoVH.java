@@ -114,6 +114,8 @@ public class CartaoCreditoVH implements IViewHelper {
 				CartaoCredito cartaoCredito = (CartaoCredito) this.getEntidade(request);
 				request.setAttribute("cartaoCredito", cartaoCredito);
 				request.setAttribute("mensagens", mensagens);
+				String operacao = "ALTERAR";
+				request.setAttribute("operacao", operacao);
 				String idCliente = request.getParameter("idCliente");
 				request.setAttribute("idCliente", idCliente);
 				request.getRequestDispatcher("WEB-INF/jsp/cartaoCredito/form.jsp").forward(request, response);

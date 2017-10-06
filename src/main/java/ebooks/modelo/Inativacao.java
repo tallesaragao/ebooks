@@ -3,7 +3,7 @@ package ebooks.modelo;
 public class Inativacao extends EntidadeDominio {
 	private String justificativa;
 	private Categoria categoria;
-	private Livro livro;
+	private EntidadeDominio entidade;
 
 	public String getJustificativa() {
 		return justificativa;
@@ -21,11 +21,11 @@ public class Inativacao extends EntidadeDominio {
 		this.categoria = categoria;
 	}
 
-	public Livro getLivro() {
-		return livro;
+	public EntidadeDominio getEntidade() {
+		return entidade;
 	}
 
-	public void setLivro(Livro livro) {
-		this.livro = livro;
+	public void setEntidade(EntidadeDominio entidade) {
+		this.entidade = entidade;
 	}
 }

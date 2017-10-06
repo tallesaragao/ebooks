@@ -120,6 +120,8 @@ public class EnderecoVH implements IViewHelper {
 				String mensagem = (String) object;
 				String[] mensagens = mensagem.split(":");
 				Endereco endereco = (Endereco) this.getEntidade(request);
+				String operacao = "ALTERAR";
+				request.setAttribute("operacao", operacao);
 				request.setAttribute("endereco", endereco);
 				request.setAttribute("mensagens", mensagens);
 				request.getRequestDispatcher("WEB-INF/jsp/endereco/form.jsp").forward(request, response);

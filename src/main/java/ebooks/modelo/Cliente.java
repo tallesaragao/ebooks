@@ -10,6 +10,8 @@ public class Cliente extends PessoaFisica {
 	private Telefone telefone;
 	private List<Endereco> enderecos;
 	private List<CartaoCredito> cartoesCredito;
+	private List<Ativacao> ativacoes;
+	private List<Inativacao> inativacoes;
 
 	public Character getGenero() {
 		return genero;
@@ -65,5 +67,21 @@ public class Cliente extends PessoaFisica {
 
 	public void setCartoesCredito(List<CartaoCredito> cartoesCredito) {
 		this.cartoesCredito = cartoesCredito;
+	}
+
+	public List<Ativacao> getAtivacoes() {
+		return ativacoes;
+	}
+
+	public void setAtivacoes(List<Ativacao> ativacoes) {
+		this.ativacoes = ativacoes;
+	}
+
+	public List<Inativacao> getInativacoes() {
+		return inativacoes;
+	}
+
+	public void setInativacoes(List<Inativacao> inativacoes) {
+		this.inativacoes = inativacoes;
 	}
 }
