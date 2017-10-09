@@ -3,7 +3,6 @@ $(document).ready(function() {
 });
 
 $('.botao-voltar').click(function() {
-	alert("TESTANDO");
 	history.go(-1);
 });
 

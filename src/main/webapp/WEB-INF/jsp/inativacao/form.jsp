@@ -51,7 +51,7 @@
 			</div>						
 			<div class="row">
 				<div class="col-xs-12">
-					<button type="submit" name="operacao" value="SALVAR" formaction="inativacaoSalvar" class="btn btn-warning">
+					<button type="submit" id="btnInativar" name="operacao" value="SALVAR" formaction="inativacaoSalvar" class="btn btn-warning">
 						Inativar
 					</button>
 					<button class="botao-voltar btn btn-default" type="button">Cancelar</button>

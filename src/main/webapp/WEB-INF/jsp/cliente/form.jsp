@@ -68,19 +68,19 @@
 						<label for="radios" class="control-label">Gênero</label>
 						<div name="radios" class="form-group">
 							<label class="radio-inline">
-								<input type="radio" name="genero" value="M" checked/>M
+								<input type="radio" name="genero" value="M" checked />M
 							</label>
 							<label class="radio-inline">
-								<input type="radio" name="genero" value="F"/>F
+								<input type="radio" name="genero" value="F" <c:if test="${cliente.genero eq 'F'.charAt(0)}">checked</c:if>/>F
 							</label>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-xs-12 col-md-4">
+					<div class="col-xs-12 col-md-5">
 						<div class="form-group">
 							<label for="email" class="control-label">E-mail</label>
-							<input type="email" name="email" class="form-control" value="${cliente.email}" />
+							<input type="email" name="email" class="form-control" value="${cliente.email}" placeholder="mail@mail.com" />
 						</div>
 					</div>
 				</div>
@@ -149,8 +149,11 @@
 							<label for="tipoEndereco" class="control-label">Tipo de endereço</label>
 							<select name="tipoEndereco" class="form-control" required>
 								<option value="" disabled selected>Escolha um tipo</option>
-								<option value="1">Residencial</option>
-								<option value="2">Comercial</option>
+								<c:forEach items="${tiposEndereco}" var="tipoEnd">
+									<option <c:if test="${endereco.tipoEndereco.id eq tipoEnd.id}">selected</c:if> value="${tipoEnd.id}">
+										${tipoEnd.nome}
+									</option>
+								</c:forEach>
 							</select>
 						</div>
 						
@@ -185,8 +188,11 @@
 						<label for="tipoTelefone" class="control-label">Tipo de telefone</label>
 						<select name="tipoTelefone" class="form-control" required>
 							<option value="" disabled selected>Escolha um tipo</option>
-							<option value="1">Celular</option>
-							<option value="2">Fixo</option>
+							<c:forEach items="${tiposTelefone}" var="tipoTel">
+								<option <c:if test="${cliente.telefone.tipoTelefone.id eq tipoTel.id}">selected</c:if> value="${tipoTel.id}">
+									${tipoTel.nome}
+								</option>
+							</c:forEach>
 						</select>
 					</div>
 				</div>
@@ -196,21 +202,23 @@
 				<c:choose>
 					<c:when test="${operacao eq 'ALTERAR'}">
 						<div class="form-group col-xs-1">
-							<button type="submit" name="operacao" value="ALTERAR" formaction="clienteAlterar" class="btn btn-primary">
+							<button type="submit" name="operacao" formaction="clienteAlterar"
+							id="btnAlterar" class="btn btn-primary" value="ALTERAR">
 								Alterar
 							</button>
 						</div>					
 					</c:when>
 					<c:otherwise>
 						<div class="form-group col-xs-1">
-							<button type="submit" name="operacao" value="SALVAR" formaction="clienteSalvar" class="btn btn-primary">
+							<button type="submit" name="operacao" formaction="clienteSalvar"
+							id="btnSalvar" class="btn btn-primary" value="SALVAR">
 								Salvar
 							</button>
 						</div>					
 					</c:otherwise>
 				</c:choose>
 				<div class="form-group col-xs-1 col-xs-offset-2 col-sm-offset-1 col-md-offset-0">
-					<a href="clienteList" class="btn btn-default">Cancelar</a>
+					<a href="clienteList" id="btnCancelar" class="btn btn-default">Cancelar</a>
 				</div>
 			</div>
 		</form>

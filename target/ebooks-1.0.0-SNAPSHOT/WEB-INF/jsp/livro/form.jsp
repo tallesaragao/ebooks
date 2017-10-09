@@ -228,7 +228,7 @@
 					<c:when test="${operacao eq 'ALTERAR'}">
 						<input type="hidden" name="id" value="${livro.id}"/>
 						<div class="form-group col-xs-1">
-							<button type="submit" name="operacao" value="ALTERAR"
+							<button type="submit" name="operacao" value="ALTERAR" id="btnAlterar"
 							formaction="livroAlterar" class="btn btn-primary">
 								Alterar
 							</button>
@@ -236,7 +236,7 @@
 					</c:when>
 					<c:otherwise>
 						<div class="form-group col-xs-1">
-							<button type="submit" name="operacao" value="SALVAR"
+							<button type="submit" name="operacao" value="SALVAR" id="btnSalvar"
 							formaction="livroSalvar" class="btn btn-primary">
 								Salvar
 							</button>

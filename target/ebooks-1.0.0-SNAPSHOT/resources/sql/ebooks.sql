@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `ebooks_les` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `ebooks_les`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
 --
 -- Host: localhost    Database: ebooks_les
@@ -25,9 +27,12 @@ DROP TABLE IF EXISTS `ativacao`;
 CREATE TABLE `ativacao` (
   `id_ativacao` int(11) NOT NULL AUTO_INCREMENT,
   `justificativa` varchar(200) NOT NULL,
-  `id_livro` int(11) NOT NULL,
+  `id_livro` int(11) DEFAULT NULL,
+  `id_cliente` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_ativacao`),
   KEY `fk_ativacao_livro_idx` (`id_livro`),
+  KEY `fk_ativacao_cliente_idx` (`id_cliente`),
+  CONSTRAINT `fk_ativacao_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_ativacao_livro` FOREIGN KEY (`id_livro`) REFERENCES `livro` (`id_livro`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -78,7 +83,7 @@ CREATE TABLE `bandeira` (
   `id_bandeira` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(45) NOT NULL,
   PRIMARY KEY (`id_bandeira`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -87,6 +92,7 @@ CREATE TABLE `bandeira` (
 
 LOCK TABLES `bandeira` WRITE;
 /*!40000 ALTER TABLE `bandeira` DISABLE KEYS */;
+INSERT INTO `bandeira` VALUES (1,'Visa'),(2,'MasterCard');
 /*!40000 ALTER TABLE `bandeira` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,7 +117,7 @@ CREATE TABLE `cartao_credito` (
   KEY `fk_cartao_credito_bandeira_idx` (`id_bandeira`),
   CONSTRAINT `fk_cartao_credito_bandeira` FOREIGN KEY (`id_bandeira`) REFERENCES `bandeira` (`id_bandeira`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cartao_credito_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,6 +126,7 @@ CREATE TABLE `cartao_credito` (
 
 LOCK TABLES `cartao_credito` WRITE;
 /*!40000 ALTER TABLE `cartao_credito` DISABLE KEYS */;
+INSERT INTO `cartao_credito` VALUES (3,'5268910398469748','João das Neves','2025-12-01','406',2,2,'2017-10-05 00:00:00');
 /*!40000 ALTER TABLE `cartao_credito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -161,7 +168,7 @@ CREATE TABLE `cliente` (
   `genero` char(1) NOT NULL,
   `fl_ativo` tinyint(1) NOT NULL,
   `id_pessoa_fisica` int(11) NOT NULL,
-  `id_login` int(11) NOT NULL,
+  `id_login` int(11) DEFAULT NULL,
   `id_telefone` int(11) NOT NULL,
   PRIMARY KEY (`id_cliente`),
   KEY `fk_cliente_pessoa_fisica_idx` (`id_pessoa_fisica`),
@@ -170,7 +177,7 @@ CREATE TABLE `cliente` (
   CONSTRAINT `fk_cliente_login` FOREIGN KEY (`id_login`) REFERENCES `login` (`id_login`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cliente_pessoa_fisica` FOREIGN KEY (`id_pessoa_fisica`) REFERENCES `pessoa_fisica` (`id_pessoa_fisica`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cliente_telefone` FOREIGN KEY (`id_telefone`) REFERENCES `telefone` (`id_telefone`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,7 +186,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'tobias.leoso@gmail.com','M',1,9,7,3),(2,'ebooks@gmail.com','M',1,10,8,4);
+INSERT INTO `cliente` VALUES (1,'tobias.leoso@gmail.com','M',0,9,7,3),(2,'ebooks@gmail.com','M',0,10,8,4),(4,'maria@outlook.com','F',0,13,9,7),(5,'benjamin.jcer@gruposandino.com.br','M',1,15,NULL,9);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,7 +214,7 @@ CREATE TABLE `cliente_endereco` (
 
 LOCK TABLES `cliente_endereco` WRITE;
 /*!40000 ALTER TABLE `cliente_endereco` DISABLE KEYS */;
-INSERT INTO `cliente_endereco` VALUES (1,1),(1,2);
+INSERT INTO `cliente_endereco` VALUES (1,1),(1,2),(2,4),(4,5),(5,6);
 /*!40000 ALTER TABLE `cliente_endereco` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,7 +295,7 @@ CREATE TABLE `endereco` (
   PRIMARY KEY (`id_endereco`),
   KEY `fk_endereco_tipo_endereco_idx` (`id_tipo_endereco`),
   CONSTRAINT `fk_endereco_tipo_endereco` FOREIGN KEY (`id_tipo_endereco`) REFERENCES `tipo_endereco` (`id_tipo_endereco`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,7 +304,7 @@ CREATE TABLE `endereco` (
 
 LOCK TABLES `endereco` WRITE;
 /*!40000 ALTER TABLE `endereco` DISABLE KEYS */;
-INSERT INTO `endereco` VALUES (1,'Minha casa','Rua teste','151',NULL,'Bairro teste','08720-040','Poá','SP','Brasil',1,'2017-10-03 12:33:46',1),(2,'Meu trabalho','Rua testinha','1741',NULL,'Bairro teste','08720-045','Poá','SP','Brasil',0,'2017-10-03 12:37:45',2);
+INSERT INTO `endereco` VALUES (1,'Minha casa','Rua teste','151',NULL,'Bairro teste','08720-040','Poá','SP','Brasil',1,'2017-10-03 12:33:46',1),(2,'Meu trabalho','Rua testinha','1741',NULL,'Bairro teste','08720-045','Poá','SP','Brasil',0,'2017-10-03 12:37:45',2),(4,'Trabalho','SQS 205 Bloco A','99','Sala 33','Asa Sul','70235-010','Brasília','DF','Brasil',1,'2017-10-05 00:00:00',2),(5,'Casa','Viela Peri','500','Casa 13','Jardim Veneza','08715-200','Mogi das Cruzes','SP','Brasil',1,'2017-10-05 00:00:00',1),(6,'Meu apartamento','Rua Nossa Senhora da Aparecida','300','Bloco 17, Apartamento 905','Carioca','35662-812','Pará de Minas','MG','Brasil',1,'2017-10-06 00:00:00',1);
 /*!40000 ALTER TABLE `endereco` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -337,9 +344,12 @@ DROP TABLE IF EXISTS `inativacao`;
 CREATE TABLE `inativacao` (
   `id_inativacao` int(11) NOT NULL AUTO_INCREMENT,
   `justificativa` varchar(200) NOT NULL,
-  `id_livro` int(11) NOT NULL,
+  `id_livro` int(11) DEFAULT NULL,
+  `id_cliente` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_inativacao`),
   KEY `fk_inativacao_livro_idx` (`id_livro`),
+  KEY `fk_inativacao_cliente_idx` (`id_cliente`),
+  CONSTRAINT `fk_inativacao_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_inativacao_livro` FOREIGN KEY (`id_livro`) REFERENCES `livro` (`id_livro`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -454,6 +464,33 @@ INSERT INTO `livro_categoria` VALUES (2,6),(3,6),(2,10);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `log`
+--
+
+DROP TABLE IF EXISTS `log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `log` (
+  `id_log` int(11) NOT NULL AUTO_INCREMENT,
+  `nome_entidade` varchar(45) NOT NULL,
+  `usuario` varchar(45) NOT NULL,
+  `operacao` varchar(45) NOT NULL,
+  `dt_cadastro` datetime NOT NULL,
+  `estado_anterior` text NOT NULL,
+  PRIMARY KEY (`id_log`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `log`
+--
+
+LOCK TABLES `log` WRITE;
+/*!40000 ALTER TABLE `log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `login`
 --
 
@@ -466,7 +503,7 @@ CREATE TABLE `login` (
   `senha` varchar(45) NOT NULL,
   `dt_cadastro` datetime NOT NULL,
   PRIMARY KEY (`id_login`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -475,7 +512,7 @@ CREATE TABLE `login` (
 
 LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES (4,'teste','Abcd1234%','2017-10-02 08:39:32'),(6,'admin','Admin12#','2017-10-02 00:00:00'),(7,'tobias','Saibot00&','2017-10-02 00:00:00'),(8,'ebooks','Ebooks123$','2017-10-03 00:00:00');
+INSERT INTO `login` VALUES (4,'teste','Abcd1234%','2017-10-02 08:39:32'),(6,'admin','Admin12#','2017-10-02 00:00:00'),(7,'tobias','Saibot00&','2017-10-02 00:00:00'),(8,'ebooks','Ebooks123$','2017-10-03 00:00:00'),(9,'maria','Maria12#','2017-10-05 00:00:00');
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -491,7 +528,7 @@ CREATE TABLE `pessoa` (
   `nome` varchar(45) NOT NULL,
   `dt_cadastro` datetime DEFAULT NULL,
   PRIMARY KEY (`id_pessoa`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -500,7 +537,7 @@ CREATE TABLE `pessoa` (
 
 LOCK TABLES `pessoa` WRITE;
 /*!40000 ALTER TABLE `pessoa` DISABLE KEYS */;
-INSERT INTO `pessoa` VALUES (5,'Scipione','2017-09-25 00:00:00'),(6,'Machado de Assis','2017-09-25 00:00:00'),(7,'Companhia de Bolso','2017-09-25 00:00:00'),(8,'Jorge Amado','2017-09-25 00:00:00'),(15,'Tobias Toldo Leoso','2017-10-03 00:00:00'),(16,'Ebooks Silvério da Cunha','2017-10-03 00:00:00');
+INSERT INTO `pessoa` VALUES (5,'Scipione','2017-09-25 00:00:00'),(6,'Machado de Assis','2017-09-25 00:00:00'),(7,'Companhia de Bolso','2017-09-25 00:00:00'),(8,'Jorge Amado','2017-09-25 00:00:00'),(15,'Tobias Toldo Leoso','2017-10-03 00:00:00'),(16,'Ebooks Silvério da Cunha','2017-10-03 00:00:00'),(19,'Maria das Dores','2017-10-05 00:00:00'),(21,'Benjamin Julio Carlos Eduardo Ribeiro','2017-10-06 00:00:00');
 /*!40000 ALTER TABLE `pessoa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -519,7 +556,7 @@ CREATE TABLE `pessoa_fisica` (
   PRIMARY KEY (`id_pessoa_fisica`),
   KEY `fk_pessoa_pf_idx` (`id_pessoa`),
   CONSTRAINT `fk_pessoa_pf` FOREIGN KEY (`id_pessoa`) REFERENCES `pessoa` (`id_pessoa`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -528,7 +565,7 @@ CREATE TABLE `pessoa_fisica` (
 
 LOCK TABLES `pessoa_fisica` WRITE;
 /*!40000 ALTER TABLE `pessoa_fisica` DISABLE KEYS */;
-INSERT INTO `pessoa_fisica` VALUES (2,'359.958.820-15','1839-06-21',6),(3,'303.010.470-22','1912-08-10',8),(9,'986.518.476-10','1954-08-04',15),(10,'717.722.414-90','1990-12-04',16);
+INSERT INTO `pessoa_fisica` VALUES (2,'359.958.820-15','1839-06-21',6),(3,'303.010.470-22','1912-08-10',8),(9,'986.518.476-10','1954-08-04',15),(10,'717.722.414-90','1990-12-04',16),(13,'078.737.835-61','1998-11-16',19),(15,'854.124.434-27','1988-09-11',21);
 /*!40000 ALTER TABLE `pessoa_fisica` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -627,7 +664,7 @@ CREATE TABLE `telefone` (
   PRIMARY KEY (`id_telefone`),
   KEY `fk_telefone_tipo_telefone_idx` (`id_tipo_telefone`),
   CONSTRAINT `fk_telefone_tipo_telefone` FOREIGN KEY (`id_tipo_telefone`) REFERENCES `tipo_telefone` (`id_tipo_telefone`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -636,7 +673,7 @@ CREATE TABLE `telefone` (
 
 LOCK TABLES `telefone` WRITE;
 /*!40000 ALTER TABLE `telefone` DISABLE KEYS */;
-INSERT INTO `telefone` VALUES (3,'(11)','94555-4656',1),(4,'(11)','99445-1212',1);
+INSERT INTO `telefone` VALUES (3,'(11)','94555-4658',1),(4,'(11)','99445-1213',1),(7,'(11)','95574-2101',1),(9,'(72)','93320-1545',1);
 /*!40000 ALTER TABLE `telefone` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -698,4 +735,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-03 12:47:00
+-- Dump completed on 2017-10-06 12:38:18

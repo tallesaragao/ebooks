@@ -34,7 +34,7 @@
 				</div>
 			</c:if>
 			</br>
-		<form class="form" role="form" action="#" method="post">
+		<form class="form" action="#" method="post">
 			<input type="hidden" name="idCliente" value="${idCliente}"/>
 			<input type="hidden" name="id" value="${cartaoCredito.id}"/>
 			<fieldset>
@@ -73,8 +73,9 @@
 						<label for="bandeira" class="control-label">Bandeira</label>
 						<select name="bandeira" class="form-control" required>
 							<option value="" disabled selected>Escolha a bandeira</option>
-							<option value="1">Visa</option>
-							<option value="2">MasterCard</option>
+							<c:forEach items="${bandeiras}" var="band">
+								<option <c:if test="${cartaoCredito.bandeira.id eq band.id}">selected</c:if> value="${band.id}">${band.nome}</option>
+							</c:forEach>
 						</select>
 					</div>
 				</div>
@@ -84,17 +85,19 @@
 				<div class="col-xs-12">
 					<c:choose>
 						<c:when test="${operacao eq 'ALTERAR'}">
-							<button type="submit" name="operacao" value="ALTERAR" formaction="cartaoCreditoAlterar" class="btn btn-primary">
+							<button type="submit" name="operacao" formaction="cartaoCreditoAlterar"
+							id="btnAlterar" class="btn btn-primary" value="ALTERAR">
 								Alterar
 							</button>			
 						</c:when>
 						<c:otherwise>
-							<button type="submit" name="operacao" value="SALVAR" formaction="cartaoCreditoSalvar" class="btn btn-primary">
+							<button type="submit" name="operacao" formaction="cartaoCreditoSalvar"
+							id="btnSalvar" class="btn btn-primary" value="SALVAR">
 								Salvar
 							</button>				
 						</c:otherwise>
 					</c:choose>
-					<button class="botao-voltar btn btn-default" type="button">Cancelar</button>
+					<button class="botao-voltar btn btn-default" id="btnCancelar" type="button">Cancelar</button>
 				</div>
 			</div>
 		</form>

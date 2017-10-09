@@ -50,7 +50,7 @@
 							<div class="input-group input-group-md">
 								<input type="text" name="busca" placeholder="Faça sua busca" class="form-control"/>
 								<div class="input-group-btn">
-									<button type="submit" class="btn btn-md btn-primary btn-icone"
+									<button type="submit" class="btn btn-md btn-primary btn-icone" id="btnPesquisar"
 									name="operacao" value="CONSULTAR" formaction="categoriaConsultar">
 										<span class="glyphicon glyphicon-search"></span>
 									</button>
@@ -59,7 +59,7 @@
 						</div>
 						<div class="col-xs-2 col-md-3 btn-adicionar">			  	
 							<button class="btn btn-primary btn-icone" type="submit" formaction="categoriaForm"
-							data-toggle="tooltip" title="Adicionar categoria">
+							id="btnNovaCategoria" data-toggle="tooltip" title="Adicionar categoria">
 								<span class="glyphicon glyphicon-plus"></span>
 							</button>
 						</div>
@@ -88,12 +88,12 @@
 											<td><fmt:formatDate value="${c.dataCadastro}" pattern="dd/MM/yyyy"></fmt:formatDate></td>
 											<td>
 												<button type="submit" data-toggle="tooltip" title="Editar"
-												class="btn btn-sm btn-default btn-icone" method="get"
+												class="btn btn-sm btn-default btn-icone" method="get" id="categoriaEdit${c.id}"
 												formaction="categoriaEdit?operacao=CONSULTAR&id=${c.id}">
 													<span class="glyphicon glyphicon-pencil"></span>
 												</button>
 												<button type="submit" name="operacao" method="get" data-toggle="tooltip"
-												title="Excluir" value="EXCLUIR"	onclick="return excluir()"
+												title="Excluir" value="EXCLUIR"	onclick="return excluir()" id="categoriaExcluir${c.id}"
 												class="btn btn-sm btn-danger botao-excluir btn-icone" formaction="categoriaExcluir?id=${c.id}">
 													<span class="glyphicon glyphicon-trash"></span>
 												</button>

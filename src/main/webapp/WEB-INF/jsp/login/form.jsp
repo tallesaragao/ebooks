@@ -64,7 +64,7 @@
 							<div class="form-group">
 								<div class="col-xs-6 col-sm-6 col-md-6">
 				                	<button type="submit" formaction="loginSalvar" method="post" name="operacao"
-				                	value="SALVAR" class="btn btn-md btn-primary btn-block">Salvar</button>
+				                	value="SALVAR" id="btnSalvar" class="btn btn-md btn-primary btn-block">Salvar</button>
 								</div>
 								<div class="col-xs-6 col-sm-6 col-md-6">
 									<a href="loginCliente" class="btn btn-md btn-default btn-block">Cancelar</a>

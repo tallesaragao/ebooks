@@ -21,7 +21,7 @@
 					<div class="alert alert-success alert-dismissible">
 						<span class="glyphicon glyphicon-ok"></span>
 						<strong>${sucesso}.</strong>				
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<button type="button" id="btnFecharMsgSucesso" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
@@ -35,7 +35,7 @@
 					<div class="alert alert-danger alert-dismissible">
 						<span class="glyphicon glyphicon-alert"></span>
 						<strong>${erro}.</strong>
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<button type="button" id="btnFecharMsgErro" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
@@ -75,13 +75,13 @@
 					<div class="col-xs-12">
 					<div class="row">
 						<div class="col-xs-6 col-sm-6 col-md-2">							
-							<button type="submit" class="btn btn-md btn-primary"
+							<button type="submit" class="btn btn-md btn-primary" id="btnPesquisar"
 							name="operacao" value="CONSULTAR" formaction="clienteConsultar">
 								<span class="glyphicon glyphicon-search"></span> Pesquisar
 							</button>
 						</div>
 						<div class="col-xs-6 col-md-2 btn-adicionar">			  	
-							<button class="btn btn-primary" type="submit" formaction="clienteForm">
+							<button class="btn btn-primary" type="submit" formaction="clienteForm" id="btnNovoCliente">
 								<span class="glyphicon glyphicon-plus"></span> Novo cliente
 							</button>
 						</div>
@@ -115,7 +115,7 @@
 											<td><span>${cliente.telefone.ddd} ${cliente.telefone.numero}</span></td>
 											<td>${cliente.email}</td>										
 											<td>
-												<button type="submit" data-toggle="tooltip" title="Detalhes"
+												<button type="submit" data-toggle="tooltip" title="Detalhes" id="btnDetalhes${cliente.id}"
 												class="btn btn-sm btn-default btn-icone" method="get"
 												formaction="clienteView?operacao=CONSULTAR&id=${cliente.id}">
 													<span class="glyphicon glyphicon-eye-open"></span>

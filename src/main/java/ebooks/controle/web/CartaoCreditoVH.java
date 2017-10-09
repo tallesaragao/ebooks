@@ -79,7 +79,7 @@ public class CartaoCreditoVH implements IViewHelper {
 		if(uri.equals(contexto + "/cartaoCreditoForm")) {
 			String idCliente = request.getParameter("idCliente");
 			request.setAttribute("idCliente", idCliente);
-			request.getRequestDispatcher("WEB-INF/jsp/cartaoCredito/form.jsp").forward(request, response);
+			request.getRequestDispatcher("cartaoCreditoFormBandeiras?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/cartaoCreditoEdit")) {
 			List<CartaoCredito> listaCartaoCredito = (List<CartaoCredito>) object;
@@ -88,7 +88,7 @@ public class CartaoCreditoVH implements IViewHelper {
 			request.setAttribute("operacao", "ALTERAR");
 			String idCliente = request.getParameter("idCliente");
 			request.setAttribute("idCliente", idCliente);
-			request.getRequestDispatcher("WEB-INF/jsp/cartaoCredito/form.jsp").forward(request, response);
+			request.getRequestDispatcher("cartaoCreditoEditBandeiras").forward(request, response);
 		}
 		if(uri.equals(contexto + "/cartaoCreditoSalvar")) {
 			if(object == null) {
@@ -124,7 +124,7 @@ public class CartaoCreditoVH implements IViewHelper {
 			String idCliente = request.getParameter("idCliente");
 			String sucesso = "Alteração efetuada com sucesso";
 			request.setAttribute("sucesso", sucesso);
-			request.getRequestDispatcher("clienteView?operacao=CONSULTAR&id=" + idCliente).forward(request, response);
+			response.sendRedirect("clienteView?operacao=CONSULTAR&id=" + idCliente);
 			return;
 		}
 		if(uri.equals(contexto + "/cartaoCreditoExcluir")) {

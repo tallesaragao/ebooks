@@ -55,8 +55,12 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/loginConsultar", new LoginVH());
 		vhs.put(contextoApp + "/loginAlterar", new LoginVH());
 		vhs.put(contextoApp + "/clienteForm", new ClienteVH());
+		vhs.put(contextoApp + "/clienteFormTiposEndereco", new TipoEnderecoVH());
+		vhs.put(contextoApp + "/clienteFormTiposTelefone", new TipoTelefoneVH());
 		vhs.put(contextoApp + "/clienteList", new ClienteVH());
 		vhs.put(contextoApp + "/clienteEdit", new ClienteVH());
+		vhs.put(contextoApp + "/clienteEditTiposEndereco", new TipoEnderecoVH());
+		vhs.put(contextoApp + "/clienteEditTiposTelefone", new TipoTelefoneVH());
 		vhs.put(contextoApp + "/clienteView", new ClienteVH());
 		vhs.put(contextoApp + "/clienteSalvar", new ClienteVH());
 		vhs.put(contextoApp + "/clienteAlterar", new ClienteVH());
@@ -65,6 +69,8 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/clienteAtivar", new ClienteVH());
 		vhs.put(contextoApp + "/clienteInativar", new ClienteVH());
 		vhs.put(contextoApp + "/cartaoCreditoForm", new CartaoCreditoVH());
+		vhs.put(contextoApp + "/cartaoCreditoFormBandeiras", new BandeiraVH());
+		vhs.put(contextoApp + "/cartaoCreditoEditBandeiras", new BandeiraVH());
 		vhs.put(contextoApp + "/cartaoCreditoList", new CartaoCreditoVH());
 		vhs.put(contextoApp + "/cartaoCreditoEdit", new CartaoCreditoVH());
 		vhs.put(contextoApp + "/cartaoCreditoView", new CartaoCreditoVH());

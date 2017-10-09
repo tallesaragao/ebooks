@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ebooks.dao.BandeiraDAO;
 import ebooks.dao.CartaoCreditoDAO;
 import ebooks.dao.CategoriaDAO;
 import ebooks.dao.ClienteDAO;
@@ -14,6 +15,9 @@ import ebooks.dao.GrupoPrecificacaoDAO;
 import ebooks.dao.IDAO;
 import ebooks.dao.LivroDAO;
 import ebooks.dao.LoginDAO;
+import ebooks.dao.TipoEnderecoDAO;
+import ebooks.dao.TipoTelefoneDAO;
+import ebooks.modelo.Bandeira;
 import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Categoria;
 import ebooks.modelo.Cliente;
@@ -22,6 +26,8 @@ import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.GrupoPrecificacao;
 import ebooks.modelo.Livro;
 import ebooks.modelo.Login;
+import ebooks.modelo.TipoEndereco;
+import ebooks.modelo.TipoTelefone;
 import ebooks.negocio.IStrategy;
 import ebooks.negocio.impl.AtivadorClientePrimeiroCadastro;
 import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
@@ -155,6 +161,9 @@ public class Fachada implements IFachada {
 		daos.put(Cliente.class.getName(), new ClienteDAO());
 		daos.put(Endereco.class.getName(), new EnderecoDAO());
 		daos.put(CartaoCredito.class.getName(), new CartaoCreditoDAO());
+		daos.put(Bandeira.class.getName(), new BandeiraDAO());
+		daos.put(TipoEndereco.class.getName(), new TipoEnderecoDAO());
+		daos.put(TipoTelefone.class.getName(), new TipoTelefoneDAO());
 	}
 
 	@Override

@@ -133,12 +133,32 @@
   
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/clienteFormTiposEndereco</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/clienteFormTiposTelefone</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
   	<url-pattern>/clienteList</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
   	<url-pattern>/clienteEdit</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/clienteEditTiposEndereco</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/clienteEditTiposTelefone</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
@@ -179,6 +199,16 @@
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
   	<url-pattern>/cartaoCreditoForm</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/cartaoCreditoFormBandeiras</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/cartaoCreditoEditBandeiras</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>

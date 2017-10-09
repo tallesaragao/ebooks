@@ -168,7 +168,7 @@ public class ClienteVH implements IViewHelper {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/clienteForm")) {
-			request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
+			request.getRequestDispatcher("clienteFormTiposEndereco?operacao=CONSULTAR").forward(request, response);
 			return;
 		}
 		if(uri.equals(contexto + "/clienteList")) {
@@ -179,8 +179,7 @@ public class ClienteVH implements IViewHelper {
 			List<Cliente> listaCliente = (List<Cliente>) object;
 			Cliente cliente = listaCliente.get(0);
 			request.setAttribute("cliente", cliente);
-			request.setAttribute("operacao", "ALTERAR");
-			request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
+			request.getRequestDispatcher("clienteEditTiposEndereco?operacao=CONSULTAR").forward(request, response);
 			return;
 		}
 		if(uri.equals(contexto + "/clienteView")) {

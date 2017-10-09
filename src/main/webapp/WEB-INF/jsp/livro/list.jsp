@@ -88,13 +88,13 @@
 					<div class="col-xs-12">
 					<div class="row">
 						<div class="col-xs-6 col-sm-6 col-md-2">							
-							<button type="submit" class="btn btn-md btn-primary"
+							<button type="submit" class="btn btn-md btn-primary" id="btnPesquisar"
 							name="operacao" value="CONSULTAR" formaction="livroConsultar">
 								<span class="glyphicon glyphicon-search"></span> Pesquisar
 							</button>
 						</div>
 						<div class="col-xs-6 col-md-2 btn-adicionar">			  	
-							<button class="btn btn-primary" type="submit" formaction="livroForm">
+							<button class="btn btn-primary" type="submit" id="btnNovoLivro" formaction="livroForm">
 								<span class="glyphicon glyphicon-plus"></span> Novo Livro
 							</button>
 						</div>
@@ -140,12 +140,12 @@
 											<td>${livro.editora.nome}</td>
 											<td>${livro.precificacao.precoVenda}</td>											
 											<td>
-												<button type="submit" data-toggle="tooltip" title="Editar"
+												<button type="submit" data-toggle="tooltip" title="Editar" id="btnEdit${livro.id}"
 												class="btn btn-sm btn-default btn-icone" method="get"
 												formaction="livroEdit?operacao=CONSULTAR&id=${livro.id}">
 													<span class="glyphicon glyphicon-pencil"></span>
 												</button>
-												<button type="submit" name="operacao" method="get" data-toggle="tooltip"
+												<button type="submit" name="operacao" method="get" data-toggle="tooltip" id="btnExcluir${livro.id}"
 												title="Excluir" value="EXCLUIR"	onclick="return excluir()"
 												class="btn btn-sm btn-danger botao-excluir btn-icone" formaction="livroExcluir?id=${livro.id}">
 													<span class="glyphicon glyphicon-trash"></span>

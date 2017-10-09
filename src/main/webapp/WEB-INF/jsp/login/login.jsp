@@ -67,10 +67,10 @@
 						<div class="row">
 							<div class="col-xs-6 col-sm-6 col-md-6">
 			                	<button type="submit" formaction="loginConsultar" method="post" name="operacao"
-			                	value="CONSULTAR" class="btn btn-md btn-success btn-block">Entrar</button>
+			                	value="CONSULTAR" id="btnLogar" class="btn btn-md btn-success btn-block">Entrar</button>
 							</div>
 							<div class="col-xs-6 col-sm-6 col-md-6">
-								<a href="loginForm" class="btn btn-md btn-primary btn-block">Registre-se</a>
+								<a id="btnRegistrar" href="loginForm" class="btn btn-md btn-primary btn-block">Registre-se</a>
 							</div>
 						</div>
 					</div>

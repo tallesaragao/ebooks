@@ -117,14 +117,14 @@
 				<c:choose>
 					<c:when test="${operacao eq 'ALTERAR'}">
 						<div class="form-group col-xs-1">
-							<button type="submit" name="operacao" value="ALTERAR" formaction="enderecoAlterar" class="btn btn-primary">
+							<button type="submit" name="operacao" value="ALTERAR" id="btnAlterar" formaction="enderecoAlterar" class="btn btn-primary">
 								Alterar
 							</button>
 						</div>					
 					</c:when>
 					<c:otherwise>
 						<div class="form-group col-xs-1">
-							<button type="submit" name="operacao" value="SALVAR" formaction="enderecoSalvar" class="btn btn-primary">
+							<button type="submit" name="operacao" value="SALVAR" id="btnSalvar" formaction="enderecoSalvar" class="btn btn-primary">
 								Salvar
 							</button>
 						</div>					

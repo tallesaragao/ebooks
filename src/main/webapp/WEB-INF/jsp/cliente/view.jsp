@@ -16,6 +16,34 @@
 	<div class="container">
 		<h1 class="page-header titulo">Informações do cliente</h1>
 	</div>
+	<c:if test="${sucesso != null}">
+			<div class="row">
+				<div class="col-md-5">
+					<div class="alert alert-success alert-dismissible">
+						<span class="glyphicon glyphicon-ok"></span>
+						<strong>${sucesso}.</strong>				
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</c:if>
+			
+		<c:if test="${erro != null}">
+			<div class="row">
+				<div class="col-md-5">
+					<div class="alert alert-danger alert-dismissible">
+						<span class="glyphicon glyphicon-alert"></span>
+						<strong>${erro}.</strong>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</c:if>
+	
 	<form action="#" method="post">
 		<div class="container">
 			<fieldset>
@@ -45,12 +73,12 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<button class="botao-voltar btn-icone btn btn-sm btn-default" type="button"
-						data-toggle="tooltip" title="Voltar">
+						data-toggle="tooltip" title="Voltar" id="btnVoltar">
 							<span class="glyphicon glyphicon-arrow-left"></span>
 						</button>
 								
 						<button type="submit" data-toggle="tooltip" title="Editar"
-						class="btn btn-sm btn-default btn-icone" method="get"
+						class="btn btn-sm btn-default btn-icone" method="get" id="btnClienteEdit"
 						formaction="clienteEdit?operacao=CONSULTAR&id=${cliente.id}">
 							<span class="glyphicon glyphicon-pencil"></span>
 						</button>
@@ -58,14 +86,14 @@
 						<c:choose>
 							<c:when test="${cliente.ativo}">
 								<button type="submit" data-toggle="tooltip" title="Inativar"
-								class="btn btn-sm btn-warning btn-icone" method="get"
+								class="btn btn-sm btn-warning btn-icone" method="get" id="btnClienteInativar"
 								formaction="clienteInativar?operacao=CONSULTAR&id=${cliente.id}">
 									<span class="glyphicon glyphicon-ban-circle"></span>
 								</button>
 							</c:when>
 							<c:otherwise>
 								<button type="submit" data-toggle="tooltip" title="Ativar"
-								class="btn btn-sm btn-success btn-icone" method="get"
+								class="btn btn-sm btn-success btn-icone" method="get" id="btnClienteAtivar"
 								formaction="clienteAtivar?operacao=CONSULTAR&id=${cliente.id}">
 									<span class="glyphicon glyphicon-ok-sign"></span>
 								</button>
@@ -74,7 +102,7 @@
 							
 												
 						<button type="submit" name="operacao" method="get" data-toggle="tooltip"
-						title="Excluir" value="EXCLUIR"	onclick="return excluir()"
+						title="Excluir" value="EXCLUIR"	onclick="return excluir()" id="btnClienteExcluir"
 						class="btn btn-sm btn-danger botao-excluir btn-icone"
 						 formaction="clienteExcluir?id=${cliente.id}">
 							<span class="glyphicon glyphicon-trash"></span>
@@ -129,12 +157,12 @@
 											<td>${endereco.pais}</td>					
 											<td>
 												<button type="submit" data-toggle="tooltip" title="Editar"
-												class="btn btn-sm btn-default btn-icone" method="get"
+												class="btn btn-sm btn-default btn-icone" method="get" id="btnEnderecoEdit${endereco.id}"
 												formaction="enderecoEdit?operacao=CONSULTAR&id=${endereco.id}&idCliente=${cliente.id}">
 													<span class="glyphicon glyphicon-pencil"></span>
 												</button>
 												<button type="submit" name="operacao" method="get" data-toggle="tooltip"
-												title="Excluir" value="EXCLUIR"	onclick="return excluir()"
+												title="Excluir" value="EXCLUIR"	onclick="return excluir()" id="btnEnderecoExcluir${endereco.id}"
 												class="btn btn-sm btn-danger botao-excluir btn-icone"
 												 formaction="enderecoExcluir?id=${endereco.id}&idCliente=${cliente.id}">
 													<span class="glyphicon glyphicon-trash"></span>
@@ -187,12 +215,12 @@
 											<td>${cartaoCredito.bandeira.nome}</td>						
 											<td>
 												<button type="submit" data-toggle="tooltip" title="Editar"
-												class="btn btn-sm btn-default btn-icone" method="get"
+												class="btn btn-sm btn-default btn-icone" method="get" id="btnCarCredEdit${cartaoCredito.id}"
 												formaction="cartaoCreditoEdit?operacao=CONSULTAR&id=${cartaoCredito.id}&idCliente=${cliente.id}">
 													<span class="glyphicon glyphicon-pencil"></span>
 												</button>
 												<button type="submit" name="operacao" method="get" data-toggle="tooltip"
-												title="Excluir" value="EXCLUIR"	onclick="return excluir()"
+												title="Excluir" value="EXCLUIR"	onclick="return excluir()" id="btnCarCredExcluir${cartaoCredito.id}"
 												class="btn btn-sm btn-danger botao-excluir btn-icone"
 												formaction="cartaoCreditoExcluir?id=${cartaoCredito.id}&idCliente=${cliente.id}">
 													<span class="glyphicon glyphicon-trash"></span>

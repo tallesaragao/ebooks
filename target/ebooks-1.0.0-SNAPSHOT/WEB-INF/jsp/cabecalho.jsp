@@ -6,7 +6,6 @@
 				<a href="#" class="navbar-brand navbar-logo">
 					Livraria Online
 				</a>
-				<p class="navbar-text">Olá, <c:out value="${login.usuario}" default="visitante"></c:out></p>
 				<button type="button" class="navbar-left navbar-toggle collapsed"
 				data-toggle="collapse" data-target="#menu-collapse"
 				aria-expanded="false">
@@ -18,10 +17,11 @@
 			</div>
 			<div id="menu-collapse" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="loginCliente">Login</a></li>
-					<li><a href="categoriaList">Categoria</a></li>
-					<li><a href="livroList">Livro</a></li>
-					<li><a href="clienteList">Cliente</a></li>
+					<li><span class="navbar-text">Olá, <c:out value="${login.usuario}" default="visitante"></c:out></span></li>
+					<li><a id="loginCliente" href="loginCliente">Login</a></li>
+					<li><a id="categoriaList" href="categoriaList">Categoria</a></li>
+					<li><a id="livroList" href="livroList">Livro</a></li>
+					<li><a id="clienteList" href="clienteList">Cliente</a></li>
 				</ul>
 			</div>
 		</div>

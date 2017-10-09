@@ -51,14 +51,16 @@
 					<c:when test="${operacao eq 'ALTERAR'}">
 						<input type="hidden" name="id" value="${categoria.id}"/>
 						<div class="form-group col-xs-1">
-							<button type="submit" name="operacao" value="ALTERAR" formaction="categoriaAlterar" class="btn btn-primary">
+							<button type="submit" name="operacao" formaction="categoriaAlterar"
+							id="btnAlterar" class="btn btn-primary" value="ALTERAR">
 								Alterar
 							</button>
 						</div>					
 					</c:when>
 					<c:otherwise>
 						<div class="form-group col-xs-1">
-							<button type="submit" name="operacao" value="SALVAR" formaction="categoriaSalvar" class="btn btn-primary">
+							<button type="submit" name="operacao" formaction="categoriaSalvar" 
+							id="btnSalvar" class="btn btn-primary" value="SALVAR">
 								Salvar
 							</button>
 						</div>					
