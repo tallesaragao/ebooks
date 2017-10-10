@@ -226,6 +226,5 @@
 	<script src="resources/js/jquery-3.1.1.js"></script>
 	<script src="resources/bootstrap/js/bootstrap.js"></script>
 	<script src="resources/js/jquery.mask.js"></script>
-	<script src="resources/js/clienteForm.js"></script>
 </body>
 </html>
