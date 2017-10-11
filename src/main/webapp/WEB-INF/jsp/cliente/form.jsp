@@ -147,7 +147,7 @@
 					<div class="row">
 						<div class="form-group col-xs-12 col-sm-4 col-md-2">
 							<label for="tipoEndereco" class="control-label">Tipo de endereço</label>
-							<select name="tipoEndereco" class="form-control" required>
+							<select name="tipoEndereco" class="form-control">
 								<option value="" disabled selected>Escolha um tipo</option>
 								<c:forEach items="${tiposEndereco}" var="tipoEnd">
 									<option <c:if test="${endereco.tipoEndereco.id eq tipoEnd.id}">selected</c:if> value="${tipoEnd.id}">
@@ -186,7 +186,7 @@
 					
 					<div class="form-group col-xs-12 col-sm-4 col-md-2">
 						<label for="tipoTelefone" class="control-label">Tipo de telefone</label>
-						<select name="tipoTelefone" class="form-control" required>
+						<select name="tipoTelefone" class="form-control">
 							<option value="" disabled selected>Escolha um tipo</option>
 							<c:forEach items="${tiposTelefone}" var="tipoTel">
 								<option <c:if test="${cliente.telefone.tipoTelefone.id eq tipoTel.id}">selected</c:if> value="${tipoTel.id}">
@@ -226,5 +226,6 @@
 	<script src="resources/js/jquery-3.1.1.js"></script>
 	<script src="resources/bootstrap/js/bootstrap.js"></script>
 	<script src="resources/js/jquery.mask.js"></script>
+	<script src="resources/js/clienteForm.js"></script>
 </body>
 </html>

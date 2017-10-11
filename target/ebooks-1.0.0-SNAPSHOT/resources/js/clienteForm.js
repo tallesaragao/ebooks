@@ -52,7 +52,6 @@ $(document).ready(function() {
                         $("#cidade").val(dados.localidade);
                         $("#estado").val(dados.uf);
                         $("#pais").val("Brasil");
-                        $("#numeroEnd").focus();
                     } //end if.
                     else {
                         //CEP pesquisado não foi encontrado.

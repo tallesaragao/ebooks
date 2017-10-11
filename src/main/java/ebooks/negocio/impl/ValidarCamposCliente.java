@@ -25,11 +25,11 @@ public class ValidarCamposCliente implements IStrategy {
 		if (cliente.getDataNascimento() == null || cliente.getDataNascimento().after(new Date())) {
 			sb.append("Data de nascimento inválida:");
 		}
-		if (cliente.getCpf() == null || cliente.getCpf().equals("")) {
-			sb.append("CPF deve estar preechido:");
-		}
 		if (cliente.getGenero() == null || cliente.getGenero().charValue() == ' ') {
 			sb.append("Gênero deve ser informado:");
+		}
+		if (cliente.getCpf() == null || cliente.getCpf().equals("")) {
+			sb.append("CPF deve estar preechido:");
 		}
 		else {
 			CPFValidator valCpf = new CPFValidator();

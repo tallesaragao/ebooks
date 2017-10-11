@@ -116,7 +116,7 @@
 											<td>${cliente.email}</td>										
 											<td>
 												<button type="submit" data-toggle="tooltip" title="Detalhes" id="btnDetalhes${cliente.id}"
-												class="btn btn-sm btn-default btn-icone" method="get"
+												class="btn btn-sm btn-default btn-icone" method="get" name="detalhes"
 												formaction="clienteView?operacao=CONSULTAR&id=${cliente.id}">
 													<span class="glyphicon glyphicon-eye-open"></span>
 												</button>
@@ -128,7 +128,7 @@
 						</div>
 					</div>
 				</div>
-			</c:if>		
+			</c:if>
 		</form>
 		
 	</div>

@@ -12,6 +12,7 @@ import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Telefone;
+import ebooks.modelo.TipoTelefone;
 
 public class ClienteDAO extends AbstractDAO {
 
@@ -248,6 +249,7 @@ public class ClienteDAO extends AbstractDAO {
 					+ " join pessoa_fisica pf on (c.id_pessoa_fisica = pf.id_pessoa_fisica)"
 					+ " join pessoa p on (pf.id_pessoa = p.id_pessoa)"
 					+ " join telefone t on (c.id_telefone = t.id_telefone)"
+					+ " join tipo_telefone te on (te.id_tipo_telefone = t.id_tipo_telefone)"
 					+ " where p.nome like ? and pf.cpf like ? and c.genero like ? and c.email like ?";
 		if(clienteConsulta.getId() != null) {
 			sql += "and c.id_cliente=?";
@@ -286,6 +288,10 @@ public class ClienteDAO extends AbstractDAO {
 				cliente.setNome(rs.getString("p.nome"));
 				
 				Telefone telefone = new Telefone();
+				TipoTelefone tipoTelefone = new TipoTelefone();
+				tipoTelefone.setId(rs.getLong("te.id_tipo_telefone"));
+				tipoTelefone.setNome(rs.getString("te.nome"));
+				telefone.setTipoTelefone(tipoTelefone);
 				telefone.setId(rs.getLong("t.id_telefone"));
 				telefone.setDdd(rs.getString("t.ddd"));
 				telefone.setNumero(rs.getString("t.numero"));

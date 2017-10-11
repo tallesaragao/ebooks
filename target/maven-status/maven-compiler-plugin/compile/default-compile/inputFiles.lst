@@ -36,6 +36,7 @@ D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\modelo\Editora.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\ValidarNumeroCartaoCredito.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\IDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\EditoraDAO.java
+D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\negocio\impl\VerificarExistenciaCliente.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\TipoTelefoneDAO.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\controle\web\EnderecoVH.java
 D:\Users\tallesaragao\workspace\ebooks\src\main\java\ebooks\dao\TipoEnderecoDAO.java

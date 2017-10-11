@@ -40,6 +40,7 @@ import ebooks.negocio.impl.ValidarCamposCliente;
 import ebooks.negocio.impl.ValidarCamposEndereco;
 import ebooks.negocio.impl.ValidarCamposLivro;
 import ebooks.negocio.impl.ValidarCamposLogin;
+import ebooks.negocio.impl.VerificarExistenciaCliente;
 
 public class Fachada implements IFachada {
 
@@ -63,6 +64,7 @@ public class Fachada implements IFachada {
 		AtivadorClientePrimeiroCadastro ativCliPrimCad = new AtivadorClientePrimeiroCadastro();
 		ValidarCamposEndereco valCampEnd = new ValidarCamposEndereco();
 		ValidarCamposCartaoCredito valCampCarCred= new ValidarCamposCartaoCredito();
+		VerificarExistenciaCliente verExistCli = new VerificarExistenciaCliente();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -111,6 +113,7 @@ public class Fachada implements IFachada {
 		List<IStrategy> lClienteSalvar = new ArrayList<>();
 		lClienteSalvar.add(compDtCad);
 		lClienteSalvar.add(valCampCli);
+		lClienteSalvar.add(verExistCli);
 		lClienteSalvar.add(ativCliPrimCad);
 		List<IStrategy> lClienteAlterar = new ArrayList<>();
 		lClienteAlterar.add(valCampCli);

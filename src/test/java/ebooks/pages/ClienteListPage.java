@@ -3,6 +3,7 @@ package ebooks.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import ebooks.modelo.Cliente;
 
@@ -18,11 +19,13 @@ public class ClienteListPage {
 	}
 	
 	public ClienteFormPage novo() {
+		visitar();
 		driver.findElement(By.id("btnNovoCliente")).click();
 		return new ClienteFormPage(driver);
 	}
 	
 	public boolean pesquisar(Cliente cliente) {
+		visitar();
 		WebElement nome = driver.findElement(By.name("nome"));
 		WebElement email = driver.findElement(By.name("email"));
 		WebElement cpf = driver.findElement(By.name("cpf"));
@@ -68,7 +71,37 @@ public class ClienteListPage {
 		
 		return contemNome && contemEmail && contemCpf && contemGenero;
 		
+	}
+	
+	public ClienteViewPage detalhes(Cliente cliente) {
+		pesquisar(cliente);
+		WebElement btnDetalhes;
+		if(cliente.getId() != null) {
+			btnDetalhes = driver.findElement(By.id("btnDetalhes" + cliente.getId()));
+		}
+		else {
+			btnDetalhes = driver.findElements(By.name("detalhes")).get(0);
+		}
 		
-		
+		btnDetalhes.click();
+		return new ClienteViewPage(driver);
+	}
+	
+	public boolean verificaSeClienteFoiSalvo() {
+		String codigoFontePagina = driver.getPageSource();
+		boolean resultado = codigoFontePagina.contains("Cliente cadastrado com sucesso");
+		return resultado;
+	}
+	
+	public boolean verificaSeClienteFoiAlterado() {
+		String codigoFontePagina = driver.getPageSource();
+		boolean resultado = codigoFontePagina.contains("Alteração efetuada com sucesso");
+		return resultado;
+	}
+	
+	public boolean verificaSeExcluiu() {
+		String codigoFontePagina = driver.getPageSource();
+		boolean resultado = codigoFontePagina.contains("Exclusão efetuada com sucesso");
+		return resultado;
 	}
 }

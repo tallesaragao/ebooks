@@ -57,7 +57,9 @@ public class ClienteVH implements IViewHelper {
 				endereco.setPais(pais);
 				endereco.setIdentificacao(identificacao);
 				TipoEndereco tipoEndereco = new TipoEndereco();
-				tipoEndereco.setId(Long.valueOf(tipoEnderecoId));
+				if(tipoEnderecoId != null) {
+					tipoEndereco.setId(Long.valueOf(tipoEnderecoId));
+				}
 				endereco.setTipoEndereco(tipoEndereco);
 				List<Endereco> enderecos = new ArrayList<>();
 				enderecos.add(endereco);
@@ -66,7 +68,9 @@ public class ClienteVH implements IViewHelper {
 				telefone.setDdd(ddd);
 				telefone.setNumero(numeroTel);
 				TipoTelefone tipoTelefone = new TipoTelefone();
-				tipoTelefone.setId(Long.valueOf(tipoTelefoneId));
+				if(tipoTelefoneId != null) {
+					tipoTelefone.setId(Long.valueOf(tipoTelefoneId));
+				}
 				telefone.setTipoTelefone(tipoTelefone);
 				
 				cliente.setNome(nome);
@@ -128,7 +132,9 @@ public class ClienteVH implements IViewHelper {
 				telefone.setDdd(ddd);
 				telefone.setNumero(numeroTel);
 				TipoTelefone tipoTelefone = new TipoTelefone();
-				tipoTelefone.setId(Long.valueOf(tipoTelefoneId));
+				if(tipoTelefoneId != null) {
+					tipoTelefone.setId(Long.valueOf(tipoTelefoneId));
+				}
 				telefone.setTipoTelefone(tipoTelefone);
 				
 				if(ativo != null && ativo.equals("true")) {
@@ -224,6 +230,7 @@ public class ClienteVH implements IViewHelper {
 				Cliente cliente = (Cliente) this.getEntidade(request);
 				request.setAttribute("cliente", cliente);
 				request.setAttribute("mensagens", mensagens);
+				request.setAttribute("operacao", "ALTERAR");
 				request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
 				return;
 			}
