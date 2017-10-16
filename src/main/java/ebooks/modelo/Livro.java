@@ -21,6 +21,7 @@ public class Livro extends EntidadeDominio {
 	private Precificacao precificacao;
 	private List<Ativacao> ativacoes;
 	private List<Inativacao> inativacoes;
+	private Estoque estoque;
 
 	public String getAno() {
 		return ano;
@@ -164,5 +165,13 @@ public class Livro extends EntidadeDominio {
 
 	public void setInativacoes(List<Inativacao> inativacoes) {
 		this.inativacoes = inativacoes;
+	}
+
+	public Estoque getEstoque() {
+		return estoque;
+	}
+
+	public void setEstoque(Estoque estoque) {
+		this.estoque = estoque;
 	}
 }

@@ -10,6 +10,7 @@ ebooks\modelo\Ativacao.class
 ebooks\modelo\Livro.class
 ebooks\negocio\impl\ValidarNumeroCartaoCredito.class
 ebooks\negocio\impl\AtivadorClientePrimeiroCadastro.class
+ebooks\negocio\impl\VerificarExistenciaCliente.class
 ebooks\modelo\Login.class
 ebooks\dao\CartaoCreditoDAO.class
 ebooks\controle\web\IViewHelper.class

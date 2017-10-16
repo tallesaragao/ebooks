@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 
 public class ConnectionFactory {
 	private DataSource dataSource;
+	private static Connection conexao;
 	
 	public ConnectionFactory() {
 		try {
@@ -23,9 +24,12 @@ public class ConnectionFactory {
 	
 	public Connection getConnection() {
 		try {
-			return dataSource.getConnection();
+			if(conexao == null || conexao.isClosed()) {
+				conexao = dataSource.getConnection();
+			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
+		return conexao;
 	}
 }
