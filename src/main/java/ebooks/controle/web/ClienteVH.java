@@ -15,6 +15,7 @@ import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.Login;
 import ebooks.modelo.Telefone;
 import ebooks.modelo.TipoEndereco;
 import ebooks.modelo.TipoTelefone;
@@ -45,6 +46,9 @@ public class ClienteVH implements IViewHelper {
 				String pais = request.getParameter("pais");
 				String tipoEnderecoId = request.getParameter("tipoEndereco");
 				String identificacao = request.getParameter("identificacao");
+				String usuario = request.getParameter("usuario");
+				String senha = request.getParameter("senha");
+				String senhaConfirmacao = request.getParameter("senhaConfirmacao");
 
 				Endereco endereco = new Endereco();
 				endereco.setLogradouro(logradouro);
@@ -72,6 +76,11 @@ public class ClienteVH implements IViewHelper {
 					tipoTelefone.setId(Long.valueOf(tipoTelefoneId));
 				}
 				telefone.setTipoTelefone(tipoTelefone);
+
+				Login login = new Login();
+				login.setUsuario(usuario);
+				login.setSenha(senha);
+				login.setSenhaConfirmacao(senhaConfirmacao);
 				
 				cliente.setNome(nome);
 				cliente.setCpf(cpf);
@@ -89,6 +98,7 @@ public class ClienteVH implements IViewHelper {
 				}
 				cliente.setEnderecos(enderecos);
 				cliente.setTelefone(telefone);
+				cliente.setLogin(login);
 			}
 			if(operacao.equals("CONSULTAR")) {
 				String id = request.getParameter("id");

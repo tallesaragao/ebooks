@@ -198,6 +198,36 @@
 				</div>
 			</fieldset>
 			</br>
+			<c:if test="${operacao != 'ALTERAR' }">
+				<fieldset>
+						<legend>
+							<span class="legend-logo glyphicon glyphicon-log-in"></span> Login
+						</legend>
+					<div class="row">
+						<div class="col-sm-6 col-md-4">
+							<div class="form-group">
+								<label for="usuario" class="control-label">Usuário</label>
+								<input type="text" name="usuario" placeholder="Usuário" class="form-control"/>
+							</div>
+						</div>
+						
+						<div class="col-sm-6 col-md-4">
+							<div class="form-group">
+								<label for="senha" class="control-label">Senha</label>
+								<input type="password" name="senha" placeholder="Senha" class="form-control"/>
+							</div>
+						</div>
+						
+						<div class="col-sm-6 col-md-4">
+							<div class="form-group">
+								<label for="senhaConfirmacao" class="control-label">Confirme a senha</label>
+								<input type="password" name="senhaConfirmacao" placeholder="Confirmação" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				</br>
+			</c:if>
 			<div class="row">
 				<c:choose>
 					<c:when test="${operacao eq 'ALTERAR'}">

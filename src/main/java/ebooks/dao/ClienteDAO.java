@@ -11,6 +11,7 @@ import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.Login;
 import ebooks.modelo.Telefone;
 import ebooks.modelo.TipoTelefone;
 
@@ -73,11 +74,17 @@ public class ClienteDAO extends AbstractDAO {
 				cliente.setId(generatedKeys.getLong(1));
 			}
 			ps.close();
+			
 			conexao.commit();
 			Endereco endereco = cliente.getEnderecos().get(0);
 			endereco.setPessoa(cliente);
 			EnderecoDAO endDAO = new EnderecoDAO();
 			endDAO.salvar(endereco);
+
+			LoginDAO loginDAO = new LoginDAO();
+			Login login = cliente.getLogin();
+			login.setCliente(cliente);
+			loginDAO.salvar(login);
 			return true;
 		}
 		catch(SQLException e) {
@@ -201,6 +208,7 @@ public class ClienteDAO extends AbstractDAO {
 			}
 			if(conexao.isClosed()) {
 				conexao = factory.getConnection();
+				conexao.setAutoCommit(false);
 			}
 
 			

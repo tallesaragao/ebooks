@@ -7,6 +7,7 @@ import br.com.caelum.stella.validation.InvalidStateException;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.Login;
 import ebooks.modelo.Telefone;
 import ebooks.negocio.IStrategy;
 
@@ -61,6 +62,23 @@ public class ValidarCamposCliente implements IStrategy {
 		}
 		else {
 			sb.append("Dados do telefone devem estar preenchidos:");
+		}
+		Login login = cliente.getLogin();
+		if(login.getUsuario() == null || login.getUsuario().equals("")) {
+			sb.append("Nome de usuário é obrigatório:");
+		}
+		if(login.getSenha() == null || login.getSenha().equals("")) {
+			sb.append("Senha é obrigatória:");
+		}
+		if(login.getSenhaConfirmacao() == null || login.getSenhaConfirmacao().equals("")) {
+			sb.append("É obrigatório confirmar a senha:");
+		}
+		else {
+			ValidarSenha validarSenha = new ValidarSenha();
+			String resultado = validarSenha.processar(login);
+			if(resultado != null) {
+				sb.append(resultado);
+			}
 		}
 		if (sb.length() > 0) {
 			return sb.toString();

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ebooks.modelo.Cliente;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Login;
 
@@ -15,14 +16,16 @@ public class LoginDAO extends AbstractDAO {
 	@Override
 	public boolean salvar(EntidadeDominio entidade) throws SQLException {
 		Login login = (Login) entidade;
+		Cliente clienteLogin = login.getCliente();
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "insert into login(usuario, senha, dt_cadastro) values(?,?,?)";
+			String sql = "insert into login(usuario, senha, dt_cadastro, id_cliente) values(?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			ps.setString(1, login.getUsuario());
 			ps.setString(2, login.getSenha());
-			ps.setDate(3, new Date(login.getDataCadastro().getTime()));
+			ps.setDate(3, new Date(clienteLogin.getDataCadastro().getTime()));
+			ps.setLong(4, clienteLogin.getId());
 			ps.execute();
 			ps.close();
 			conexao.commit();
@@ -119,6 +122,15 @@ public class LoginDAO extends AbstractDAO {
 				login.setId(rs.getLong("id_login"));
 				login.setUsuario(rs.getString("usuario"));
 				login.setSenha(rs.getString("senha"));
+				Long idCliente = rs.getLong("id_cliente");
+				Cliente cliente = new Cliente();
+				cliente.setId(idCliente);
+				ClienteDAO cliDAO = new ClienteDAO();
+				List<EntidadeDominio> consultaCliente = cliDAO.consultar(cliente);
+				if(!consultaCliente.isEmpty()) {
+					cliente = (Cliente) consultaCliente.get(0);
+					login.setCliente(cliente);
+				}
 				consulta.add(login);
 			}
 		}
