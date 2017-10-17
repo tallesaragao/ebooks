@@ -305,6 +305,19 @@ public class LivroVH implements IViewHelper {
 			request.setAttribute("sucesso", sucesso);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 		}
+		if(uri.equals(contexto + "/livroCarrinho")) {
+			if(object == null) {
+				String erro = "Nenhum livro encontrado";
+				request.setAttribute("erro", erro);
+				request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
+				return;
+			}
+			List<Livro> listaLivros = (List<Livro>) object;
+			Livro livro = listaLivros.get(0);
+			request.setAttribute("livro", livro);
+			request.setAttribute("operacao", "");
+			request.getRequestDispatcher("carrinhoAdicionar?operacao=").forward(request, response);
+		}
 	}
 
 }

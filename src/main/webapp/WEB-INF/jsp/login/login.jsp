@@ -70,7 +70,7 @@
 			                	value="CONSULTAR" id="btnLogar" class="btn btn-md btn-success btn-block">Entrar</button>
 							</div>
 							<div class="col-xs-6 col-sm-6 col-md-6">
-								<a id="btnRegistrar" href="loginForm" class="btn btn-md btn-primary btn-block">Registre-se</a>
+								<a id="btnRegistrar" href="clienteForm" class="btn btn-md btn-primary btn-block">Registre-se</a>
 							</div>
 						</div>
 					</div>

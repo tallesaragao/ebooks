@@ -53,6 +53,11 @@ public class LoginVH implements IViewHelper {
 		if(uri.equals(contexto + "/loginCliente")) {
 			request.getRequestDispatcher("WEB-INF/jsp/login/login.jsp").forward(request, response);
 		}
+		if(uri.equals(contexto + "/logoutCliente")) {
+			HttpSession session = request.getSession();
+			session.invalidate();
+			response.sendRedirect("loginCliente");
+		}
 		if(uri.equals(contexto + "/loginForm")) {
 			request.getRequestDispatcher("WEB-INF/jsp/login/form.jsp").forward(request, response);
 		}
@@ -78,7 +83,7 @@ public class LoginVH implements IViewHelper {
 				HttpSession session = request.getSession();
 				session.setAttribute("login", login);
 				request.setAttribute("operacao", "");
-				response.sendRedirect("clienteForm");
+				response.sendRedirect("clienteView?operacao=CONSULTAR&id=" + login.getCliente().getId());
 				return;
 			}
 			request.setAttribute("erro", "Usuário ou senha incorretos");

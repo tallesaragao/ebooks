@@ -20,23 +20,23 @@ public class LoginDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "insert into login(usuario, senha, dt_cadastro, id_cliente) values(?,?,?,?)";
-			PreparedStatement ps = conexao.prepareStatement(sql);
+			String sql = "insert into login(usuario, senha, dt_cadastro) values(?,?,?)";
+			PreparedStatement ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, login.getUsuario());
 			ps.setString(2, login.getSenha());
 			ps.setDate(3, new Date(clienteLogin.getDataCadastro().getTime()));
-			ps.setLong(4, clienteLogin.getId());
 			ps.execute();
+			ResultSet generatedKeys = ps.getGeneratedKeys();
+			while(generatedKeys.next()) {
+				entidade.setId(generatedKeys.getLong(1));
+			}
 			ps.close();
-			conexao.commit();
 			return true;
 		}
 		catch(SQLException e) {
+			e.printStackTrace();
 			conexao.rollback();
 			return false;
-		}
-		finally {
-			conexao.close();
 		}
 	}
 
@@ -122,16 +122,24 @@ public class LoginDAO extends AbstractDAO {
 				login.setId(rs.getLong("id_login"));
 				login.setUsuario(rs.getString("usuario"));
 				login.setSenha(rs.getString("senha"));
-				Long idCliente = rs.getLong("id_cliente");
-				Cliente cliente = new Cliente();
-				cliente.setId(idCliente);
-				ClienteDAO cliDAO = new ClienteDAO();
-				List<EntidadeDominio> consultaCliente = cliDAO.consultar(cliente);
+				consulta.add(login);
+			}
+			
+
+			ClienteDAO cliDAO = new ClienteDAO();
+			for(EntidadeDominio ent : consulta) {
+				Login login = (Login) ent;
+				Cliente clienteConsulta = new Cliente();
+				clienteConsulta.setLogin(login);
+				List<EntidadeDominio> consultaCliente = cliDAO.consultar(clienteConsulta);
 				if(!consultaCliente.isEmpty()) {
-					cliente = (Cliente) consultaCliente.get(0);
+					Cliente cliente = (Cliente) consultaCliente.get(0);
 					login.setCliente(cliente);
 				}
-				consulta.add(login);
+			}
+			
+			if(conexao.isClosed()) {
+				conexao = factory.getConnection();
 			}
 		}
 		catch(SQLException e) {

@@ -60,14 +60,23 @@ public class ClienteDAO extends AbstractDAO {
 				idTelefone = generatedKeys.getLong(1);
 			}
 			ps.close();
+
+			LoginDAO loginDAO = new LoginDAO();
+			Login login = cliente.getLogin();
+			login.setCliente(cliente);
+			if(!loginDAO.salvar(login)) {
+				conexao.rollback();
+				return false;
+			}
 			
-			sql = "insert into cliente (email, fl_ativo, genero, id_pessoa_fisica, id_telefone) values(?,?,?,?,?)";
+			sql = "insert into cliente (email, fl_ativo, genero, id_pessoa_fisica, id_telefone, id_login) values(?,?,?,?,?,?)";
 			ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, cliente.getEmail());
 			ps.setBoolean(2, cliente.isAtivo());
 			ps.setString(3, String.valueOf(cliente.getGenero()));
 			ps.setLong(4, idPessoaFisica);
 			ps.setLong(5, idTelefone);
+			ps.setLong(6, login.getId());
 			ps.execute();
 			generatedKeys = ps.getGeneratedKeys();
 			while(generatedKeys.next()) {
@@ -75,16 +84,13 @@ public class ClienteDAO extends AbstractDAO {
 			}
 			ps.close();
 			
-			conexao.commit();
 			Endereco endereco = cliente.getEnderecos().get(0);
 			endereco.setPessoa(cliente);
 			EnderecoDAO endDAO = new EnderecoDAO();
-			endDAO.salvar(endereco);
-
-			LoginDAO loginDAO = new LoginDAO();
-			Login login = cliente.getLogin();
-			login.setCliente(cliente);
-			loginDAO.salvar(login);
+			if(!endDAO.salvar(endereco)) {
+				conexao.rollback();
+				return false;
+			}
 			return true;
 		}
 		catch(SQLException e) {
@@ -258,9 +264,13 @@ public class ClienteDAO extends AbstractDAO {
 					+ " join pessoa p on (pf.id_pessoa = p.id_pessoa)"
 					+ " join telefone t on (c.id_telefone = t.id_telefone)"
 					+ " join tipo_telefone te on (te.id_tipo_telefone = t.id_tipo_telefone)"
+					+ " join login l on (l.id_login = c.id_login)"
 					+ " where p.nome like ? and pf.cpf like ? and c.genero like ? and c.email like ?";
 		if(clienteConsulta.getId() != null) {
 			sql += "and c.id_cliente=?";
+		}
+		if(clienteConsulta.getLogin() != null && clienteConsulta.getLogin().getId() != null) {
+			sql += "and c.id_login=?";
 		}
 		try {
 			PreparedStatement ps = conexao.prepareStatement(sql);
@@ -283,6 +293,9 @@ public class ClienteDAO extends AbstractDAO {
 			if(clienteConsulta.getId() != null) {
 				ps.setLong(5, clienteConsulta.getId());
 			}
+			if(clienteConsulta.getLogin() != null && clienteConsulta.getLogin().getId() != null) {
+				ps.setLong(5, clienteConsulta.getLogin().getId());
+			}
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				Cliente cliente = new Cliente();
@@ -304,6 +317,14 @@ public class ClienteDAO extends AbstractDAO {
 				telefone.setDdd(rs.getString("t.ddd"));
 				telefone.setNumero(rs.getString("t.numero"));
 				cliente.setTelefone(telefone);
+				
+				Login login = new Login();
+				login.setId(rs.getLong("l.id_login"));
+				login.setUsuario(rs.getString("l.usuario"));
+				login.setSenha(rs.getString("l.senha"));
+				login.setDataCadastro(rs.getDate("l.dt_cadastro"));
+				cliente.setLogin(login);
+				
 				consulta.add(cliente);
 			}
 			ps.close();
@@ -333,7 +354,6 @@ public class ClienteDAO extends AbstractDAO {
 					enderecos.add((Endereco) ent);
 				}
 				cliente.setEnderecos(enderecos);
-				
 			}
 		}
 		catch(SQLException e) {

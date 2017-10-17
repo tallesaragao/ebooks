@@ -207,7 +207,8 @@
 						<div class="col-sm-6 col-md-4">
 							<div class="form-group">
 								<label for="usuario" class="control-label">Usuário</label>
-								<input type="text" name="usuario" placeholder="Usuário" class="form-control"/>
+								<input type="text" name="usuario" value="${cliente.login.usuario}"
+								placeholder="Usuário" class="form-control"/>
 							</div>
 						</div>
 						

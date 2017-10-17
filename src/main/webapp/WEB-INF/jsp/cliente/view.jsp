@@ -51,6 +51,8 @@
 					<span class="legend-logo glyphicon glyphicon-user"></span> Dados pessoais
 				</legend>
 				<dl class="dl-horizontal">
+					<dt>USUÁRIO</dt>
+					<dd>${cliente.login.usuario}</dd>
 					<dt>NOME</dt>
 					<dd>${cliente.nome}</dd>
 					<dt>CPF</dt>
