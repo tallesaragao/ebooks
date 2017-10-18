@@ -2,6 +2,7 @@ package ebooks.controle.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -52,7 +53,7 @@ public class PedidoVH implements IViewHelper {
 			List<ItemPedido> itensPedido = pedido.getItensPedido();
 			boolean livroIgual = false;
 			for(ItemPedido item : itensPedido) {
-				livroIgual = item.getLivro().getTitulo().equals(livro.getTitulo());
+				livroIgual = item.getLivro().getCodigo().equals(livro.getCodigo());
 				if(livroIgual) {
 					break;
 				}
@@ -62,7 +63,49 @@ public class PedidoVH implements IViewHelper {
 			}
 			pedido.setItensPedido(itensPedido);
 			session.setAttribute("pedido", pedido);
-			request.getRequestDispatcher("WEB-INF/jsp/carrinho/view.jsp").forward(request, response);
+			response.sendRedirect("carrinhoCliente");
+		}
+		if(uri.equals(contexto + "/carrinhoRemover")) {
+			String idLivro = request.getParameter("id");
+			HttpSession session = request.getSession();
+			Pedido pedido = (Pedido) session.getAttribute("pedido");
+			List<ItemPedido> itensPedido = pedido.getItensPedido();
+			Iterator<ItemPedido> iterator = itensPedido.iterator();
+			while(iterator.hasNext()) {
+				ItemPedido item = iterator.next();
+				if(item.getLivro().getId() == Long.valueOf(idLivro)) {
+					iterator.remove();
+				}
+			}
+			pedido.setItensPedido(itensPedido);
+			session.setAttribute("pedido", pedido);
+			response.sendRedirect("carrinhoCliente");
+		}
+		if(uri.equals(contexto + "/carrinhoAlterar")) {
+			Livro livro = (Livro) request.getAttribute("livro");
+			String quantidade = request.getParameter("quantidade" + livro.getId());
+			//Se a quantidade disponível for menor que a quantidade desejada
+			if(livro.getEstoque().getQuantidadeAtual() < Long.valueOf(quantidade)) {
+				String erro = "Quantidade desejada não disponível em estoque ("
+						+ livro.getEstoque().getQuantidadeAtual()
+						+ " unidades)";
+				request.setAttribute("erro", erro);
+				request.getRequestDispatcher("carrinhoCliente").forward(request, response);;
+				return;
+			}
+			HttpSession session = request.getSession();
+			Pedido pedido = (Pedido) session.getAttribute("pedido");
+			List<ItemPedido> itensPedido = pedido.getItensPedido();
+			Iterator<ItemPedido> iterator = itensPedido.iterator();
+			while(iterator.hasNext()) {
+				ItemPedido item = iterator.next();
+				if(item.getLivro().getId() == Long.valueOf(livro.getId())) {
+					item.setQuantidade(Long.valueOf(quantidade));
+				}
+			}
+			pedido.setItensPedido(itensPedido);
+			session.setAttribute("pedido", pedido);
+			response.sendRedirect("carrinhoCliente");
 		}
 
 	}

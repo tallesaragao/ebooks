@@ -16,7 +16,8 @@
 	<div class="container">
 		<h1 class="page-header titulo">Carrinho de compras</h1>
 	</div>
-	<c:if test="${sucesso != null}">
+	<div class="container">
+		<c:if test="${sucesso != null}">
 			<div class="row">
 				<div class="col-md-5">
 					<div class="alert alert-success alert-dismissible">
@@ -29,7 +30,7 @@
 				</div>
 			</div>
 		</c:if>
-			
+				
 		<c:if test="${erro != null}">
 			<div class="row">
 				<div class="col-md-5">
@@ -43,6 +44,7 @@
 				</div>
 			</div>
 		</c:if>
+	</div>
 	
 	<form action="#" method="post">
 		<div class="container">
@@ -50,7 +52,7 @@
 				<legend>
 					<span class="legend-logo glyphicon glyphicon-shopping-cart"></span> Itens adicionados
 				</legend>
-				<c:if test="${pedido.itensPedido eq null}">
+				<c:if test="${empty pedido.itensPedido }">
 					<h4>O carrinho está vazio</h4>
 				</c:if>
 				<c:forEach items="${pedido.itensPedido}" var="itemPedido">
@@ -79,13 +81,22 @@
 						<dd>${itemPedido.livro.precificacao.precoVenda * itemPedido.quantidade}</dd>
 					</dl>
 					<div class="row">
-						<div class="col-xs-12">
-							<button type="submit" data-toggle="tooltip" title="Alterar quantidade"
-							class="btn btn-sm btn-default btn-icone" method="get" id="btnAlterarCarrinho"
-							formaction="alterarCarrinho?operacao=CONSULTAR&id=${itemPedido.livro.id}">
-								<span class="glyphicon glyphicon-pencil"></span>
-							</button>		
-													
+						<div class="col-xs-6 col-md-2">
+							<input type="hidden" name="idLivro" value="${itemPedido.livro.id}"/>
+							<div class="input-group">
+								<input type="number" min="1" name="quantidade${itemPedido.livro.id}"
+								value="${itemPedido.quantidade}" class="form-control"/>
+								<span class="input-group-btn">
+									<button type="submit" data-toggle="tooltip" title="Alterar quantidade"
+									class="btn btn-default btn-icone" method="get" id="btnCarrinhoAlterar"
+									formaction="carrinhoConsultarEstoque?operacao=CONSULTAR&id=${itemPedido.livro.id}">
+										<span class="glyphicon glyphicon-pencil"></span>
+									</button>
+								</span>	
+							</div>
+						</div>
+								
+						<div class="col-xs-6 col-md-1">				
 							<button type="submit" name="operacao" method="get" data-toggle="tooltip"
 							title="Remover do carrinho" onclick="return excluir()" id="btnRemoverCarrinho"
 							class="btn btn-sm btn-danger botao-excluir btn-icone"
@@ -96,6 +107,20 @@
 					</div>
 					</br>
 				</c:forEach>
+				<div class="row">
+					<div class="col-xs-12">
+						<c:if test="${not empty pedido.itensPedido}">		
+							<button type="submit" formaction="finalizarPedido"
+							id="btnFinalizarPedido" class="btn btn-primary">
+								Finalizar pedido
+							</button>
+						</c:if>
+						<button type="submit" id="btnContinuarComprando" 
+						formaction="livroList" class="btn btn-default">
+							Continuar comprando
+						</button>
+					</div>
+				</div>
 			</fieldset>
 		</div>
 	</form>

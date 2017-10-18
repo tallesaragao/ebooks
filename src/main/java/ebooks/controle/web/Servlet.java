@@ -50,6 +50,7 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/livroAlterar", new LivroVH());
 		vhs.put(contextoApp + "/livroExcluir", new LivroVH());
 		vhs.put(contextoApp + "/livroCarrinho", new LivroVH());
+		vhs.put(contextoApp + "/carrinhoConsultarEstoque", new LivroVH());
 		vhs.put(contextoApp + "/loginCliente", new LoginVH());
 		vhs.put(contextoApp + "/logoutCliente", new LoginVH());
 		vhs.put(contextoApp + "/loginForm", new LoginVH());
@@ -90,6 +91,8 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/enderecoConsultar", new EnderecoVH());
 		vhs.put(contextoApp + "/carrinhoCliente", new PedidoVH());
 		vhs.put(contextoApp + "/carrinhoAdicionar", new PedidoVH());
+		vhs.put(contextoApp + "/carrinhoRemover", new PedidoVH());
+		vhs.put(contextoApp + "/carrinhoAlterar", new PedidoVH());
 	}
 		
 	@Override

@@ -93,7 +93,7 @@ public class CartaoCreditoVH implements IViewHelper {
 		if(uri.equals(contexto + "/cartaoCreditoSalvar")) {
 			if(object == null) {
 				String idCliente = request.getParameter("idCliente");
-				String sucesso = "Endereço cadastrado com sucesso";
+				String sucesso = "Cartão de crédito cadastrado com sucesso";
 				request.setAttribute("sucesso", sucesso);
 				request.getRequestDispatcher("clienteView?operacao=CONSULTAR&id=" + idCliente).forward(request, response);
 				return;

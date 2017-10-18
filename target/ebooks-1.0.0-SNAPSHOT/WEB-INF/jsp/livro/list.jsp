@@ -145,6 +145,11 @@
 												formaction="livroEdit?operacao=CONSULTAR&id=${livro.id}">
 													<span class="glyphicon glyphicon-pencil"></span>
 												</button>
+												<button type="submit" data-toggle="tooltip" title="Adicionar ao carrinho"
+												id="btnCarrinho${livro.id}" class="btn btn-sm btn-primary btn-icone" method="get"
+												formaction="livroCarrinho?operacao=CONSULTAR&id=${livro.id}">
+													<span class="glyphicon glyphicon-shopping-cart"></span>
+												</button>
 												<button type="submit" name="operacao" method="get" data-toggle="tooltip" id="btnExcluir${livro.id}"
 												title="Excluir" value="EXCLUIR"	onclick="return excluir()"
 												class="btn btn-sm btn-danger botao-excluir btn-icone" formaction="livroExcluir?id=${livro.id}">

@@ -83,7 +83,7 @@ public class LoginVH implements IViewHelper {
 				HttpSession session = request.getSession();
 				session.setAttribute("login", login);
 				request.setAttribute("operacao", "");
-				response.sendRedirect("clienteView?operacao=CONSULTAR&id=" + login.getCliente().getId());
+				response.sendRedirect("livroList");
 				return;
 			}
 			request.setAttribute("erro", "Usuário ou senha incorretos");

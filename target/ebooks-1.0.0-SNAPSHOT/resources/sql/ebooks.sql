@@ -117,7 +117,7 @@ CREATE TABLE `cartao_credito` (
   KEY `fk_cartao_credito_bandeira_idx` (`id_bandeira`),
   CONSTRAINT `fk_cartao_credito_bandeira` FOREIGN KEY (`id_bandeira`) REFERENCES `bandeira` (`id_bandeira`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cartao_credito_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +126,7 @@ CREATE TABLE `cartao_credito` (
 
 LOCK TABLES `cartao_credito` WRITE;
 /*!40000 ALTER TABLE `cartao_credito` DISABLE KEYS */;
-INSERT INTO `cartao_credito` VALUES (3,'5268910398469748','João das Neves','2025-12-01','406',2,2,'2017-10-05 00:00:00');
+INSERT INTO `cartao_credito` VALUES (3,'5268910398469748','João das Neves','2025-12-01','406',2,2,'2017-10-05 00:00:00'),(4,'5203083853111854','Tobias Toldo Leoso','2019-07-18','716',1,2,'2017-10-18 00:00:00');
 /*!40000 ALTER TABLE `cartao_credito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,16 +168,16 @@ CREATE TABLE `cliente` (
   `genero` char(1) NOT NULL,
   `fl_ativo` tinyint(1) NOT NULL,
   `id_pessoa_fisica` int(11) NOT NULL,
-  `id_login` int(11) DEFAULT NULL,
   `id_telefone` int(11) NOT NULL,
+  `id_login` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_cliente`),
   KEY `fk_cliente_pessoa_fisica_idx` (`id_pessoa_fisica`),
-  KEY `fk_cliente_login_idx` (`id_login`),
   KEY `fk_cliente_telefone_idx` (`id_telefone`),
+  KEY `fk_cliente_login_idx` (`id_login`),
   CONSTRAINT `fk_cliente_login` FOREIGN KEY (`id_login`) REFERENCES `login` (`id_login`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cliente_pessoa_fisica` FOREIGN KEY (`id_pessoa_fisica`) REFERENCES `pessoa_fisica` (`id_pessoa_fisica`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cliente_telefone` FOREIGN KEY (`id_telefone`) REFERENCES `telefone` (`id_telefone`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,7 +186,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'tobias.leoso@gmail.com','M',0,9,7,3),(2,'ebooks@gmail.com','M',0,10,8,4),(4,'maria@outlook.com','F',0,13,9,7),(5,'benjamin.jcer@gruposandino.com.br','M',1,15,NULL,9),(6,'zeca.pagodinho@hotmail.com','M',1,16,NULL,10),(7,'eminem.muse@gmail.com','M',1,17,NULL,11),(8,'gabi.lss@hotmail.com','F',1,18,NULL,12);
+INSERT INTO `cliente` VALUES (1,'tobias.leoso@gmail.com','M',0,9,3,7),(2,'ebooks@gmail.com','M',0,10,4,8),(4,'maria@outlook.com','F',0,13,7,9),(11,'snvalmeida@viacorte.com.br','M',1,21,15,10),(12,'rodrigobc79@gmail.com','M',1,26,20,11);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +214,7 @@ CREATE TABLE `cliente_endereco` (
 
 LOCK TABLES `cliente_endereco` WRITE;
 /*!40000 ALTER TABLE `cliente_endereco` DISABLE KEYS */;
-INSERT INTO `cliente_endereco` VALUES (1,1),(1,2),(2,4),(4,5),(5,6),(6,7),(7,8),(8,9);
+INSERT INTO `cliente_endereco` VALUES (1,1),(1,2),(2,4),(4,5),(11,12),(12,13);
 /*!40000 ALTER TABLE `cliente_endereco` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,7 +319,7 @@ CREATE TABLE `endereco` (
   PRIMARY KEY (`id_endereco`),
   KEY `fk_endereco_tipo_endereco_idx` (`id_tipo_endereco`),
   CONSTRAINT `fk_endereco_tipo_endereco` FOREIGN KEY (`id_tipo_endereco`) REFERENCES `tipo_endereco` (`id_tipo_endereco`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -328,7 +328,7 @@ CREATE TABLE `endereco` (
 
 LOCK TABLES `endereco` WRITE;
 /*!40000 ALTER TABLE `endereco` DISABLE KEYS */;
-INSERT INTO `endereco` VALUES (1,'Minha casa','Rua teste','151',NULL,'Bairro teste','08720-040','Poá','SP','Brasil',1,'2017-10-03 12:33:46',1),(2,'Meu trabalho','Rua testinha','1741',NULL,'Bairro teste','08720-045','Poá','SP','Brasil',0,'2017-10-03 12:37:45',2),(4,'Trabalho','SQS 205 Bloco A','99','Sala 33','Asa Sul','70235-010','Brasília','DF','Brasil',1,'2017-10-05 00:00:00',2),(5,'Casa','Viela Peri','500','Casa 13','Jardim Veneza','08715-200','Mogi das Cruzes','SP','Brasil',1,'2017-10-05 00:00:00',1),(6,'Meu apartamento','Rua Nossa Senhora da Aparecida','300','Bloco 17, Apartamento 905','Carioca','35662-812','Pará de Minas','MG','Brasil',1,'2017-10-06 00:00:00',1),(7,'Minha casa','Rua José Maria','504','Casa 15','Penha','21070-140','Rio de Janeiro','RJ','Brasil',1,'2017-10-10 00:00:00',1),(8,'Meu apartamento','Rua J. P. Alencar','769','Apartamento 1007','Nova Esperança','76821-550','Porto Velho','RO','Brasil',1,'2017-10-10 00:00:00',1),(9,'Casa','Rua Dom Rodrigo','751','','Santa Rosa','31255-720','Belo Horizonte','MG','Brasil',1,'2017-10-16 00:00:00',1);
+INSERT INTO `endereco` VALUES (1,'Minha casa','Rua teste','151',NULL,'Bairro teste','08720-040','Poá','SP','Brasil',1,'2017-10-03 12:33:46',1),(2,'Meu trabalho','Rua testinha','1741',NULL,'Bairro teste','08720-045','Poá','SP','Brasil',0,'2017-10-03 12:37:45',2),(4,'Trabalho','SQS 205 Bloco A','99','Sala 33','Asa Sul','70235-010','Brasília','DF','Brasil',1,'2017-10-05 00:00:00',2),(5,'Casa','Viela Peri','500','Casa 13','Jardim Veneza','08715-200','Mogi das Cruzes','SP','Brasil',1,'2017-10-05 00:00:00',1),(12,'Minha casa','Rua Maria Aprígia Vieira','719','Casa 12','Jardim Novo Horizonte','79822-417','Dourados','MS','Brasil',1,'2017-10-16 00:00:00',1),(13,'Apartamento','Rua Tomé de Almeida e Oliveira','191','Apartamento 502','Vila Zat','02976-190','São Paulo','SP','Brasil',1,'2017-10-17 00:00:00',1);
 /*!40000 ALTER TABLE `endereco` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -345,7 +345,7 @@ CREATE TABLE `estoque` (
   `quant_max` mediumtext NOT NULL,
   `quant_atual` mediumtext NOT NULL,
   PRIMARY KEY (`id_estoque`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -354,6 +354,7 @@ CREATE TABLE `estoque` (
 
 LOCK TABLES `estoque` WRITE;
 /*!40000 ALTER TABLE `estoque` DISABLE KEYS */;
+INSERT INTO `estoque` VALUES (1,'1','40','15'),(2,'5','30','12');
 /*!40000 ALTER TABLE `estoque` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -511,14 +512,17 @@ CREATE TABLE `livro` (
   `id_precificacao` int(11) NOT NULL,
   `id_grupo_precificacao` int(11) NOT NULL,
   `id_editora` int(11) NOT NULL,
+  `id_estoque` int(11) DEFAULT NULL,
   `dt_cadastro` datetime NOT NULL,
   PRIMARY KEY (`id_livro`),
   KEY `fk_livro_dimensoes_idx` (`id_dimensoes`),
   KEY `fk_livro_grupo_precificacao1_idx` (`id_grupo_precificacao`),
   KEY `fk_livro_editora_idx` (`id_editora`),
   KEY `fk_livro_precificacao_idx` (`id_precificacao`),
+  KEY `fk_livro_estoque_idx` (`id_estoque`),
   CONSTRAINT `fk_livro_dimensoes` FOREIGN KEY (`id_dimensoes`) REFERENCES `dimensoes` (`id_dimensoes`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_livro_editora` FOREIGN KEY (`id_editora`) REFERENCES `editora` (`id_editora`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_livro_estoque` FOREIGN KEY (`id_estoque`) REFERENCES `estoque` (`id_estoque`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_livro_grupo_precificacao` FOREIGN KEY (`id_grupo_precificacao`) REFERENCES `grupo_precificacao` (`id_grupo_precificacao`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_livro_precificacao` FOREIGN KEY (`id_precificacao`) REFERENCES `precificacao` (`id_precificacao`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
@@ -530,7 +534,7 @@ CREATE TABLE `livro` (
 
 LOCK TABLES `livro` WRITE;
 /*!40000 ALTER TABLE `livro` DISABLE KEYS */;
-INSERT INTO `livro` VALUES (2,'1881','Memórias Póstumas de Brás Cubas','3ª','9788526280335','96',1,'15','4610-11597358','Publicado em 1881, este romance é o marco do realismo brasileiro. Brás Cubas, homem abastado que nunca precisou trabalhar, escreve uma autobiografia depois de morrer. Na forma de lembranças fragmentadas, o defunto relata passagens de uma vida cheia de mesquinharias e insucessos. Com sua ironia característica, Machado apresenta uma visão cruel da natureza humana.',4,2,4,4,'2017-09-25 00:00:00'),(3,'2009','Capitães da Areia','1ª','9788535914061','288',1,'10','56-32641964','sinopse teste',5,3,5,5,'2017-09-25 00:00:00');
+INSERT INTO `livro` VALUES (2,'1881','Memórias Póstumas de Brás Cubas','3ª','9788526280335','96',1,'15','4610-11597358','Publicado em 1881, este romance é o marco do realismo brasileiro. Brás Cubas, homem abastado que nunca precisou trabalhar, escreve uma autobiografia depois de morrer. Na forma de lembranças fragmentadas, o defunto relata passagens de uma vida cheia de mesquinharias e insucessos. Com sua ironia característica, Machado apresenta uma visão cruel da natureza humana.',4,2,4,4,1,'2017-09-25 00:00:00'),(3,'2009','Capitães da Areia','1ª','9788535914061','288',1,'10','56-32641964','sinopse teste',5,3,5,5,2,'2017-09-25 00:00:00');
 /*!40000 ALTER TABLE `livro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -629,7 +633,7 @@ CREATE TABLE `login` (
   `senha` varchar(45) NOT NULL,
   `dt_cadastro` datetime NOT NULL,
   PRIMARY KEY (`id_login`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -638,7 +642,7 @@ CREATE TABLE `login` (
 
 LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES (4,'teste','Abcd1234%','2017-10-02 08:39:32'),(6,'admin','Admin12#','2017-10-02 00:00:00'),(7,'tobias','Saibot00&','2017-10-02 00:00:00'),(8,'ebooks','Ebooks123$','2017-10-03 00:00:00'),(9,'maria','Maria12#','2017-10-05 00:00:00');
+INSERT INTO `login` VALUES (6,'admin','Admin12#','2017-10-02 00:00:00'),(7,'tobias','Saibot00&','2017-10-02 00:00:00'),(8,'ebooks','Ebooks123$','2017-10-03 00:00:00'),(9,'maria','Maria12#','2017-10-05 00:00:00'),(10,'snvalmeida','Guu2z3C0aY!','2017-10-16 00:00:00'),(11,'rbcastro','O8RRDWF6g5@','2017-10-17 00:00:00');
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -777,7 +781,7 @@ CREATE TABLE `pessoa` (
   `nome` varchar(45) NOT NULL,
   `dt_cadastro` datetime DEFAULT NULL,
   PRIMARY KEY (`id_pessoa`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -786,7 +790,7 @@ CREATE TABLE `pessoa` (
 
 LOCK TABLES `pessoa` WRITE;
 /*!40000 ALTER TABLE `pessoa` DISABLE KEYS */;
-INSERT INTO `pessoa` VALUES (5,'Scipione','2017-09-25 00:00:00'),(6,'Machado de Assis','2017-09-25 00:00:00'),(7,'Companhia de Bolso','2017-09-25 00:00:00'),(8,'Jorge Amado','2017-09-25 00:00:00'),(15,'Tobias Toldo Leoso','2017-10-03 00:00:00'),(16,'Ebooks Silvério da Cunha','2017-10-03 00:00:00'),(19,'Maria das Dores','2017-10-05 00:00:00'),(21,'Benjamin Julio Carlos Eduardo','2017-10-06 00:00:00'),(22,'Zeca Pagodinho','2017-10-10 00:00:00'),(23,'Eminem Muse','2017-10-10 00:00:00'),(24,'Gabriela Luna Stella Souza','2017-10-16 00:00:00');
+INSERT INTO `pessoa` VALUES (5,'Scipione','2017-09-25 00:00:00'),(6,'Machado de Assis','2017-09-25 00:00:00'),(7,'Companhia de Bolso','2017-09-25 00:00:00'),(8,'Jorge Amado','2017-09-25 00:00:00'),(15,'Tobias Toldo Leoso','2017-10-03 00:00:00'),(16,'Ebooks Silvério da Cunha','2017-10-03 00:00:00'),(19,'Maria das Dores','2017-10-05 00:00:00'),(27,'Samuel Nathan Vitor Almeida','2017-10-16 00:00:00'),(32,'Rodrigo Bruno Castro','2017-10-17 00:00:00');
 /*!40000 ALTER TABLE `pessoa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -805,7 +809,7 @@ CREATE TABLE `pessoa_fisica` (
   PRIMARY KEY (`id_pessoa_fisica`),
   KEY `fk_pessoa_pf_idx` (`id_pessoa`),
   CONSTRAINT `fk_pessoa_pf` FOREIGN KEY (`id_pessoa`) REFERENCES `pessoa` (`id_pessoa`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -814,7 +818,7 @@ CREATE TABLE `pessoa_fisica` (
 
 LOCK TABLES `pessoa_fisica` WRITE;
 /*!40000 ALTER TABLE `pessoa_fisica` DISABLE KEYS */;
-INSERT INTO `pessoa_fisica` VALUES (2,'359.958.820-15','1839-06-21',6),(3,'303.010.470-22','1912-08-10',8),(9,'986.518.476-10','1954-08-04',15),(10,'717.722.414-90','1990-12-04',16),(13,'078.737.835-61','1998-11-16',19),(15,'854.124.434-27','1988-09-11',21),(16,'517.473.325-34','1950-05-11',22),(17,'381.563.623-06','2007-05-18',23),(18,'897.669.620-49','1986-12-13',24);
+INSERT INTO `pessoa_fisica` VALUES (2,'359.958.820-15','1839-06-21',6),(3,'303.010.470-22','1912-08-10',8),(9,'986.518.476-10','1954-08-04',15),(10,'717.722.414-90','1990-12-04',16),(13,'078.737.835-61','1998-11-16',19),(21,'447.011.053-17','1986-05-01',27),(26,'000.881.868-14','1987-02-17',32);
 /*!40000 ALTER TABLE `pessoa_fisica` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -913,7 +917,7 @@ CREATE TABLE `telefone` (
   PRIMARY KEY (`id_telefone`),
   KEY `fk_telefone_tipo_telefone_idx` (`id_tipo_telefone`),
   CONSTRAINT `fk_telefone_tipo_telefone` FOREIGN KEY (`id_tipo_telefone`) REFERENCES `tipo_telefone` (`id_tipo_telefone`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -922,7 +926,7 @@ CREATE TABLE `telefone` (
 
 LOCK TABLES `telefone` WRITE;
 /*!40000 ALTER TABLE `telefone` DISABLE KEYS */;
-INSERT INTO `telefone` VALUES (3,'(11)','94555-4658',1),(4,'(11)','99445-1213',1),(7,'(11)','95574-2101',1),(9,'(72)','93321-545',2),(10,'(21)','98199-5586',1),(11,'(69)','99577-1679',1),(12,'(31)','98933-7725',1);
+INSERT INTO `telefone` VALUES (3,'(11)','94555-4658',1),(4,'(11)','99445-1213',1),(7,'(11)','95574-2101',1),(15,'(67)','98454-2133',1),(20,'(11)','98791-9229',1);
 /*!40000 ALTER TABLE `telefone` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1008,4 +1012,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-16 11:39:44
+-- Dump completed on 2017-10-18 12:07:49

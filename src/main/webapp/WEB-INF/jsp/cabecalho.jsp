@@ -19,16 +19,24 @@
 				<ul class="nav navbar-nav navbar-right">
 					<c:choose>
 						<c:when test="${login.usuario != null}">
-							<li>
-								<a id="detalhesCliente" href="clienteView?operacao=CONSULTAR&id=${login.cliente.id}">
-									Olá, ${login.usuario}
-								</a>
-							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							  		Olá, ${login.usuario} <span class="caret"></span></a>				
+								<ul class="dropdown-menu" role="menu">
+									<li>
+					                	<a id="detalhesCliente" href="clienteView?operacao=CONSULTAR&id=${login.cliente.id}">
+											Dados da conta
+										</a>
+									</li>
+				                	<li class="divider"></li>
+				                	<li><a id="logoutCliente" href="logoutCliente">Logout</a></li>
+				             	</ul>                
+				            </li>
 							<li><a id="carrinhoCliente" href="carrinhoCliente">Carrinho</a></li>
-							<li><a id="logoutCliente" href="logoutCliente">Logout</a></li>
+							
 						</c:when>
 						<c:otherwise>
-							<li><a id="detalhesCliente" href="loginCliente">Olá, visitante</a></li>
+							<li><a id="detalhesCliente" href="loginCliente">Login</a></li>
 						</c:otherwise>
 					</c:choose>
 					<li><a id="categoriaList" href="categoriaList">Categoria</a></li>

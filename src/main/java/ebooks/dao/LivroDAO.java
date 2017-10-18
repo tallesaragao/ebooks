@@ -12,6 +12,7 @@ import ebooks.modelo.Categoria;
 import ebooks.modelo.Dimensoes;
 import ebooks.modelo.Editora;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.Estoque;
 import ebooks.modelo.GrupoPrecificacao;
 import ebooks.modelo.Livro;
 import ebooks.modelo.Precificacao;
@@ -466,15 +467,16 @@ public class LivroDAO extends AbstractDAO {
 			ps.close();
 
 			sql = "select * from livro l "
-					+ "join dimensoes d on (l.id_dimensoes = d.id_dimensoes) "
-					+ "join editora ed on (l.id_editora = ed.id_editora) "
-					+ "join pessoa_juridica pjEd on (ed.id_pessoa_juridica = pjEd.id_pessoa_juridica) "
-					+ "join pessoa pEd on (pjEd.id_pessoa = pEd.id_pessoa) "
-					+ "join grupo_precificacao gp on (l.id_grupo_precificacao = gp.id_grupo_precificacao) "
-					+ "join precificacao p on (l.id_precificacao = p.id_precificacao) "
-					+ "where l.titulo like ? and l.codigo like ? and l.isbn like ? and pEd.nome like ? ";
+				+ " join dimensoes d on (l.id_dimensoes = d.id_dimensoes)"
+				+ " join editora ed on (l.id_editora = ed.id_editora)"
+				+ " join pessoa_juridica pjEd on (ed.id_pessoa_juridica = pjEd.id_pessoa_juridica)"
+				+ " join pessoa pEd on (pjEd.id_pessoa = pEd.id_pessoa)"
+				+ " join grupo_precificacao gp on (l.id_grupo_precificacao = gp.id_grupo_precificacao)"
+				+ " join precificacao p on (l.id_precificacao = p.id_precificacao)"
+				+ " join estoque e on (l.id_estoque = e.id_estoque)"
+				+ " where l.titulo like ? and l.codigo like ? and l.isbn like ? and pEd.nome like ?";
 			if(livroConsulta.getId() != null) {
-				sql += "and l.id_livro = ?";
+				sql += " and l.id_livro = ?";
 			}
 			ps = conexao.prepareStatement(sql);
 			ps.setString(1, "%" + livroConsulta.getTitulo() + "%");
@@ -510,6 +512,13 @@ public class LivroDAO extends AbstractDAO {
 				dimensoes.setProfundidade(rs.getDouble("d.profundidade"));
 				dimensoes.setPeso(rs.getDouble("d.peso"));
 				livro.setDimensoes(dimensoes);
+				
+				Estoque estoque = new Estoque();
+				estoque.setId(rs.getLong("e.id_estoque"));
+				estoque.setQuantidadeMinima(rs.getLong("e.quant_min"));
+				estoque.setQuantidadeMaxima(rs.getLong("e.quant_max"));
+				estoque.setQuantidadeAtual(rs.getLong("e.quant_atual"));
+				livro.setEstoque(estoque);
 				
 				Precificacao precificacao = new Precificacao();
 				precificacao.setId(rs.getLong("p.id_precificacao"));
