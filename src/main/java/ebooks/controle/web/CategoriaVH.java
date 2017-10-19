@@ -60,10 +60,6 @@ public class CategoriaVH implements IViewHelper {
 		String uri = request.getRequestURI();
 		String contexto = request.getContextPath();
 		
-		if(uri.equals(contexto + "/home")) {
-			request.getRequestDispatcher("WEB-INF/jsp/categoria/home.jsp").forward(request, response);			
-		}
-		
 		if(uri.equals(contexto + "/categoriaForm")) {
 			request.getRequestDispatcher("WEB-INF/jsp/categoria/form.jsp").forward(request, response);	
 		}

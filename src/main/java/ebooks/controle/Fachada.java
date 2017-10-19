@@ -18,6 +18,7 @@ import ebooks.dao.LoginDAO;
 import ebooks.dao.TipoEnderecoDAO;
 import ebooks.dao.TipoTelefoneDAO;
 import ebooks.modelo.Bandeira;
+import ebooks.modelo.Carrinho;
 import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Categoria;
 import ebooks.modelo.Cliente;
@@ -29,9 +30,12 @@ import ebooks.modelo.Login;
 import ebooks.modelo.TipoEndereco;
 import ebooks.modelo.TipoTelefone;
 import ebooks.negocio.IStrategy;
+import ebooks.negocio.impl.AdicionarLivroCarrinho;
+import ebooks.negocio.impl.AlterarQuantidadeItemCarrinho;
 import ebooks.negocio.impl.AtivadorClientePrimeiroCadastro;
 import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
 import ebooks.negocio.impl.ComplementarDtCadastro;
+import ebooks.negocio.impl.ExcluirLivroCarrinho;
 import ebooks.negocio.impl.GeradorCodigoLivro;
 import ebooks.negocio.impl.GeradorPrecoLivro;
 import ebooks.negocio.impl.ValidarCamposCartaoCredito;
@@ -41,6 +45,7 @@ import ebooks.negocio.impl.ValidarCamposEndereco;
 import ebooks.negocio.impl.ValidarCamposLivro;
 import ebooks.negocio.impl.ValidarCamposLogin;
 import ebooks.negocio.impl.VerificarExistenciaCliente;
+import ebooks.negocio.impl.VerificarPedidoFinalizado;
 
 public class Fachada implements IFachada {
 
@@ -65,6 +70,10 @@ public class Fachada implements IFachada {
 		ValidarCamposEndereco valCampEnd = new ValidarCamposEndereco();
 		ValidarCamposCartaoCredito valCampCarCred= new ValidarCamposCartaoCredito();
 		VerificarExistenciaCliente verExistCli = new VerificarExistenciaCliente();
+		AdicionarLivroCarrinho adcLivCar = new AdicionarLivroCarrinho();
+		VerificarPedidoFinalizado verPedFin = new VerificarPedidoFinalizado();
+		AlterarQuantidadeItemCarrinho altQuantItemCar = new AlterarQuantidadeItemCarrinho();
+		ExcluirLivroCarrinho excLivCar = new ExcluirLivroCarrinho();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -148,6 +157,22 @@ public class Fachada implements IFachada {
 		contextoCarCred.put(EXCLUIR, lCarCredExcluir);
 		contextoCarCred.put(CONSULTAR, lCarCredConsultar);
 		
+		Map<String, List<IStrategy>> contextoCarrinho = new HashMap<String, List<IStrategy>>();
+		List<IStrategy> lCarrinhoSalvar = new ArrayList<>();
+		lCarrinhoSalvar.add(adcLivCar);
+		lCarrinhoSalvar.add(verPedFin);
+		List<IStrategy> lCarrinhoAlterar = new ArrayList<>();
+		lCarrinhoAlterar.add(altQuantItemCar);
+		lCarrinhoAlterar.add(verPedFin);
+		List<IStrategy> lCarrinhoExcluir = new ArrayList<>();
+		lCarrinhoExcluir.add(excLivCar);
+		lCarrinhoExcluir.add(verPedFin);
+		List<IStrategy> lCarrinhoConsultar = new ArrayList<>();
+		contextoCarrinho.put(SALVAR, lCarrinhoSalvar);
+		contextoCarrinho.put(ALTERAR, lCarrinhoAlterar);
+		contextoCarrinho.put(EXCLUIR, lCarrinhoExcluir);
+		contextoCarrinho.put(CONSULTAR, lCarrinhoConsultar);
+		
 		requisitos = new HashMap<String, Map<String, List<IStrategy>>>();
 		requisitos.put(Categoria.class.getName(), contextoCat);
 		requisitos.put(Livro.class.getName(), contextoLivro);
@@ -155,6 +180,7 @@ public class Fachada implements IFachada {
 		requisitos.put(Cliente.class.getName(), contextoCliente);
 		requisitos.put(Endereco.class.getName(), contextoEndereco);
 		requisitos.put(CartaoCredito.class.getName(), contextoCarCred);
+		requisitos.put(Carrinho.class.getName(), contextoCarrinho);
 		
 		daos = new HashMap<String, IDAO>();
 		daos.put(Categoria.class.getName(), new CategoriaDAO());
@@ -209,6 +235,10 @@ public class Fachada implements IFachada {
 	@Override
 	public String excluir(EntidadeDominio entidade) {
 		IDAO dao = daos.get(entidade.getClass().getName());
+		StringBuilder sb = executarRegras(entidade, EXCLUIR);
+		if (sb.length() > 0) {
+			return sb.toString();
+		}
 		try {
 			if (!dao.excluir(entidade)) {
 				return "Problema na exclusão";

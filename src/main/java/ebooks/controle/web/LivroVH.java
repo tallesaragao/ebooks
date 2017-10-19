@@ -23,7 +23,7 @@ import ebooks.modelo.Livro;
 import ebooks.modelo.Precificacao;
 
 public class LivroVH implements IViewHelper {
-	
+
 	private static final String SALVAR = "SALVAR";
 	private static final String CONSULTAR = "CONSULTAR";
 	private static final String ALTERAR = "ALTERAR";
@@ -33,10 +33,10 @@ public class LivroVH implements IViewHelper {
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
 		Livro livro = new Livro();
 		String operacao = request.getParameter("operacao");
-		if(operacao == null) {
+		if (operacao == null) {
 			operacao = "";
 		}
-		if(operacao.equals(EXCLUIR)) {
+		if (operacao.equals(EXCLUIR)) {
 			String id = request.getParameter("id");
 			livro.setId(Long.valueOf(id));
 			List<Categoria> categorias = new ArrayList<>();
@@ -53,7 +53,7 @@ public class LivroVH implements IViewHelper {
 			editora.setNome("");
 			livro.setEditora(editora);
 		}
-		if(operacao.equals(CONSULTAR)) {
+		if (operacao.equals(CONSULTAR)) {
 			String id = request.getParameter("id");
 			String titulo = request.getParameter("titulo");
 			String codigo = request.getParameter("codigo");
@@ -61,51 +61,51 @@ public class LivroVH implements IViewHelper {
 			String categoriaNome = request.getParameter("categoria");
 			String autorNome = request.getParameter("autor");
 			String editoraNome = request.getParameter("editora");
-			
-			if(id != null && !id.equals("")) {
+
+			if (id != null && !id.equals("")) {
 				livro.setId(Long.valueOf(id));
 			}
-			
+
 			livro.setTitulo("");
-			if(titulo != null) {
+			if (titulo != null) {
 				livro.setTitulo(titulo);
 			}
 			livro.setCodigo("");
-			if(codigo != null) {
+			if (codigo != null) {
 				livro.setCodigo(codigo);
 			}
 			livro.setIsbn("");
-			if(isbn != null) {
+			if (isbn != null) {
 				livro.setIsbn(isbn);
 			}
 			List<Categoria> categorias = new ArrayList<>();
 			Categoria categoria = new Categoria();
 			categoria.setNome("");
-			if(categoriaNome != null) {
+			if (categoriaNome != null) {
 				categoria.setNome(categoriaNome);
 			}
 			categorias.add(categoria);
 			livro.setCategorias(categorias);
-			
+
 			List<Autor> autores = new ArrayList<>();
 			Autor autor = new Autor();
 			autor.setNome("");
-			if(autorNome != null) {
+			if (autorNome != null) {
 				autor.setNome(autorNome);
 			}
 			autores.add(autor);
 			livro.setAutores(autores);
-			
+
 			Editora editora = new Editora();
 			editora.setNome("");
-			if(editoraNome != null) {
+			if (editoraNome != null) {
 				editora.setNome(editoraNome);
 			}
 			livro.setEditora(editora);
-			
+
 		}
-		if(operacao.equals(SALVAR) || operacao.equals(ALTERAR)) {
-			if(operacao.equals(ALTERAR)) {
+		if (operacao.equals(SALVAR) || operacao.equals(ALTERAR)) {
+			if (operacao.equals(ALTERAR)) {
 				String id = request.getParameter("id");
 				livro.setId(Long.valueOf(id));
 			}
@@ -129,73 +129,74 @@ public class LivroVH implements IViewHelper {
 			String nomeEditora = request.getParameter("nomeEditora");
 			String cnpj = request.getParameter("cnpj");
 			String razaoSocial = request.getParameter("razaoSocial");
-			
+
 			livro.setTitulo(titulo);
 			livro.setAno(ano);
 			livro.setEdicao(edicao);
 			livro.setNumeroPaginas(numeroPaginas);
-			
-			//Se nenhum valor for selecionado, seta o id do grupoPrecificacao como zero
+
+			// Se nenhum valor for selecionado, seta o id do grupoPrecificacao
+			// como zero
 			GrupoPrecificacao grupoPrecificacao = new GrupoPrecificacao();
 			grupoPrecificacao.setId(Long.valueOf(0));
-			if(grupoPrecificacaoId != null && !grupoPrecificacaoId.equals("")) {
-				grupoPrecificacao.setId(Long.valueOf(grupoPrecificacaoId));				
+			if (grupoPrecificacaoId != null && !grupoPrecificacaoId.equals("")) {
+				grupoPrecificacao.setId(Long.valueOf(grupoPrecificacaoId));
 			}
-			
+
 			livro.setGrupoPrecificacao(grupoPrecificacao);
 			livro.setIsbn(isbn);
-			
+
 			Precificacao precificacao = new Precificacao();
-			if(precoCusto != null && !precoCusto.equals("")) {
-				precificacao.setPrecoCusto(Double.valueOf(precoCusto));				
+			if (precoCusto != null && !precoCusto.equals("")) {
+				precificacao.setPrecoCusto(Double.valueOf(precoCusto));
 			}
 			livro.setPrecificacao(precificacao);
-			
-			//Se nenhuma quantidade for informada, seta o valor como zero
+
+			// Se nenhuma quantidade for informada, seta o valor como zero
 			livro.setQuantidade(Long.valueOf(0));
-			if(quantidade != null && !quantidade.equals("")) {
-				livro.setQuantidade(Long.valueOf(quantidade));				
+			if (quantidade != null && !quantidade.equals("")) {
+				livro.setQuantidade(Long.valueOf(quantidade));
 			}
-			
+
 			Dimensoes dimensoes = new Dimensoes();
-			//Se nenhuma altura for informada, seta o valor como zero
+			// Se nenhuma altura for informada, seta o valor como zero
 			dimensoes.setAltura(Double.valueOf(0));
-			if(altura != null && !altura.equals("")) {
-				dimensoes.setAltura(Double.valueOf(altura));				
+			if (altura != null && !altura.equals("")) {
+				dimensoes.setAltura(Double.valueOf(altura));
 			}
-			//Se nenhuma altura for informada, seta o valor como zero
+			// Se nenhuma altura for informada, seta o valor como zero
 			dimensoes.setLargura(Double.valueOf(0));
-			if(largura != null && !largura.equals("")) {
-				dimensoes.setLargura(Double.valueOf(largura));				
+			if (largura != null && !largura.equals("")) {
+				dimensoes.setLargura(Double.valueOf(largura));
 			}
-			//Se nenhuma profundidade for informada, seta o valor como zero
+			// Se nenhuma profundidade for informada, seta o valor como zero
 			dimensoes.setProfundidade(Double.valueOf(0));
-			if(profundidade != null && !profundidade.equals("")) {
-				dimensoes.setProfundidade(Double.valueOf(profundidade));				
+			if (profundidade != null && !profundidade.equals("")) {
+				dimensoes.setProfundidade(Double.valueOf(profundidade));
 			}
-			//Se nenhum peso for informado, seta o valor como zero
+			// Se nenhum peso for informado, seta o valor como zero
 			dimensoes.setPeso(Double.valueOf(0));
-			if(peso != null && !peso.equals("")) {
-				dimensoes.setPeso(Double.valueOf(peso));				
+			if (peso != null && !peso.equals("")) {
+				dimensoes.setPeso(Double.valueOf(peso));
 			}
-			
+
 			livro.setDimensoes(dimensoes);
-			
-			//Criando as categorias com base nos IDs selecionados
+
+			// Criando as categorias com base nos IDs selecionados
 			List<Categoria> categorias = new ArrayList<Categoria>();
-			for(String idCat : idsCategorias) {
+			for (String idCat : idsCategorias) {
 				Categoria categoria = new Categoria();
 				categoria.setId(Long.valueOf(idCat));
 				categorias.add(categoria);
 			}
-			
+
 			livro.setCategorias(categorias);
 			livro.setSinopse(sinopse);
 
 			Autor autor = new Autor();
 			autor.setNome(nomeAutor);
-			
-			//Evitando exceção ao converter a data
+
+			// Evitando exceção ao converter a data
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date dataNascimento = null;
 			try {
@@ -203,19 +204,19 @@ public class LivroVH implements IViewHelper {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			
+
 			autor.setDataNascimento(dataNascimento);
 			autor.setCpf(cpf);
 			List<Autor> autores = new ArrayList<Autor>();
 			autores.add(autor);
 			livro.setAutores(autores);
-			
+
 			Editora editora = new Editora();
 			editora.setNome(nomeEditora);
 			editora.setCnpj(cnpj);
 			editora.setRazaoSocial(razaoSocial);
 			livro.setEditora(editora);
-			
+
 		}
 		return (EntidadeDominio) livro;
 	}
@@ -225,13 +226,17 @@ public class LivroVH implements IViewHelper {
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
-		if(uri.equals(contexto + "/livroForm")) {
+
+		if (uri.equals(contexto + "/")) {
+			response.sendRedirect("livroList");
+		}
+		if (uri.equals(contexto + "/livroForm")) {
 			request.getRequestDispatcher("livroFormCategorias?operacao=CONSULTAR").forward(request, response);
 		}
-		if(uri.equals(contexto + "/livroList")) {
+		if (uri.equals(contexto + "/livroList")) {
 			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 		}
-		if(uri.equals(contexto + "/livroEdit")) {
+		if (uri.equals(contexto + "/livroEdit")) {
 			List<Livro> listaLivros = (List<Livro>) object;
 			Livro livro = listaLivros.get(0);
 			request.setAttribute("livro", livro);
@@ -239,8 +244,8 @@ public class LivroVH implements IViewHelper {
 			request.setAttribute("operacao", ALTERAR);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
 		}
-		if(uri.equals(contexto + "/livroSalvar")) {
-			if(object == null) {
+		if (uri.equals(contexto + "/livroSalvar")) {
+			if (object == null) {
 				String sucesso = "Livro cadastrado com sucesso";
 				request.setAttribute("sucesso", sucesso);
 				request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
@@ -264,9 +269,9 @@ public class LivroVH implements IViewHelper {
 			request.setAttribute("mensagens", mensagens);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
 		}
-		if(uri.equals(contexto + "/livroConsultar")) {
+		if (uri.equals(contexto + "/livroConsultar")) {
 
-			if(object == null) {
+			if (object == null) {
 				String erro = "Nenhum livro encontrado";
 				request.setAttribute("erro", erro);
 				request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
@@ -276,7 +281,7 @@ public class LivroVH implements IViewHelper {
 			request.setAttribute("consulta", consulta);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 		}
-		if(uri.equals(contexto + "/livroAlterar")) {
+		if (uri.equals(contexto + "/livroAlterar")) {
 			if (object != null) {
 				Categoria categoria = new Categoria();
 				categoria.setNome("");
@@ -300,19 +305,12 @@ public class LivroVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 			return;
 		}
-		if(uri.equals(contexto + "/livroExcluir")) {
+		if (uri.equals(contexto + "/livroExcluir")) {
 			String sucesso = (String) object;
 			request.setAttribute("sucesso", sucesso);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 		}
-		if(uri.equals(contexto + "/livroCarrinho")) {
-			List<Livro> listaLivros = (List<Livro>) object;
-			Livro livro = listaLivros.get(0);
-			request.setAttribute("livro", livro);
-			request.setAttribute("operacao", "");
-			request.getRequestDispatcher("carrinhoAdicionar?operacao=").forward(request, response);
-		}
-		if(uri.equals(contexto + "/carrinhoConsultarEstoque")) {
+		if (uri.equals(contexto + "/carrinhoConsultarEstoque")) {
 			List<Livro> listaLivros = (List<Livro>) object;
 			Livro livro = listaLivros.get(0);
 			request.setAttribute("livro", livro);

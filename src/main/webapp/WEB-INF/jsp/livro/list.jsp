@@ -147,7 +147,7 @@
 												</button>
 												<button type="submit" data-toggle="tooltip" title="Adicionar ao carrinho"
 												id="btnCarrinho${livro.id}" class="btn btn-sm btn-primary btn-icone" method="get"
-												formaction="livroCarrinho?operacao=CONSULTAR&id=${livro.id}">
+												formaction="carrinhoAdicionar?operacao=SALVAR&id=${livro.id}">
 													<span class="glyphicon glyphicon-shopping-cart"></span>
 												</button>
 												<button type="submit" name="operacao" method="get" data-toggle="tooltip" id="btnExcluir${livro.id}"

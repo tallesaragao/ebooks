@@ -89,7 +89,7 @@
 								<span class="input-group-btn">
 									<button type="submit" data-toggle="tooltip" title="Alterar quantidade"
 									class="btn btn-default btn-icone" method="get" id="btnCarrinhoAlterar"
-									formaction="carrinhoConsultarEstoque?operacao=CONSULTAR&id=${itemPedido.livro.id}">
+									formaction="carrinhoAlterar?operacao=ALTERAR&id=${itemPedido.livro.id}">
 										<span class="glyphicon glyphicon-pencil"></span>
 									</button>
 								</span>	
@@ -100,7 +100,7 @@
 							<button type="submit" name="operacao" method="get" data-toggle="tooltip"
 							title="Remover do carrinho" onclick="return excluir()" id="btnRemoverCarrinho"
 							class="btn btn-sm btn-danger botao-excluir btn-icone"
-							formaction="carrinhoRemover?id=${itemPedido.livro.id}">
+							formaction="carrinhoRemover?operacao=EXCLUIR&id=${itemPedido.livro.id}">
 								<span class="glyphicon glyphicon-trash"></span>
 							</button>
 						</div>

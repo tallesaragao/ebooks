@@ -32,7 +32,7 @@ public class Servlet extends HttpServlet {
 		String contextoApp = "/ebooks";
 		
 		vhs = new HashMap<String, IViewHelper>();
-		vhs.put(contextoApp + "/home", new CategoriaVH());
+		vhs.put(contextoApp + "/", new LivroVH());
 		vhs.put(contextoApp + "/categoriaForm", new CategoriaVH());
 		vhs.put(contextoApp + "/categoriaList", new CategoriaVH());
 		vhs.put(contextoApp + "/categoriaEdit", new CategoriaVH());

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.modelo.Carrinho;
+import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.ItemPedido;
 import ebooks.modelo.Livro;
@@ -19,8 +21,58 @@ public class PedidoVH implements IViewHelper {
 
 	@Override
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		Carrinho carrinho = new Carrinho();
+		HttpSession session = request.getSession();
+		Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+		if(pedidoSession == null) {
+			pedidoSession = new Pedido();
+			pedidoSession.setItensPedido(new ArrayList<ItemPedido>());
+			session.setAttribute("pedido", pedidoSession);
+		}
+		String operacao = request.getParameter("operacao");
+		if(operacao.equals("SALVAR")) {
+			carrinho.setSession(request.getSession());
+			Pedido pedido = new Pedido();
+			pedido.setItensPedido(new ArrayList<ItemPedido>());
+			Livro livro = new Livro();
+			String idLivro = request.getParameter("id");
+			livro.setId(Long.valueOf(idLivro));
+			ItemPedido itemPedido = new ItemPedido();
+			itemPedido.setLivro(livro);
+			List<ItemPedido> itensPedido = pedido.getItensPedido();
+			itensPedido.add(itemPedido);
+			pedido.setItensPedido(itensPedido);
+			carrinho.setPedido(pedido);
+		}
+		if(operacao.equals("ALTERAR")) {
+			carrinho.setSession(request.getSession());
+			Livro livro = new Livro();
+			String idLivro = request.getParameter("id");
+			livro.setId(Long.valueOf(idLivro));
+			String quantidade = request.getParameter("quantidade" + livro.getId());
+			ItemPedido item = new ItemPedido();
+			item.setLivro(livro);
+			item.setQuantidade(Long.valueOf(quantidade));
+			List<ItemPedido> itensPedido = new ArrayList<>();
+			itensPedido.add(item);
+			Pedido pedido = new Pedido();
+			pedido.setItensPedido(itensPedido);
+			carrinho.setPedido(pedido);
+		}
+		if(operacao.equals("EXCLUIR")) {
+			carrinho.setSession(request.getSession());
+			String idLivro = request.getParameter("id");
+			Livro livro = new Livro();
+			livro.setId(Long.valueOf(idLivro));
+			ItemPedido item = new ItemPedido();
+			item.setLivro(livro);
+			List<ItemPedido> itensPedido = new ArrayList<>();
+			itensPedido.add(item);
+			Pedido pedido = new Pedido();
+			pedido.setItensPedido(itensPedido);
+			carrinho.setPedido(pedido);
+		}
+		return carrinho;
 	}
 
 	@Override
@@ -31,81 +83,46 @@ public class PedidoVH implements IViewHelper {
 		
 		if(uri.equals(contexto + "/carrinhoCliente")) {
 			HttpSession session = request.getSession();
-			Pedido pedido = (Pedido) session.getAttribute("pedido");
-			if(pedido == null) {
-				session.setAttribute("pedido", new Pedido());
+			Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+			if(pedidoSession == null) {
+				pedidoSession = new Pedido();
+				pedidoSession.setItensPedido(new ArrayList<ItemPedido>());
+				session.setAttribute("pedido", pedidoSession);
 			}
 			request.getRequestDispatcher("WEB-INF/jsp/carrinho/view.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/carrinhoAdicionar")) {
-			HttpSession session = request.getSession();
-			Pedido pedido = (Pedido) session.getAttribute("pedido");
-			if(pedido == null) {
-				pedido = new Pedido();
-			}
-			if(pedido.getItensPedido() == null) {
-				pedido.setItensPedido(new ArrayList<ItemPedido>());
-			}
-			Livro livro = (Livro) request.getAttribute("livro");
-			ItemPedido itemPedido = new ItemPedido();
-			itemPedido.setLivro(livro);
-			itemPedido.setQuantidade(Long.valueOf(1));
-			List<ItemPedido> itensPedido = pedido.getItensPedido();
-			boolean livroIgual = false;
-			for(ItemPedido item : itensPedido) {
-				livroIgual = item.getLivro().getCodigo().equals(livro.getCodigo());
-				if(livroIgual) {
-					break;
+			if (object != null) {
+				String mensagem = (String) object;
+				String[] mensagens = mensagem.split(":");
+				if(mensagens.length > 0) {
+					request.setAttribute("erro", mensagens[0]);
 				}
-			}
-			if(!livroIgual) {
-				itensPedido.add(itemPedido);
-			}
-			pedido.setItensPedido(itensPedido);
-			session.setAttribute("pedido", pedido);
-			response.sendRedirect("carrinhoCliente");
-		}
-		if(uri.equals(contexto + "/carrinhoRemover")) {
-			String idLivro = request.getParameter("id");
-			HttpSession session = request.getSession();
-			Pedido pedido = (Pedido) session.getAttribute("pedido");
-			List<ItemPedido> itensPedido = pedido.getItensPedido();
-			Iterator<ItemPedido> iterator = itensPedido.iterator();
-			while(iterator.hasNext()) {
-				ItemPedido item = iterator.next();
-				if(item.getLivro().getId() == Long.valueOf(idLivro)) {
-					iterator.remove();
-				}
-			}
-			pedido.setItensPedido(itensPedido);
-			session.setAttribute("pedido", pedido);
-			response.sendRedirect("carrinhoCliente");
-		}
-		if(uri.equals(contexto + "/carrinhoAlterar")) {
-			Livro livro = (Livro) request.getAttribute("livro");
-			String quantidade = request.getParameter("quantidade" + livro.getId());
-			//Se a quantidade disponível for menor que a quantidade desejada
-			if(livro.getEstoque().getQuantidadeAtual() < Long.valueOf(quantidade)) {
-				String erro = "Quantidade desejada não disponível em estoque ("
-						+ livro.getEstoque().getQuantidadeAtual()
-						+ " unidades)";
-				request.setAttribute("erro", erro);
 				request.getRequestDispatcher("carrinhoCliente").forward(request, response);;
 				return;
 			}
-			HttpSession session = request.getSession();
-			Pedido pedido = (Pedido) session.getAttribute("pedido");
-			List<ItemPedido> itensPedido = pedido.getItensPedido();
-			Iterator<ItemPedido> iterator = itensPedido.iterator();
-			while(iterator.hasNext()) {
-				ItemPedido item = iterator.next();
-				if(item.getLivro().getId() == Long.valueOf(livro.getId())) {
-					item.setQuantidade(Long.valueOf(quantidade));
+		}
+		if(uri.equals(contexto + "/carrinhoRemover")) {
+			if (object != null) {
+				String mensagem = (String) object;
+				String[] mensagens = mensagem.split(":");
+				if(mensagens.length > 0) {
+					request.setAttribute("erro", mensagens[0]);
 				}
+				request.getRequestDispatcher("carrinhoCliente").forward(request, response);;
+				return;
 			}
-			pedido.setItensPedido(itensPedido);
-			session.setAttribute("pedido", pedido);
-			response.sendRedirect("carrinhoCliente");
+		}
+		if(uri.equals(contexto + "/carrinhoAlterar")) {
+			if (object != null) {
+				String mensagem = (String) object;
+				String[] mensagens = mensagem.split(":");
+				if(mensagens.length > 0) {
+					request.setAttribute("erro", mensagens[0]);
+				}
+				request.getRequestDispatcher("carrinhoCliente").forward(request, response);;
+				return;
+			}
 		}
 
 	}

@@ -424,8 +424,20 @@ public class LivroDAO extends AbstractDAO {
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) {
 		Livro livroConsulta = (Livro) entidade;
 		Editora editoraConsulta = livroConsulta.getEditora();
-		Categoria categoriaConsulta = livroConsulta.getCategorias().get(0);
-		Autor autorConsulta = livroConsulta.getAutores().get(0);
+		if(editoraConsulta == null) {
+			editoraConsulta = new Editora();
+			editoraConsulta.setNome("");
+		}
+		Categoria categoriaConsulta = new Categoria();
+		categoriaConsulta.setNome("");
+		if(livroConsulta.getCategorias() != null && !livroConsulta.getCategorias().isEmpty()) {
+			categoriaConsulta = livroConsulta.getCategorias().get(0);
+		}
+		Autor autorConsulta = new Autor();
+		autorConsulta.setNome("");
+		if(livroConsulta.getAutores() != null && !livroConsulta.getAutores().isEmpty()) {
+			autorConsulta = livroConsulta.getAutores().get(0);
+		}
 		List<Autor> autores = new ArrayList<>();
 		List<Categoria> categorias = new ArrayList<>();
 		List<Livro> livros = new ArrayList<>();
