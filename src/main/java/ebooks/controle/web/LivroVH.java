@@ -227,9 +227,6 @@ public class LivroVH implements IViewHelper {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
 
-		if (uri.equals(contexto + "/")) {
-			response.sendRedirect("livroList");
-		}
 		if (uri.equals(contexto + "/livroForm")) {
 			request.getRequestDispatcher("livroFormCategorias?operacao=CONSULTAR").forward(request, response);
 		}

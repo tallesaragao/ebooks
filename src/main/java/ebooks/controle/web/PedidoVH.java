@@ -2,7 +2,6 @@ package ebooks.controle.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,10 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ebooks.modelo.Carrinho;
-import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.ItemPedido;
 import ebooks.modelo.Livro;
+import ebooks.modelo.Login;
 import ebooks.modelo.Pedido;
 
 public class PedidoVH implements IViewHelper {
@@ -23,12 +22,15 @@ public class PedidoVH implements IViewHelper {
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
 		Carrinho carrinho = new Carrinho();
 		HttpSession session = request.getSession();
+		Login loginSession = (Login) session.getAttribute("login");
 		Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
 		if(pedidoSession == null) {
 			pedidoSession = new Pedido();
 			pedidoSession.setItensPedido(new ArrayList<ItemPedido>());
-			session.setAttribute("pedido", pedidoSession);
 		}
+		pedidoSession.setCliente(loginSession.getCliente());
+		session.setAttribute("pedido", pedidoSession);
+		
 		String operacao = request.getParameter("operacao");
 		if(operacao.equals("SALVAR")) {
 			carrinho.setSession(request.getSession());
@@ -72,6 +74,10 @@ public class PedidoVH implements IViewHelper {
 			pedido.setItensPedido(itensPedido);
 			carrinho.setPedido(pedido);
 		}
+		if(operacao.equals("CONSULTAR")) {
+			carrinho.setPedido(pedidoSession);
+			carrinho.setSession(request.getSession());
+		}
 		return carrinho;
 	}
 
@@ -89,6 +95,9 @@ public class PedidoVH implements IViewHelper {
 				pedidoSession.setItensPedido(new ArrayList<ItemPedido>());
 				session.setAttribute("pedido", pedidoSession);
 			}
+			request.getRequestDispatcher("carrinhoConsultar?operacao=CONSULTAR").forward(request, response);
+		}
+		if(uri.equals(contexto + "/carrinhoConsultar")) {
 			request.getRequestDispatcher("WEB-INF/jsp/carrinho/view.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/carrinhoAdicionar")) {

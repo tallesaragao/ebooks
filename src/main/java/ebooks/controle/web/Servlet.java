@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +33,6 @@ public class Servlet extends HttpServlet {
 		String contextoApp = "/ebooks";
 		
 		vhs = new HashMap<String, IViewHelper>();
-		vhs.put(contextoApp + "/", new LivroVH());
 		vhs.put(contextoApp + "/categoriaForm", new CategoriaVH());
 		vhs.put(contextoApp + "/categoriaList", new CategoriaVH());
 		vhs.put(contextoApp + "/categoriaEdit", new CategoriaVH());
@@ -90,6 +90,7 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/enderecoExcluir", new EnderecoVH());
 		vhs.put(contextoApp + "/enderecoConsultar", new EnderecoVH());
 		vhs.put(contextoApp + "/carrinhoCliente", new PedidoVH());
+		vhs.put(contextoApp + "/carrinhoConsultar", new PedidoVH());
 		vhs.put(contextoApp + "/carrinhoAdicionar", new PedidoVH());
 		vhs.put(contextoApp + "/carrinhoRemover", new PedidoVH());
 		vhs.put(contextoApp + "/carrinhoAlterar", new PedidoVH());

@@ -269,7 +269,7 @@ public class ClienteDAO extends AbstractDAO {
 		if(clienteConsulta.getId() != null) {
 			sql += "and c.id_cliente=?";
 		}
-		if(clienteConsulta.getLogin() != null && clienteConsulta.getLogin().getId() != null) {
+		else if(clienteConsulta.getLogin() != null && clienteConsulta.getLogin().getId() != null) {
 			sql += "and c.id_login=?";
 		}
 		try {
@@ -293,7 +293,7 @@ public class ClienteDAO extends AbstractDAO {
 			if(clienteConsulta.getId() != null) {
 				ps.setLong(5, clienteConsulta.getId());
 			}
-			if(clienteConsulta.getLogin() != null && clienteConsulta.getLogin().getId() != null) {
+			else if(clienteConsulta.getLogin() != null && clienteConsulta.getLogin().getId() != null) {
 				ps.setLong(5, clienteConsulta.getLogin().getId());
 			}
 			ResultSet rs = ps.executeQuery();

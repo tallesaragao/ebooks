@@ -31,9 +31,7 @@ public class AlterarQuantidadeItemCarrinho implements IStrategy {
 				if(!consulta.isEmpty()) {
 					Livro livroConsultado = (Livro) consulta.get(0);
 					if(item.getQuantidade() > livroConsultado.getEstoque().getQuantidadeAtual()) {
-						sb.append("Quantidade desejada do livro (" 
-								+ livroConsultado.getCodigo() 
-								+ ") não disponível em estoque (Max. " 
+						sb.append("Quantidade desejada do livro não disponível em estoque (Max. " 
 								+ livroConsultado.getEstoque().getQuantidadeAtual() 
 								+ " un):");
 					}
@@ -44,6 +42,8 @@ public class AlterarQuantidadeItemCarrinho implements IStrategy {
 						for(ItemPedido itemSession : itensPedido) {
 							if(itemSession.getLivro().getId() == item.getLivro().getId()) {
 								itemSession.setQuantidade(item.getQuantidade());
+								double subtotal = itemSession.getLivro().getPrecificacao().getPrecoVenda() * itemSession.getQuantidade();
+								itemSession.setSubtotal(subtotal);
 								break;
 							}
 						}

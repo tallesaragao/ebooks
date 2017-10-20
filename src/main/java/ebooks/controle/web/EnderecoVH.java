@@ -98,8 +98,8 @@ public class EnderecoVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/endereco/form.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/enderecoSalvar")) {
+			String idCliente = request.getParameter("idCliente");
 			if(object == null) {
-				String idCliente = request.getParameter("idCliente");
 				request.setAttribute("idCliente", idCliente);
 				String sucesso = "Endereço cadastrado com sucesso";
 				request.setAttribute("sucesso", sucesso);
@@ -109,6 +109,7 @@ public class EnderecoVH implements IViewHelper {
 			String mensagem = (String) object;
 			String[] mensagens = mensagem.split(":");
 			Endereco endereco = (Endereco) this.getEntidade(request);
+			request.setAttribute("idCliente", idCliente);
 			request.setAttribute("endereco", endereco);
 			request.setAttribute("mensagens", mensagens);
 			request.getRequestDispatcher("WEB-INF/jsp/endereco/form.jsp").forward(request, response);

@@ -15,8 +15,7 @@
 	<c:import url="../cabecalho.jsp" />
 	<div class="container">
 		<h1 class="page-header titulo">Informações do cliente</h1>
-	</div>
-	<c:if test="${sucesso != null}">
+		<c:if test="${sucesso != null}">
 			<div class="row">
 				<div class="col-md-5">
 					<div class="alert alert-success alert-dismissible">
@@ -43,6 +42,7 @@
 				</div>
 			</div>
 		</c:if>
+	</div>
 	
 	<form action="#" method="post">
 		<div class="container">

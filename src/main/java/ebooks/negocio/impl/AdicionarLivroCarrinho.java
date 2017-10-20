@@ -32,6 +32,8 @@ public class AdicionarLivroCarrinho implements IStrategy {
 					if(livro.getAtivo()) {
 						item.setQuantidade(Long.valueOf(1));
 						item.setLivro(livro);
+						double subtotal = livro.getPrecificacao().getPrecoVenda() * item.getQuantidade();
+						item.setSubtotal(subtotal);
 						HttpSession session = carrinho.getSession();
 						Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
 						itensPedido = pedidoSession.getItensPedido();

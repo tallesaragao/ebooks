@@ -11,11 +11,13 @@ ebooks\dao\AbstractDAO.class
 ebooks\modelo\Ativacao.class
 ebooks\modelo\Livro.class
 ebooks\negocio\impl\ValidarNumeroCartaoCredito.class
+ebooks\negocio\impl\AdicionarLivroCarrinho.class
 ebooks\negocio\impl\AtivadorClientePrimeiroCadastro.class
 ebooks\modelo\Pedido.class
 ebooks\negocio\impl\VerificarExistenciaCliente.class
 ebooks\modelo\Login.class
 ebooks\dao\CartaoCreditoDAO.class
+ebooks\negocio\impl\ExcluirLivroCarrinho.class
 ebooks\controle\web\IViewHelper.class
 ebooks\modelo\Precificacao.class
 ebooks\dao\EditoraDAO.class
@@ -35,6 +37,7 @@ ebooks\modelo\Inativacao.class
 ebooks\modelo\ValeCompras.class
 ebooks\modelo\PagamentoValeCompras.class
 ebooks\controle\ICommand.class
+ebooks\negocio\impl\VerificarPedidoFinalizado.class
 ebooks\negocio\impl\GeradorCodigoLivro.class
 ebooks\modelo\TipoTelefone.class
 ebooks\modelo\PagamentoCartao.class
@@ -46,6 +49,7 @@ ebooks\controle\web\GrupoPrecificacaoVH.class
 ebooks\controle\web\BandeiraVH.class
 ebooks\modelo\GrupoPrecificacao.class
 ebooks\negocio\impl\ValidarCamposCartaoCredito.class
+ebooks\negocio\impl\AlterarQuantidadeItemCarrinho.class
 ebooks\modelo\Cliente.class
 ebooks\negocio\impl\InativadorCadastro.class
 ebooks\modelo\Bandeira.class
@@ -58,6 +62,7 @@ ebooks\negocio\impl\ValidarCamposLivro.class
 ebooks\negocio\impl\ValidarCamposEndereco.class
 ebooks\dao\TipoEnderecoDAO.class
 ebooks\dao\ClienteDAO.class
+ebooks\modelo\Carrinho.class
 ebooks\negocio\impl\ComplementarDtCadastro.class
 ebooks\modelo\PessoaJuridica.class
 ebooks\negocio\impl\ValidarCamposLogin.class
@@ -78,6 +83,7 @@ ebooks\controle\web\CartaoCreditoVH.class
 ebooks\modelo\TipoEndereco.class
 ebooks\controle\AlterarCommand.class
 ebooks\controle\web\Servlet.class
+ebooks\controle\web\PedidoVH.class
 ebooks\controle\ExcluirCommand.class
 ebooks\negocio\impl\AtivadorCadastro.class
 ebooks\controle\AbstractCommand.class

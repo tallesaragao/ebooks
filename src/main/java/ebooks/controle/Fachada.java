@@ -35,6 +35,7 @@ import ebooks.negocio.impl.AlterarQuantidadeItemCarrinho;
 import ebooks.negocio.impl.AtivadorClientePrimeiroCadastro;
 import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
 import ebooks.negocio.impl.ComplementarDtCadastro;
+import ebooks.negocio.impl.ConsultarClienteCarrinho;
 import ebooks.negocio.impl.ExcluirLivroCarrinho;
 import ebooks.negocio.impl.GeradorCodigoLivro;
 import ebooks.negocio.impl.GeradorPrecoLivro;
@@ -74,6 +75,7 @@ public class Fachada implements IFachada {
 		VerificarPedidoFinalizado verPedFin = new VerificarPedidoFinalizado();
 		AlterarQuantidadeItemCarrinho altQuantItemCar = new AlterarQuantidadeItemCarrinho();
 		ExcluirLivroCarrinho excLivCar = new ExcluirLivroCarrinho();
+		ConsultarClienteCarrinho conCliCar = new ConsultarClienteCarrinho();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -168,18 +170,42 @@ public class Fachada implements IFachada {
 		lCarrinhoExcluir.add(excLivCar);
 		lCarrinhoExcluir.add(verPedFin);
 		List<IStrategy> lCarrinhoConsultar = new ArrayList<>();
+		lCarrinhoConsultar.add(conCliCar);
+		lCarrinhoConsultar.add(verPedFin);
 		contextoCarrinho.put(SALVAR, lCarrinhoSalvar);
 		contextoCarrinho.put(ALTERAR, lCarrinhoAlterar);
 		contextoCarrinho.put(EXCLUIR, lCarrinhoExcluir);
 		contextoCarrinho.put(CONSULTAR, lCarrinhoConsultar);
 		
+		
+		
+		Map<String, List<IStrategy>> contextoGrupoPrecificacao = new HashMap<String, List<IStrategy>>();
+		List<IStrategy> lGrupoPrecificacaoConsultar = new ArrayList<>();
+		contextoGrupoPrecificacao.put(CONSULTAR, lGrupoPrecificacaoConsultar);
+		
+		Map<String, List<IStrategy>> contextoBandeira = new HashMap<String, List<IStrategy>>();
+		List<IStrategy> lBandeiraConsultar = new ArrayList<>();
+		contextoBandeira.put(CONSULTAR, lBandeiraConsultar);
+		
+		Map<String, List<IStrategy>> contextoTipoEnd = new HashMap<String, List<IStrategy>>();
+		List<IStrategy> lTipoEndConsultar = new ArrayList<>();
+		contextoTipoEnd.put(CONSULTAR, lTipoEndConsultar);
+		
+		Map<String, List<IStrategy>> contextoTipoTel = new HashMap<String, List<IStrategy>>();
+		List<IStrategy> lTipoTelConsultar = new ArrayList<>();
+		contextoTipoTel.put(CONSULTAR, lTipoTelConsultar);
+		
 		requisitos = new HashMap<String, Map<String, List<IStrategy>>>();
 		requisitos.put(Categoria.class.getName(), contextoCat);
 		requisitos.put(Livro.class.getName(), contextoLivro);
+		requisitos.put(GrupoPrecificacao.class.getName(), contextoGrupoPrecificacao);
 		requisitos.put(Login.class.getName(), contextoLogin);
 		requisitos.put(Cliente.class.getName(), contextoCliente);
 		requisitos.put(Endereco.class.getName(), contextoEndereco);
 		requisitos.put(CartaoCredito.class.getName(), contextoCarCred);
+		requisitos.put(Bandeira.class.getName(), contextoBandeira);
+		requisitos.put(TipoEndereco.class.getName(), contextoTipoEnd);
+		requisitos.put(TipoTelefone.class.getName(), contextoTipoTel);
 		requisitos.put(Carrinho.class.getName(), contextoCarrinho);
 		
 		daos = new HashMap<String, IDAO>();
@@ -253,6 +279,10 @@ public class Fachada implements IFachada {
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) {
 		IDAO dao = daos.get(entidade.getClass().getName());
+		StringBuilder sb = executarRegras(entidade, CONSULTAR);
+		if (sb.length() > 0) {
+			return null;
+		}
 		List<EntidadeDominio> consulta;
 		try {
 			consulta = dao.consultar(entidade);

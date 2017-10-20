@@ -18,11 +18,6 @@
   
   <servlet-mapping>
     <servlet-name>Servlet</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-    <servlet-name>Servlet</servlet-name>
     <url-pattern>/categoriaForm</url-pattern>
   </servlet-mapping>
   
@@ -318,7 +313,7 @@
   
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
-  	<url-pattern>/carrinhoConsultarEstoque</url-pattern>
+  	<url-pattern>/carrinhoConsultar</url-pattern>
   </servlet-mapping>
   
   <resource-ref>

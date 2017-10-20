@@ -55,73 +55,116 @@
 				<c:if test="${empty pedido.itensPedido }">
 					<h4>O carrinho está vazio</h4>
 				</c:if>
-				<c:forEach items="${pedido.itensPedido}" var="itemPedido">
-					<dl class="dl-horizontal">
-						<dt>TÍTULO</dt>
-						<dd>${itemPedido.livro.titulo}</dd>
-						<dt>QUANTIDADE</dt>
-						<dd>${itemPedido.quantidade}</dd>
-						<dt>Autor(es)</dt>
-						<dd>
-							<c:forEach items="${itemPedido.livro.autores}" var="autor" varStatus="status">
-								<span>${autor.nome}<c:if test="${!status.last}">, </c:if></span>
-							</c:forEach>
-						</dd>
-						<dt>Categoria(s)</dt>
-						<dd>
-							<c:forEach items="${itemPedido.livro.categorias}" var="categoria" varStatus="status">
-								<span>${categoria.nome}<c:if test="${!status.last}">, </c:if></span>
-							</c:forEach>
-						</dd>
-						<dt>Editora</dt>
-						<dd>${itemPedido.livro.editora.nome}</dd>
-						<dt>Preço unitário</dt>
-						<dd>${itemPedido.livro.precificacao.precoVenda}</dd>	
-						<dt>Preço do item</dt>
-						<dd>${itemPedido.livro.precificacao.precoVenda * itemPedido.quantidade}</dd>
-					</dl>
+				<c:if test="${not empty pedido.itensPedido}">
 					<div class="row">
-						<div class="col-xs-6 col-md-2">
-							<input type="hidden" name="idLivro" value="${itemPedido.livro.id}"/>
-							<div class="input-group">
-								<input type="number" min="1" name="quantidade${itemPedido.livro.id}"
-								value="${itemPedido.quantidade}" class="form-control"/>
-								<span class="input-group-btn">
-									<button type="submit" data-toggle="tooltip" title="Alterar quantidade"
-									class="btn btn-default btn-icone" method="get" id="btnCarrinhoAlterar"
-									formaction="carrinhoAlterar?operacao=ALTERAR&id=${itemPedido.livro.id}">
-										<span class="glyphicon glyphicon-pencil"></span>
-									</button>
-								</span>	
+						<div class="table-responsive">
+							<div class="col-sm-11 col-sm-12 col-md-12">
+								<table class="table table-striped table-condensed">
+									<thead>
+										<tr>
+											<th>TÍTULO</th>
+											<th>AUTORES</th>
+											<th>CATEGORIAS</th>
+											<th>EDITORA</th>
+											<th>PREÇO</th>
+											<th>SUBTOTAL</th>
+											<th>QUANTIDADE</th>
+											<th>
+												<span class="glyphicon glyphicon-cog icone-engrenagem"></span> AÇÕES
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${pedido.itensPedido}" var="itemPedido">
+											<tr>
+												<fmt:setLocale value="pt-BR" />
+												<td>${itemPedido.livro.titulo}</td>
+												<td>
+													<c:forEach items="${itemPedido.livro.autores}" var="autor" varStatus="status">
+														<span>${autor.nome}<c:if test="${!status.last}">, </c:if></span>
+													</c:forEach>
+												</td>
+												<td>
+													<c:forEach items="${itemPedido.livro.categorias}" var="categoria" varStatus="status">
+														<span>${categoria.nome}<c:if test="${!status.last}">, </c:if></span>
+													</c:forEach>
+												</td>
+												<td>${itemPedido.livro.editora.nome}</td>
+												<td>												
+													<fmt:formatNumber value="${itemPedido.livro.precificacao.precoVenda}" type="currency"/>
+												</td>
+												<td>
+													<fmt:formatNumber value="${itemPedido.subtotal}" type="currency"/>
+												</td>
+												<td>
+													<div class="input-group">
+														<input type="number" min="1" name="quantidade${itemPedido.livro.id}"
+														value="${itemPedido.quantidade}" class="form-control"/>
+														<span class="input-group-btn">
+															<button type="submit" data-toggle="tooltip" title="Alterar"
+															class="btn btn-default btn-icone" method="get" id="btnCarrinhoAlterar"
+															formaction="carrinhoAlterar?operacao=ALTERAR&id=${itemPedido.livro.id}">
+																<span class="glyphicon glyphicon-pencil"></span>
+															</button>
+														</span>	
+													</div>
+												</td>
+												<td>
+													<button type="submit" name="operacao" method="get" data-toggle="tooltip"
+													title="Excluir" onclick="return excluir()" id="btnRemoverCarrinho"
+													class="btn btn-sm btn-danger botao-excluir btn-icone"
+													formaction="carrinhoRemover?operacao=EXCLUIR&id=${itemPedido.livro.id}">
+														<span class="glyphicon glyphicon-trash"></span>
+													</button>
+												</td>							
+										</c:forEach>
+									</tbody>
+								</table>
 							</div>
 						</div>
-								
-						<div class="col-xs-6 col-md-1">				
-							<button type="submit" name="operacao" method="get" data-toggle="tooltip"
-							title="Remover do carrinho" onclick="return excluir()" id="btnRemoverCarrinho"
-							class="btn btn-sm btn-danger botao-excluir btn-icone"
-							formaction="carrinhoRemover?operacao=EXCLUIR&id=${itemPedido.livro.id}">
-								<span class="glyphicon glyphicon-trash"></span>
+					</div>
+				</c:if>
+			</fieldset>
+			<c:if test="${not empty pedido.itensPedido}">
+				<fieldset>
+					<legend>
+						<span class="legend-logo glyphicon glyphicon-send"></span> Frete
+					</legend>
+					<div class="row">
+						<div class="form-group col-xs-4">
+							<label for="endereco" class="control-label">Endereço</label>
+							<select name="endereco" class="form-control">
+								<option value="" disabled selected>Escolha um endereço</option>
+								<c:forEach items="${pedido.cliente.enderecos}" var="end">
+									<option <c:if test="${endereco.tipoEndereco.id eq end.id}">selected</c:if> value="${end.id}">
+										${end.identificacao}
+									</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="col-xs-3">
+							<button type="submit" formaction="calcularFrete"
+							id="btnCalcularFrete" class="btn btn-primary">
+								Calcular
 							</button>
 						</div>
 					</div>
-					</br>
-				</c:forEach>
-				<div class="row">
-					<div class="col-xs-12">
-						<c:if test="${not empty pedido.itensPedido}">		
-							<button type="submit" formaction="finalizarPedido"
-							id="btnFinalizarPedido" class="btn btn-primary">
-								Finalizar pedido
-							</button>
-						</c:if>
-						<button type="submit" id="btnContinuarComprando" 
-						formaction="livroList" class="btn btn-default">
-							Continuar comprando
+				</fieldset>
+			</c:if>
+			<div class="row">
+				<div class="col-xs-12">
+					<c:if test="${not empty pedido.itensPedido}">		
+						<button type="submit" formaction="finalizarPedido"
+						id="btnFinalizarPedido" class="btn btn-primary">
+							Finalizar pedido
 						</button>
-					</div>
+					</c:if>
+					<button type="submit" id="btnContinuarComprando" 
+					formaction="livroList" class="btn btn-default">
+						Continuar comprando
+					</button>
 				</div>
-			</fieldset>
+			</div>
 		</div>
 	</form>
 	<script src="resources/js/jquery-3.1.1.js"></script>
