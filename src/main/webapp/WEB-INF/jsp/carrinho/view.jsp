@@ -132,28 +132,49 @@
 					</legend>
 					<div class="row">
 						<div class="form-group col-xs-4">
-							<label for="endereco" class="control-label">Endereço</label>
+							<label for="endereco" class="control-label">Endereço de entrega</label>
 							<select name="endereco" class="form-control">
-								<option value="" disabled selected>Escolha um endereço</option>
+								<option value="" disabled selected>Escolha um endereço para prosseguir</option>
 								<c:forEach items="${pedido.cliente.enderecos}" var="end">
-									<option <c:if test="${endereco.tipoEndereco.id eq end.id}">selected</c:if> value="${end.id}">
+									<option <c:if test="${pedido.enderecoEntrega.id eq end.id}">selected</c:if> value="${end.id}">
 										${end.identificacao}
 									</option>
 								</c:forEach>
 							</select>
 						</div>
 						<div class="col-xs-3">
-							<button type="submit" formaction="calcularFrete"
-							id="btnCalcularFrete" class="btn btn-primary">
+							<button type="submit" formaction="freteCalcular" name="operacao"
+							value="CONSULTAR" id="btnCalcularFrete" class="btn btn-primary">
 								Calcular
 							</button>
 						</div>
 					</div>
+					<c:if test="${pedido.frete != null}">
+						<div class="row">
+							<div class="col-xs-12">
+								<dl>
+									<dt>ENDEREÇO (${pedido.enderecoEntrega.identificacao})</dt>
+									<dd>
+										${pedido.enderecoEntrega.logradouro} ${pedido.enderecoEntrega.numero} ${pedido.enderecoEntrega.complemento},
+										${pedido.enderecoEntrega.cidade}, ${pedido.enderecoEntrega.estado}, ${pedido.enderecoEntrega.pais} - 
+										${pedido.enderecoEntrega.cep}
+									</dd>
+									<dt>VALOR DO FRETE</dt>
+									<dd>
+										<fmt:setLocale value="pt-BR"/>
+										<fmt:formatNumber value="${pedido.frete.valor}" type="currency"/>									
+									</dd>
+									<dt>ENTREGA</dt>
+									<dd>Em até ${pedido.frete.diasEntrega} dias úteis</dd>
+								</dl>
+							</div>
+						</div>
+					</c:if>
 				</fieldset>
 			</c:if>
 			<div class="row">
 				<div class="col-xs-12">
-					<c:if test="${not empty pedido.itensPedido}">		
+					<c:if test="${not empty pedido.itensPedido}">	
 						<button type="submit" formaction="finalizarPedido"
 						id="btnFinalizarPedido" class="btn btn-primary">
 							Finalizar pedido

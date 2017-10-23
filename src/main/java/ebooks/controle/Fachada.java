@@ -34,6 +34,7 @@ import ebooks.negocio.impl.AdicionarLivroCarrinho;
 import ebooks.negocio.impl.AlterarQuantidadeItemCarrinho;
 import ebooks.negocio.impl.AtivadorClientePrimeiroCadastro;
 import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
+import ebooks.negocio.impl.CalcularFrete;
 import ebooks.negocio.impl.ComplementarDtCadastro;
 import ebooks.negocio.impl.ConsultarClienteCarrinho;
 import ebooks.negocio.impl.ExcluirLivroCarrinho;
@@ -46,6 +47,7 @@ import ebooks.negocio.impl.ValidarCamposEndereco;
 import ebooks.negocio.impl.ValidarCamposLivro;
 import ebooks.negocio.impl.ValidarCamposLogin;
 import ebooks.negocio.impl.VerificarExistenciaCliente;
+import ebooks.negocio.impl.ValidarConsistenciaFrete;
 import ebooks.negocio.impl.VerificarPedidoFinalizado;
 
 public class Fachada implements IFachada {
@@ -76,6 +78,8 @@ public class Fachada implements IFachada {
 		AlterarQuantidadeItemCarrinho altQuantItemCar = new AlterarQuantidadeItemCarrinho();
 		ExcluirLivroCarrinho excLivCar = new ExcluirLivroCarrinho();
 		ConsultarClienteCarrinho conCliCar = new ConsultarClienteCarrinho();
+		CalcularFrete calcFrete = new CalcularFrete();
+		ValidarConsistenciaFrete valConsistFrete = new ValidarConsistenciaFrete();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -171,7 +175,9 @@ public class Fachada implements IFachada {
 		lCarrinhoExcluir.add(verPedFin);
 		List<IStrategy> lCarrinhoConsultar = new ArrayList<>();
 		lCarrinhoConsultar.add(conCliCar);
+		lCarrinhoConsultar.add(calcFrete);
 		lCarrinhoConsultar.add(verPedFin);
+		lCarrinhoConsultar.add(valConsistFrete);
 		contextoCarrinho.put(SALVAR, lCarrinhoSalvar);
 		contextoCarrinho.put(ALTERAR, lCarrinhoAlterar);
 		contextoCarrinho.put(EXCLUIR, lCarrinhoExcluir);

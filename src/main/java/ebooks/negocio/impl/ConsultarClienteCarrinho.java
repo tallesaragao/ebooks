@@ -22,20 +22,22 @@ public class ConsultarClienteCarrinho implements IStrategy {
 		Pedido pedido = carrinho.getPedido();
 		Cliente clienteConsulta = pedido.getCliente();
 		IDAO clienteDAO = new ClienteDAO();
-		try {
-			List<EntidadeDominio> consulta = clienteDAO.consultar(clienteConsulta);
-			if(!consulta.isEmpty()) {
-				Cliente cliente = (Cliente) consulta.get(0);
-				pedido.setCliente(cliente);
-				HttpSession session = carrinho.getSession();
-				session.setAttribute("pedido", pedido);
+		if(clienteConsulta != null) {
+			try {
+				List<EntidadeDominio> consulta = clienteDAO.consultar(clienteConsulta);
+				if(!consulta.isEmpty()) {
+					Cliente cliente = (Cliente) consulta.get(0);
+					pedido.setCliente(cliente);
+					HttpSession session = carrinho.getSession();
+					session.setAttribute("pedido", pedido);
+				}
+				else {
+					sb.append("Cliente não encontrado");
+				}
+			} catch (SQLException e) {
+				sb.append("Problema na consulta");
+				e.printStackTrace();
 			}
-			else {
-				sb.append("Cliente não encontrado");
-			}
-		} catch (SQLException e) {
-			sb.append("Problema na consulta");
-			e.printStackTrace();
 		}
 		
 		if(sb.length() > 0) {

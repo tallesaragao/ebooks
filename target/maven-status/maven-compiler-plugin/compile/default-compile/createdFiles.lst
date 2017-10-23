@@ -21,6 +21,7 @@ ebooks\negocio\impl\ExcluirLivroCarrinho.class
 ebooks\controle\web\IViewHelper.class
 ebooks\modelo\Precificacao.class
 ebooks\dao\EditoraDAO.class
+ebooks\negocio\impl\ConsultarClienteCarrinho.class
 ebooks\negocio\IStrategy.class
 ebooks\negocio\impl\ValidarSenha.class
 ebooks\dao\ConnectionFactory.class
@@ -29,6 +30,7 @@ ebooks\modelo\PessoaFisica.class
 ebooks\negocio\impl\GeradorPrecoLivro.class
 ebooks\negocio\impl\AtivadorLivroPrimeiroCadastro.class
 ebooks\controle\web\TipoTelefoneVH.class
+ebooks\controle\web\FreteVH.class
 ebooks\modelo\Categoria.class
 ebooks\controle\IFachada.class
 ebooks\modelo\Estoque.class
@@ -84,10 +86,12 @@ ebooks\modelo\TipoEndereco.class
 ebooks\controle\AlterarCommand.class
 ebooks\controle\web\Servlet.class
 ebooks\controle\web\PedidoVH.class
+ebooks\negocio\impl\CalcularFrete.class
 ebooks\controle\ExcluirCommand.class
 ebooks\negocio\impl\AtivadorCadastro.class
 ebooks\controle\AbstractCommand.class
 ebooks\modelo\CartaoCredito.class
+ebooks\negocio\impl\ValidarConsistenciaFrete.class
 ebooks\negocio\impl\ValidarCamposCategoria.class
 ebooks\controle\web\ClienteVH.class
 ebooks\controle\web\TipoEnderecoVH.class

@@ -14,6 +14,7 @@ D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\modelo\Bandei
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\dao\ClienteDAO.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\modelo\Precificacao.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\modelo\Pedido.java
+D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\negocio\impl\ValidarConsistenciaFrete.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\negocio\impl\DefinirEnderecoPrincipal.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\controle\web\GrupoPrecificacaoVH.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\modelo\Livro.java
@@ -26,6 +27,7 @@ D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\negocio\impl\
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\modelo\Telefone.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\dao\BandeiraDAO.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\negocio\impl\AtivadorClientePrimeiroCadastro.java
+D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\controle\web\FreteVH.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\modelo\CupomPromocional.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\dao\LivroDAO.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\controle\web\LivroVH.java
@@ -43,8 +45,8 @@ D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\controle\web\
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\modelo\ValeCompras.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\dao\ConnectionFactory.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\modelo\Pagamento.java
-D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\dao\AbstractDAO.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\controle\web\IViewHelper.java
+D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\dao\AbstractDAO.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\controle\Fachada.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\controle\web\EnderecoVH.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\negocio\impl\ValidarCamposLogin.java
@@ -67,6 +69,7 @@ D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\modelo\ItemPe
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\negocio\impl\ValidarCamposEndereco.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\controle\web\TipoTelefoneVH.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\modelo\Login.java
+D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\negocio\impl\CalcularFrete.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\controle\web\Servlet.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\dao\LoginDAO.java
 D:\Users\tallesaragao\Documents\GitHub\ebooks\src\main\java\ebooks\dao\TipoTelefoneDAO.java

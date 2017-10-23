@@ -94,6 +94,7 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/carrinhoAdicionar", new PedidoVH());
 		vhs.put(contextoApp + "/carrinhoRemover", new PedidoVH());
 		vhs.put(contextoApp + "/carrinhoAlterar", new PedidoVH());
+		vhs.put(contextoApp + "/freteCalcular", new FreteVH());
 	}
 		
 	@Override
