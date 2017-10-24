@@ -3,6 +3,7 @@ package ebooks.modelo;
 import java.util.List;
 
 public class Pedido extends EntidadeDominio {
+	private String numero;
 	private Cliente cliente;
 	private Endereco enderecoCobranca;
 	private Endereco enderecoEntrega;
@@ -11,6 +12,14 @@ public class Pedido extends EntidadeDominio {
 	private CupomPromocional cupomPromocional;
 	private Double valorTotal;
 	private FormaPagamento formaPagamento;
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
 
 	public Cliente getCliente() {
 		return cliente;

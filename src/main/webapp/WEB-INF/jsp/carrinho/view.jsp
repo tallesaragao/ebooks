@@ -131,10 +131,10 @@
 						<span class="legend-logo glyphicon glyphicon-send"></span> Frete
 					</legend>
 					<div class="row">
-						<div class="form-group col-xs-4">
+						<div class="form-group col-xs-6 col-sm-5 col-md-4">
 							<label for="endereco" class="control-label">Endereço de entrega</label>
 							<select name="endereco" class="form-control">
-								<option value="" disabled selected>Escolha um endereço para prosseguir</option>
+								<option value="" disabled>Escolha um endereço para prosseguir</option>
 								<c:forEach items="${pedido.cliente.enderecos}" var="end">
 									<option <c:if test="${pedido.enderecoEntrega.id eq end.id}">selected</c:if> value="${end.id}">
 										${end.identificacao}
@@ -142,10 +142,15 @@
 								</c:forEach>
 							</select>
 						</div>
-						<div class="col-xs-3">
+						<div class="col-xs-6">
 							<button type="submit" formaction="freteCalcular" name="operacao"
-							value="CONSULTAR" id="btnCalcularFrete" class="btn btn-primary">
+							value="CONSULTAR" id="btnCalcularFrete" class="btn btn-primary btn-select">
 								Calcular
+							</button>
+							
+							<button type="submit" class="btn btn-primary btn-select"
+							method="get" formaction="enderecoForm?idCliente=${pedido.cliente.id}">
+								<span class="glyphicon glyphicon-plus"></span> Novo endereço
 							</button>
 						</div>
 					</div>
@@ -155,7 +160,7 @@
 								<dl>
 									<dt>ENDEREÇO (${pedido.enderecoEntrega.identificacao})</dt>
 									<dd>
-										${pedido.enderecoEntrega.logradouro} ${pedido.enderecoEntrega.numero} ${pedido.enderecoEntrega.complemento},
+										${pedido.enderecoEntrega.logradouro} nº ${pedido.enderecoEntrega.numero} ${pedido.enderecoEntrega.complemento},
 										${pedido.enderecoEntrega.cidade}, ${pedido.enderecoEntrega.estado}, ${pedido.enderecoEntrega.pais} - 
 										${pedido.enderecoEntrega.cep}
 									</dd>
@@ -175,9 +180,9 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<c:if test="${not empty pedido.itensPedido}">	
-						<button type="submit" formaction="finalizarPedido"
-						id="btnFinalizarPedido" class="btn btn-primary">
-							Finalizar pedido
+						<button type="submit" formaction="carrinhoPagamento"
+						id="btnCarrinhoPagamento" class="btn btn-primary">
+							Ir para pagamento
 						</button>
 					</c:if>
 					<button type="submit" id="btnContinuarComprando" 

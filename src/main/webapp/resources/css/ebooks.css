@@ -37,8 +37,12 @@ span.glyphicon {
 .categorias {
 	height: 95px;
 }
-#btnCalcularFrete {
+.btn-select {
 	margin-top: 25px;
+	margin-bottom: 15px;
+}
+.btn-select-multiple {
+	margin-left: 15px;	
 }
 @media(min-width: 768px) {
 	.painel {

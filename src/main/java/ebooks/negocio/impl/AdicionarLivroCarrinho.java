@@ -23,43 +23,45 @@ public class AdicionarLivroCarrinho implements IStrategy {
 		Pedido pedido = carrinho.getPedido();
 		List<ItemPedido> itensPedido = pedido.getItensPedido();
 		IDAO dao = new LivroDAO();
-		for(ItemPedido item : itensPedido) {
-			Livro livroConsulta = item.getLivro();
-			try {
-				List<EntidadeDominio> consulta = dao.consultar(livroConsulta);
-				if(!consulta.isEmpty()) {
-					Livro livro = (Livro) consulta.get(0);
-					if(livro.getAtivo()) {
-						item.setQuantidade(Long.valueOf(1));
-						item.setLivro(livro);
-						double subtotal = livro.getPrecificacao().getPrecoVenda() * item.getQuantidade();
-						item.setSubtotal(subtotal);
-						HttpSession session = carrinho.getSession();
-						Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
-						itensPedido = pedidoSession.getItensPedido();
-						boolean livroIgual = false;
-						for(ItemPedido itemSession : itensPedido) {
-							livroIgual = itemSession.getLivro().getCodigo().equals(item.getLivro().getCodigo());
-							if(livroIgual) {
-								break;
+		if(itensPedido != null) {
+			for(ItemPedido item : itensPedido) {
+				Livro livroConsulta = item.getLivro();
+				try {
+					List<EntidadeDominio> consulta = dao.consultar(livroConsulta);
+					if(!consulta.isEmpty()) {
+						Livro livro = (Livro) consulta.get(0);
+						if(livro.getAtivo()) {
+							item.setQuantidade(Long.valueOf(1));
+							item.setLivro(livro);
+							double subtotal = livro.getPrecificacao().getPrecoVenda() * item.getQuantidade();
+							item.setSubtotal(subtotal);
+							HttpSession session = carrinho.getSession();
+							Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+							itensPedido = pedidoSession.getItensPedido();
+							boolean livroIgual = false;
+							for(ItemPedido itemSession : itensPedido) {
+								livroIgual = itemSession.getLivro().getCodigo().equals(item.getLivro().getCodigo());
+								if(livroIgual) {
+									break;
+								}
 							}
+							if(!livroIgual) {
+								itensPedido.add(item);
+							}
+							pedidoSession.setItensPedido(itensPedido);
+							session.setAttribute("pedido", pedidoSession);
 						}
-						if(!livroIgual) {
-							itensPedido.add(item);
+						else {
+							sb.append("O livro está inativo:");
 						}
-						pedidoSession.setItensPedido(itensPedido);
-						session.setAttribute("pedido", pedidoSession);
 					}
 					else {
-						sb.append("O livro está inativo:");
+						sb.append("Livro não encontrado:");
 					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+					sb.append("Problema na consulta SQL:");
 				}
-				else {
-					sb.append("Livro não encontrado:");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				sb.append("Problema na consulta SQL:");
 			}
 		}
 		if(sb.length() > 0) {

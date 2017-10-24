@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -95,6 +94,8 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/carrinhoRemover", new PedidoVH());
 		vhs.put(contextoApp + "/carrinhoAlterar", new PedidoVH());
 		vhs.put(contextoApp + "/freteCalcular", new FreteVH());
+		vhs.put(contextoApp + "/carrinhoPagamento", new PagamentoVH());
+		vhs.put(contextoApp + "/pagamentoSelecionarCartoes", new PagamentoVH());
 	}
 		
 	@Override
