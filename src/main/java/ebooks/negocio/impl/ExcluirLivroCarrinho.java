@@ -18,18 +18,21 @@ public class ExcluirLivroCarrinho implements IStrategy {
 		StringBuilder sb = new StringBuilder();
 		Carrinho carrinho = (Carrinho) entidade;
 		HttpSession session = carrinho.getSession();
-		for(ItemPedido item : carrinho.getPedido().getItensPedido()) {
-			Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
-			List<ItemPedido> itensPedidoSession = pedidoSession.getItensPedido();
-			Iterator<ItemPedido> iterator = itensPedidoSession.iterator();
-			while(iterator.hasNext()) {
-				ItemPedido itemSession = iterator.next();
-				if(itemSession.getLivro().getId() == item.getLivro().getId()) {
-					iterator.remove();
+		List<ItemPedido> itensPedido = carrinho.getPedido().getItensPedido();
+		if(itensPedido != null) {
+			for(ItemPedido item : itensPedido) {
+				Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+				List<ItemPedido> itensPedidoSession = pedidoSession.getItensPedido();
+				Iterator<ItemPedido> iterator = itensPedidoSession.iterator();
+				while(iterator.hasNext()) {
+					ItemPedido itemSession = iterator.next();
+					if(itemSession.getLivro().getId() == item.getLivro().getId()) {
+						iterator.remove();
+					}
 				}
+				pedidoSession.setItensPedido(itensPedidoSession);
+				session.setAttribute("pedido", pedidoSession);
 			}
-			pedidoSession.setItensPedido(itensPedidoSession);
-			session.setAttribute("pedido", pedidoSession);
 		}
 		if(sb.length() > 0) {
 			return sb.toString();

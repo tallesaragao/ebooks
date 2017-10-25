@@ -16,7 +16,7 @@ public class ValidarSenha implements IStrategy {
 		}
 		String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\\s).{8,20}$";
 		if(!login.getSenha().matches(regex)) {
-			sb.append("A senha deve conter maiúsculas, minúsculas, números e caracteres especiais");
+			sb.append("A senha deve conter maiúsculas, minúsculas, números e caracteres especiais:");
 		}
 		if(sb.length() > 0) {
 			return sb.toString();

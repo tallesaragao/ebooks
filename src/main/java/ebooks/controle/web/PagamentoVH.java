@@ -54,13 +54,13 @@ public class PagamentoVH implements IViewHelper {
 					pagamentos.add(pagCartao);
 				}
 			}
-			if(codigoPromocional != null) {
+			if(codigoPromocional != null && !codigoPromocional.equals("")) {
 				CupomPromocional cupomPromocional = new CupomPromocional();
 				cupomPromocional.setCodigo(codigoPromocional);
 				pedido.setCupomPromocional(cupomPromocional);
 				carrinho.setPedido(pedido);
 			}
-			if(codigoValeCompras != null) {
+			if(codigoValeCompras != null && !codigoValeCompras.equals("")) {
 				ValeCompras valeCompras = new ValeCompras();
 				valeCompras.setCodigo(codigoValeCompras);
 				PagamentoValeCompras pagamentoValeCompras = new PagamentoValeCompras();
@@ -71,8 +71,18 @@ public class PagamentoVH implements IViewHelper {
 			formaPagamento.setPagamentos(pagamentos);
 			pedido.setFormaPagamento(formaPagamento);
 			carrinho.setPedido(pedido);
+			carrinho.setSession(request.getSession());
 		}
-		carrinho.setSession(session);
+		if(operacao.equals("CONSULTAR")) {
+			carrinho.setPedido(pedidoSession);
+			carrinho.setSession(request.getSession());
+		}
+		if(operacao.equals("EXCLUIR")) {
+			pedido.setCupomPromocional(pedidoSession.getCupomPromocional());
+			pedido.setItensPedido(null);
+			carrinho.setPedido(pedido);
+			carrinho.setSession(request.getSession());
+		}
 		return carrinho;
 	}
 
@@ -86,7 +96,20 @@ public class PagamentoVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/pagamento/view.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pagamentoSelecionarCartoes")) {
-			request.getRequestDispatcher("carrinhoPagamento").forward(request, response);
+			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
+		}
+		if(uri.equals(contexto + "/pagamentoAdicionarCupom")) {
+			if(object != null) {
+				String mensagem = (String) object;
+				String[] mensagens = mensagem.split(":");
+				if(mensagens.length > 0) {
+					request.setAttribute("mensagens", mensagens);
+				}
+			}
+			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
+		}
+		if(uri.equals(contexto + "/pagamentoRemoverCupom")) {
+			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
 		}
 	}
 

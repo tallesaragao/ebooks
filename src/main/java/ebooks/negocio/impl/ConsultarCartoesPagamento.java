@@ -54,11 +54,11 @@ public class ConsultarCartoesPagamento implements IStrategy {
 								}
 							}
 							else {
-								sb.append("Cartão não encontrado");
+								sb.append("Cartão não encontrado:");
 							}
 						} catch (SQLException e) {
 							e.printStackTrace();
-							sb.append("Problema na consulta do cartão");
+							sb.append("Problema na consulta do cartão:");
 						}
 					}
 				}

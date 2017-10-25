@@ -17,29 +17,16 @@
 		<h1 class="page-header titulo">Carrinho de compras</h1>
 	</div>
 	<div class="container">
-		<c:if test="${sucesso != null}">
+		<c:if test="${mensagens != null}">
 			<div class="row">
-				<div class="col-md-5">
-					<div class="alert alert-success alert-dismissible">
-						<span class="glyphicon glyphicon-ok"></span>
-						<strong>${sucesso}.</strong>				
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</c:if>
-				
-		<c:if test="${erro != null}">
-			<div class="row">
-				<div class="col-md-5">
-					<div class="alert alert-danger alert-dismissible">
-						<span class="glyphicon glyphicon-alert"></span>
-						<strong>${erro}.</strong>
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+				<div class="col-sm-8 col-md-5">
+					<div class="alert alert-danger" role="alert">
+						<span class="glyphicon glyphicon-alert"></span><strong> Problema(s) detectados:</strong>
+						</br>
+						<c:forEach var="mensagem" items="${mensagens}">
+							${mensagem}.
+							</br>
+						</c:forEach>
 					</div>
 				</div>
 			</div>
@@ -50,7 +37,7 @@
 		<div class="container">
 			<fieldset>
 				<legend>
-					<span class="legend-logo glyphicon glyphicon-shopping-cart"></span> Detalhes do pedido
+					<span class="legend-logo glyphicon glyphicon-shopping-cart"></span> Informações do pedido
 				</legend>
 				<div class="row">
 					<div class="col-xs-12">
@@ -69,6 +56,10 @@
 								<fmt:formatNumber value="${pedido.frete.valor}" type="currency"/>
 								- Até ${pedido.frete.diasEntrega} dias úteis para (${pedido.enderecoEntrega.identificacao})						
 							</dd>
+							<c:if test="${pedido.cupomPromocional != null}">
+								<dt>CUPOM</dt>
+								<dd>${pedido.cupomPromocional.codigo} - ${pedido.cupomPromocional.porcentagemDesconto}% de desconto</dd>
+							</c:if>
 							<dt>VALOR TOTAL</dt>
 							<dd>
 								<fmt:formatNumber value="${pedido.valorTotal}" type="currency"/>
@@ -88,14 +79,22 @@
 					<div class="col-xs-12 col-sm-4">
 						<div class="form-group">
 							<label for="codigoPromocional" class="control-label">Código</label>
-							<input type="text" name="codigoPromocional" placeholder="Digite o código" class="form-control"/>
+							<input type="text" name="codigoPromocional" placeholder="Digite o código"
+							value="${pedido.cupomPromocional.codigo}" class="form-control"/>
 						</div>
 					</div>
 					<div class="col-xs-3">
-						<button type="submit" formaction="pedidoAdicionarCupom" name="operacao"
+						<button type="submit" formaction="pagamentoAdicionarCupom" name="operacao"
 						value="SALVAR" id="btnAdicionarCupom" class="btn btn-primary btn-select">
 							Adicionar
 						</button>
+						
+						<c:if test="${pedido.cupomPromocional != null }">
+							<button type="submit" formaction="pagamentoRemoverCupom" name="operacao"
+							value="EXCLUIR" id="btnRemoverCupom" class="btn btn-warning btn-select">
+								Remover
+							</button>
+						</c:if>
 					</div>
 				</div>
 			<fieldset>
@@ -110,8 +109,8 @@
 						</div>
 					</div>
 					<div class="col-xs-3">
-						<button type="submit" formaction="pedidoAdicionarValeCompras" name="operacao"
-						value="SALVAR" id="btnAdicioarValeCompras" class="btn btn-primary btn-select">
+						<button type="submit" formaction="pagamentoAdicionarValeCompras" name="operacao"
+						value="SALVAR" id="btnAdicionarValeCompras" class="btn btn-primary btn-select">
 							Validar
 						</button>
 					</div>

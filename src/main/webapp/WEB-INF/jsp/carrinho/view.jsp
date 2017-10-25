@@ -179,7 +179,7 @@
 			</c:if>
 			<div class="row">
 				<div class="col-xs-12">
-					<c:if test="${not empty pedido.itensPedido}">	
+					<c:if test="${not empty pedido.frete}">	
 						<button type="submit" formaction="carrinhoPagamento"
 						id="btnCarrinhoPagamento" class="btn btn-primary">
 							Ir para pagamento

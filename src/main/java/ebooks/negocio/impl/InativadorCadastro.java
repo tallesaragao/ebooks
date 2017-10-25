@@ -26,12 +26,12 @@ public class InativadorCadastro implements IStrategy {
 		IDAO dao = daos.get(entidadeAtivacao.getClass().getName());
 		try {
 			if(!dao.alterar(entidadeAtivacao)) {
-				sb.append("Problema na inativação");
+				sb.append("Problema na inativação:");
 			}
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
-			sb.append("Problema na transação SQL");
+			sb.append("Problema na transação SQL:");
 		}
 		if(sb.length() > 0) {
 			return sb.toString();

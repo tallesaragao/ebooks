@@ -39,7 +39,7 @@ public class ValidarConsistenciaFrete implements IStrategy {
 					session.setAttribute("pedido", pedidoSession);
 				}
 			} catch (SQLException e) {
-				sb.append("Problema na consulta de endereço");
+				sb.append("Problema na consulta de endereço:");
 			}
 		}
 		

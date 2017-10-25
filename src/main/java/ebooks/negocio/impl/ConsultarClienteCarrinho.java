@@ -32,10 +32,10 @@ public class ConsultarClienteCarrinho implements IStrategy {
 					session.setAttribute("pedido", pedido);
 				}
 				else {
-					sb.append("Cliente não encontrado");
+					sb.append("Cliente não encontrado:");
 				}
 			} catch (SQLException e) {
-				sb.append("Problema na consulta");
+				sb.append("Problema na consulta:");
 				e.printStackTrace();
 			}
 		}

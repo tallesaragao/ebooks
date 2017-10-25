@@ -153,11 +153,11 @@ public class CalcularFrete implements IStrategy {
 					session.setAttribute("pedido", pedidoSession);
 				}
 				else {
-					sb.append("Endereço não encontrado");
+					sb.append("Endereço não encontrado:");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				sb.append("Problema na consulta de endereço");
+				sb.append("Problema na consulta de endereço:");
 			}
 		}
 				

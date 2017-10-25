@@ -331,6 +331,21 @@
   	<url-pattern>/pagamentoSelecionarCartoes</url-pattern>
   </servlet-mapping>
   
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/pagamentoAdicionarCupom</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/pagamentoRemoverCupom</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/pagamentoAdicionarValeCompras</url-pattern>
+  </servlet-mapping>
+  
   <resource-ref>
     <description>E-books LES</description>
     <res-ref-name>jdbc/ebooks_les</res-ref-name>

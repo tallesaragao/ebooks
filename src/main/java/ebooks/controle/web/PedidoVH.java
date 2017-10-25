@@ -98,7 +98,13 @@ public class PedidoVH implements IViewHelper {
 			request.getRequestDispatcher("carrinhoConsultar?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/carrinhoConsultar")) {
-			request.getRequestDispatcher("WEB-INF/jsp/carrinho/view.jsp").forward(request, response);
+			String pagina = request.getParameter("pagina");
+			if(pagina != null && pagina.equals("pagamento")) {
+				request.getRequestDispatcher("carrinhoPagamento").forward(request, response);
+			}
+			else {
+				request.getRequestDispatcher("WEB-INF/jsp/carrinho/view.jsp").forward(request, response);
+			}
 		}
 		if(uri.equals(contexto + "/carrinhoAdicionar")) {
 			if (object != null) {
