@@ -32,13 +32,14 @@ import ebooks.modelo.TipoTelefone;
 import ebooks.negocio.IStrategy;
 import ebooks.negocio.impl.AdicionarCupomPromocionalPagamento;
 import ebooks.negocio.impl.AdicionarLivroCarrinho;
+import ebooks.negocio.impl.AdicionarValeComprasPagamento;
 import ebooks.negocio.impl.AlterarQuantidadeItemCarrinho;
 import ebooks.negocio.impl.AtivadorClientePrimeiroCadastro;
 import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
 import ebooks.negocio.impl.CalcularFrete;
 import ebooks.negocio.impl.CalcularValorTotalPedido;
 import ebooks.negocio.impl.ComplementarDtCadastro;
-import ebooks.negocio.impl.ConsultarCartoesPagamento;
+import ebooks.negocio.impl.AdicionarCartoesPagamento;
 import ebooks.negocio.impl.ConsultarClienteCarrinho;
 import ebooks.negocio.impl.ExcluirCupomPagamento;
 import ebooks.negocio.impl.ExcluirLivroCarrinho;
@@ -85,9 +86,10 @@ public class Fachada implements IFachada {
 		CalcularFrete calcFrete = new CalcularFrete();
 		ValidarConsistenciaFrete valConsistFrete = new ValidarConsistenciaFrete();
 		CalcularValorTotalPedido calcValTotalPedido = new CalcularValorTotalPedido();
-		ConsultarCartoesPagamento consultCartPag = new ConsultarCartoesPagamento();
+		AdicionarCartoesPagamento adicCartPag = new AdicionarCartoesPagamento();
 		AdicionarCupomPromocionalPagamento adicCupomPromoPag = new AdicionarCupomPromocionalPagamento();
 		ExcluirCupomPagamento excluirCupomPag = new ExcluirCupomPagamento();
+		AdicionarValeComprasPagamento adicValeCompPag = new AdicionarValeComprasPagamento();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -174,8 +176,9 @@ public class Fachada implements IFachada {
 		Map<String, List<IStrategy>> contextoCarrinho = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lCarrinhoSalvar = new ArrayList<>();
 		lCarrinhoSalvar.add(adcLivCar);
-		lCarrinhoSalvar.add(consultCartPag);
+		lCarrinhoSalvar.add(adicCartPag);
 		lCarrinhoSalvar.add(adicCupomPromoPag);
+		lCarrinhoSalvar.add(adicValeCompPag);
 		lCarrinhoSalvar.add(verPedFin);
 		List<IStrategy> lCarrinhoAlterar = new ArrayList<>();
 		lCarrinhoAlterar.add(altQuantItemCar);

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -73,7 +74,7 @@
 			
 			</fieldset>
 				<legend>
-					<span class="legend-logo glyphicon glyphicon-tags"></span> Adicionar cupom promocional
+					<span class="legend-logo glyphicon glyphicon-tags"></span> Aplicar cupom promocional
 				</legend>
 				<div class="row">
 					<div class="col-xs-12 col-sm-4">
@@ -86,7 +87,7 @@
 					<div class="col-xs-3">
 						<button type="submit" formaction="pagamentoAdicionarCupom" name="operacao"
 						value="SALVAR" id="btnAdicionarCupom" class="btn btn-primary btn-select">
-							Adicionar
+							Aplicar
 						</button>
 						
 						<c:if test="${pedido.cupomPromocional != null }">
@@ -105,13 +106,14 @@
 					<div class="col-xs-12 col-sm-4">
 						<div class="form-group">
 							<label for="valeCompras" class="control-label">Vale-compras</label>
-							<input type="text" name="codigoValeCompras" placeholder="Digite o código" class="form-control"/>
+							<input type="text" name="codigoValeCompras" placeholder="Digite o código"
+							value="${codigoValeCompras}" class="form-control"/>
 						</div>
 					</div>
 					<div class="col-xs-3">
 						<button type="submit" formaction="pagamentoAdicionarValeCompras" name="operacao"
 						value="SALVAR" id="btnAdicionarValeCompras" class="btn btn-primary btn-select">
-							Validar
+							Aplicar
 						</button>
 					</div>
 				</div>
@@ -123,7 +125,13 @@
 								<option disabled value="">Escolha um ou mais cartões</option>
 								<c:forEach items="${pedido.cliente.cartoesCredito}" var="cartao">
 									<option value="${cartao.id}">
-										${cartao.bandeira.nome} (${cartao.numero})
+										${cartao.bandeira.nome} - 
+										${fn:substring(cartao.numero, 0, 4)}
+										<c:set var="asteriscos" value=""/>
+										<c:forEach begin="1" end="${fn:length(cartao.numero) - 8}">
+											<c:out value="*"/>
+										</c:forEach>
+										${fn:substring(cartao.numero, fn:length(cartao.numero) - 4, fn:length(cartao.numero))}
 									</option>
 								</c:forEach>
 							</select>
@@ -144,40 +152,84 @@
 						</div>
 					</div>
 				</div>
-				<c:if test="${pedido.formaPagamento != null}">
-					<div class="row">
-						<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
-							<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoCartao'}">
+			</fieldset>
+			<c:if test="${pedido.formaPagamento != null && !pedido.formaPagamento.pagamentos.isEmpty()}">
+				<fieldset>
+					<legend>
+						<span class="legend-logo glyphicon glyphicon-usd"></span> Divisão do pagamento
+					</legend>
+					<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
+						<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">
+							<div class="row">
 								<div class="col-xs-12 col-sm-4">
 									<div class="form-group">
+										<label for="valorValeCompras${pagamento.valeCompras.id}" class="control-label">
+											Vale-compras(Valor disponível: ${pagamento.valeCompras.valor}) 
+										</label>
+										<input type="text" name="valorValeCompras${pagamento.valeCompras.id}"
+										placeholder="Digite o valor a ser pago nesse vale-compras" class="form-control"/>
+									</div>
+								</div>								
+								<div class="col-xs-2">
+									<button type="submit" name="operacao" method="get" data-toggle="tooltip"
+									title="Remover" value="EXCLUIR"	onclick="return excluir()" id="btnValeComprasRemover"
+									class="btn btn-sm btn-danger botao-excluir btn-icone btn-select"
+									 formaction="pagamentoRemoverValeCompras?id=${pagamento.valeCompras.id}">
+										<span class="glyphicon glyphicon-trash"></span>
+									</button>
+								</div>
+							</div>
+						</c:if>
+						<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoCartao'}">
+							<div class="row">
+								<div class="col-xs-10 col-sm-4">
+									<div class="form-group">
 										<label for="valorCartao${pagamento.cartaoCredito.id}" class="control-label">
-											${pagamento.cartaoCredito.bandeira.nome} (${pagamento.cartaoCredito.numero})
+											${pagamento.cartaoCredito.bandeira.nome} - 
+											${fn:substring(pagamento.cartaoCredito.numero, 0, 4)}
+											<c:set var="asteriscos" value=""/>
+											<c:forEach begin="1" end="${fn:length(pagamento.cartaoCredito.numero) - 8}">
+												<c:out value="*"/>
+											</c:forEach>
+											${fn:substring(pagamento.cartaoCredito.numero,
+											fn:length(pagamento.cartaoCredito.numero) - 4,
+											fn:length(pagamento.cartaoCredito.numero))}
 										</label>
 										<input type="text" name="valorCartao${pagamento.cartaoCredito.id}"
 										placeholder="Digite o valor a ser pago nesse cartão" class="form-control"/>
 									</div>
 								</div>
+								<div class="col-xs-2">
+									<button type="submit" name="operacao" method="get" data-toggle="tooltip"
+									title="Remover" value="EXCLUIR"	onclick="return excluir()" id="btnCartaoCreditoRemover"
+									class="btn btn-sm btn-danger botao-excluir btn-icone btn-select"
+									 formaction="pagamentoRemoverCartao?id=${pagamento.cartaoCredito.id}">
+										<span class="glyphicon glyphicon-trash"></span>
+									</button>
+								</div>
+							</div>
+						</c:if>
+					</c:forEach>
+					<div class="row">
+						<div class="col-xs-12">
+							<c:if test="${not empty pedido.itensPedido}">	
+								<button type="submit" formaction="carrinhoPagamento"
+								id="btnCarrinhoPagamento" class="btn btn-primary">
+									Ir para pagamento
+								</button>
 							</c:if>
-						</c:forEach>
+							<button type="submit" id="btnContinuarComprando" 
+							formaction="livroList" class="btn btn-default">
+								Continuar comprando
+							</button>
+						</div>
 					</div>
-				</c:if>
-			</fieldset>
-			<div class="row">
-				<div class="col-xs-12">
-					<c:if test="${not empty pedido.itensPedido}">	
-						<button type="submit" formaction="carrinhoPagamento"
-						id="btnCarrinhoPagamento" class="btn btn-primary">
-							Ir para pagamento
-						</button>
-					</c:if>
-					<button type="submit" id="btnContinuarComprando" 
-					formaction="livroList" class="btn btn-default">
-						Continuar comprando
-					</button>
-				</div>
-			</div>
+				</fieldset>
+			</c:if>
+			
 		</div>
 	</form>
+	</br>
 	<script src="resources/js/jquery-3.1.1.js"></script>
 	<script src="resources/bootstrap/js/bootstrap.js"></script>
 	<script src="resources/js/jquery.mask.js"></script>

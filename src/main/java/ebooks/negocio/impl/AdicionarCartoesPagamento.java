@@ -17,7 +17,7 @@ import ebooks.modelo.PagamentoCartao;
 import ebooks.modelo.Pedido;
 import ebooks.negocio.IStrategy;
 
-public class ConsultarCartoesPagamento implements IStrategy {
+public class AdicionarCartoesPagamento implements IStrategy {
 
 	@Override
 	public String processar(EntidadeDominio entidade) {
@@ -30,8 +30,11 @@ public class ConsultarCartoesPagamento implements IStrategy {
 			List<Pagamento> pagamentos = formaPagamentoConsulta.getPagamentos();
 			if(pagamentos != null) {
 				Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
-				FormaPagamento formaPagamentoSession = new FormaPagamento();
-				formaPagamentoSession.setPagamentos(new ArrayList<Pagamento>());
+				FormaPagamento formaPagamentoSession = pedidoSession.getFormaPagamento();
+				if(formaPagamentoSession == null) {
+					formaPagamentoSession = new FormaPagamento();
+					formaPagamentoSession.setPagamentos(new ArrayList<Pagamento>());
+				}
 				pedidoSession.setFormaPagamento(formaPagamentoSession);
 				for(Pagamento pagamento : pagamentos) {
 					if(pagamento.getClass().getName().equals(PagamentoCartao.class.getName())) {
@@ -48,8 +51,22 @@ public class ConsultarCartoesPagamento implements IStrategy {
 								if(formaPagamentoSession != null) {
 									List<Pagamento> pagamentosSession = formaPagamentoSession.getPagamentos();
 									if(pagamentosSession != null) {
-										pagamentosSession.add(pagamentoCartao);
-										session.setAttribute("pedido", pedidoSession);
+										boolean cartaoIgual = false;
+										for(Pagamento pagamentoSession : pagamentosSession) {
+											if(pagamentoSession.getClass().getName().equals(PagamentoCartao.class.getName())) {
+												PagamentoCartao pagamentoCartaoSession = (PagamentoCartao) pagamentoSession;
+												long idPagCartaoSession = pagamentoCartaoSession.getCartaoCredito().getId();
+												long idPagCartao = pagamentoCartao.getCartaoCredito().getId();
+												if(idPagCartaoSession == idPagCartao) {
+													cartaoIgual = true;
+													break;
+												}
+											}
+										}
+										if(!cartaoIgual) {
+											pagamentosSession.add(pagamentoCartao);
+											session.setAttribute("pedido", pedidoSession);
+										}
 									}
 								}
 							}

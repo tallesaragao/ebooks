@@ -117,7 +117,7 @@ CREATE TABLE `cartao_credito` (
   KEY `fk_cartao_credito_bandeira_idx` (`id_bandeira`),
   CONSTRAINT `fk_cartao_credito_bandeira` FOREIGN KEY (`id_bandeira`) REFERENCES `bandeira` (`id_bandeira`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cartao_credito_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +126,7 @@ CREATE TABLE `cartao_credito` (
 
 LOCK TABLES `cartao_credito` WRITE;
 /*!40000 ALTER TABLE `cartao_credito` DISABLE KEYS */;
-INSERT INTO `cartao_credito` VALUES (3,'5268910398469748','João das Neves','2025-12-01','406',2,2,'2017-10-05 00:00:00'),(4,'5203083853111854','Tobias Toldo Leoso','2019-07-18','716',1,2,'2017-10-18 00:00:00');
+INSERT INTO `cartao_credito` VALUES (3,'5268910398469748','João das Neves','2025-12-01','406',2,2,'2017-10-05 00:00:00'),(4,'5203083853111854','Tobias Toldo Leoso','2019-07-18','716',1,2,'2017-10-18 00:00:00'),(5,'4539799800186123','Tobias Toldo Leoso','2025-06-16','762',1,1,'2017-10-24 00:00:00');
 /*!40000 ALTER TABLE `cartao_credito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +214,7 @@ CREATE TABLE `cliente_endereco` (
 
 LOCK TABLES `cliente_endereco` WRITE;
 /*!40000 ALTER TABLE `cliente_endereco` DISABLE KEYS */;
-INSERT INTO `cliente_endereco` VALUES (1,1),(1,2),(2,4),(4,5),(11,12),(12,13);
+INSERT INTO `cliente_endereco` VALUES (1,1),(1,17),(1,18),(2,4),(4,5),(11,12),(12,13);
 /*!40000 ALTER TABLE `cliente_endereco` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -229,8 +229,10 @@ CREATE TABLE `cupom_promo` (
   `id_cupom_promo` int(11) NOT NULL AUTO_INCREMENT,
   `codigo` varchar(45) NOT NULL,
   `porcent_desc` double NOT NULL,
+  `validade` date NOT NULL,
+  `ativo` tinyint(4) NOT NULL,
   PRIMARY KEY (`id_cupom_promo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -239,6 +241,7 @@ CREATE TABLE `cupom_promo` (
 
 LOCK TABLES `cupom_promo` WRITE;
 /*!40000 ALTER TABLE `cupom_promo` DISABLE KEYS */;
+INSERT INTO `cupom_promo` VALUES (1,'10OFF',10,'2018-01-25',1),(2,'5OFF',5,'2017-11-25',1),(3,'15OFF',15,'2017-12-25',1),(4,'20OFF',20,'2017-12-25',0);
 /*!40000 ALTER TABLE `cupom_promo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,7 +322,7 @@ CREATE TABLE `endereco` (
   PRIMARY KEY (`id_endereco`),
   KEY `fk_endereco_tipo_endereco_idx` (`id_tipo_endereco`),
   CONSTRAINT `fk_endereco_tipo_endereco` FOREIGN KEY (`id_tipo_endereco`) REFERENCES `tipo_endereco` (`id_tipo_endereco`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -328,7 +331,7 @@ CREATE TABLE `endereco` (
 
 LOCK TABLES `endereco` WRITE;
 /*!40000 ALTER TABLE `endereco` DISABLE KEYS */;
-INSERT INTO `endereco` VALUES (1,'Minha casa','Rua teste','151',NULL,'Bairro teste','08720-040','Poá','SP','Brasil',1,'2017-10-03 12:33:46',1),(2,'Meu trabalho','Rua testinha','1741',NULL,'Bairro teste','08720-045','Poá','SP','Brasil',0,'2017-10-03 12:37:45',2),(4,'Trabalho','SQS 205 Bloco A','99','Sala 33','Asa Sul','70235-010','Brasília','DF','Brasil',1,'2017-10-05 00:00:00',2),(5,'Casa','Viela Peri','500','Casa 13','Jardim Veneza','08715-200','Mogi das Cruzes','SP','Brasil',1,'2017-10-05 00:00:00',1),(12,'Minha casa','Rua Maria Aprígia Vieira','719','Casa 12','Jardim Novo Horizonte','79822-417','Dourados','MS','Brasil',1,'2017-10-16 00:00:00',1),(13,'Apartamento','Rua Tomé de Almeida e Oliveira','191','Apartamento 502','Vila Zat','02976-190','São Paulo','SP','Brasil',1,'2017-10-17 00:00:00',1);
+INSERT INTO `endereco` VALUES (1,'Minha casa','Servidão Quatro','1500','AP 1206','União das Vilas','97509-382','Uruguaiana','RS','Brasil',1,'2017-10-03 12:33:46',1),(4,'Trabalho','SQS 205 Bloco A','99','Sala 33','Asa Sul','70235-010','Brasília','DF','Brasil',1,'2017-10-05 00:00:00',2),(5,'Casa','Viela Peri','500','Casa 13','Jardim Veneza','08715-200','Mogi das Cruzes','SP','Brasil',1,'2017-10-05 00:00:00',1),(12,'Minha casa','Rua Maria Aprígia Vieira','719','Casa 12','Jardim Novo Horizonte','79822-417','Dourados','MS','Brasil',1,'2017-10-16 00:00:00',1),(13,'Apartamento','Rua Tomé de Almeida e Oliveira','191','Apartamento 502','Vila Zat','02976-190','São Paulo','SP','Brasil',1,'2017-10-17 00:00:00',1),(17,'Casa de férias','Avenida Paraná','155','TORRE 7 AP 1008','Centro','69945-970','Acrelândia','AC','Brasil',1,'2017-10-23 00:00:00',1),(18,'Casa de aluguel','Quadra 133','841','Casa 7','Morada das Garças','72883-355','Cidade Ocidental','GO','Brasil',1,'2017-10-24 00:00:00',1);
 /*!40000 ALTER TABLE `endereco` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -354,7 +357,7 @@ CREATE TABLE `estoque` (
 
 LOCK TABLES `estoque` WRITE;
 /*!40000 ALTER TABLE `estoque` DISABLE KEYS */;
-INSERT INTO `estoque` VALUES (1,'1','40','15'),(2,'5','30','12');
+INSERT INTO `estoque` VALUES (1,'1','300','100'),(2,'5','30','12');
 /*!40000 ALTER TABLE `estoque` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -926,7 +929,7 @@ CREATE TABLE `telefone` (
 
 LOCK TABLES `telefone` WRITE;
 /*!40000 ALTER TABLE `telefone` DISABLE KEYS */;
-INSERT INTO `telefone` VALUES (3,'(11)','94555-4658',1),(4,'(11)','99445-1213',1),(7,'(11)','95574-2101',1),(15,'(67)','98454-2133',1),(20,'(11)','98791-9229',1);
+INSERT INTO `telefone` VALUES (3,'(11)','94555-4658',1),(4,'(11)','99445-1213',1),(7,'(11)','95574-2101',1),(15,'(67)','98454-2134',1),(20,'(11)','98791-9229',1);
 /*!40000 ALTER TABLE `telefone` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -990,8 +993,10 @@ CREATE TABLE `vale_compras` (
   `id_vale_compras` int(11) NOT NULL AUTO_INCREMENT,
   `codigo` varchar(45) NOT NULL,
   `valor` decimal(20,2) NOT NULL,
+  `validade` date NOT NULL,
+  `ativo` tinyint(4) NOT NULL,
   PRIMARY KEY (`id_vale_compras`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1000,6 +1005,7 @@ CREATE TABLE `vale_compras` (
 
 LOCK TABLES `vale_compras` WRITE;
 /*!40000 ALTER TABLE `vale_compras` DISABLE KEYS */;
+INSERT INTO `vale_compras` VALUES (1,'9PQZ0HDK3K',200.00,'2018-05-30',1),(2,'BLJLUFAC51',500.00,'2018-02-19',1),(3,'EZN0FYJ0OQ',100.00,'2018-07-06',1),(4,'Z2FB4APKGR',150.00,'2018-07-06',0);
 /*!40000 ALTER TABLE `vale_compras` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1012,4 +1018,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-18 12:07:49
+-- Dump completed on 2017-10-26 12:44:48

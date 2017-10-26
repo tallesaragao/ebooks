@@ -111,6 +111,16 @@ public class PagamentoVH implements IViewHelper {
 		if(uri.equals(contexto + "/pagamentoRemoverCupom")) {
 			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
 		}
+		if(uri.equals(contexto + "/pagamentoAdicionarValeCompras")) {
+			if(object != null) {
+				String mensagem = (String) object;
+				String[] mensagens = mensagem.split(":");
+				if(mensagens.length > 0) {
+					request.setAttribute("mensagens", mensagens);
+				}
+			}
+			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
+		}
 	}
 
 }
