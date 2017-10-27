@@ -88,17 +88,20 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/enderecoAlterar", new EnderecoVH());
 		vhs.put(contextoApp + "/enderecoExcluir", new EnderecoVH());
 		vhs.put(contextoApp + "/enderecoConsultar", new EnderecoVH());
-		vhs.put(contextoApp + "/carrinhoCliente", new PedidoVH());
-		vhs.put(contextoApp + "/carrinhoConsultar", new PedidoVH());
-		vhs.put(contextoApp + "/carrinhoAdicionar", new PedidoVH());
-		vhs.put(contextoApp + "/carrinhoRemover", new PedidoVH());
-		vhs.put(contextoApp + "/carrinhoAlterar", new PedidoVH());
+		vhs.put(contextoApp + "/carrinhoCliente", new CarrinhoVH());
+		vhs.put(contextoApp + "/carrinhoConsultar", new CarrinhoVH());
+		vhs.put(contextoApp + "/carrinhoAdicionar", new CarrinhoVH());
+		vhs.put(contextoApp + "/carrinhoRemover", new CarrinhoVH());
+		vhs.put(contextoApp + "/carrinhoAlterar", new CarrinhoVH());
 		vhs.put(contextoApp + "/freteCalcular", new FreteVH());
 		vhs.put(contextoApp + "/carrinhoPagamento", new PagamentoVH());
 		vhs.put(contextoApp + "/pagamentoSelecionarCartoes", new PagamentoVH());
+		vhs.put(contextoApp + "/pagamentoRemoverCartao", new PagamentoVH());
 		vhs.put(contextoApp + "/pagamentoAdicionarCupom", new PagamentoVH());
 		vhs.put(contextoApp + "/pagamentoRemoverCupom", new PagamentoVH());
 		vhs.put(contextoApp + "/pagamentoAdicionarValeCompras", new PagamentoVH());
+		vhs.put(contextoApp + "/pagamentoRemoverValeCompras", new PagamentoVH());
+		vhs.put(contextoApp + "/pedidoDetalhes", new PedidoVH());
 	}
 		
 	@Override

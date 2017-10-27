@@ -15,7 +15,7 @@
 <body>
 	<c:import url="../cabecalho.jsp" />
 	<div class="container">
-		<h1 class="page-header titulo">Carrinho de compras</h1>
+		<h1 class="page-header titulo">Detalhes do pedido</h1>
 	</div>
 	<div class="container">
 		<c:if test="${mensagens != null}">
@@ -38,43 +38,94 @@
 		<div class="container">
 			<fieldset>
 				<legend>
-					<span class="legend-logo glyphicon glyphicon-shopping-cart"></span> Informações do pedido
+					<span class="legend-logo glyphicon glyphicon-shopping-cart"></span> Informações dos produtos
 				</legend>
 				<div class="row">
-					<div class="col-xs-12">
-						<dl>
-							<dt>PRODUTOS</dt>
-							<fmt:setLocale value="pt-BR"/>
-							<c:forEach items="${pedido.itensPedido}" var="item">
+					<fmt:setLocale value="pt-BR"/>
+					<c:forEach items="${pedido.itensPedido}" var="item">
+						<div class="col-xs-12 col-sm-6">
+							<dl class="dl-horizontal">
+								<dt>TÍTULO</dt>
 								<dd>
-									${item.livro.titulo} (${item.quantidade} un) - 
+									${item.livro.titulo}
+								</dd>
+								<dt>AUTOR(ES)</dt>
+								<c:forEach items="${item.livro.autores}" var="autor">
+									<dd>${autor.nome}</dd>
+								</c:forEach>
+								<dt>EDIÇÃO</dt>
+								<dd>${item.livro.edicao}</dd>
+								<dt>PREÇO UNITÁRIO</dt>
+								<dd><fmt:formatNumber value="${item.livro.precificacao.precoVenda}" type="currency"/></dd>
+								<dt>QUANTIDADE</dt>
+								<dd>${item.quantidade}</dd>
+								<dt>SUBTOTAL</dt>
+								<dd>
 									<fmt:formatNumber value="${item.subtotal}" type="currency"/>
 								</dd>
-							</c:forEach>
-							<dt>FRETE</dt>
+							</dl>
+						</div>
+					</c:forEach>
+				</div>
+			</fieldset>
+			
+			<fieldset>
+				<legend>
+					<span class="legend-logo glyphicon glyphicon-send"></span> Informações da entrega
+				</legend>
+				<div class="row">	
+					<div class="col-xs-12 col-sm-6">
+						<dl class="dl-horizontal">
+							<dt>ENTREGA</dt>
+							<dd>${pedido.enderecoEntrega.identificacao}</dd>
+							<dt>ENDEREÇO</dt>
+							<dd>
+								${pedido.enderecoEntrega.logradouro} nº ${pedido.enderecoEntrega.numero} ${pedido.enderecoEntrega.complemento},
+								${pedido.enderecoEntrega.cidade}, ${pedido.enderecoEntrega.estado}, ${pedido.enderecoEntrega.pais} - 
+								${pedido.enderecoEntrega.cep}
+							</dd>
+							<dt>VALOR DO FRETE</dt>
 							<dd>
 								<fmt:setLocale value="pt-BR"/>
 								<fmt:formatNumber value="${pedido.frete.valor}" type="currency"/>
-								- Até ${pedido.frete.diasEntrega} dias úteis para (${pedido.enderecoEntrega.identificacao})						
 							</dd>
-							<c:if test="${pedido.cupomPromocional != null}">
-								<dt>CUPOM</dt>
-								<dd>${pedido.cupomPromocional.codigo} - ${pedido.cupomPromocional.porcentagemDesconto}% de desconto</dd>
-							</c:if>
-							<dt>VALOR TOTAL</dt>
-							<dd>
-								<fmt:formatNumber value="${pedido.valorTotal}" type="currency"/>
-							</dd>
+							<dt>PRAZO DE ENTREGA</dt>
+							<dd>Até ${pedido.frete.diasEntrega} dias úteis (a partir da aprovação do pagamento)</dd>
 						</dl>
 					</div>
 				</div>
 			</fieldset>
 			
 			<fieldset>
+				<legend>
+					<span class="legend-logo glyphicon glyphicon-send"></span> Informações da entrega
+				</legend>
+				<div class="row">	
+					<div class="col-xs-12 col-sm-6">
+						<dl class="dl-horizontal">
+							<dt>ENTREGA</dt>
+							<dd>${pedido.enderecoEntrega.identificacao}</dd>
+							<dt>ENDEREÇO</dt>
+							<dd>
+								${pedido.enderecoEntrega.logradouro} nº ${pedido.enderecoEntrega.numero} ${pedido.enderecoEntrega.complemento},
+								${pedido.enderecoEntrega.cidade}, ${pedido.enderecoEntrega.estado}, ${pedido.enderecoEntrega.pais} - 
+								${pedido.enderecoEntrega.cep}
+							</dd>
+							<dt>VALOR DO FRETE</dt>
+							<dd>
+								<fmt:setLocale value="pt-BR"/>
+								<fmt:formatNumber value="${pedido.frete.valor}" type="currency"/>
+							</dd>
+							<dt>PRAZO DE ENTREGA</dt>
+							<dd>Até ${pedido.frete.diasEntrega} dias úteis (a partir da aprovação do pagamento)</dd>
+						</dl>
+					</div>
+				</div>
+			</fieldset>
 			
 			</fieldset>
 				<legend>
-					<span class="legend-logo glyphicon glyphicon-tags"></span> Aplicar cupom promocional
+					<span class="legend-logo glyphicon glyphicon-tags"></span> Informações do pagamento
 				</legend>
 				<div class="row">
 					<div class="col-xs-12 col-sm-4">
@@ -124,15 +175,7 @@
 							<select multiple name="cartoesCredito" class="form-control">
 								<option disabled value="">Escolha um ou mais cartões</option>
 								<c:forEach items="${pedido.cliente.cartoesCredito}" var="cartao">
-									<option 
-									<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
-										<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoCartao'}">
-											<c:if test="${pagamento.cartaoCredito.id eq cartao.id}">
-												selected
-											</c:if>
-										</c:if>
-									</c:forEach>
-									value="${cartao.id}">
+									<option value="${cartao.id}">
 										${cartao.bandeira.nome} - 
 										${fn:substring(cartao.numero, 0, 4)}
 										<c:set var="asteriscos" value=""/>
@@ -169,21 +212,20 @@
 					<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
 						<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">
 							<div class="row">
-								<div class="col-xs-10 col-sm-4">
+								<div class="col-xs-12 col-sm-4">
 									<div class="form-group">
 										<label for="valorValeCompras${pagamento.valeCompras.id}" class="control-label">
 											Vale-compras(Valor disponível: ${pagamento.valeCompras.valor}) 
 										</label>
-										<input type="number" step="any" name="valorValeCompras${pagamento.valeCompras.id}"
+										<input type="text" name="valorValeCompras${pagamento.valeCompras.id}"
 										placeholder="Digite o valor a ser pago nesse vale-compras" class="form-control"/>
 									</div>
-									<input type="hidden" name="idVale" value="${pagamento.valeCompras.id}"
 								</div>								
 								<div class="col-xs-2">
 									<button type="submit" name="operacao" method="get" data-toggle="tooltip"
 									title="Remover" value="EXCLUIR"	onclick="return excluir()" id="btnValeComprasRemover"
 									class="btn btn-sm btn-danger botao-excluir btn-icone btn-select"
-									formaction="pagamentoRemoverValeCompras?idVale=${pagamento.valeCompras.id}">
+									 formaction="pagamentoRemoverValeCompras?id=${pagamento.valeCompras.id}">
 										<span class="glyphicon glyphicon-trash"></span>
 									</button>
 								</div>
@@ -204,7 +246,7 @@
 											fn:length(pagamento.cartaoCredito.numero) - 4,
 											fn:length(pagamento.cartaoCredito.numero))}
 										</label>
-										<input type="number" step="any" name="valorCartao${pagamento.cartaoCredito.id}"
+										<input type="text" name="valorCartao${pagamento.cartaoCredito.id}"
 										placeholder="Digite o valor a ser pago nesse cartão" class="form-control"/>
 									</div>
 								</div>
@@ -212,7 +254,7 @@
 									<button type="submit" name="operacao" method="get" data-toggle="tooltip"
 									title="Remover" value="EXCLUIR"	onclick="return excluir()" id="btnCartaoCreditoRemover"
 									class="btn btn-sm btn-danger botao-excluir btn-icone btn-select"
-									 formaction="pagamentoRemoverCartao?idCartao=${pagamento.cartaoCredito.id}">
+									 formaction="pagamentoRemoverCartao?id=${pagamento.cartaoCredito.id}">
 										<span class="glyphicon glyphicon-trash"></span>
 									</button>
 								</div>
@@ -222,8 +264,8 @@
 					<div class="row">
 						<div class="col-xs-12">
 							<c:if test="${not empty pedido.itensPedido}">	
-								<button type="submit" name="operacao" id="btnValidarPedido"
-								formaction="validarPedido" value="SALVAR" class="btn btn-primary">
+								<button type="submit" formaction="pedidoDetalhes"
+								id="btnPedidoDetalhes" class="btn btn-primary">
 									Finalizar pedido
 								</button>
 							</c:if>

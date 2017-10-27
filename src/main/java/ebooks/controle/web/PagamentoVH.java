@@ -40,6 +40,7 @@ public class PagamentoVH implements IViewHelper {
 		
 		String operacao = request.getParameter("operacao");
 		if(operacao.equals("SALVAR")) {
+			
 			String codigoPromocional = request.getParameter("codigoPromocional");
 			String codigoValeCompras = request.getParameter("codigoValeCompras");
 			String[] idsCartoesCredito = request.getParameterValues("cartoesCredito");
@@ -51,6 +52,10 @@ public class PagamentoVH implements IViewHelper {
 					cartao.setId(Long.valueOf(idCartao));
 					PagamentoCartao pagCartao = new PagamentoCartao();
 					pagCartao.setCartaoCredito(cartao);
+					String valorCartao = request.getParameter("valorCartao" + idCartao);
+					if(valorCartao != null && !valorCartao.equals("")) {
+						pagCartao.setValorPago(Double.valueOf(valorCartao));
+					}
 					pagamentos.add(pagCartao);
 				}
 			}
@@ -65,6 +70,11 @@ public class PagamentoVH implements IViewHelper {
 				valeCompras.setCodigo(codigoValeCompras);
 				PagamentoValeCompras pagamentoValeCompras = new PagamentoValeCompras();
 				pagamentoValeCompras.setValeCompras(valeCompras);
+				String idVale = request.getParameter("idVale");
+				String valorVale = request.getParameter("valorVale" + idVale);
+				if(valorVale != null && !valorVale.equals("")) {
+					pagamentoValeCompras.setValorPago(Double.valueOf(valorVale));
+				}
 				pagamentos.add(pagamentoValeCompras);
 			}
 			FormaPagamento formaPagamento = new FormaPagamento();
@@ -78,6 +88,27 @@ public class PagamentoVH implements IViewHelper {
 			carrinho.setSession(request.getSession());
 		}
 		if(operacao.equals("EXCLUIR")) {
+			String idVale = request.getParameter("idVale");
+			String idCartao = request.getParameter("idCartao");
+			FormaPagamento formaPagamento = new FormaPagamento();
+			formaPagamento.setPagamentos(new ArrayList<Pagamento>());
+			if(idVale != null && !idVale.equals("")) {
+				ValeCompras valeCompras = new ValeCompras();
+				valeCompras.setId(Long.valueOf(idVale));
+				PagamentoValeCompras pagamentoValeCompras = new PagamentoValeCompras();
+				pagamentoValeCompras.setValeCompras(valeCompras);
+				formaPagamento.getPagamentos().add(pagamentoValeCompras);
+			}
+			if(idCartao != null && !idCartao.equals("")) {
+				CartaoCredito cartaoCredito = new CartaoCredito();
+				cartaoCredito.setId(Long.valueOf(idCartao));
+				PagamentoCartao pagamentoCartao = new PagamentoCartao();
+				pagamentoCartao.setCartaoCredito(cartaoCredito);
+				formaPagamento.getPagamentos().add(pagamentoCartao);
+			}
+			if(!formaPagamento.getPagamentos().isEmpty()) {
+				pedido.setFormaPagamento(formaPagamento);
+			}
 			pedido.setCupomPromocional(pedidoSession.getCupomPromocional());
 			pedido.setItensPedido(null);
 			carrinho.setPedido(pedido);
@@ -119,6 +150,12 @@ public class PagamentoVH implements IViewHelper {
 					request.setAttribute("mensagens", mensagens);
 				}
 			}
+			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
+		}
+		if(uri.equals(contexto + "/pagamentoRemoverValeCompras")) {
+			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
+		}
+		if(uri.equals(contexto + "/pagamentoRemoverCartao")) {
 			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
 		}
 	}

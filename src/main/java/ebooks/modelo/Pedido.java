@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Pedido extends EntidadeDominio {
 	private String numero;
+	private StatusPedido statusPedido;
 	private Cliente cliente;
 	private Endereco enderecoCobranca;
 	private Endereco enderecoEntrega;
@@ -19,6 +20,14 @@ public class Pedido extends EntidadeDominio {
 
 	public void setNumero(String numero) {
 		this.numero = numero;
+	}
+
+	public StatusPedido getStatusPedido() {
+		return statusPedido;
+	}
+
+	public void setStatusPedido(StatusPedido statusPedido) {
+		this.statusPedido = statusPedido;
 	}
 
 	public Cliente getCliente() {
