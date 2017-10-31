@@ -1,5 +1,6 @@
 package ebooks.negocio.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import ebooks.dao.GrupoPrecificacaoDAO;
@@ -22,10 +23,17 @@ public class GeradorPrecoLivro implements IStrategy {
 		if(grupoPrecificacaoConsultado == null) {
 			return "Grupo de precificação não encontrado:";
 		}
-		double precoVenda = 0;
-		double margemLucro = grupoPrecificacaoConsultado.getMargemLucro();
-		double precoCusto = precificacao.getPrecoCusto();
-		precoVenda = precoCusto + (precoCusto * (margemLucro / 100));
+		BigDecimal precoVenda = new BigDecimal("0.0");
+		BigDecimal margemLucro = grupoPrecificacaoConsultado.getMargemLucro();
+		BigDecimal precoCusto = precificacao.getPrecoCusto();
+		BigDecimal valorLucro = new BigDecimal("0.0");
+		valorLucro = valorLucro.add(precoCusto);
+		valorLucro = valorLucro.multiply(margemLucro);
+		valorLucro = valorLucro.divide(new BigDecimal("100"));
+		valorLucro = valorLucro.setScale(2, BigDecimal.ROUND_CEILING);
+		precoVenda = precoVenda.add(precoCusto);
+		precoVenda = precoVenda.add(valorLucro);
+		precoVenda = precoVenda.setScale(2, BigDecimal.ROUND_CEILING);
 		precificacao.setPrecoVenda(precoVenda);
 		livro.setPrecificacao(precificacao);
 		entidade = livro;

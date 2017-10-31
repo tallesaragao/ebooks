@@ -1,5 +1,6 @@
 package ebooks.negocio.impl;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -33,7 +34,11 @@ public class AdicionarLivroCarrinho implements IStrategy {
 						if(livro.getAtivo()) {
 							item.setQuantidade(Long.valueOf(1));
 							item.setLivro(livro);
-							double subtotal = livro.getPrecificacao().getPrecoVenda() * item.getQuantidade();
+							BigDecimal subtotal = new BigDecimal("0.0");
+							BigDecimal precoVenda = livro.getPrecificacao().getPrecoVenda();
+							subtotal = subtotal.add(precoVenda);
+							subtotal = subtotal.multiply(new BigDecimal(item.getQuantidade()));
+							subtotal = subtotal.setScale(2, BigDecimal.ROUND_CEILING);
 							item.setSubtotal(subtotal);
 							HttpSession session = carrinho.getSession();
 							Pedido pedidoSession = (Pedido) session.getAttribute("pedido");

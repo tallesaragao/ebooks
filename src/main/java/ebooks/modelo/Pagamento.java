@@ -1,13 +1,15 @@
 package ebooks.modelo;
 
-public class Pagamento extends EntidadeDominio {
-	private Double valorPago;
+import java.math.BigDecimal;
 
-	public Double getValorPago() {
+public class Pagamento extends EntidadeDominio {
+	private BigDecimal valorPago;
+
+	public BigDecimal getValorPago() {
 		return valorPago;
 	}
 
-	public void setValorPago(Double valorPago) {
+	public void setValorPago(BigDecimal valorPago) {
 		this.valorPago = valorPago;
 	}
 }

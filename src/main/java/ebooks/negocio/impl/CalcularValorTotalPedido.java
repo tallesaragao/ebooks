@@ -1,5 +1,6 @@
 package ebooks.negocio.impl;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,18 +31,24 @@ public class CalcularValorTotalPedido implements IStrategy {
 			List<ItemPedido> itensPedido = pedidoSession.getItensPedido();
 			Frete frete = pedidoSession.getFrete();
 			CupomPromocional cupomPromocional = pedidoSession.getCupomPromocional();
-			double valorTotal = 0.0;
+			BigDecimal valorTotal = new BigDecimal("0.0");
 			if(itensPedido != null) {
 				for(ItemPedido item : itensPedido) {
-					valorTotal += item.getSubtotal();
+					valorTotal = valorTotal.add(item.getSubtotal());
 				}
 			}
 			if(frete != null) {
-				valorTotal += frete.getValor();
+				valorTotal = valorTotal.add(frete.getValor());
 			}
 			if(cupomPromocional != null) {
-				Double porcentagemDesconto = cupomPromocional.getPorcentagemDesconto();
-				valorTotal = valorTotal - (valorTotal * porcentagemDesconto / 100);
+				BigDecimal porcentagemDesconto = cupomPromocional.getPorcentagemDesconto();
+				BigDecimal valorDesconto = new BigDecimal("0.0");
+				valorDesconto = valorDesconto.add(valorTotal);
+				valorDesconto = valorDesconto.multiply(porcentagemDesconto);
+				valorDesconto = valorDesconto.divide(new BigDecimal("100"));
+				valorDesconto = valorDesconto.setScale(2, BigDecimal.ROUND_CEILING);
+				valorTotal = valorTotal.subtract(valorDesconto);
+				valorTotal = valorTotal.setScale(2, BigDecimal.ROUND_CEILING);
 			}
 			pedidoSession.setValorTotal(valorTotal);
 			session.setAttribute("pedido", pedidoSession);

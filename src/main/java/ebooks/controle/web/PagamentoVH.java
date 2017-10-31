@@ -1,6 +1,7 @@
 package ebooks.controle.web;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,8 +54,13 @@ public class PagamentoVH implements IViewHelper {
 					PagamentoCartao pagCartao = new PagamentoCartao();
 					pagCartao.setCartaoCredito(cartao);
 					String valorCartao = request.getParameter("valorCartao" + idCartao);
-					if(valorCartao != null && !valorCartao.equals("")) {
-						pagCartao.setValorPago(Double.valueOf(valorCartao));
+					if(valorCartao != null) {
+						if(!valorCartao.equals(""))	{
+							pagCartao.setValorPago(new BigDecimal(valorCartao));
+						}
+						else {
+							pagCartao.setValorPago(new BigDecimal("0.0"));
+						}
 					}
 					pagamentos.add(pagCartao);
 				}
@@ -70,10 +76,18 @@ public class PagamentoVH implements IViewHelper {
 				valeCompras.setCodigo(codigoValeCompras);
 				PagamentoValeCompras pagamentoValeCompras = new PagamentoValeCompras();
 				pagamentoValeCompras.setValeCompras(valeCompras);
-				String idVale = request.getParameter("idVale");
-				String valorVale = request.getParameter("valorVale" + idVale);
-				if(valorVale != null && !valorVale.equals("")) {
-					pagamentoValeCompras.setValorPago(Double.valueOf(valorVale));
+				String idValeCompras = request.getParameter("idValeCompras");
+				if(idValeCompras != null) {
+					valeCompras.setId(Long.valueOf(idValeCompras));
+				}
+				String valorVale = request.getParameter("valorValeCompras" + idValeCompras);
+				if(valorVale != null) {
+					if(!valorVale.equals("")) {
+						pagamentoValeCompras.setValorPago(new BigDecimal(valorVale));
+					}
+					else {
+						pagamentoValeCompras.setValorPago(new BigDecimal("0.0"));
+					}
 				}
 				pagamentos.add(pagamentoValeCompras);
 			}
@@ -157,6 +171,19 @@ public class PagamentoVH implements IViewHelper {
 		}
 		if(uri.equals(contexto + "/pagamentoRemoverCartao")) {
 			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
+		}
+		if(uri.equals(contexto + "/validarFormaPagamento")) {
+			if(object != null) {
+				String mensagem = (String) object;
+				String[] mensagens = mensagem.split(":");
+				if(mensagens.length > 0) {
+					request.setAttribute("mensagens", mensagens);
+					request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
+				}
+				else {
+					response.sendRedirect("pedidoDetalhes");
+				}
+			}
 		}
 	}
 

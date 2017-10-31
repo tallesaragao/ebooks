@@ -49,7 +49,7 @@ public class GrupoPrecificacaoDAO extends AbstractDAO {
 				GrupoPrecificacao grupoPrecificacaoConsultado = new GrupoPrecificacao();
 				grupoPrecificacaoConsultado.setId(rs.getLong("id_grupo_precificacao"));
 				grupoPrecificacaoConsultado.setNome(rs.getString("nome"));
-				grupoPrecificacaoConsultado.setMargemLucro(rs.getDouble("margem_lucro"));
+				grupoPrecificacaoConsultado.setMargemLucro(rs.getBigDecimal("margem_lucro"));
 				grupoPrecificacaoConsultado.setDataCadastro(rs.getDate("dt_cadastro"));
 				gruposPrecificacao.add(grupoPrecificacaoConsultado);
 			}

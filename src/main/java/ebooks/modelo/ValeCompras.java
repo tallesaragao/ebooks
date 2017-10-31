@@ -1,10 +1,11 @@
 package ebooks.modelo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ValeCompras extends EntidadeDominio {
 	private String codigo;
-	private Double valor;
+	private BigDecimal valor;
 	private Date validade;
 	private Boolean ativo;
 
@@ -16,11 +17,11 @@ public class ValeCompras extends EntidadeDominio {
 		this.codigo = codigo;
 	}
 
-	public Double getValor() {
+	public BigDecimal getValor() {
 		return valor;
 	}
 
-	public void setValor(Double valor) {
+	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
 

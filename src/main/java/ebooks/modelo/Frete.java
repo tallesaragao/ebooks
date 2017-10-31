@@ -1,17 +1,18 @@
 package ebooks.modelo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Frete extends EntidadeDominio {
-	private Double valor;
+	private BigDecimal valor;
 	private Long diasEntrega;
 	private Date prazoEstimado;
 
-	public Double getValor() {
+	public BigDecimal getValor() {
 		return valor;
 	}
 
-	public void setValor(Double valor) {
+	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
 

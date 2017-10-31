@@ -54,6 +54,7 @@ import ebooks.negocio.impl.ValidarCamposEndereco;
 import ebooks.negocio.impl.ValidarCamposLivro;
 import ebooks.negocio.impl.ValidarCamposLogin;
 import ebooks.negocio.impl.ValidarConsistenciaFrete;
+import ebooks.negocio.impl.ValidarFormaPagamento;
 import ebooks.negocio.impl.VerificarExistenciaCliente;
 import ebooks.negocio.impl.VerificarPedidoFinalizado;
 
@@ -94,6 +95,7 @@ public class Fachada implements IFachada {
 		AdicionarValeComprasPagamento adicValeCompPag = new AdicionarValeComprasPagamento();
 		RemoverValeComprasCarrinho remValeCarrinho = new RemoverValeComprasCarrinho();
 		RemoverCartaoCreditoCarrinho remCarCredCarrinho = new RemoverCartaoCreditoCarrinho();
+		ValidarFormaPagamento valFormaPag = new ValidarFormaPagamento();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -183,12 +185,13 @@ public class Fachada implements IFachada {
 		lCarrinhoSalvar.add(adicCartPag);
 		lCarrinhoSalvar.add(adicCupomPromoPag);
 		lCarrinhoSalvar.add(adicValeCompPag);
+		lCarrinhoSalvar.add(valFormaPag);
 		lCarrinhoSalvar.add(verPedFin);
 		List<IStrategy> lCarrinhoAlterar = new ArrayList<>();
 		lCarrinhoAlterar.add(altQuantItemCar);
 		lCarrinhoAlterar.add(verPedFin);
 		List<IStrategy> lCarrinhoExcluir = new ArrayList<>();
-		lCarrinhoExcluir.add(excLivCar);		
+		lCarrinhoExcluir.add(excLivCar);
 		lCarrinhoExcluir.add(excluirCupomPag);
 		lCarrinhoExcluir.add(remValeCarrinho);
 		lCarrinhoExcluir.add(remCarCredCarrinho);
@@ -334,5 +337,4 @@ public class Fachada implements IFachada {
 		}
 		return sb;
 	}
-
 }

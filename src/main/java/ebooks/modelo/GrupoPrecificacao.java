@@ -1,14 +1,16 @@
 package ebooks.modelo;
 
+import java.math.BigDecimal;
+
 public class GrupoPrecificacao extends EntidadeDominio {
-	private Double margemLucro;
+	private BigDecimal margemLucro;
 	private String nome;
 
-	public Double getMargemLucro() {
+	public BigDecimal getMargemLucro() {
 		return margemLucro;
 	}
 
-	public void setMargemLucro(Double margemLucro) {
+	public void setMargemLucro(BigDecimal margemLucro) {
 		this.margemLucro = margemLucro;
 	}
 

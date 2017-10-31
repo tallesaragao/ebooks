@@ -23,7 +23,7 @@ public class CupomPromocionalDAO extends AbstractDAO {
 			String sql = "insert into cupom_promo(codigo, porcent_desc, validade, ativo) values(?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			ps.setString(1, cupomPromocional.getCodigo());
-			ps.setDouble(2, cupomPromocional.getPorcentagemDesconto());
+			ps.setBigDecimal(2, cupomPromocional.getPorcentagemDesconto());
 			ps.setDate(3, new Date(cupomPromocional.getValidade().getTime()));
 			ps.setBoolean(4, cupomPromocional.getAtivo());
 			ps.execute();
@@ -54,7 +54,7 @@ public class CupomPromocionalDAO extends AbstractDAO {
 			String sql = "update cupom_promo set codigo=?, porcent_desc=?, validade=?, ativo=? where id_cupom_promo=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			ps.setString(1, cupomPromocional.getCodigo() != null ? cupomPromocional.getCodigo() : cupomPromocionalOld.getCodigo());
-			ps.setDouble(2, cupomPromocional.getPorcentagemDesconto() != null ?
+			ps.setBigDecimal(2, cupomPromocional.getPorcentagemDesconto() != null ?
 					cupomPromocional.getPorcentagemDesconto() : cupomPromocionalOld.getPorcentagemDesconto());
 			ps.setDate(3, cupomPromocional.getValidade() != null ? 
 					new Date(cupomPromocional.getValidade().getTime()) : new Date(cupomPromocionalOld.getValidade().getTime()));
@@ -124,7 +124,7 @@ public class CupomPromocionalDAO extends AbstractDAO {
 				CupomPromocional cupomPromocional = new CupomPromocional();
 				cupomPromocional.setId(rs.getLong("id_cupom_promo"));
 				cupomPromocional.setCodigo(rs.getString("codigo"));
-				cupomPromocional.setPorcentagemDesconto(rs.getDouble("porcent_desc"));
+				cupomPromocional.setPorcentagemDesconto(rs.getBigDecimal("porcent_desc"));
 				cupomPromocional.setAtivo(rs.getBoolean("ativo"));
 				consulta.add(cupomPromocional);
 			}

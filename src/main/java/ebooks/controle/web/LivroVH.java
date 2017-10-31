@@ -1,6 +1,7 @@
 package ebooks.controle.web;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -148,7 +149,7 @@ public class LivroVH implements IViewHelper {
 
 			Precificacao precificacao = new Precificacao();
 			if (precoCusto != null && !precoCusto.equals("")) {
-				precificacao.setPrecoCusto(Double.valueOf(precoCusto));
+				precificacao.setPrecoCusto(new BigDecimal(precoCusto));
 			}
 			livro.setPrecificacao(precificacao);
 
@@ -160,24 +161,24 @@ public class LivroVH implements IViewHelper {
 
 			Dimensoes dimensoes = new Dimensoes();
 			// Se nenhuma altura for informada, seta o valor como zero
-			dimensoes.setAltura(Double.valueOf(0));
+			dimensoes.setAltura(new BigDecimal("0.0"));
 			if (altura != null && !altura.equals("")) {
-				dimensoes.setAltura(Double.valueOf(altura));
+				dimensoes.setAltura(new BigDecimal(altura));
 			}
 			// Se nenhuma altura for informada, seta o valor como zero
-			dimensoes.setLargura(Double.valueOf(0));
+			dimensoes.setLargura(new BigDecimal("0"));
 			if (largura != null && !largura.equals("")) {
-				dimensoes.setLargura(Double.valueOf(largura));
+				dimensoes.setLargura(new BigDecimal(largura));
 			}
 			// Se nenhuma profundidade for informada, seta o valor como zero
-			dimensoes.setProfundidade(Double.valueOf(0));
+			dimensoes.setProfundidade(new BigDecimal("0"));
 			if (profundidade != null && !profundidade.equals("")) {
-				dimensoes.setProfundidade(Double.valueOf(profundidade));
+				dimensoes.setProfundidade(new BigDecimal(profundidade));
 			}
 			// Se nenhum peso for informado, seta o valor como zero
-			dimensoes.setPeso(Double.valueOf(0));
+			dimensoes.setPeso(new BigDecimal("0"));
 			if (peso != null && !peso.equals("")) {
-				dimensoes.setPeso(Double.valueOf(peso));
+				dimensoes.setPeso(new BigDecimal(peso));
 			}
 
 			livro.setDimensoes(dimensoes);

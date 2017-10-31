@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.modelo.Carrinho;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Pedido;
 
@@ -14,9 +15,12 @@ public class PedidoVH implements IViewHelper {
 
 	@Override
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
+		Carrinho carrinho = new Carrinho();
 		HttpSession session = request.getSession();
+		carrinho.setSession(session);
 		Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
-		return pedidoSession;
+		carrinho.setPedido(pedidoSession);
+		return carrinho;
 	}
 
 	@Override

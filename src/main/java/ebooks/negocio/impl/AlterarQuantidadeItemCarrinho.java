@@ -1,5 +1,6 @@
 package ebooks.negocio.impl;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -42,7 +43,9 @@ public class AlterarQuantidadeItemCarrinho implements IStrategy {
 						for(ItemPedido itemSession : itensPedido) {
 							if(itemSession.getLivro().getId() == item.getLivro().getId()) {
 								itemSession.setQuantidade(item.getQuantidade());
-								double subtotal = itemSession.getLivro().getPrecificacao().getPrecoVenda() * itemSession.getQuantidade();
+								BigDecimal subtotal = itemSession.getLivro().getPrecificacao().getPrecoVenda();
+								subtotal = subtotal.multiply(new BigDecimal(itemSession.getQuantidade()));
+								subtotal = subtotal.setScale(2, BigDecimal.ROUND_CEILING);
 								itemSession.setSubtotal(subtotal);
 								break;
 							}

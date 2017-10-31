@@ -1,22 +1,24 @@
 package ebooks.modelo;
 
-public class Precificacao extends EntidadeDominio {
-	private Double precoCusto;
-	private Double precoVenda;
+import java.math.BigDecimal;
 
-	public Double getPrecoCusto() {
+public class Precificacao extends EntidadeDominio {
+	private BigDecimal precoCusto;
+	private BigDecimal precoVenda;
+
+	public BigDecimal getPrecoCusto() {
 		return precoCusto;
 	}
 
-	public void setPrecoCusto(Double precoCusto) {
+	public void setPrecoCusto(BigDecimal precoCusto) {
 		this.precoCusto = precoCusto;
 	}
 
-	public Double getPrecoVenda() {
+	public BigDecimal getPrecoVenda() {
 		return precoVenda;
 	}
 
-	public void setPrecoVenda(Double precoVenda) {
+	public void setPrecoVenda(BigDecimal precoVenda) {
 		this.precoVenda = precoVenda;
 	}
 }

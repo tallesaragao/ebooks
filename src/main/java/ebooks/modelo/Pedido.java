@@ -1,5 +1,6 @@
 package ebooks.modelo;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Pedido extends EntidadeDominio {
@@ -11,7 +12,7 @@ public class Pedido extends EntidadeDominio {
 	private List<ItemPedido> itensPedido;
 	private Frete frete;
 	private CupomPromocional cupomPromocional;
-	private Double valorTotal;
+	private BigDecimal valorTotal;
 	private FormaPagamento formaPagamento;
 
 	public String getNumero() {
@@ -78,11 +79,11 @@ public class Pedido extends EntidadeDominio {
 		this.cupomPromocional = cupomPromocional;
 	}
 
-	public Double getValorTotal() {
+	public BigDecimal getValorTotal() {
 		return valorTotal;
 	}
 
-	public void setValorTotal(Double valorTotal) {
+	public void setValorTotal(BigDecimal valorTotal) {
 		this.valorTotal = valorTotal;
 	}
 

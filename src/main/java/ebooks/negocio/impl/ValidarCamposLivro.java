@@ -1,5 +1,6 @@
 package ebooks.negocio.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import br.com.caelum.stella.validation.CNPJValidator;
@@ -56,16 +57,16 @@ public class ValidarCamposLivro implements IStrategy {
 		}
 
 		Dimensoes dimensoes = livro.getDimensoes();
-		if(dimensoes.getAltura() == null || dimensoes.getAltura() <= 0) {
+		if(dimensoes.getAltura() == null || dimensoes.getAltura().doubleValue() <= 0) {
 			sb.append("Altura do livro deve ser maior que zero:");
 		}
-		if(dimensoes.getLargura() == null || dimensoes.getLargura() <= 0) {
+		if(dimensoes.getLargura() == null || dimensoes.getLargura().doubleValue() <= 0) {
 			sb.append("Largura do livro deve ser maior que zero:");
 		}
-		if(dimensoes.getProfundidade() == null || dimensoes.getProfundidade() <= 0) {
+		if(dimensoes.getProfundidade() == null || dimensoes.getProfundidade().doubleValue() <= 0) {
 			sb.append("Profundidade do livro deve ser maior que zero:");
 		}
-		if(dimensoes.getPeso() == null || dimensoes.getPeso() <= 0) {
+		if(dimensoes.getPeso() == null || dimensoes.getPeso().doubleValue() <= 0) {
 			sb.append("Peso do livro deve ser maior que zero:");
 		}
 
@@ -113,9 +114,9 @@ public class ValidarCamposLivro implements IStrategy {
 			}
 		}
 		Precificacao precificacao = livro.getPrecificacao();
-		if(precificacao.getPrecoCusto() == null || precificacao.getPrecoCusto() <= 0) {
+		if(precificacao.getPrecoCusto() == null || precificacao.getPrecoCusto().doubleValue() <= 0) {
 			sb.append("Preço de custo do livro deve ser maior que zero:");
-			precificacao.setPrecoCusto(Double.valueOf(0));
+			precificacao.setPrecoCusto(new BigDecimal("0.0"));
 		}
 		livro.getGrupoPrecificacao();
 		if(sb.length() > 0) {

@@ -103,11 +103,18 @@
 					<span class="legend-logo glyphicon glyphicon-usd"></span> Forma de pagamento
 				</legend>
 				<div class="row">
+					<c:if test="${not empty pedido.formaPagamento.pagamentos}">
+						<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
+							<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">
+								<c:set var="codigoValeCompras" value="${pagamento.valeCompras.codigo}"/>
+							</c:if>
+						</c:forEach>
+					</c:if>
 					<div class="col-xs-12 col-sm-4">
 						<div class="form-group">
 							<label for="valeCompras" class="control-label">Vale-compras</label>
 							<input type="text" name="codigoValeCompras" placeholder="Digite o código"
-							value="${codigoValeCompras}" class="form-control"/>
+							class="form-control" value="${codigoValeCompras}"/>
 						</div>
 					</div>
 					<div class="col-xs-3">
@@ -167,17 +174,18 @@
 						<span class="legend-logo glyphicon glyphicon-usd"></span> Divisão do pagamento
 					</legend>
 					<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
-						<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">
+						<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">							
 							<div class="row">
 								<div class="col-xs-10 col-sm-4">
 									<div class="form-group">
 										<label for="valorValeCompras${pagamento.valeCompras.id}" class="control-label">
-											Vale-compras(Valor disponível: ${pagamento.valeCompras.valor}) 
+											Vale-compras (Valor disponível: 
+											<fmt:setLocale value="pt-BR"/>
+											<fmt:formatNumber value="${pagamento.valeCompras.valor}" type="currency"/>) 
 										</label>
 										<input type="number" step="any" name="valorValeCompras${pagamento.valeCompras.id}"
-										placeholder="Digite o valor a ser pago nesse vale-compras" class="form-control"/>
+										placeholder="Digite o valor a ser pago nesse vale-compras (R$)" class="form-control"/>
 									</div>
-									<input type="hidden" name="idVale" value="${pagamento.valeCompras.id}"
 								</div>								
 								<div class="col-xs-2">
 									<button type="submit" name="operacao" method="get" data-toggle="tooltip"
@@ -188,6 +196,7 @@
 									</button>
 								</div>
 							</div>
+							<span><input type="hidden" name="idValeCompras" value="${pagamento.valeCompras.id}"</span>
 						</c:if>
 						<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoCartao'}">
 							<div class="row">
@@ -196,7 +205,7 @@
 										<label for="valorCartao${pagamento.cartaoCredito.id}" class="control-label">
 											${pagamento.cartaoCredito.bandeira.nome} - 
 											${fn:substring(pagamento.cartaoCredito.numero, 0, 4)}
-											<c:set var="asteriscos" value=""/>
+											<c:set var="asteriscos" value=""/>											
 											<c:forEach begin="1" end="${fn:length(pagamento.cartaoCredito.numero) - 8}">
 												<c:out value="*"/>
 											</c:forEach>
@@ -205,7 +214,7 @@
 											fn:length(pagamento.cartaoCredito.numero))}
 										</label>
 										<input type="number" step="any" name="valorCartao${pagamento.cartaoCredito.id}"
-										placeholder="Digite o valor a ser pago nesse cartão" class="form-control"/>
+										placeholder="Digite o valor a ser pago nesse cartão (R$)" class="form-control"/>
 									</div>
 								</div>
 								<div class="col-xs-2">
@@ -222,8 +231,8 @@
 					<div class="row">
 						<div class="col-xs-12">
 							<c:if test="${not empty pedido.itensPedido}">	
-								<button type="submit" name="operacao" id="btnValidarPedido"
-								formaction="validarPedido" value="SALVAR" class="btn btn-primary">
+								<button type="submit" name="operacao" id="btnValidarFormaPagamento"
+								formaction="validarFormaPagamento?operacao=SALVAR" value="SALVAR" class="btn btn-primary">
 									Finalizar pedido
 								</button>
 							</c:if>

@@ -101,6 +101,7 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/pagamentoRemoverCupom", new PagamentoVH());
 		vhs.put(contextoApp + "/pagamentoAdicionarValeCompras", new PagamentoVH());
 		vhs.put(contextoApp + "/pagamentoRemoverValeCompras", new PagamentoVH());
+		vhs.put(contextoApp + "/validarFormaPagamento", new PagamentoVH());
 		vhs.put(contextoApp + "/pedidoDetalhes", new PedidoVH());
 	}
 		

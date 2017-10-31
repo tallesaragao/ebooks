@@ -1,9 +1,11 @@
 package ebooks.modelo;
 
+import java.math.BigDecimal;
+
 public class ItemPedido extends EntidadeDominio {
 	private Livro livro;
 	private Long quantidade;
-	private Double subtotal;
+	private BigDecimal subtotal;
 
 	public Livro getLivro() {
 		return livro;
@@ -21,11 +23,11 @@ public class ItemPedido extends EntidadeDominio {
 		this.quantidade = quantidade;
 	}
 
-	public Double getSubtotal() {
+	public BigDecimal getSubtotal() {
 		return subtotal;
 	}
 
-	public void setSubtotal(Double subtotal) {
+	public void setSubtotal(BigDecimal subtotal) {
 		this.subtotal = subtotal;
 	}
 }

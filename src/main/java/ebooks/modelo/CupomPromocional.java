@@ -1,10 +1,11 @@
 package ebooks.modelo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class CupomPromocional extends EntidadeDominio {
 	private String codigo;
-	private Double porcentagemDesconto;
+	private BigDecimal porcentagemDesconto;
 	private Date validade;
 	private Boolean ativo;
 
@@ -16,11 +17,11 @@ public class CupomPromocional extends EntidadeDominio {
 		this.codigo = codigo;
 	}
 
-	public Double getPorcentagemDesconto() {
+	public BigDecimal getPorcentagemDesconto() {
 		return porcentagemDesconto;
 	}
 
-	public void setPorcentagemDesconto(Double porcentagemDesconto) {
+	public void setPorcentagemDesconto(BigDecimal porcentagemDesconto) {
 		this.porcentagemDesconto = porcentagemDesconto;
 	}
 

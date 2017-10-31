@@ -33,10 +33,10 @@ public class LivroDAO extends AbstractDAO {
 			conexao.setAutoCommit(false);
 			String sql = "insert into dimensoes(altura, largura, peso, profundidade) values(?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setDouble(1, dimensoes.getAltura());
-			ps.setDouble(2, dimensoes.getLargura());
-			ps.setDouble(3, dimensoes.getPeso());
-			ps.setDouble(4, dimensoes.getProfundidade());
+			ps.setBigDecimal(1, dimensoes.getAltura());
+			ps.setBigDecimal(2, dimensoes.getLargura());
+			ps.setBigDecimal(3, dimensoes.getPeso());
+			ps.setBigDecimal(4, dimensoes.getProfundidade());
 			ps.execute();
 			ResultSet generatedKeys = ps.getGeneratedKeys();
 			Long idDimensoes = Long.valueOf(0);
@@ -84,8 +84,8 @@ public class LivroDAO extends AbstractDAO {
 			
 			sql = "insert into precificacao(preco_custo, preco_venda) values(?,?)";
 			ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setDouble(1, precificacao.getPrecoCusto());
-			ps.setDouble(2, precificacao.getPrecoVenda());
+			ps.setBigDecimal(1, precificacao.getPrecoCusto());
+			ps.setBigDecimal(2, precificacao.getPrecoVenda());
 			ps.execute();
 			generatedKeys = ps.getGeneratedKeys();
 			Long idPrecificacao = Long.valueOf(0);
@@ -214,10 +214,10 @@ public class LivroDAO extends AbstractDAO {
 			String sql = "update dimensoes d set altura = ?, largura = ?, peso = ?, profundidade = ? where d.id_dimensoes = ?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			dimensoes.setId(livroOld.getDimensoes().getId());
-			ps.setDouble(1, dimensoes.getAltura());
-			ps.setDouble(2, dimensoes.getLargura());
-			ps.setDouble(3, dimensoes.getPeso());
-			ps.setDouble(4, dimensoes.getProfundidade());
+			ps.setBigDecimal(1, dimensoes.getAltura());
+			ps.setBigDecimal(2, dimensoes.getLargura());
+			ps.setBigDecimal(3, dimensoes.getPeso());
+			ps.setBigDecimal(4, dimensoes.getProfundidade());
 			ps.setLong(5, dimensoes.getId());
 			ps.execute();
 			ps.close();
@@ -255,8 +255,8 @@ public class LivroDAO extends AbstractDAO {
 			sql = "update precificacao set preco_custo = ?, preco_venda = ? where id_precificacao = ?";
 			ps = conexao.prepareStatement(sql);
 			precificacao.setId(livroOld.getPrecificacao().getId());
-			ps.setDouble(1, precificacao.getPrecoCusto());
-			ps.setDouble(2, precificacao.getPrecoVenda());
+			ps.setBigDecimal(1, precificacao.getPrecoCusto());
+			ps.setBigDecimal(2, precificacao.getPrecoVenda());
 			ps.setLong(3, precificacao.getId());
 			ps.execute();
 			ps.close();
@@ -519,10 +519,10 @@ public class LivroDAO extends AbstractDAO {
 				
 				Dimensoes dimensoes = new Dimensoes();
 				dimensoes.setId(rs.getLong("d.id_dimensoes"));
-				dimensoes.setAltura(rs.getDouble("d.altura"));
-				dimensoes.setLargura(rs.getDouble("d.largura"));
-				dimensoes.setProfundidade(rs.getDouble("d.profundidade"));
-				dimensoes.setPeso(rs.getDouble("d.peso"));
+				dimensoes.setAltura(rs.getBigDecimal("d.altura"));
+				dimensoes.setLargura(rs.getBigDecimal("d.largura"));
+				dimensoes.setProfundidade(rs.getBigDecimal("d.profundidade"));
+				dimensoes.setPeso(rs.getBigDecimal("d.peso"));
 				livro.setDimensoes(dimensoes);
 				
 				Estoque estoque = new Estoque();
@@ -534,13 +534,13 @@ public class LivroDAO extends AbstractDAO {
 				
 				Precificacao precificacao = new Precificacao();
 				precificacao.setId(rs.getLong("p.id_precificacao"));
-				precificacao.setPrecoCusto(rs.getDouble("p.preco_custo"));
-				precificacao.setPrecoVenda(rs.getDouble("p.preco_venda"));
+				precificacao.setPrecoCusto(rs.getBigDecimal("p.preco_custo"));
+				precificacao.setPrecoVenda(rs.getBigDecimal("p.preco_venda"));
 				livro.setPrecificacao(precificacao);
 				
 				GrupoPrecificacao grupoPrecificacao = new GrupoPrecificacao();
 				grupoPrecificacao.setId(rs.getLong("gp.id_grupo_precificacao"));
-				grupoPrecificacao.setMargemLucro(rs.getDouble("gp.margem_lucro"));
+				grupoPrecificacao.setMargemLucro(rs.getBigDecimal("gp.margem_lucro"));
 				grupoPrecificacao.setNome(rs.getString("gp.nome"));
 				livro.setGrupoPrecificacao(grupoPrecificacao);
 				

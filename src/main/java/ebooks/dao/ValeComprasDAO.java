@@ -21,7 +21,7 @@ public class ValeComprasDAO extends AbstractDAO {
 			String sql = "insert into vale_compras(codigo, valor, validade, ativo) values(?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			ps.setString(1, valeCompras.getCodigo());
-			ps.setDouble(2, valeCompras.getValor());
+			ps.setBigDecimal(2, valeCompras.getValor());
 			ps.setDate(3, new Date(valeCompras.getValidade().getTime()));
 			ps.setBoolean(4, valeCompras.getAtivo());
 			ps.execute();
@@ -52,7 +52,7 @@ public class ValeComprasDAO extends AbstractDAO {
 			String sql = "update vale_compras set codigo=?, valor=?, validade=?, ativo=? where id_vale_compras=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			ps.setString(1, valeCompras.getCodigo() != null ? valeCompras.getCodigo() : valeComprasOld.getCodigo());
-			ps.setDouble(2, valeCompras.getValor() != null ?
+			ps.setBigDecimal(2, valeCompras.getValor() != null ?
 					valeCompras.getValor() : valeComprasOld.getValor());
 			ps.setDate(3, valeCompras.getValidade() != null ? 
 					new Date(valeCompras.getValidade().getTime()) : new Date(valeComprasOld.getValidade().getTime()));
@@ -122,7 +122,7 @@ public class ValeComprasDAO extends AbstractDAO {
 				ValeCompras valeCompras = new ValeCompras();
 				valeCompras.setId(rs.getLong("id_vale_compras"));
 				valeCompras.setCodigo(rs.getString("codigo"));
-				valeCompras.setValor(rs.getDouble("valor"));
+				valeCompras.setValor(rs.getBigDecimal("valor"));
 				valeCompras.setAtivo(rs.getBoolean("ativo"));
 				consulta.add(valeCompras);
 			}
