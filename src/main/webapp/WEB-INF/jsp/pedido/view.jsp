@@ -173,8 +173,8 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<c:if test="${not empty pedido.itensPedido}">	
-						<button type="submit" formaction="pedidoConfirmarCompra"
-						id="btnPedidoConfirmarCompra" class="btn btn-primary">
+						<button type="submit" formaction="pedidoConfirmarCompra" name="operacao"
+						value="SALVAR" id="btnPedidoConfirmarCompra" class="btn btn-primary">
 							Confirmar compra
 						</button>
 					</c:if>

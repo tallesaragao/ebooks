@@ -115,6 +115,8 @@ public class CalcularFrete implements IStrategy {
 				List<EntidadeDominio> consulta = enderecoDAO.consultar(enderecoConsulta);
 				if(!consulta.isEmpty()) {
 					Endereco endereco = (Endereco) consulta.get(0);
+					// FALTA DEFINIR O ENDEREÇO DE COBRANÇA AO CADASTRAR O CLIENTE (ENDEREÇO PRINCIPAL) - SOLUÇÃO TEMPORÁRIA
+					pedido.setEnderecoCobranca(endereco);
 					String uf = endereco.getEstado();
 					BigDecimal precoEstado = tabelaPrecosEstado.get(uf);
 					

@@ -186,7 +186,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'tobias.leoso@gmail.com','M',0,9,3,7),(2,'ebooks@gmail.com','M',0,10,4,8),(4,'maria@outlook.com','F',0,13,7,9),(11,'snvalmeida@viacorte.com.br','M',1,21,15,10),(12,'rodrigobc79@gmail.com','M',1,26,20,11);
+INSERT INTO `cliente` VALUES (1,'tobias.leoso@gmail.com','M',1,9,3,7),(2,'ebooks@gmail.com','M',0,10,4,8),(4,'maria@outlook.com','F',0,13,7,9),(11,'snvalmeida@viacorte.com.br','M',1,21,15,10),(12,'rodrigobc79@gmail.com','M',1,26,20,11);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -372,7 +372,7 @@ CREATE TABLE `forma_pag` (
   `id_forma_pag` int(11) NOT NULL AUTO_INCREMENT,
   `parcelas` mediumtext NOT NULL,
   PRIMARY KEY (`id_forma_pag`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -381,6 +381,7 @@ CREATE TABLE `forma_pag` (
 
 LOCK TABLES `forma_pag` WRITE;
 /*!40000 ALTER TABLE `forma_pag` DISABLE KEYS */;
+INSERT INTO `forma_pag` VALUES (7,'1');
 /*!40000 ALTER TABLE `forma_pag` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,7 +398,7 @@ CREATE TABLE `frete` (
   `dias_entrega` mediumtext NOT NULL,
   `prazo_estimado` date NOT NULL,
   PRIMARY KEY (`id_frete`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -406,6 +407,7 @@ CREATE TABLE `frete` (
 
 LOCK TABLES `frete` WRITE;
 /*!40000 ALTER TABLE `frete` DISABLE KEYS */;
+INSERT INTO `frete` VALUES (8,38.00,'10','2017-11-11');
 /*!40000 ALTER TABLE `frete` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -474,6 +476,7 @@ DROP TABLE IF EXISTS `item_pedido`;
 CREATE TABLE `item_pedido` (
   `id_item_pedido` int(11) NOT NULL AUTO_INCREMENT,
   `quantidade` mediumtext NOT NULL,
+  `subtotal` decimal(20,2) NOT NULL,
   `id_pedido` int(11) NOT NULL,
   `id_livro` int(11) NOT NULL,
   PRIMARY KEY (`id_item_pedido`),
@@ -481,7 +484,7 @@ CREATE TABLE `item_pedido` (
   KEY `fk_item_pedido_livro_idx` (`id_livro`),
   CONSTRAINT `fk_item_pedido_livro` FOREIGN KEY (`id_livro`) REFERENCES `livro` (`id_livro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_item_pedido_pedido` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -490,6 +493,7 @@ CREATE TABLE `item_pedido` (
 
 LOCK TABLES `item_pedido` WRITE;
 /*!40000 ALTER TABLE `item_pedido` DISABLE KEYS */;
+INSERT INTO `item_pedido` VALUES (1,'1',16.00,3,2),(2,'1',40.12,3,3);
 /*!40000 ALTER TABLE `item_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -657,10 +661,9 @@ DROP TABLE IF EXISTS `pag_cartao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pag_cartao` (
-  `id_pag_cartao` int(11) NOT NULL AUTO_INCREMENT,
   `id_pagamento` int(11) NOT NULL,
   `id_cartao_credito` int(11) NOT NULL,
-  PRIMARY KEY (`id_pag_cartao`),
+  PRIMARY KEY (`id_pagamento`),
   KEY `fk_pag_cartao_pagamento_idx` (`id_pagamento`),
   KEY `fk_pag_cartao_cartao_credito_idx` (`id_cartao_credito`),
   CONSTRAINT `fk_pag_cartao_cartao_credito` FOREIGN KEY (`id_cartao_credito`) REFERENCES `cartao_credito` (`id_cartao_credito`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -674,6 +677,7 @@ CREATE TABLE `pag_cartao` (
 
 LOCK TABLES `pag_cartao` WRITE;
 /*!40000 ALTER TABLE `pag_cartao` DISABLE KEYS */;
+INSERT INTO `pag_cartao` VALUES (10,4),(11,5);
 /*!40000 ALTER TABLE `pag_cartao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -685,10 +689,9 @@ DROP TABLE IF EXISTS `pag_vale_compras`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pag_vale_compras` (
-  `id_pag_vale_compras` int(11) NOT NULL AUTO_INCREMENT,
   `id_pagamento` int(11) NOT NULL,
   `id_vale_compras` int(11) NOT NULL,
-  PRIMARY KEY (`id_pag_vale_compras`),
+  PRIMARY KEY (`id_pagamento`),
   KEY `fk_pag_vale_compras_pagamento_idx` (`id_pagamento`),
   KEY `fk_pag_vale_compras_vale_compras_idx` (`id_vale_compras`),
   CONSTRAINT `fk_pag_vale_compras_pagamento` FOREIGN KEY (`id_pagamento`) REFERENCES `pagamento` (`id_pagamento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -719,7 +722,7 @@ CREATE TABLE `pagamento` (
   PRIMARY KEY (`id_pagamento`),
   KEY `fk_pagamento_forma_pag_idx` (`id_forma_pag`),
   CONSTRAINT `fk_pagamento_forma_pag` FOREIGN KEY (`id_forma_pag`) REFERENCES `forma_pag` (`id_forma_pag`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -728,6 +731,7 @@ CREATE TABLE `pagamento` (
 
 LOCK TABLES `pagamento` WRITE;
 /*!40000 ALTER TABLE `pagamento` DISABLE KEYS */;
+INSERT INTO `pagamento` VALUES (10,227.50,7),(11,200.01,7);
 /*!40000 ALTER TABLE `pagamento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -741,26 +745,28 @@ DROP TABLE IF EXISTS `pedido`;
 CREATE TABLE `pedido` (
   `id_pedido` int(11) NOT NULL AUTO_INCREMENT,
   `valor_total` decimal(20,2) NOT NULL,
+  `numero` varchar(45) NOT NULL,
   `id_endereco_entrega` int(11) NOT NULL,
   `id_endereco_cobranca` int(11) NOT NULL,
   `id_cliente` int(11) NOT NULL,
-  `id_forma_pag` int(11) NOT NULL,
-  `id_cupom_promo` int(11) NOT NULL,
+  `id_cupom_promo` int(11) DEFAULT NULL,
   `id_frete` int(11) NOT NULL,
+  `id_forma_pag` int(11) NOT NULL,
+  `dt_cadastro` datetime NOT NULL,
   PRIMARY KEY (`id_pedido`),
   KEY `fk_pedido_endereco_entrega_idx` (`id_endereco_entrega`),
   KEY `fk_pedido_endereco_cobranca_idx` (`id_endereco_cobranca`),
   KEY `fk_pedido_cliente_idx` (`id_cliente`),
-  KEY `fk_pedido_forma_pag_idx` (`id_forma_pag`),
   KEY `fk_pedido_cupom_promo_idx` (`id_cupom_promo`),
   KEY `fk_pedido_frete_idx` (`id_frete`),
+  KEY `fk_pedido_forma_pag_idx` (`id_forma_pag`),
   CONSTRAINT `fk_pedido_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_cupom_promo` FOREIGN KEY (`id_cupom_promo`) REFERENCES `cupom_promo` (`id_cupom_promo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_endereco_cobranca` FOREIGN KEY (`id_endereco_cobranca`) REFERENCES `endereco` (`id_endereco`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_endereco_entrega` FOREIGN KEY (`id_endereco_entrega`) REFERENCES `endereco` (`id_endereco`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_forma_pag` FOREIGN KEY (`id_forma_pag`) REFERENCES `forma_pag` (`id_forma_pag`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_frete` FOREIGN KEY (`id_frete`) REFERENCES `frete` (`id_frete`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -769,6 +775,7 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
+INSERT INTO `pedido` VALUES (3,427.51,'31840183347',17,17,1,3,8,7,'2017-11-01 00:00:00');
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1018,4 +1025,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-26 12:44:48
+-- Dump completed on 2017-11-01 12:39:40

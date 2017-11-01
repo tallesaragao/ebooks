@@ -358,12 +358,17 @@
   
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/validarFormaPagamento</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
   	<url-pattern>/pedidoDetalhes</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
-  	<url-pattern>/validarFormaPagamento</url-pattern>
+  	<url-pattern>/pedidoConfirmarCompra</url-pattern>
   </servlet-mapping>
   
   <resource-ref>

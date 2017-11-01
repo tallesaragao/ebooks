@@ -6,6 +6,7 @@ public class ItemPedido extends EntidadeDominio {
 	private Livro livro;
 	private Long quantidade;
 	private BigDecimal subtotal;
+	private Pedido pedido;
 
 	public Livro getLivro() {
 		return livro;
@@ -29,5 +30,13 @@ public class ItemPedido extends EntidadeDominio {
 
 	public void setSubtotal(BigDecimal subtotal) {
 		this.subtotal = subtotal;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 }

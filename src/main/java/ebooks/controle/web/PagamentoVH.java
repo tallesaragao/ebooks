@@ -104,6 +104,7 @@ public class PagamentoVH implements IViewHelper {
 		if(operacao.equals("EXCLUIR")) {
 			String idVale = request.getParameter("idVale");
 			String idCartao = request.getParameter("idCartao");
+			String idCupom = request.getParameter("idCupom");
 			FormaPagamento formaPagamento = new FormaPagamento();
 			formaPagamento.setPagamentos(new ArrayList<Pagamento>());
 			if(idVale != null && !idVale.equals("")) {
@@ -123,7 +124,11 @@ public class PagamentoVH implements IViewHelper {
 			if(!formaPagamento.getPagamentos().isEmpty()) {
 				pedido.setFormaPagamento(formaPagamento);
 			}
-			pedido.setCupomPromocional(pedidoSession.getCupomPromocional());
+			if(idCupom != null && !idCupom.equals("")) {
+				CupomPromocional cupomPromocional = new CupomPromocional();
+				cupomPromocional.setId(Long.valueOf(idCupom));
+				pedido.setCupomPromocional(cupomPromocional);
+			}
 			pedido.setItensPedido(null);
 			carrinho.setPedido(pedido);
 			carrinho.setSession(request.getSession());

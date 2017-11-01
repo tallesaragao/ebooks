@@ -15,6 +15,7 @@ import ebooks.dao.GrupoPrecificacaoDAO;
 import ebooks.dao.IDAO;
 import ebooks.dao.LivroDAO;
 import ebooks.dao.LoginDAO;
+import ebooks.dao.PedidoDAO;
 import ebooks.dao.TipoEnderecoDAO;
 import ebooks.dao.TipoTelefoneDAO;
 import ebooks.modelo.Bandeira;
@@ -27,9 +28,11 @@ import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.GrupoPrecificacao;
 import ebooks.modelo.Livro;
 import ebooks.modelo.Login;
+import ebooks.modelo.Pedido;
 import ebooks.modelo.TipoEndereco;
 import ebooks.modelo.TipoTelefone;
 import ebooks.negocio.IStrategy;
+import ebooks.negocio.impl.AdicionarCartoesPagamento;
 import ebooks.negocio.impl.AdicionarCupomPromocionalPagamento;
 import ebooks.negocio.impl.AdicionarLivroCarrinho;
 import ebooks.negocio.impl.AdicionarValeComprasPagamento;
@@ -39,7 +42,6 @@ import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
 import ebooks.negocio.impl.CalcularFrete;
 import ebooks.negocio.impl.CalcularValorTotalPedido;
 import ebooks.negocio.impl.ComplementarDtCadastro;
-import ebooks.negocio.impl.AdicionarCartoesPagamento;
 import ebooks.negocio.impl.ConsultarClienteCarrinho;
 import ebooks.negocio.impl.ExcluirCupomPagamento;
 import ebooks.negocio.impl.ExcluirLivroCarrinho;
@@ -55,6 +57,7 @@ import ebooks.negocio.impl.ValidarCamposLivro;
 import ebooks.negocio.impl.ValidarCamposLogin;
 import ebooks.negocio.impl.ValidarConsistenciaFrete;
 import ebooks.negocio.impl.ValidarFormaPagamento;
+import ebooks.negocio.impl.VerificarDisponibilidadeLivros;
 import ebooks.negocio.impl.VerificarExistenciaCliente;
 import ebooks.negocio.impl.VerificarPedidoFinalizado;
 
@@ -96,6 +99,7 @@ public class Fachada implements IFachada {
 		RemoverValeComprasCarrinho remValeCarrinho = new RemoverValeComprasCarrinho();
 		RemoverCartaoCreditoCarrinho remCarCredCarrinho = new RemoverCartaoCreditoCarrinho();
 		ValidarFormaPagamento valFormaPag = new ValidarFormaPagamento();
+		VerificarDisponibilidadeLivros verDispLivros = new VerificarDisponibilidadeLivros();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -186,6 +190,7 @@ public class Fachada implements IFachada {
 		lCarrinhoSalvar.add(adicCupomPromoPag);
 		lCarrinhoSalvar.add(adicValeCompPag);
 		lCarrinhoSalvar.add(valFormaPag);
+		lCarrinhoSalvar.add(verDispLivros);
 		lCarrinhoSalvar.add(verPedFin);
 		List<IStrategy> lCarrinhoAlterar = new ArrayList<>();
 		lCarrinhoAlterar.add(altQuantItemCar);
@@ -249,6 +254,7 @@ public class Fachada implements IFachada {
 		daos.put(Bandeira.class.getName(), new BandeiraDAO());
 		daos.put(TipoEndereco.class.getName(), new TipoEnderecoDAO());
 		daos.put(TipoTelefone.class.getName(), new TipoTelefoneDAO());
+		daos.put(Carrinho.class.getName(), new PedidoDAO());
 	}
 
 	@Override

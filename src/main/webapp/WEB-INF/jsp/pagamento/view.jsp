@@ -91,8 +91,8 @@
 						</button>
 						
 						<c:if test="${pedido.cupomPromocional != null }">
-							<button type="submit" formaction="pagamentoRemoverCupom" name="operacao"
-							value="EXCLUIR" id="btnRemoverCupom" class="btn btn-warning btn-select">
+							<button type="submit" formaction="pagamentoRemoverCupom?idCupom=${pedido.cupomPromocional.id}"
+							name="operacao" value="EXCLUIR" id="btnRemoverCupom" class="btn btn-warning btn-select">
 								Remover
 							</button>
 						</c:if>

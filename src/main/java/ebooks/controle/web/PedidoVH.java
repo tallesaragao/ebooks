@@ -20,6 +20,7 @@ public class PedidoVH implements IViewHelper {
 		carrinho.setSession(session);
 		Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
 		carrinho.setPedido(pedidoSession);
+		carrinho.setPedidoFinalizado(true);
 		return carrinho;
 	}
 
@@ -30,6 +31,14 @@ public class PedidoVH implements IViewHelper {
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/pedidoDetalhes")) {
 			request.getRequestDispatcher("WEB-INF/jsp/pedido/view.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/pedidoConfirmarCompra")) {
+			if(object == null) {
+				request.getRequestDispatcher("WEB-INF/jsp/pedido/success.jsp").forward(request, response);
+			}
+			else {
+				request.getRequestDispatcher("pedidoDetalhes").forward(request, response);
+			}
 		}
 
 	}
