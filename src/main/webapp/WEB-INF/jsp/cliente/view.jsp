@@ -236,6 +236,58 @@
 					</div>
 				</div>	
 			</fieldset>
+			<fieldset>
+				<legend>
+					<span class="legend-logo glyphicon glyphicon-shopping-cart"></span> Pedidos
+				</legend>
+				<div class="row">
+					<div class="table-responsive">
+						<div class="col-sm-11 col-sm-12 col-md-12">
+							<table class="table table-striped table-condensed">
+								<thead>
+									<tr>
+										<th>NÚMERO</th>
+										<th>ITENS</th>
+										<th>VALOR TOTAL</th>
+										<th>DATA DA COMPRA</th>
+										<th>STATUS</th>
+										<th>
+											<span class="glyphicon glyphicon-cog icone-engrenagem"></span> AÇÕES
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${cliente.pedidos}" var="pedido">
+										<tr>
+											<td>${pedido.numero}</td>
+											<td>
+												<c:forEach items="${pedido.itensPedido}" var="item" varStatus="status">
+													<span>
+														${item.livro.titulo} (${item.quantidade} un)<c:if test="${!status.last}">, </c:if>
+													</span>
+												</c:forEach>
+											</td>											
+											<td>
+												<fmt:setLocale value="pt-BR"/>
+												<fmt:formatNumber value="${pedido.valorTotal}" type="currency"/>
+											</td>
+											<td><fmt:formatDate value="${pedido.dataCadastro}" pattern="dd/MM/yyyy"/></td>
+											<td>Em processamento</td>					
+											<td>
+												<button type="submit" data-toggle="tooltip" title="Detalhes" name="detalhes"
+												id="btnDetalhesPedido${pedido.id}"class="btn btn-sm btn-default btn-icone"
+												method="get" formaction="pedidoView?operacao=CONSULTAR&idPedido=${pedido.id}">
+													<span class="glyphicon glyphicon-eye-open"></span>
+												</button>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>	
+			</fieldset>
 		</div>
 	</form>
 	<script src="resources/js/jquery-3.1.1.js"></script>

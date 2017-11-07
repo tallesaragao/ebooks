@@ -19,31 +19,33 @@ public class AdicionarCupomPromocionalPagamento implements IStrategy {
 	public String processar(EntidadeDominio entidade) {
 		StringBuilder sb = new StringBuilder();
 		Carrinho carrinho = (Carrinho) entidade;
-		Pedido pedido = carrinho.getPedido();
-		CupomPromocional cupomPromocionalConsulta = pedido.getCupomPromocional();
-		if(cupomPromocionalConsulta != null) {
-			HttpSession session = carrinho.getSession();
-			Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
-			pedidoSession.setCupomPromocional(null);
-			IDAO dao = new CupomPromocionalDAO();
-			try {
-				List<EntidadeDominio> consulta = dao.consultar(cupomPromocionalConsulta);
-				if(!consulta.isEmpty()) {
-					CupomPromocional cupomPromocional = (CupomPromocional) consulta.get(0);
-					if(cupomPromocional.getAtivo()) {
-						pedidoSession.setCupomPromocional(cupomPromocional);					
+		if(!carrinho.isPedidoFinalizado()) {
+			Pedido pedido = carrinho.getPedido();
+			CupomPromocional cupomPromocionalConsulta = pedido.getCupomPromocional();
+			if(cupomPromocionalConsulta != null) {
+				HttpSession session = carrinho.getSession();
+				Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+				pedidoSession.setCupomPromocional(null);
+				IDAO dao = new CupomPromocionalDAO();
+				try {
+					List<EntidadeDominio> consulta = dao.consultar(cupomPromocionalConsulta);
+					if(!consulta.isEmpty()) {
+						CupomPromocional cupomPromocional = (CupomPromocional) consulta.get(0);
+						if(cupomPromocional.getAtivo()) {
+							pedidoSession.setCupomPromocional(cupomPromocional);					
+						}
+						else {
+							sb.append("O cupom está inativo:");
+						}
+						session.setAttribute("pedido", pedidoSession);	
 					}
 					else {
-						sb.append("O cupom está inativo:");
+						sb.append("Cupom inválido:");
 					}
-					session.setAttribute("pedido", pedidoSession);	
+				} catch (SQLException e) {
+					e.printStackTrace();
+					sb.append("Problema na consulta do cupom:");
 				}
-				else {
-					sb.append("Cupom inválido:");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				sb.append("Problema na consulta do cupom:");
 			}
 		}
 		

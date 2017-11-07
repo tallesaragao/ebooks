@@ -9,7 +9,6 @@ public class Livro extends EntidadeDominio {
 	private String isbn;
 	private String numeroPaginas;
 	private Boolean ativo;
-	private Long quantidade;
 	private String codigo;
 	private String sinopse;
 	private Dimensoes dimensoes;
@@ -69,14 +68,6 @@ public class Livro extends EntidadeDominio {
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
-	}
-
-	public Long getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(Long quantidade) {
-		this.quantidade = quantidade;
 	}
 
 	public String getCodigo() {

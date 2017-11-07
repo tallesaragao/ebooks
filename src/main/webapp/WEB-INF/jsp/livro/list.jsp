@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -109,13 +110,13 @@
 							<table class="table table-striped table-condensed">
 								<thead>
 									<tr>
-										<th>CÓDIGO</th>
 										<th>ISBN</th>
 										<th>TÍTULO</th>
 										<th>AUTOR</th>
 										<th>CATEGORIA</th>
 										<th>EDITORA</th>
 										<th>PREÇO (R$)</th>
+										<th>ESTOQUE</th>
 										<th>
 											<span class="glyphicon glyphicon-cog icone-engrenagem"></span> AÇÕES
 										</th>
@@ -124,7 +125,6 @@
 								<tbody>
 									<c:forEach items="${consulta}" var="livro">
 										<tr>
-											<td>${livro.codigo}</td>
 											<td>${livro.isbn}</td>
 											<td>${livro.titulo}</td>
 											<td>
@@ -138,7 +138,11 @@
 												</c:forEach>
 											</td>
 											<td>${livro.editora.nome}</td>
-											<td>${livro.precificacao.precoVenda}</td>											
+											<td>
+												<fmt:setLocale value="pt-BR"/>
+												<fmt:formatNumber value="${livro.precificacao.precoVenda}" type="currency"/>
+											</td>
+											<td>${livro.estoque.quantidadeAtual}</td>										
 											<td>
 												<button type="submit" data-toggle="tooltip" title="Editar" id="btnEdit${livro.id}"
 												class="btn btn-sm btn-default btn-icone" method="get"

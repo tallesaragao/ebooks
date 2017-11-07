@@ -29,6 +29,7 @@ public class LivroDAO extends AbstractDAO {
 		Precificacao precificacao = livro.getPrecificacao();
 		Dimensoes dimensoes = livro.getDimensoes();
 		Editora editora = livro.getEditora();
+		Estoque estoque = livro.getEstoque();
 		try {
 			conexao.setAutoCommit(false);
 			String sql = "insert into dimensoes(altura, largura, peso, profundidade) values(?,?,?,?)";
@@ -42,6 +43,19 @@ public class LivroDAO extends AbstractDAO {
 			Long idDimensoes = Long.valueOf(0);
 			while(generatedKeys.next()) {
 				idDimensoes = generatedKeys.getLong(1);
+			}
+			ps.close();
+			
+			sql = "insert into estoque(quant_min, quant_max, quant_atual) values(?,?,?)";
+			ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setLong(1, estoque.getQuantidadeMinima());
+			ps.setLong(2, estoque.getQuantidadeMaxima());
+			ps.setLong(3, estoque.getQuantidadeAtual());
+			ps.execute();
+			generatedKeys = ps.getGeneratedKeys();
+			Long idEstoque = Long.valueOf(0);
+			while(generatedKeys.next()) {
+				idEstoque = generatedKeys.getLong(1);
 			}
 			ps.close();
 			
@@ -133,8 +147,8 @@ public class LivroDAO extends AbstractDAO {
 				autor.setId(idAutor);
 				ps.close();
 			}
-			sql = "insert into livro(ano, titulo, edicao, isbn, num_paginas, fl_ativo, quantidade, codigo, sinopse, id_dimensoes, "
-					+ "id_grupo_precificacao, id_precificacao, id_editora, dt_cadastro) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			sql = "insert into livro(ano, titulo, edicao, isbn, num_paginas, fl_ativo, codigo, sinopse, id_dimensoes, "
+					+ "id_grupo_precificacao, id_precificacao, id_editora, id_estoque, dt_cadastro) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, livro.getAno());
 			ps.setString(2, livro.getTitulo());
@@ -142,13 +156,13 @@ public class LivroDAO extends AbstractDAO {
 			ps.setString(4, livro.getIsbn());
 			ps.setString(5, livro.getNumeroPaginas());
 			ps.setBoolean(6, livro.getAtivo());
-			ps.setLong(7, livro.getQuantidade());
-			ps.setString(8, livro.getCodigo());
-			ps.setString(9, livro.getSinopse());
-			ps.setLong(10, idDimensoes);
-			ps.setLong(11, grupoPrecificacao.getId());
-			ps.setLong(12, idPrecificacao);
-			ps.setLong(13, idEditora);
+			ps.setString(7, livro.getCodigo());
+			ps.setString(8, livro.getSinopse());
+			ps.setLong(9, idDimensoes);
+			ps.setLong(10, grupoPrecificacao.getId());
+			ps.setLong(11, idPrecificacao);
+			ps.setLong(12, idEditora);
+			ps.setLong(13, idEstoque);
 			ps.setDate(14, new Date(livro.getDataCadastro().getTime()));
 			ps.execute();
 			generatedKeys = ps.getGeneratedKeys();
@@ -203,11 +217,33 @@ public class LivroDAO extends AbstractDAO {
 		List<EntidadeDominio> listaLivroOld = consultar(livro);
 		Livro livroOld = (Livro) listaLivroOld.get(0);
 		List<Autor> autores = livro.getAutores();
+		if(autores == null) {
+			autores = livroOld.getAutores();
+		}
 		List<Categoria> categorias = livro.getCategorias();
+		if(categorias == null) {
+			categorias = livroOld.getCategorias();
+		}
 		GrupoPrecificacao grupoPrecificacao = livro.getGrupoPrecificacao();
+		if(grupoPrecificacao == null) {
+			grupoPrecificacao = livroOld.getGrupoPrecificacao();
+		}
 		Precificacao precificacao = livro.getPrecificacao();
+		if(precificacao == null) {
+			precificacao = livroOld.getPrecificacao();
+		}
 		Dimensoes dimensoes = livro.getDimensoes();
+		if(dimensoes == null) {
+			dimensoes = livroOld.getDimensoes();
+		}
 		Editora editora = livro.getEditora();
+		if(editora == null) {
+			editora = livroOld.getEditora();
+		}
+		Estoque estoque = livro.getEstoque();
+		if(estoque == null) {
+			estoque = livroOld.getEstoque();
+		}
 		try {
 			conexao = factory.getConnection();
 			conexao.setAutoCommit(false);
@@ -219,6 +255,16 @@ public class LivroDAO extends AbstractDAO {
 			ps.setBigDecimal(3, dimensoes.getPeso());
 			ps.setBigDecimal(4, dimensoes.getProfundidade());
 			ps.setLong(5, dimensoes.getId());
+			ps.execute();
+			ps.close();
+			
+			sql = "update estoque e set quant_min = ?, quant_max = ?, quant_atual = ? where e.id_estoque = ?";
+			ps = conexao.prepareStatement(sql);
+			estoque.setId(livroOld.getEstoque().getId());
+			ps.setLong(1, estoque.getQuantidadeMinima());
+			ps.setLong(2, estoque.getQuantidadeMaxima());
+			ps.setLong(3, estoque.getQuantidadeAtual());
+			ps.setLong(4, estoque.getId());
 			ps.execute();
 			ps.close();
 			
@@ -299,7 +345,7 @@ public class LivroDAO extends AbstractDAO {
 				ps.close();
 			}
 			
-			sql = "update livro set ano = ?, titulo = ?, edicao = ?, isbn = ?, num_paginas = ?, quantidade = ?, sinopse = ?, "
+			sql = "update livro set ano = ?, titulo = ?, edicao = ?, isbn = ?, num_paginas = ?, sinopse = ?, "
 					+ "id_dimensoes = ?, id_grupo_precificacao = ?, id_precificacao = ?, id_editora = ? where id_livro = ?";
 			ps = conexao.prepareStatement(sql);
 			ps.setString(1, livro.getAno());
@@ -307,13 +353,12 @@ public class LivroDAO extends AbstractDAO {
 			ps.setString(3, livro.getEdicao());
 			ps.setString(4, livro.getIsbn());
 			ps.setString(5, livro.getNumeroPaginas());
-			ps.setLong(6, livro.getQuantidade());
-			ps.setString(7, livro.getSinopse());
-			ps.setLong(8, dimensoes.getId());
-			ps.setLong(9, grupoPrecificacao.getId());
-			ps.setLong(10, precificacao.getId());
-			ps.setLong(11, editora.getId());
-			ps.setLong(12, livro.getId());
+			ps.setString(6, livro.getSinopse());
+			ps.setLong(7, dimensoes.getId());
+			ps.setLong(8, grupoPrecificacao.getId());
+			ps.setLong(9, precificacao.getId());
+			ps.setLong(10, editora.getId());
+			ps.setLong(11, livro.getId());
 			ps.execute();
 			ps.close();
 			
@@ -371,17 +416,11 @@ public class LivroDAO extends AbstractDAO {
 	@Override
 	public boolean excluir(EntidadeDominio entidade) {
 		Livro livro = (Livro) consultar(entidade).get(0);
-		String sql = "delete from precificacao where id_precificacao = ?";
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
+			String sql = "delete from livro_autor where id_livro = ?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setLong(1, livro.getPrecificacao().getId());
-			ps.execute();
-			ps.close();
-			
-			sql = "delete from livro_autor where id_livro = ?";
-			ps = conexao.prepareStatement(sql);
 			ps.setLong(1, livro.getId());
 			ps.execute();
 			ps.close();
@@ -397,6 +436,26 @@ public class LivroDAO extends AbstractDAO {
 			ps.setLong(1, livro.getId());
 			ps.execute();
 			ps.close();
+
+			sql = "delete from precificacao where id_precificacao = ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setLong(1, livro.getPrecificacao().getId());
+			ps.execute();
+			ps.close();
+			
+			sql = "delete from dimensoes where id_dimensoes = ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setLong(1, livro.getDimensoes().getId());
+			ps.execute();
+			ps.close();
+			
+			sql = "delete from estoque where id_estoque = ?";
+			ps = conexao.prepareStatement(sql);
+			ps.setLong(1, livro.getEstoque().getId());
+			ps.execute();
+			ps.close();
+
+			conexao.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -462,6 +521,9 @@ public class LivroDAO extends AbstractDAO {
 			}
 			ps.close();
 			
+			if(conexao.isClosed()) {
+				conexao = factory.getConnection();
+			}
 			sql = "select * from categoria c where c.nome like ? ";
 			ps = conexao.prepareStatement(sql);
 			if(categoriaConsulta.getNome() == null) {
@@ -513,7 +575,6 @@ public class LivroDAO extends AbstractDAO {
 				livro.setEdicao(rs.getString("l.edicao"));
 				livro.setIsbn(rs.getString("l.isbn"));
 				livro.setNumeroPaginas(rs.getString("l.num_paginas"));
-				livro.setQuantidade(rs.getLong("l.quantidade"));
 				livro.setSinopse(rs.getString("l.sinopse"));
 				livro.setTitulo(rs.getString("l.titulo"));
 				

@@ -21,51 +21,53 @@ public class AdicionarLivroCarrinho implements IStrategy {
 	public String processar(EntidadeDominio entidade) {
 		StringBuilder sb = new StringBuilder();
 		Carrinho carrinho = (Carrinho) entidade;
-		Pedido pedido = carrinho.getPedido();
-		List<ItemPedido> itensPedido = pedido.getItensPedido();
-		IDAO dao = new LivroDAO();
-		if(itensPedido != null) {
-			for(ItemPedido item : itensPedido) {
-				Livro livroConsulta = item.getLivro();
-				try {
-					List<EntidadeDominio> consulta = dao.consultar(livroConsulta);
-					if(!consulta.isEmpty()) {
-						Livro livro = (Livro) consulta.get(0);
-						if(livro.getAtivo()) {
-							item.setQuantidade(Long.valueOf(1));
-							item.setLivro(livro);
-							BigDecimal subtotal = new BigDecimal("0.0");
-							BigDecimal precoVenda = livro.getPrecificacao().getPrecoVenda();
-							subtotal = subtotal.add(precoVenda);
-							subtotal = subtotal.multiply(new BigDecimal(item.getQuantidade()));
-							subtotal = subtotal.setScale(2, BigDecimal.ROUND_CEILING);
-							item.setSubtotal(subtotal);
-							HttpSession session = carrinho.getSession();
-							Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
-							itensPedido = pedidoSession.getItensPedido();
-							boolean livroIgual = false;
-							for(ItemPedido itemSession : itensPedido) {
-								livroIgual = itemSession.getLivro().getCodigo().equals(item.getLivro().getCodigo());
-								if(livroIgual) {
-									break;
+		if(!carrinho.isPedidoFinalizado()) {
+			Pedido pedido = carrinho.getPedido();
+			List<ItemPedido> itensPedido = pedido.getItensPedido();
+			IDAO dao = new LivroDAO();
+			if(itensPedido != null) {
+				for(ItemPedido item : itensPedido) {
+					Livro livroConsulta = item.getLivro();
+					try {
+						List<EntidadeDominio> consulta = dao.consultar(livroConsulta);
+						if(!consulta.isEmpty()) {
+							Livro livro = (Livro) consulta.get(0);
+							if(livro.getAtivo()) {
+								item.setQuantidade(Long.valueOf(1));
+								item.setLivro(livro);
+								BigDecimal subtotal = new BigDecimal("0.0");
+								BigDecimal precoVenda = livro.getPrecificacao().getPrecoVenda();
+								subtotal = subtotal.add(precoVenda);
+								subtotal = subtotal.multiply(new BigDecimal(item.getQuantidade()));
+								subtotal = subtotal.setScale(2, BigDecimal.ROUND_CEILING);
+								item.setSubtotal(subtotal);
+								HttpSession session = carrinho.getSession();
+								Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+								itensPedido = pedidoSession.getItensPedido();
+								boolean livroIgual = false;
+								for(ItemPedido itemSession : itensPedido) {
+									livroIgual = itemSession.getLivro().getCodigo().equals(item.getLivro().getCodigo());
+									if(livroIgual) {
+										break;
+									}
 								}
+								if(!livroIgual) {
+									itensPedido.add(item);
+								}
+								pedidoSession.setItensPedido(itensPedido);
+								session.setAttribute("pedido", pedidoSession);
 							}
-							if(!livroIgual) {
-								itensPedido.add(item);
+							else {
+								sb.append("O livro está inativo:");
 							}
-							pedidoSession.setItensPedido(itensPedido);
-							session.setAttribute("pedido", pedidoSession);
 						}
 						else {
-							sb.append("O livro está inativo:");
+							sb.append("Livro não encontrado:");
 						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+						sb.append("Problema na consulta SQL:");
 					}
-					else {
-						sb.append("Livro não encontrado:");
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-					sb.append("Problema na consulta SQL:");
 				}
 			}
 		}

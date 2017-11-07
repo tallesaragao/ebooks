@@ -43,6 +43,7 @@ import ebooks.negocio.impl.CalcularFrete;
 import ebooks.negocio.impl.CalcularValorTotalPedido;
 import ebooks.negocio.impl.ComplementarDtCadastro;
 import ebooks.negocio.impl.ConsultarClienteCarrinho;
+import ebooks.negocio.impl.DarBaixaEstoque;
 import ebooks.negocio.impl.ExcluirCupomPagamento;
 import ebooks.negocio.impl.ExcluirLivroCarrinho;
 import ebooks.negocio.impl.GeradorCodigoLivro;
@@ -69,6 +70,7 @@ public class Fachada implements IFachada {
 	private static final String EXCLUIR = "EXCLUIR";
 
 	private Map<String, Map<String, List<IStrategy>>> requisitos;
+	private Map<String, Map<String, List<IStrategy>>> requisitosAfter;
 	private Map<String, IDAO> daos;
 
 	public Fachada() {
@@ -100,6 +102,7 @@ public class Fachada implements IFachada {
 		RemoverCartaoCreditoCarrinho remCarCredCarrinho = new RemoverCartaoCreditoCarrinho();
 		ValidarFormaPagamento valFormaPag = new ValidarFormaPagamento();
 		VerificarDisponibilidadeLivros verDispLivros = new VerificarDisponibilidadeLivros();
+		DarBaixaEstoque darBaixaEstoque = new DarBaixaEstoque();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -243,6 +246,21 @@ public class Fachada implements IFachada {
 		requisitos.put(TipoTelefone.class.getName(), contextoTipoTel);
 		requisitos.put(Carrinho.class.getName(), contextoCarrinho);
 		
+
+		Map<String, List<IStrategy>> contextoCarrinhoAfter = new HashMap<>();
+		List<IStrategy> lCarrinhoAfterSalvar = new ArrayList<>();
+		lCarrinhoAfterSalvar.add(darBaixaEstoque);
+		List<IStrategy> lCarrinhoAfterAlterar = new ArrayList<>();
+		List<IStrategy> lCarrinhoAfterExcluir = new ArrayList<>();
+		List<IStrategy> lCarrinhoAfterConsultar = new ArrayList<>();
+		contextoCarrinhoAfter.put(SALVAR, lCarrinhoAfterSalvar);
+		contextoCarrinhoAfter.put(ALTERAR, lCarrinhoAfterAlterar);
+		contextoCarrinhoAfter.put(EXCLUIR, lCarrinhoAfterExcluir);
+		contextoCarrinhoAfter.put(CONSULTAR, lCarrinhoAfterConsultar);
+		
+		requisitosAfter = new HashMap<String, Map<String, List<IStrategy>>>();
+		requisitosAfter.put(Carrinho.class.getName(), contextoCarrinhoAfter);
+		
 		daos = new HashMap<String, IDAO>();
 		daos.put(Categoria.class.getName(), new CategoriaDAO());
 		daos.put(Livro.class.getName(), new LivroDAO());
@@ -255,11 +273,12 @@ public class Fachada implements IFachada {
 		daos.put(TipoEndereco.class.getName(), new TipoEnderecoDAO());
 		daos.put(TipoTelefone.class.getName(), new TipoTelefoneDAO());
 		daos.put(Carrinho.class.getName(), new PedidoDAO());
+		daos.put(Pedido.class.getName(), new PedidoDAO());
 	}
 
 	@Override
 	public String salvar(EntidadeDominio entidade) {
-		StringBuilder sb = executarRegras(entidade, SALVAR);
+		StringBuilder sb = executarRegras(entidade, SALVAR, requisitos);
 		if (sb.length() > 0) {
 			return sb.toString();
 		}
@@ -267,6 +286,12 @@ public class Fachada implements IFachada {
 		try {
 			if(!dao.salvar(entidade)) {
 				return "Erro ao persistir a entidade";
+			}
+			else {
+				sb = executarRegras(entidade, SALVAR, requisitosAfter);
+				if(sb.length() > 0) {
+					return sb.toString();
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -279,13 +304,19 @@ public class Fachada implements IFachada {
 	@Override
 	public String alterar(EntidadeDominio entidade) {
 		IDAO dao = daos.get(entidade.getClass().getName());
-		StringBuilder sb = executarRegras(entidade, ALTERAR);
+		StringBuilder sb = executarRegras(entidade, ALTERAR, requisitos);
 		if (sb.length() > 0) {
 			return sb.toString();
 		}
 		try {
 			if(!dao.alterar(entidade)) {
 				return "Problema na alteração";
+			}
+			else {
+				sb = executarRegras(entidade, ALTERAR, requisitosAfter);
+				if(sb.length() > 0) {
+					return sb.toString();
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -297,13 +328,19 @@ public class Fachada implements IFachada {
 	@Override
 	public String excluir(EntidadeDominio entidade) {
 		IDAO dao = daos.get(entidade.getClass().getName());
-		StringBuilder sb = executarRegras(entidade, EXCLUIR);
+		StringBuilder sb = executarRegras(entidade, EXCLUIR, requisitos);
 		if (sb.length() > 0) {
 			return sb.toString();
 		}
 		try {
 			if (!dao.excluir(entidade)) {
 				return "Problema na exclusão";
+			}
+			else {
+				sb = executarRegras(entidade, EXCLUIR, requisitosAfter);
+				if(sb.length() > 0) {
+					return sb.toString();
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -315,7 +352,7 @@ public class Fachada implements IFachada {
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) {
 		IDAO dao = daos.get(entidade.getClass().getName());
-		StringBuilder sb = executarRegras(entidade, CONSULTAR);
+		StringBuilder sb = executarRegras(entidade, CONSULTAR, requisitos);
 		if (sb.length() > 0) {
 			return null;
 		}
@@ -325,20 +362,30 @@ public class Fachada implements IFachada {
 			if(!consulta.isEmpty()) {
 				return consulta;
 			}
+			else {
+				sb = executarRegras(entidade, EXCLUIR, requisitosAfter);
+				if(sb.length() > 0) {
+					return null;
+				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	private StringBuilder executarRegras(EntidadeDominio entidade, String operacao) {
+	private StringBuilder executarRegras(EntidadeDominio entidade, String operacao, Map<String, Map<String, List<IStrategy>>> requisitos) {
 		StringBuilder sb = new StringBuilder();
 		Map<String, List<IStrategy>> contextoEntidade = requisitos.get(entidade.getClass().getName());
-		List<IStrategy> reqs = contextoEntidade.get(operacao);
-		for (IStrategy req : reqs) {
-			String msg = req.processar(entidade);
-			if (msg != null) {
-				sb.append(msg);
+		if(contextoEntidade != null) {
+			List<IStrategy> reqs = contextoEntidade.get(operacao);
+			if(reqs != null) {
+				for (IStrategy req : reqs) {
+					String msg = req.processar(entidade);
+					if (msg != null) {
+						sb.append(msg);
+					}
+				}
 			}
 		}
 		return sb;

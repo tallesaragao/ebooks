@@ -19,6 +19,7 @@ import ebooks.modelo.Categoria;
 import ebooks.modelo.Dimensoes;
 import ebooks.modelo.Editora;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.Estoque;
 import ebooks.modelo.GrupoPrecificacao;
 import ebooks.modelo.Livro;
 import ebooks.modelo.Precificacao;
@@ -117,7 +118,9 @@ public class LivroVH implements IViewHelper {
 			String grupoPrecificacaoId = request.getParameter("grupoPrecificacao");
 			String isbn = request.getParameter("isbn");
 			String precoCusto = request.getParameter("precoCusto");
-			String quantidade = request.getParameter("quantidade");
+			String quantMin = request.getParameter("quantMin");
+			String quantMax = request.getParameter("quantMax");
+			String quantAtual = request.getParameter("quantAtual");
 			String altura = request.getParameter("altura");
 			String largura = request.getParameter("largura");
 			String profundidade = request.getParameter("profundidade");
@@ -153,11 +156,21 @@ public class LivroVH implements IViewHelper {
 			}
 			livro.setPrecificacao(precificacao);
 
+			Estoque estoque = new Estoque();
 			// Se nenhuma quantidade for informada, seta o valor como zero
-			livro.setQuantidade(Long.valueOf(0));
-			if (quantidade != null && !quantidade.equals("")) {
-				livro.setQuantidade(Long.valueOf(quantidade));
+			estoque.setQuantidadeAtual(Long.valueOf(0));
+			if (quantAtual != null && !quantAtual.equals("")) {
+				estoque.setQuantidadeAtual(Long.valueOf(quantAtual));
 			}
+			estoque.setQuantidadeMinima(Long.valueOf(0));
+			if (quantMin != null && !quantMin.equals("")) {
+				estoque.setQuantidadeMinima(Long.valueOf(quantMin));
+			}
+			estoque.setQuantidadeMaxima(Long.valueOf(0));
+			if (quantMax != null && !quantMax.equals("")) {
+				estoque.setQuantidadeMaxima(Long.valueOf(quantMax));
+			}
+			livro.setEstoque(estoque);
 
 			Dimensoes dimensoes = new Dimensoes();
 			// Se nenhuma altura for informada, seta o valor como zero

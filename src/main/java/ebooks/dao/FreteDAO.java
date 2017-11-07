@@ -4,8 +4,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import ebooks.modelo.Frete;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Frete;
 
@@ -51,8 +53,36 @@ public class FreteDAO extends AbstractDAO {
 
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
-		//Implementar
-		return null;
+		Frete freteConsulta = (Frete) entidade;
+		List<EntidadeDominio> consulta = new ArrayList<>();
+		conexao = factory.getConnection();
+		try {
+			Long idFreteConsulta = freteConsulta.getId();
+			String sql = "";
+			PreparedStatement ps = null;
+			if(idFreteConsulta != null) {
+				sql = "select * from frete where id_frete=?";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, freteConsulta.getId());
+			}
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Frete frete = new Frete();
+				frete.setId(rs.getLong("id_frete"));
+				frete.setValor(rs.getBigDecimal("valor"));
+				frete.setDiasEntrega(rs.getLong("dias_entrega"));
+				frete.setPrazoEstimado(rs.getDate("prazo_estimado"));
+				consulta.add(frete);
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			conexao.close();
+		}
+		return consulta;
 	}
 	
 }

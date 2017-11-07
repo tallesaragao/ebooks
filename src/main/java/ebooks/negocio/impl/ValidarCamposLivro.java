@@ -11,6 +11,7 @@ import ebooks.modelo.Categoria;
 import ebooks.modelo.Dimensoes;
 import ebooks.modelo.Editora;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.Estoque;
 import ebooks.modelo.Livro;
 import ebooks.modelo.Precificacao;
 import ebooks.negocio.IStrategy;
@@ -49,9 +50,21 @@ public class ValidarCamposLivro implements IStrategy {
 		if(livro.getNumeroPaginas() == null || livro.getNumeroPaginas().equals("")) {
 			sb.append("Número de páginas do livro é obrigatório:");
 		}
-		if(livro.getQuantidade() == null || livro.getQuantidade() <= 0) {
-			sb.append("Quantidade do livro deve ser maior que zero:");
+		
+		Estoque estoque = livro.getEstoque();
+		if(estoque.getQuantidadeMinima() == null || estoque.getQuantidadeAtual() < 0) {
+			sb.append("Quantidade mínima do livro não pode ser menor que zero:");
 		}
+		if(estoque.getQuantidadeMaxima() == null || estoque.getQuantidadeAtual() <= estoque.getQuantidadeMinima()) {
+			sb.append("Quantidade máxima do livro deve ser maior que a quantidade mínima:");
+		}
+		if(estoque.getQuantidadeAtual() == null
+				|| estoque.getQuantidadeAtual() < estoque.getQuantidadeMinima()
+				|| estoque.getQuantidadeAtual() > estoque.getQuantidadeMaxima()) {
+			sb.append("Quantidade atual deve estar dentro dos limites estabelecidos:");
+		}
+		
+		
 		if(livro.getSinopse() == null || livro.getSinopse().equals("")) {
 			sb.append("Sinopse do livro é obrigatória:");
 		}
