@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ebooks.modelo.Carrinho;
-import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.CupomPromocional;
 import ebooks.modelo.Endereco;
@@ -17,6 +16,7 @@ import ebooks.modelo.FormaPagamento;
 import ebooks.modelo.Frete;
 import ebooks.modelo.ItemPedido;
 import ebooks.modelo.Pedido;
+import ebooks.modelo.StatusPedido;
 
 public class PedidoDAO extends AbstractDAO {
 
@@ -32,7 +32,7 @@ public class PedidoDAO extends AbstractDAO {
 		try {
 			conexao.setAutoCommit(false);
 			String sql = "insert into pedido(valor_total, numero, id_endereco_entrega, id_endereco_cobranca, id_cliente,"
-						+ " id_cupom_promo, id_frete, id_forma_pag, dt_cadastro) values(?,?,?,?,?,?,?,?,?)";
+						+ " id_cupom_promo, id_frete, id_forma_pag, id_status_pedido, dt_cadastro) values(?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setBigDecimal(1, pedido.getValorTotal());
 			ps.setString(2, pedido.getNumero());
@@ -43,7 +43,8 @@ public class PedidoDAO extends AbstractDAO {
 			ps.setLong(6, pedido.getCupomPromocional().getId());
 			ps.setLong(7, pedido.getFrete().getId());
 			ps.setLong(8, pedido.getFormaPagamento().getId());
-			ps.setDate(9, new Date(pedido.getDataCadastro().getTime()));
+			ps.setLong(9, pedido.getStatusPedido().getId());
+			ps.setDate(10, new Date(pedido.getDataCadastro().getTime()));
 			ps.execute();
 			ResultSet generatedKeys = ps.getGeneratedKeys();
 			while (generatedKeys.next()) {
@@ -143,6 +144,10 @@ public class PedidoDAO extends AbstractDAO {
 				formaPagamento.setId(rs.getLong("p.id_forma_pag"));
 				pedido.setFormaPagamento(formaPagamento);
 				
+				StatusPedido statusPedido = new StatusPedido();
+				statusPedido.setId(rs.getLong("p.id_status_pedido"));
+				pedido.setStatusPedido(statusPedido);
+				
 				pedido.setDataCadastro(rs.getDate("p.dt_cadastro"));
 				
 				consulta.add(pedido);
@@ -159,6 +164,7 @@ public class PedidoDAO extends AbstractDAO {
 			CupomPromocionalDAO cupomDAO = new CupomPromocionalDAO();
 			FreteDAO freteDAO = new FreteDAO();
 			FormaPagamentoDAO formaPagDAO = new FormaPagamentoDAO();
+			StatusPedidoDAO statusDAO = new StatusPedidoDAO();
 			ItemPedidoDAO itemDAO = new ItemPedidoDAO();
 			for(Pedido pedido : pedidos) {
 				
@@ -197,6 +203,12 @@ public class PedidoDAO extends AbstractDAO {
 				consultaEntidades = formaPagDAO.consultar(formaPagamento);
 				if(!consultaEntidades.isEmpty()) {
 					pedido.setFormaPagamento((FormaPagamento) consultaEntidades.get(0));
+				}
+				
+				StatusPedido statusPedido = pedido.getStatusPedido();
+				consultaEntidades = statusDAO.consultar(statusPedido);
+				if(!consultaEntidades.isEmpty()) {
+					pedido.setStatusPedido((StatusPedido) consultaEntidades.get(0));
 				}
 				
 				ItemPedido item = new ItemPedido();

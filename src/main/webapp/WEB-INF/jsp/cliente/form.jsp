@@ -38,7 +38,7 @@
 			</br>
 			
 			<input type="hidden" name="id" value="${cliente.id}"/>
-			<input type="hidden" name="ativo" value="${cliente.ativo}"
+			<input type="hidden" name="ativo" value="${cliente.ativo}"/>
 			<fieldset>
 				<legend>
 					<span class="legend-logo glyphicon glyphicon-user"></span> Dados pessoais

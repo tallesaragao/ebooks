@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `ebooks_les` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `ebooks_les`;
--- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
+-- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ebooks_les
 -- ------------------------------------------------------
--- Server version	5.7.16-log
+-- Server version	5.7.17-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -117,7 +117,7 @@ CREATE TABLE `cartao_credito` (
   KEY `fk_cartao_credito_bandeira_idx` (`id_bandeira`),
   CONSTRAINT `fk_cartao_credito_bandeira` FOREIGN KEY (`id_bandeira`) REFERENCES `bandeira` (`id_bandeira`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_cartao_credito_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +126,7 @@ CREATE TABLE `cartao_credito` (
 
 LOCK TABLES `cartao_credito` WRITE;
 /*!40000 ALTER TABLE `cartao_credito` DISABLE KEYS */;
-INSERT INTO `cartao_credito` VALUES (3,'5268910398469748','João das Neves','2025-12-01','406',2,2,'2017-10-05 00:00:00'),(4,'5203083853111854','Tobias Toldo Leoso','2019-07-18','716',1,2,'2017-10-18 00:00:00'),(5,'4539799800186123','Tobias Toldo Leoso','2025-06-16','762',1,1,'2017-10-24 00:00:00');
+INSERT INTO `cartao_credito` VALUES (3,'5268910398469748','João das Neves','2025-12-01','406',2,2,'2017-10-05 00:00:00'),(4,'5203083853111854','Tobias Toldo Leoso','2019-07-18','716',1,2,'2017-10-18 00:00:00'),(5,'4539799800186123','Tobias Toldo Leoso','2025-06-16','762',1,1,'2017-10-24 00:00:00'),(6,'4556933941512099','Samuel Nathan Vitor Almeida','2019-01-07','791',11,1,'2017-11-07 00:00:00'),(7,'5304897968349077','Samuel Nathan Vitor Almeida','2020-08-07','325',11,2,'2017-11-07 00:00:00');
 /*!40000 ALTER TABLE `cartao_credito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +214,7 @@ CREATE TABLE `cliente_endereco` (
 
 LOCK TABLES `cliente_endereco` WRITE;
 /*!40000 ALTER TABLE `cliente_endereco` DISABLE KEYS */;
-INSERT INTO `cliente_endereco` VALUES (1,1),(1,17),(1,18),(2,4),(4,5),(11,12),(12,13);
+INSERT INTO `cliente_endereco` VALUES (1,1),(1,17),(1,18),(2,4),(4,5),(11,12),(11,19),(12,13);
 /*!40000 ALTER TABLE `cliente_endereco` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -322,7 +322,7 @@ CREATE TABLE `endereco` (
   PRIMARY KEY (`id_endereco`),
   KEY `fk_endereco_tipo_endereco_idx` (`id_tipo_endereco`),
   CONSTRAINT `fk_endereco_tipo_endereco` FOREIGN KEY (`id_tipo_endereco`) REFERENCES `tipo_endereco` (`id_tipo_endereco`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,7 +331,7 @@ CREATE TABLE `endereco` (
 
 LOCK TABLES `endereco` WRITE;
 /*!40000 ALTER TABLE `endereco` DISABLE KEYS */;
-INSERT INTO `endereco` VALUES (1,'Minha casa','Servidão Quatro','1500','AP 1206','União das Vilas','97509-382','Uruguaiana','RS','Brasil',1,'2017-10-03 12:33:46',1),(4,'Trabalho','SQS 205 Bloco A','99','Sala 33','Asa Sul','70235-010','Brasília','DF','Brasil',1,'2017-10-05 00:00:00',2),(5,'Casa','Viela Peri','500','Casa 13','Jardim Veneza','08715-200','Mogi das Cruzes','SP','Brasil',1,'2017-10-05 00:00:00',1),(12,'Minha casa','Rua Maria Aprígia Vieira','719','Casa 12','Jardim Novo Horizonte','79822-417','Dourados','MS','Brasil',1,'2017-10-16 00:00:00',1),(13,'Apartamento','Rua Tomé de Almeida e Oliveira','191','Apartamento 502','Vila Zat','02976-190','São Paulo','SP','Brasil',1,'2017-10-17 00:00:00',1),(17,'Casa de férias','Avenida Paraná','155','TORRE 7 AP 1008','Centro','69945-970','Acrelândia','AC','Brasil',1,'2017-10-23 00:00:00',1),(18,'Casa de aluguel','Quadra 133','841','Casa 7','Morada das Garças','72883-355','Cidade Ocidental','GO','Brasil',1,'2017-10-24 00:00:00',1);
+INSERT INTO `endereco` VALUES (1,'Minha casa','Servidão Quatro','1500','AP 1206','União das Vilas','97509-382','Uruguaiana','RS','Brasil',1,'2017-10-03 12:33:46',1),(4,'Trabalho','SQS 205 Bloco A','99','Sala 33','Asa Sul','70235-010','Brasília','DF','Brasil',1,'2017-10-05 00:00:00',2),(5,'Casa','Viela Peri','500','Casa 13','Jardim Veneza','08715-200','Mogi das Cruzes','SP','Brasil',1,'2017-10-05 00:00:00',1),(12,'Minha casa','Rua Maria Aprígia Vieira','719','Casa 12','Jardim Novo Horizonte','79822-417','Dourados','MS','Brasil',1,'2017-10-16 00:00:00',1),(13,'Apartamento','Rua Tomé de Almeida e Oliveira','191','Apartamento 502','Vila Zat','02976-190','São Paulo','SP','Brasil',1,'2017-10-17 00:00:00',1),(17,'Casa de férias','Avenida Paraná','155','TORRE 7 AP 1008','Centro','69945-970','Acrelândia','AC','Brasil',1,'2017-10-23 00:00:00',1),(18,'Casa de aluguel','Quadra 133','841','Casa 7','Morada das Garças','72883-355','Cidade Ocidental','GO','Brasil',1,'2017-10-24 00:00:00',1),(19,'Casa mãe','Rua Benedito Aparecido de Oliveira','212','','Jardim Galego','13971-262','Itapira','SP','Brasil',1,'2017-11-07 00:00:00',1);
 /*!40000 ALTER TABLE `endereco` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -347,6 +347,7 @@ CREATE TABLE `estoque` (
   `quant_min` mediumtext NOT NULL,
   `quant_max` mediumtext NOT NULL,
   `quant_atual` mediumtext NOT NULL,
+  `quant_reserva` mediumtext NOT NULL,
   PRIMARY KEY (`id_estoque`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -357,7 +358,7 @@ CREATE TABLE `estoque` (
 
 LOCK TABLES `estoque` WRITE;
 /*!40000 ALTER TABLE `estoque` DISABLE KEYS */;
-INSERT INTO `estoque` VALUES (1,'1','300','100'),(2,'5','30','12');
+INSERT INTO `estoque` VALUES (1,'0','300','95','0'),(2,'0','30','7','0');
 /*!40000 ALTER TABLE `estoque` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -372,7 +373,7 @@ CREATE TABLE `forma_pag` (
   `id_forma_pag` int(11) NOT NULL AUTO_INCREMENT,
   `parcelas` mediumtext NOT NULL,
   PRIMARY KEY (`id_forma_pag`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -381,7 +382,7 @@ CREATE TABLE `forma_pag` (
 
 LOCK TABLES `forma_pag` WRITE;
 /*!40000 ALTER TABLE `forma_pag` DISABLE KEYS */;
-INSERT INTO `forma_pag` VALUES (7,'1');
+INSERT INTO `forma_pag` VALUES (7,'1'),(8,'1');
 /*!40000 ALTER TABLE `forma_pag` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -398,7 +399,7 @@ CREATE TABLE `frete` (
   `dias_entrega` mediumtext NOT NULL,
   `prazo_estimado` date NOT NULL,
   PRIMARY KEY (`id_frete`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -407,7 +408,7 @@ CREATE TABLE `frete` (
 
 LOCK TABLES `frete` WRITE;
 /*!40000 ALTER TABLE `frete` DISABLE KEYS */;
-INSERT INTO `frete` VALUES (8,38.00,'10','2017-11-11');
+INSERT INTO `frete` VALUES (8,38.00,'10','2017-11-11'),(9,7.00,'2','2017-11-09');
 /*!40000 ALTER TABLE `frete` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -484,7 +485,7 @@ CREATE TABLE `item_pedido` (
   KEY `fk_item_pedido_livro_idx` (`id_livro`),
   CONSTRAINT `fk_item_pedido_livro` FOREIGN KEY (`id_livro`) REFERENCES `livro` (`id_livro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_item_pedido_pedido` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -493,7 +494,7 @@ CREATE TABLE `item_pedido` (
 
 LOCK TABLES `item_pedido` WRITE;
 /*!40000 ALTER TABLE `item_pedido` DISABLE KEYS */;
-INSERT INTO `item_pedido` VALUES (1,'1',16.00,3,2),(2,'1',40.12,3,3);
+INSERT INTO `item_pedido` VALUES (1,'1',16.00,3,2),(2,'1',40.12,3,3),(3,'5',80.00,4,2),(4,'5',200.60,4,3);
 /*!40000 ALTER TABLE `item_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -677,7 +678,7 @@ CREATE TABLE `pag_cartao` (
 
 LOCK TABLES `pag_cartao` WRITE;
 /*!40000 ALTER TABLE `pag_cartao` DISABLE KEYS */;
-INSERT INTO `pag_cartao` VALUES (10,4),(11,5);
+INSERT INTO `pag_cartao` VALUES (10,4),(11,5),(12,6),(13,7);
 /*!40000 ALTER TABLE `pag_cartao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -722,7 +723,7 @@ CREATE TABLE `pagamento` (
   PRIMARY KEY (`id_pagamento`),
   KEY `fk_pagamento_forma_pag_idx` (`id_forma_pag`),
   CONSTRAINT `fk_pagamento_forma_pag` FOREIGN KEY (`id_forma_pag`) REFERENCES `forma_pag` (`id_forma_pag`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -731,7 +732,7 @@ CREATE TABLE `pagamento` (
 
 LOCK TABLES `pagamento` WRITE;
 /*!40000 ALTER TABLE `pagamento` DISABLE KEYS */;
-INSERT INTO `pagamento` VALUES (10,227.50,7),(11,200.01,7);
+INSERT INTO `pagamento` VALUES (10,227.50,7),(11,200.01,7),(12,200.80,8),(13,58.04,8);
 /*!40000 ALTER TABLE `pagamento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -752,6 +753,7 @@ CREATE TABLE `pedido` (
   `id_cupom_promo` int(11) DEFAULT NULL,
   `id_frete` int(11) NOT NULL,
   `id_forma_pag` int(11) NOT NULL,
+  `id_status_pedido` int(11) NOT NULL DEFAULT '1',
   `dt_cadastro` datetime NOT NULL,
   PRIMARY KEY (`id_pedido`),
   KEY `fk_pedido_endereco_entrega_idx` (`id_endereco_entrega`),
@@ -760,13 +762,15 @@ CREATE TABLE `pedido` (
   KEY `fk_pedido_cupom_promo_idx` (`id_cupom_promo`),
   KEY `fk_pedido_frete_idx` (`id_frete`),
   KEY `fk_pedido_forma_pag_idx` (`id_forma_pag`),
+  KEY `fk_pedido_status_pedido_idx` (`id_status_pedido`),
   CONSTRAINT `fk_pedido_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_cupom_promo` FOREIGN KEY (`id_cupom_promo`) REFERENCES `cupom_promo` (`id_cupom_promo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_endereco_cobranca` FOREIGN KEY (`id_endereco_cobranca`) REFERENCES `endereco` (`id_endereco`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_endereco_entrega` FOREIGN KEY (`id_endereco_entrega`) REFERENCES `endereco` (`id_endereco`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_forma_pag` FOREIGN KEY (`id_forma_pag`) REFERENCES `forma_pag` (`id_forma_pag`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_pedido_frete` FOREIGN KEY (`id_frete`) REFERENCES `frete` (`id_frete`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_pedido_frete` FOREIGN KEY (`id_frete`) REFERENCES `frete` (`id_frete`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_pedido_status_pedido` FOREIGN KEY (`id_status_pedido`) REFERENCES `status_pedido` (`id_status_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -775,7 +779,7 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-INSERT INTO `pedido` VALUES (3,427.51,'31840183347',17,17,1,3,8,7,'2017-11-01 00:00:00');
+INSERT INTO `pedido` VALUES (3,427.51,'31840183347',17,17,1,3,8,7,1,'2017-11-01 00:00:00'),(4,258.84,'465191606753',19,19,11,1,9,8,1,'2017-11-07 00:00:00');
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -883,6 +887,31 @@ LOCK TABLES `precificacao` WRITE;
 /*!40000 ALTER TABLE `precificacao` DISABLE KEYS */;
 INSERT INTO `precificacao` VALUES (2,10.00,16.00),(3,22.29,40.12);
 /*!40000 ALTER TABLE `precificacao` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `status_pedido`
+--
+
+DROP TABLE IF EXISTS `status_pedido`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `status_pedido` (
+  `id_status_pedido` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(45) NOT NULL,
+  `dt_cadastro` datetime NOT NULL,
+  PRIMARY KEY (`id_status_pedido`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `status_pedido`
+--
+
+LOCK TABLES `status_pedido` WRITE;
+/*!40000 ALTER TABLE `status_pedido` DISABLE KEYS */;
+INSERT INTO `status_pedido` VALUES (1,'Em processamento','2017-11-07 19:08:46');
+/*!40000 ALTER TABLE `status_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1025,4 +1054,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-01 12:39:40
+-- Dump completed on 2017-11-07 19:51:04

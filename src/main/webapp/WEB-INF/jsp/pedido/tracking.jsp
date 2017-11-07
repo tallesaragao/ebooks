@@ -51,7 +51,7 @@
 							<dt>DATA DA COMPRA</dt>
 							<dd><fmt:formatDate value="${pedido.dataCadastro}" pattern="dd/MM/yyyy"/></dd>
 							<dt>STATUS</dt>
-							<dd>Em processamento</dd>
+							<dd>${pedido.statusPedido.nome}</dd>
 							<dt>ENTREGA (PREVISÃO)</dt>
 							<dd><fmt:formatDate value="${pedido.frete.prazoEstimado}" pattern="dd/MM/yyyy"/></dd>
 						</dl>

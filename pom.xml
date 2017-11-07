@@ -77,14 +77,14 @@
 			<version>2.6.3</version>
 		</dependency>
 		
-		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-server-standalone -->
+		
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-server -->
 		<dependency>
 		    <groupId>org.seleniumhq.selenium</groupId>
-		    <artifactId>selenium-server-standalone</artifactId>
-		    <version>2.53.0</version>
-		    <scope>provided</scope>
+		    <artifactId>selenium-server</artifactId>
+		    <version>2.53.1</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 		    <groupId>junit</groupId>

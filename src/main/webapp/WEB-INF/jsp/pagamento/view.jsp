@@ -196,7 +196,7 @@
 									</button>
 								</div>
 							</div>
-							<span><input type="hidden" name="idValeCompras" value="${pagamento.valeCompras.id}"</span>
+							<span><input type="hidden" name="idValeCompras" value="${pagamento.valeCompras.id}"/></span>
 						</c:if>
 						<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoCartao'}">
 							<div class="row">
