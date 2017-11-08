@@ -159,7 +159,11 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-12">
-						<dl>
+						<dl>						
+							<c:if test="${pedido.cupomPromocional != null}">
+								<dt>CUPOM</dt>
+								<dd>${pedido.cupomPromocional.codigo} - ${pedido.cupomPromocional.porcentagemDesconto}% de desconto</dd>
+							</c:if>
 							<dt>VALOR TOTAL</dt>
 							<dd>
 								<fmt:setLocale value="pt-BR"/>

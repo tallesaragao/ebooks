@@ -40,7 +40,9 @@ public class StatusPedidoDAO extends AbstractDAO {
 			return false;
 		}
 		finally {
-			conexao.close();
+			if(statusPedido.getPedido().getNumero() == null || statusPedido.getPedido().getNumero().equals("")) {
+				conexao.close();
+			}
 		}
 	}
 

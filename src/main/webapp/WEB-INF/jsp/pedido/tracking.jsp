@@ -61,7 +61,8 @@
 								<c:if test="${statusPedido.atual}">
 									<c:if test="${statusPedido.status.nome eq 'Em processamento'}">
 										<dd>
-											${statusPedido.status.nome}
+											${statusPedido.status.nome} -
+											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
 										</dd>
 										<dd>
 											<a href="statusSalvar?operacao=SALVAR&status=Aprovada&idPedido=${pedido.id}">Aprovar pedido</a>
