@@ -16,6 +16,7 @@ import ebooks.dao.IDAO;
 import ebooks.dao.LivroDAO;
 import ebooks.dao.LoginDAO;
 import ebooks.dao.PedidoDAO;
+import ebooks.dao.StatusPedidoDAO;
 import ebooks.dao.TipoEnderecoDAO;
 import ebooks.dao.TipoTelefoneDAO;
 import ebooks.modelo.Bandeira;
@@ -29,6 +30,7 @@ import ebooks.modelo.GrupoPrecificacao;
 import ebooks.modelo.Livro;
 import ebooks.modelo.Login;
 import ebooks.modelo.Pedido;
+import ebooks.modelo.StatusPedido;
 import ebooks.modelo.TipoEndereco;
 import ebooks.modelo.TipoTelefone;
 import ebooks.negocio.IStrategy;
@@ -37,6 +39,7 @@ import ebooks.negocio.impl.AdicionarCupomPromocionalPagamento;
 import ebooks.negocio.impl.AdicionarLivroCarrinho;
 import ebooks.negocio.impl.AdicionarValeComprasPagamento;
 import ebooks.negocio.impl.AlterarQuantidadeItemCarrinho;
+import ebooks.negocio.impl.AlterarStatusAtualPedido;
 import ebooks.negocio.impl.AtivadorClientePrimeiroCadastro;
 import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
 import ebooks.negocio.impl.CalcularFrete;
@@ -103,6 +106,7 @@ public class Fachada implements IFachada {
 		ValidarFormaPagamento valFormaPag = new ValidarFormaPagamento();
 		VerificarDisponibilidadeLivros verDispLivros = new VerificarDisponibilidadeLivros();
 		DarBaixaEstoque darBaixaEstoque = new DarBaixaEstoque();
+		AlterarStatusAtualPedido altStatusAtualPed = new AlterarStatusAtualPedido();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -215,6 +219,16 @@ public class Fachada implements IFachada {
 		contextoCarrinho.put(EXCLUIR, lCarrinhoExcluir);
 		contextoCarrinho.put(CONSULTAR, lCarrinhoConsultar);
 		
+		Map<String, List<IStrategy>> contextoStatusPedido = new HashMap<String, List<IStrategy>>();
+		List<IStrategy> lStatusPedidoSalvar = new ArrayList<>();
+		lStatusPedidoSalvar.add(altStatusAtualPed);
+		List<IStrategy> lStatusPedidoAlterar = new ArrayList<>();
+		List<IStrategy> lStatusPedidoExcluir = new ArrayList<>();
+		List<IStrategy> lStatusPedidoConsultar = new ArrayList<>();
+		contextoStatusPedido.put(SALVAR, lStatusPedidoSalvar);
+		contextoStatusPedido.put(ALTERAR, lStatusPedidoAlterar);
+		contextoStatusPedido.put(EXCLUIR, lStatusPedidoExcluir);
+		contextoStatusPedido.put(CONSULTAR, lStatusPedidoConsultar);
 		
 		
 		Map<String, List<IStrategy>> contextoGrupoPrecificacao = new HashMap<String, List<IStrategy>>();
@@ -245,6 +259,7 @@ public class Fachada implements IFachada {
 		requisitos.put(TipoEndereco.class.getName(), contextoTipoEnd);
 		requisitos.put(TipoTelefone.class.getName(), contextoTipoTel);
 		requisitos.put(Carrinho.class.getName(), contextoCarrinho);
+		requisitos.put(StatusPedido.class.getName(), contextoStatusPedido);
 		
 
 		Map<String, List<IStrategy>> contextoCarrinhoAfter = new HashMap<>();
@@ -274,6 +289,7 @@ public class Fachada implements IFachada {
 		daos.put(TipoTelefone.class.getName(), new TipoTelefoneDAO());
 		daos.put(Carrinho.class.getName(), new PedidoDAO());
 		daos.put(Pedido.class.getName(), new PedidoDAO());
+		daos.put(StatusPedido.class.getName(), new StatusPedidoDAO());
 	}
 
 	@Override

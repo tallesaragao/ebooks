@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import ebooks.modelo.StatusPedido;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.Pedido;
+import ebooks.modelo.Status;
+import ebooks.modelo.StatusPedido;
 
 public class StatusPedidoDAO extends AbstractDAO {
 
@@ -19,12 +21,17 @@ public class StatusPedidoDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "insert into status_pedido(nome, dt_cadastro) values(?,?)";
+			String sql = "insert into status_pedido(atual, id_pedido, id_status, dt_cadastro) values(?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setString(1, statusPedido.getNome());
-			ps.setDate(2, new Date(Calendar.getInstance().getTimeInMillis()));
+			ps.setBoolean(1, statusPedido.getAtual());
+			ps.setLong(2, statusPedido.getPedido().getId());
+			ps.setLong(3, statusPedido.getStatus().getId());
+			ps.setDate(4, new Date(statusPedido.getDataCadastro().getTime()));
 			ps.execute();
 			ps.close();
+			if(statusPedido.getPedido().getNumero() == null || statusPedido.getPedido().getNumero().equals("")) {
+				conexao.commit();
+			}
 			return true;
 		}
 		catch(SQLException e) {
@@ -44,16 +51,19 @@ public class StatusPedidoDAO extends AbstractDAO {
 		if(consulta.isEmpty()) {
 			return false;
 		}
-		StatusPedido cupomPromocionalOld = (StatusPedido) consulta.get(0);
+		StatusPedido statusPedidoOld = (StatusPedido) consulta.get(0);
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "update status_pedido set nome=? where id_status_pedido=?";
+			String sql = "update status_pedido set atual=?, id_pedido=?, id_status=? where id_status_pedido=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setString(1, statusPedido.getNome() != null ? statusPedido.getNome() : cupomPromocionalOld.getNome());
-			ps.setLong(2, statusPedido.getId());
+			ps.setBoolean(1, statusPedido.getAtual() != null ? statusPedido.getAtual() : statusPedidoOld.getAtual());
+			ps.setLong(2, statusPedido.getPedido() == null ? statusPedido.getPedido().getId() : statusPedidoOld.getPedido().getId());
+			ps.setLong(3, statusPedido.getStatus() == null ? statusPedido.getStatus().getId() : statusPedidoOld.getStatus().getId());
+			ps.setLong(4, statusPedido.getId());
 			ps.execute();
 			ps.close();
+			conexao.commit();
 			return true;
 		}
 		catch(SQLException e) {
@@ -97,27 +107,40 @@ public class StatusPedidoDAO extends AbstractDAO {
 		List<EntidadeDominio> consulta = new ArrayList<>();
 		conexao = factory.getConnection();
 		try {
-			Long idCupomPromocionalConsulta = statusPedidoConsulta.getId();
+			Long idStatusPedidoConsulta = statusPedidoConsulta.getId();
 			String sql = "";
 			PreparedStatement ps = null;
-			if(idCupomPromocionalConsulta != null) {
+			if(idStatusPedidoConsulta != null) {
 				sql = "select * from status_pedido where id_status_pedido=?";
 				ps = conexao.prepareStatement(sql);
 				ps.setLong(1, statusPedidoConsulta.getId());
 			}
-			else {
-				sql = "select * from status_pedido where nome=?";
-				
+			else if(statusPedidoConsulta.getPedido() != null && statusPedidoConsulta.getPedido().getId() != null){
+				sql = "select * from status_pedido where id_pedido=?";
 				ps = conexao.prepareStatement(sql);
-				ps.setString(1, statusPedidoConsulta.getNome());
+				ps.setLong(1, statusPedidoConsulta.getPedido().getId());
 			}
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				StatusPedido statusPedido = new StatusPedido();
 				statusPedido.setId(rs.getLong("id_status_pedido"));
-				statusPedido.setNome(rs.getString("nome"));
+				statusPedido.setAtual(rs.getBoolean("atual"));
+				Pedido pedido = new Pedido();
+				pedido.setId(rs.getLong("id_pedido"));
+				statusPedido.setPedido(pedido);
+				Status status = new Status();
+				status.setId(rs.getLong("id_status"));
+				statusPedido.setStatus(status);
 				statusPedido.setDataCadastro(rs.getDate("dt_cadastro"));
 				consulta.add(statusPedido);
+			}
+			IDAO dao = new StatusDAO();
+			for(EntidadeDominio ent : consulta) {
+				StatusPedido statusPedido = (StatusPedido) ent;
+				Status status = statusPedido.getStatus();
+				List<EntidadeDominio> consultaEntidades = dao.consultar(status);
+				status = (Status) consultaEntidades.get(0);
+				statusPedido.setStatus(status);
 			}
 		}
 		catch(SQLException e) {

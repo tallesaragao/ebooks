@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `ebooks_les` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `ebooks_les`;
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
 --
 -- Host: localhost    Database: ebooks_les
 -- ------------------------------------------------------
--- Server version	5.7.17-log
+-- Server version	5.7.16-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -753,7 +753,6 @@ CREATE TABLE `pedido` (
   `id_cupom_promo` int(11) DEFAULT NULL,
   `id_frete` int(11) NOT NULL,
   `id_forma_pag` int(11) NOT NULL,
-  `id_status_pedido` int(11) NOT NULL DEFAULT '1',
   `dt_cadastro` datetime NOT NULL,
   PRIMARY KEY (`id_pedido`),
   KEY `fk_pedido_endereco_entrega_idx` (`id_endereco_entrega`),
@@ -762,14 +761,12 @@ CREATE TABLE `pedido` (
   KEY `fk_pedido_cupom_promo_idx` (`id_cupom_promo`),
   KEY `fk_pedido_frete_idx` (`id_frete`),
   KEY `fk_pedido_forma_pag_idx` (`id_forma_pag`),
-  KEY `fk_pedido_status_pedido_idx` (`id_status_pedido`),
   CONSTRAINT `fk_pedido_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_cupom_promo` FOREIGN KEY (`id_cupom_promo`) REFERENCES `cupom_promo` (`id_cupom_promo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_endereco_cobranca` FOREIGN KEY (`id_endereco_cobranca`) REFERENCES `endereco` (`id_endereco`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_endereco_entrega` FOREIGN KEY (`id_endereco_entrega`) REFERENCES `endereco` (`id_endereco`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_forma_pag` FOREIGN KEY (`id_forma_pag`) REFERENCES `forma_pag` (`id_forma_pag`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_pedido_frete` FOREIGN KEY (`id_frete`) REFERENCES `frete` (`id_frete`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_pedido_status_pedido` FOREIGN KEY (`id_status_pedido`) REFERENCES `status_pedido` (`id_status_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_pedido_frete` FOREIGN KEY (`id_frete`) REFERENCES `frete` (`id_frete`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -779,7 +776,7 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-INSERT INTO `pedido` VALUES (3,427.51,'31840183347',17,17,1,3,8,7,1,'2017-11-01 00:00:00'),(4,258.84,'465191606753',19,19,11,1,9,8,1,'2017-11-07 00:00:00');
+INSERT INTO `pedido` VALUES (3,427.51,'31840183347',17,17,1,3,8,7,'2017-11-01 00:00:00'),(4,258.84,'465191606753',19,19,11,1,9,8,'2017-11-07 00:00:00');
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -890,6 +887,31 @@ INSERT INTO `precificacao` VALUES (2,10.00,16.00),(3,22.29,40.12);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `status`
+--
+
+DROP TABLE IF EXISTS `status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `status` (
+  `id_status` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(45) NOT NULL,
+  `dt_cadastro` datetime NOT NULL,
+  PRIMARY KEY (`id_status`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `status`
+--
+
+LOCK TABLES `status` WRITE;
+/*!40000 ALTER TABLE `status` DISABLE KEYS */;
+INSERT INTO `status` VALUES (1,'Em processamento','2017-11-07 19:08:46'),(2,'Aprovada','2017-11-08 08:40:04'),(3,'Reprovada','2017-11-08 08:41:34'),(4,'Em transporte','2017-11-08 08:41:52'),(5,'Entregue','2017-11-08 08:41:56'),(6,'Em troca','2017-11-08 08:42:00');
+/*!40000 ALTER TABLE `status` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `status_pedido`
 --
 
@@ -898,10 +920,16 @@ DROP TABLE IF EXISTS `status_pedido`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `status_pedido` (
   `id_status_pedido` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(45) NOT NULL,
+  `atual` tinyint(4) NOT NULL,
+  `id_pedido` int(11) NOT NULL,
+  `id_status` int(11) NOT NULL,
   `dt_cadastro` datetime NOT NULL,
-  PRIMARY KEY (`id_status_pedido`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id_status_pedido`),
+  KEY `fk_status_pedido_pedido_idx` (`id_pedido`),
+  KEY `fk_status_pedido_status_idx` (`id_status`),
+  CONSTRAINT `fk_status_pedido_pedido` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_status_pedido_status` FOREIGN KEY (`id_status`) REFERENCES `status` (`id_status`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -910,7 +938,7 @@ CREATE TABLE `status_pedido` (
 
 LOCK TABLES `status_pedido` WRITE;
 /*!40000 ALTER TABLE `status_pedido` DISABLE KEYS */;
-INSERT INTO `status_pedido` VALUES (1,'Em processamento','2017-11-07 19:08:46');
+INSERT INTO `status_pedido` VALUES (1,0,3,1,'2017-11-01 00:00:00'),(2,0,4,1,'2017-11-07 00:00:00'),(5,1,4,2,'2017-11-08 00:00:00'),(6,1,3,2,'2017-11-08 00:00:00');
 /*!40000 ALTER TABLE `status_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1054,4 +1082,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-07 19:51:04
+-- Dump completed on 2017-11-08 12:30:48

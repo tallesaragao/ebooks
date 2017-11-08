@@ -272,7 +272,13 @@
 												<fmt:formatNumber value="${pedido.valorTotal}" type="currency"/>
 											</td>
 											<td><fmt:formatDate value="${pedido.dataCadastro}" pattern="dd/MM/yyyy"/></td>
-											<td>${pedido.statusPedido.nome}</td>					
+											<td>
+												<c:forEach items="${pedido.statusesPedido}" var="statusPedido">
+													<c:if test="${statusPedido.atual}">
+														${statusPedido.status.nome}
+													</c:if>
+												</c:forEach>
+											</td>					
 											<td>
 												<button type="submit" data-toggle="tooltip" title="Detalhes" name="detalhes"
 												id="btnDetalhesPedido${pedido.id}"class="btn btn-sm btn-default btn-icone"

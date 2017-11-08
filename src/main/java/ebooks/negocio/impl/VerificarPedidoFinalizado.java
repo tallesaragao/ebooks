@@ -1,8 +1,12 @@
 package ebooks.negocio.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ebooks.modelo.Carrinho;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Pedido;
+import ebooks.modelo.Status;
 import ebooks.modelo.StatusPedido;
 import ebooks.negocio.IStrategy;
 
@@ -12,18 +16,26 @@ public class VerificarPedidoFinalizado implements IStrategy {
 	public String processar(EntidadeDominio entidade) {
 		Carrinho carrinho = (Carrinho) entidade;
 		Pedido pedido = carrinho.getPedido();
-		StatusPedido status = new StatusPedido();
-		//ID 1 = Em processamento
-		status.setId(Long.valueOf(1));
-		pedido.setStatusPedido(status);
 		StringBuilder sb = new StringBuilder();
-		//Se o pedido estiver finalizado, atribui o pedido à entidade para efetuar a persistência dos dados
 		if(carrinho.isPedidoFinalizado()) {
+			//ID 1 = Em processamento
 			IStrategy strategy = new GerarNumeroPedido();
 			strategy.processar(carrinho.getPedido());
+			
+			Status status = new Status();
+			status.setId(Long.valueOf(1));
+			status.setNome("Em processamento");
+			StatusPedido statusPedido = new StatusPedido();
+			statusPedido.setAtual(true);
+			statusPedido.setStatus(status);
+			List<StatusPedido> statusesPedido = new ArrayList<>();
+			statusesPedido.add(statusPedido);
+			pedido.setStatusesPedido(statusesPedido);
+			
 			strategy = new ComplementarDtCadastro();
+			strategy.processar(statusPedido);
 			strategy.processar(carrinho.getPedido());
-			entidade = null;
+			
 		}
 		//Se o pedido não estiver finalizado, evita chamar o DAO, passando um caracter usado para quebra de strings (:)
 		else {

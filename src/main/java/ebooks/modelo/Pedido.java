@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Pedido extends EntidadeDominio {
 	private String numero;
-	private StatusPedido statusPedido;
 	private Cliente cliente;
 	private Endereco enderecoCobranca;
 	private Endereco enderecoEntrega;
@@ -14,6 +13,7 @@ public class Pedido extends EntidadeDominio {
 	private CupomPromocional cupomPromocional;
 	private BigDecimal valorTotal;
 	private FormaPagamento formaPagamento;
+	private List<StatusPedido> statusesPedido;
 
 	public String getNumero() {
 		return numero;
@@ -22,15 +22,7 @@ public class Pedido extends EntidadeDominio {
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
-
-	public StatusPedido getStatusPedido() {
-		return statusPedido;
-	}
-
-	public void setStatusPedido(StatusPedido statusPedido) {
-		this.statusPedido = statusPedido;
-	}
-
+	
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -93,5 +85,13 @@ public class Pedido extends EntidadeDominio {
 
 	public void setFormaPagamento(FormaPagamento formaPagamento) {
 		this.formaPagamento = formaPagamento;
+	}
+
+	public List<StatusPedido> getStatusesPedido() {
+		return statusesPedido;
+	}
+
+	public void setStatusesPedido(List<StatusPedido> statusesPedido) {
+		this.statusesPedido = statusesPedido;
 	}
 }

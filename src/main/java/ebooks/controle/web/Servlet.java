@@ -105,6 +105,7 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/pedidoDetalhes", new PedidoVH());
 		vhs.put(contextoApp + "/pedidoConfirmarCompra", new PedidoVH());
 		vhs.put(contextoApp + "/pedidoView", new PedidoVH());
+		vhs.put(contextoApp + "/statusSalvar", new StatusPedidoVH());
 	}
 		
 	@Override

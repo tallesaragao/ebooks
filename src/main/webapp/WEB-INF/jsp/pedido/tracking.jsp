@@ -51,7 +51,39 @@
 							<dt>DATA DA COMPRA</dt>
 							<dd><fmt:formatDate value="${pedido.dataCadastro}" pattern="dd/MM/yyyy"/></dd>
 							<dt>STATUS</dt>
-							<dd>${pedido.statusPedido.nome}</dd>
+							<c:forEach items="${pedido.statusesPedido}" var="statusPedido">
+								<c:if test="${not statusPedido.atual}">
+									<dd>
+										${statusPedido.status.nome} - 
+										<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
+									</dd>
+								</c:if>
+								<c:if test="${statusPedido.atual}">
+									<c:if test="${statusPedido.status.nome eq 'Em processamento'}">
+										<dd>
+											${statusPedido.status.nome}
+										</dd>
+										<dd>
+											<a href="statusSalvar?operacao=SALVAR&status=Aprovada&idPedido=${pedido.id}">Aprovar pedido</a>
+										</dd>
+									</c:if>
+									<c:if test="${statusPedido.status.nome eq 'Aprovada'}">
+										<dd>
+											${statusPedido.status.nome} - 
+											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
+										</dd>
+										<dd>
+											<a href="#">Liberar para entrega</a>
+										</dd>
+									</c:if>
+									<c:if test="${statusPedido.status.nome eq 'Reprovada'}">
+										<dd>
+											${statusPedido.status.nome} - 
+											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
+										</dd>
+									</c:if>
+								</c:if>
+							</c:forEach>
 							<dt>ENTREGA (PREVISÃO)</dt>
 							<dd><fmt:formatDate value="${pedido.frete.prazoEstimado}" pattern="dd/MM/yyyy"/></dd>
 						</dl>
