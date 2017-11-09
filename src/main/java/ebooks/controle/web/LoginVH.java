@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Login;
+import ebooks.modelo.Pedido;
 
 public class LoginVH implements IViewHelper {
 
@@ -55,8 +56,15 @@ public class LoginVH implements IViewHelper {
 		}
 		if(uri.equals(contexto + "/logoutCliente")) {
 			HttpSession session = request.getSession();
-			session.invalidate();
-			response.sendRedirect("loginCliente");
+			Pedido pedido = (Pedido) session.getAttribute("pedido");
+			if(pedido != null) {
+				request.setAttribute("pedido", pedido);
+				request.getRequestDispatcher("carrinhoPedidoRemover?operacao=EXCLUIR").forward(request, response);
+			}
+			else {
+				session.invalidate();
+				response.sendRedirect("loginCliente");				
+			}
 		}
 		if(uri.equals(contexto + "/loginForm")) {
 			request.getRequestDispatcher("WEB-INF/jsp/login/form.jsp").forward(request, response);

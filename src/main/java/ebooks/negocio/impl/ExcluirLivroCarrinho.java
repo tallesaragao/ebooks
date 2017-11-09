@@ -1,13 +1,18 @@
 package ebooks.negocio.impl;
 
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import ebooks.dao.IDAO;
+import ebooks.dao.LivroDAO;
 import ebooks.modelo.Carrinho;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.Estoque;
 import ebooks.modelo.ItemPedido;
+import ebooks.modelo.Livro;
 import ebooks.modelo.Pedido;
 import ebooks.negocio.IStrategy;
 
@@ -27,7 +32,22 @@ public class ExcluirLivroCarrinho implements IStrategy {
 				while(iterator.hasNext()) {
 					ItemPedido itemSession = iterator.next();
 					if(itemSession.getLivro().getId() == item.getLivro().getId()) {
-						iterator.remove();
+						IDAO dao = new LivroDAO();
+						Livro livro = itemSession.getLivro();
+						try {
+							List<EntidadeDominio> consulta = dao.consultar(livro);
+							livro = (Livro) consulta.get(0);
+							Estoque estoque = livro.getEstoque();
+							Long quantidadeReservada = estoque.getQuantidadeReservada();
+							quantidadeReservada -= itemSession.getQuantidade();
+							estoque.setQuantidadeReservada(quantidadeReservada);
+							livro.setEstoque(estoque);
+							dao.alterar(livro);
+							iterator.remove();
+						} catch (SQLException e) {
+							e.printStackTrace();
+							sb.append("Erro ao remover o livro do carrinho:");
+						}
 					}
 				}
 				pedidoSession.setItensPedido(itensPedidoSession);

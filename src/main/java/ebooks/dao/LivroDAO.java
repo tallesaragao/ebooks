@@ -46,11 +46,12 @@ public class LivroDAO extends AbstractDAO {
 			}
 			ps.close();
 			
-			sql = "insert into estoque(quant_min, quant_max, quant_atual) values(?,?,?)";
+			sql = "insert into estoque(quant_min, quant_max, quant_atual, quant_reserva) values(?,?,?,?)";
 			ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setLong(1, estoque.getQuantidadeMinima());
 			ps.setLong(2, estoque.getQuantidadeMaxima());
 			ps.setLong(3, estoque.getQuantidadeAtual());
+			ps.setLong(4, estoque.getQuantidadeReservada());
 			ps.execute();
 			generatedKeys = ps.getGeneratedKeys();
 			Long idEstoque = Long.valueOf(0);
@@ -258,13 +259,14 @@ public class LivroDAO extends AbstractDAO {
 			ps.execute();
 			ps.close();
 			
-			sql = "update estoque e set quant_min = ?, quant_max = ?, quant_atual = ? where e.id_estoque = ?";
+			sql = "update estoque e set quant_min = ?, quant_max = ?, quant_atual = ?, quant_reserva = ? where e.id_estoque = ?";
 			ps = conexao.prepareStatement(sql);
 			estoque.setId(livroOld.getEstoque().getId());
 			ps.setLong(1, estoque.getQuantidadeMinima());
 			ps.setLong(2, estoque.getQuantidadeMaxima());
 			ps.setLong(3, estoque.getQuantidadeAtual());
-			ps.setLong(4, estoque.getId());
+			ps.setLong(4, estoque.getQuantidadeReservada());
+			ps.setLong(5, estoque.getId());
 			ps.execute();
 			ps.close();
 			
@@ -591,6 +593,7 @@ public class LivroDAO extends AbstractDAO {
 				estoque.setQuantidadeMinima(rs.getLong("e.quant_min"));
 				estoque.setQuantidadeMaxima(rs.getLong("e.quant_max"));
 				estoque.setQuantidadeAtual(rs.getLong("e.quant_atual"));
+				estoque.setQuantidadeReservada(rs.getLong("e.quant_reserva"));
 				livro.setEstoque(estoque);
 				
 				Precificacao precificacao = new Precificacao();

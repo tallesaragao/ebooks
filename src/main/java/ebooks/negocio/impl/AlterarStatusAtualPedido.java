@@ -43,8 +43,11 @@ public class AlterarStatusAtualPedido implements IStrategy {
 							strategy = new AprovarPedido();
 							String mensagem = strategy.processar(pedido);
 							if(mensagem == null) {
+								//Pedido aprovado
 								statusPedido.setStatus(status);
 								statusPedido.setAtual(true);
+								strategy = new DarBaixaEstoque();
+								strategy.processar(statusPedido);
 								Pedido p = new Pedido();
 								p.setId(statusPedido.getPedido().getId());
 								statusPedido.setPedido(p);
@@ -61,6 +64,8 @@ public class AlterarStatusAtualPedido implements IStrategy {
 									status = (Status) consulta.get(0);
 									statusPedido.setStatus(status);
 									statusPedido.setAtual(true);
+									strategy = new DarBaixaEstoque();
+									strategy.processar(statusPedido);
 									Pedido p = new Pedido();
 									p.setId(statusPedido.getPedido().getId());
 									statusPedido.setPedido(p);

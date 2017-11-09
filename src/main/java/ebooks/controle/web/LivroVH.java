@@ -170,6 +170,7 @@ public class LivroVH implements IViewHelper {
 			if (quantMax != null && !quantMax.equals("")) {
 				estoque.setQuantidadeMaxima(Long.valueOf(quantMax));
 			}
+			estoque.setQuantidadeReservada(Long.valueOf(0));
 			livro.setEstoque(estoque);
 
 			Dimensoes dimensoes = new Dimensoes();

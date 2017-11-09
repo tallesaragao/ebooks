@@ -10,6 +10,7 @@ import ebooks.dao.IDAO;
 import ebooks.dao.LivroDAO;
 import ebooks.modelo.Carrinho;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.Estoque;
 import ebooks.modelo.ItemPedido;
 import ebooks.modelo.Livro;
 import ebooks.modelo.Pedido;
@@ -33,29 +34,42 @@ public class AdicionarLivroCarrinho implements IStrategy {
 						if(!consulta.isEmpty()) {
 							Livro livro = (Livro) consulta.get(0);
 							if(livro.getAtivo()) {
-								item.setQuantidade(Long.valueOf(1));
-								item.setLivro(livro);
-								BigDecimal subtotal = new BigDecimal("0.0");
-								BigDecimal precoVenda = livro.getPrecificacao().getPrecoVenda();
-								subtotal = subtotal.add(precoVenda);
-								subtotal = subtotal.multiply(new BigDecimal(item.getQuantidade()));
-								subtotal = subtotal.setScale(2, BigDecimal.ROUND_CEILING);
-								item.setSubtotal(subtotal);
-								HttpSession session = carrinho.getSession();
-								Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
-								itensPedido = pedidoSession.getItensPedido();
-								boolean livroIgual = false;
-								for(ItemPedido itemSession : itensPedido) {
-									livroIgual = itemSession.getLivro().getCodigo().equals(item.getLivro().getCodigo());
-									if(livroIgual) {
-										break;
+								long quantidadeAtual = livro.getEstoque().getQuantidadeAtual();
+								long quantidadeReservada = livro.getEstoque().getQuantidadeReservada();
+								if((quantidadeAtual - quantidadeReservada) < 1) {
+									sb.append("Livro indisponível em estoque:");
+								}
+								else {
+									item.setQuantidade(Long.valueOf(1));
+									item.setLivro(livro);
+									BigDecimal subtotal = new BigDecimal("0.0");
+									BigDecimal precoVenda = livro.getPrecificacao().getPrecoVenda();
+									subtotal = subtotal.add(precoVenda);
+									subtotal = subtotal.multiply(new BigDecimal(item.getQuantidade()));
+									subtotal = subtotal.setScale(2, BigDecimal.ROUND_CEILING);
+									item.setSubtotal(subtotal);
+									HttpSession session = carrinho.getSession();
+									Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+									itensPedido = pedidoSession.getItensPedido();
+									boolean livroIgual = false;
+									for(ItemPedido itemSession : itensPedido) {
+										livroIgual = itemSession.getLivro().getCodigo().equals(item.getLivro().getCodigo());
+										if(livroIgual) {
+											break;
+										}
 									}
+									if(!livroIgual) {
+										itensPedido.add(item);
+										Estoque estoque = livro.getEstoque();
+										quantidadeReservada += 1;
+										estoque.setQuantidadeReservada(quantidadeReservada);
+										livro.setEstoque(estoque);
+										dao.alterar(livro);								
+										
+									}
+									pedidoSession.setItensPedido(itensPedido);
+									session.setAttribute("pedido", pedidoSession);
 								}
-								if(!livroIgual) {
-									itensPedido.add(item);
-								}
-								pedidoSession.setItensPedido(itensPedido);
-								session.setAttribute("pedido", pedidoSession);
 							}
 							else {
 								sb.append("O livro está inativo:");

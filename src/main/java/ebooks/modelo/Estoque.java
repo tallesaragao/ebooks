@@ -4,6 +4,7 @@ public class Estoque extends EntidadeDominio {
 	private Long quantidadeMinima;
 	private Long quantidadeMaxima;
 	private Long quantidadeAtual;
+	private Long quantidadeReservada;
 
 	public Long getQuantidadeMinima() {
 		return quantidadeMinima;
@@ -27,5 +28,13 @@ public class Estoque extends EntidadeDominio {
 
 	public void setQuantidadeAtual(Long quantidadeAtual) {
 		this.quantidadeAtual = quantidadeAtual;
+	}
+
+	public Long getQuantidadeReservada() {
+		return quantidadeReservada;
+	}
+
+	public void setQuantidadeReservada(Long quantidadeReservada) {
+		this.quantidadeReservada = quantidadeReservada;
 	}
 }

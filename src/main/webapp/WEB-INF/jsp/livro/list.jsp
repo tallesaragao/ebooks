@@ -142,7 +142,7 @@
 												<fmt:setLocale value="pt-BR"/>
 												<fmt:formatNumber value="${livro.precificacao.precoVenda}" type="currency"/>
 											</td>
-											<td>${livro.estoque.quantidadeAtual}</td>										
+											<td>${livro.estoque.quantidadeAtual - livro.estoque.quantidadeReservada}</td>										
 											<td>
 												<button type="submit" data-toggle="tooltip" title="Editar" id="btnEdit${livro.id}"
 												class="btn btn-sm btn-default btn-icone" method="get"

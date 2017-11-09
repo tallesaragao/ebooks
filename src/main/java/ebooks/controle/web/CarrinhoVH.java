@@ -63,13 +63,21 @@ public class CarrinhoVH implements IViewHelper {
 		}
 		if(operacao.equals("EXCLUIR")) {
 			carrinho.setSession(request.getSession());
-			String idLivro = request.getParameter("id");
-			Livro livro = new Livro();
-			livro.setId(Long.valueOf(idLivro));
-			ItemPedido item = new ItemPedido();
-			item.setLivro(livro);
+			Pedido pedidoRequest = (Pedido) request.getAttribute("pedido");
 			List<ItemPedido> itensPedido = new ArrayList<>();
-			itensPedido.add(item);
+			if(pedidoRequest != null) {
+				for(ItemPedido item : pedidoRequest.getItensPedido()) {
+					itensPedido.add(item);
+				}
+			}
+			else {
+				String idLivro = request.getParameter("id");
+				Livro livro = new Livro();
+				livro.setId(Long.valueOf(idLivro));
+				ItemPedido item = new ItemPedido();
+				item.setLivro(livro);
+				itensPedido.add(item);
+			}
 			Pedido pedido = new Pedido();
 			pedido.setItensPedido(itensPedido);
 			carrinho.setPedido(pedido);
@@ -138,6 +146,11 @@ public class CarrinhoVH implements IViewHelper {
 				request.getRequestDispatcher("carrinhoCliente").forward(request, response);;
 				return;
 			}
+		}
+		if(uri.equals(contexto + "/carrinhoPedidoRemover")) {
+			HttpSession session = request.getSession();
+			session.invalidate();
+			response.sendRedirect("loginCliente");
 		}
 
 	}
