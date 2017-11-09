@@ -50,6 +50,8 @@
 							<dd><fmt:formatNumber value="${pedido.valorTotal}" type="currency"/></dd>
 							<dt>DATA DA COMPRA</dt>
 							<dd><fmt:formatDate value="${pedido.dataCadastro}" pattern="dd/MM/yyyy"/></dd>
+							<dt>ENTREGA (PREVISÃO)</dt>
+							<dd><fmt:formatDate value="${pedido.frete.prazoEstimado}" pattern="dd/MM/yyyy"/></dd>
 							<dt>STATUS</dt>
 							<c:forEach items="${pedido.statusesPedido}" var="statusPedido">
 								<c:if test="${not statusPedido.atual}">
@@ -74,7 +76,9 @@
 											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
 										</dd>
 										<dd>
-											<a href="#">Liberar para entrega</a>
+											<a href="statusSalvar?operacao=SALVAR&status=Em transporte&idPedido=${pedido.id}">
+												Liberar para entrega
+											</a>
 										</dd>
 									</c:if>
 									<c:if test="${statusPedido.status.nome eq 'Reprovada'}">
@@ -83,10 +87,25 @@
 											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
 										</dd>
 									</c:if>
+									<c:if test="${statusPedido.status.nome eq 'Em transporte'}">
+										<dd>
+											${statusPedido.status.nome} - 
+											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
+										</dd>
+										<dd>
+											<a href="statusSalvar?operacao=SALVAR&status=Entregue&idPedido=${pedido.id}">
+												Confirmar entrega
+											</a>
+										</dd>
+									</c:if>
+									<c:if test="${statusPedido.status.nome eq 'Entregue'}">
+										<dd>
+											${statusPedido.status.nome} - 
+											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
+										</dd>
+									</c:if>
 								</c:if>
 							</c:forEach>
-							<dt>ENTREGA (PREVISÃO)</dt>
-							<dd><fmt:formatDate value="${pedido.frete.prazoEstimado}" pattern="dd/MM/yyyy"/></dd>
 						</dl>
 					</div>
 				</div>

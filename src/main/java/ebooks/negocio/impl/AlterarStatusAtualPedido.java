@@ -26,6 +26,7 @@ public class AlterarStatusAtualPedido implements IStrategy {
 			List<EntidadeDominio> consulta = pedidoDAO.consultar(pedido);
 			if(!consulta.isEmpty()) {
 				pedido = (Pedido) consulta.get(0);
+				statusPedido.setPedido(pedido);
 				Status status = statusPedido.getStatus();
 				consulta = statusDAO.consultar(status);
 				if(!consulta.isEmpty()) {
@@ -92,6 +93,35 @@ public class AlterarStatusAtualPedido implements IStrategy {
 						if(statusAtual.getNome().equals("Aprovada")) {
 							IStrategy strategy = new ComplementarDtCadastro();
 							strategy.processar(statusPedido);
+							statusPedido.setStatus(status);
+							statusPedido.setAtual(true);
+							Pedido p = new Pedido();
+							p.setId(statusPedido.getPedido().getId());
+							statusPedido.setPedido(p);
+							for(StatusPedido sp : pedido.getStatusesPedido()) {
+								sp.setAtual(false);
+								statusPedidoDAO.alterar(sp);
+							}
+						}
+					}
+					else if(status.getNome().equals("Entregue")) {
+						for(StatusPedido sp : pedido.getStatusesPedido()) {
+							if(sp.getAtual()) {
+								statusAtual = sp.getStatus();
+							}
+						}
+						if(statusAtual.getNome().equals("Em transporte")) {
+							IStrategy strategy = new ComplementarDtCadastro();
+							strategy.processar(statusPedido);
+							statusPedido.setStatus(status);
+							statusPedido.setAtual(true);
+							Pedido p = new Pedido();
+							p.setId(statusPedido.getPedido().getId());
+							statusPedido.setPedido(p);
+							for(StatusPedido sp : pedido.getStatusesPedido()) {
+								sp.setAtual(false);
+								statusPedidoDAO.alterar(sp);
+							}
 						}
 					}
 				}

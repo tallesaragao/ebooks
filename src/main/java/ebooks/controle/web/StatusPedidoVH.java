@@ -45,16 +45,19 @@ public class StatusPedidoVH implements IViewHelper {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/statusSalvar")) {
-			if(object != null) {
-				String mensagem = (String) object;
-				String[] mensagens = mensagem.split(":");
-				request.setAttribute("mensagens", mensagens);
-			}
 			String idPedido = request.getParameter("idPedido");
 			if(idPedido == null) {
 				idPedido = "";
 			}
-			request.getRequestDispatcher("pedidoView?operacao=CONSULTAR&idPedido=" + idPedido).forward(request, response);;
+			if(object != null) {
+				String mensagem = (String) object;
+				String[] mensagens = mensagem.split(":");
+				request.setAttribute("mensagens", mensagens);
+				request.getRequestDispatcher("pedidoView?operacao=CONSULTAR&idPedido=" + idPedido).forward(request, response);
+			}
+			else {
+				response.sendRedirect("pedidoView?operacao=CONSULTAR&idPedido=" + idPedido);
+			}
 		}
 	}
 

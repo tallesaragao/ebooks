@@ -105,7 +105,6 @@ public class Fachada implements IFachada {
 		RemoverCartaoCreditoCarrinho remCarCredCarrinho = new RemoverCartaoCreditoCarrinho();
 		ValidarFormaPagamento valFormaPag = new ValidarFormaPagamento();
 		VerificarDisponibilidadeLivros verDispLivros = new VerificarDisponibilidadeLivros();
-		DarBaixaEstoque darBaixaEstoque = new DarBaixaEstoque();
 		AlterarStatusAtualPedido altStatusAtualPed = new AlterarStatusAtualPedido();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
@@ -264,7 +263,6 @@ public class Fachada implements IFachada {
 
 		Map<String, List<IStrategy>> contextoCarrinhoAfter = new HashMap<>();
 		List<IStrategy> lCarrinhoAfterSalvar = new ArrayList<>();
-		lCarrinhoAfterSalvar.add(darBaixaEstoque);
 		List<IStrategy> lCarrinhoAfterAlterar = new ArrayList<>();
 		List<IStrategy> lCarrinhoAfterExcluir = new ArrayList<>();
 		List<IStrategy> lCarrinhoAfterConsultar = new ArrayList<>();
