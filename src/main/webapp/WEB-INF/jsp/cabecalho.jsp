@@ -29,14 +29,14 @@
 										</a>
 									</li>
 				                	<li class="divider"></li>
-				                	<li><a id="logoutCliente" href="logoutCliente">Logout</a></li>
+				                	<li><a id="logoutSite" href="logoutSite">Logout</a></li>
 				             	</ul>                
 				            </li>
 							<li><a id="carrinhoCliente" href="carrinhoCliente">Carrinho</a></li>
 							
 						</c:when>
 						<c:otherwise>
-							<li><a id="detalhesCliente" href="loginCliente">Login</a></li>
+							<li><a id="detalhesCliente" href="loginSite">Login</a></li>
 						</c:otherwise>
 					</c:choose>
 					<li><a id="categoriaList" href="categoriaList">Categoria</a></li>

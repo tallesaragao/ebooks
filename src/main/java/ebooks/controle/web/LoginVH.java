@@ -51,10 +51,10 @@ public class LoginVH implements IViewHelper {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
 		
-		if(uri.equals(contexto + "/loginCliente")) {
+		if(uri.equals(contexto + "/loginSite")) {
 			request.getRequestDispatcher("WEB-INF/jsp/login/login.jsp").forward(request, response);
 		}
-		if(uri.equals(contexto + "/logoutCliente")) {
+		if(uri.equals(contexto + "/logoutSite")) {
 			HttpSession session = request.getSession();
 			Pedido pedido = (Pedido) session.getAttribute("pedido");
 			if(pedido != null) {
@@ -63,7 +63,7 @@ public class LoginVH implements IViewHelper {
 			}
 			else {
 				session.invalidate();
-				response.sendRedirect("loginCliente");				
+				response.sendRedirect("loginSite");				
 			}
 		}
 		if(uri.equals(contexto + "/loginForm")) {

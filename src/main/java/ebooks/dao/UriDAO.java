@@ -8,21 +8,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import ebooks.modelo.Status;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.Uri;
 
-public class StatusDAO extends AbstractDAO {
+public class UriDAO extends AbstractDAO {
 
 	@Override
 	public boolean salvar(EntidadeDominio entidade) throws SQLException {
-		Status status = (Status) entidade;
+		Uri uri = (Uri) entidade;
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "insert into status(nome, dt_cadastro) values(?,?)";
+			String sql = "insert into uri(caminho) values(?)";
 			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setString(1, status.getNome());
-			ps.setDate(2, new Date(Calendar.getInstance().getTimeInMillis()));
+			ps.setString(1, uri.getCaminho());
 			ps.execute();
 			ps.close();
 			return true;
@@ -39,19 +38,19 @@ public class StatusDAO extends AbstractDAO {
 
 	@Override
 	public boolean alterar(EntidadeDominio entidade) throws SQLException {
-		Status status = (Status) entidade;
-		List<EntidadeDominio> consulta = consultar(status);
+		Uri uri = (Uri) entidade;
+		List<EntidadeDominio> consulta = consultar(uri);
 		if(consulta.isEmpty()) {
 			return false;
 		}
-		Status statusOld = (Status) consulta.get(0);
+		Uri uriOld = (Uri) consulta.get(0);
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "update status set nome=? where id_status=?";
+			String sql = "update uri set caminho=? where id_uri=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setString(1, status.getNome() != null ? status.getNome() : statusOld.getNome());
-			ps.setLong(2, status.getId());
+			ps.setString(1, uri.getCaminho() != null ? uri.getCaminho() : uriOld.getCaminho());
+			ps.setLong(2, uri.getId());
 			ps.execute();
 			ps.close();
 			conexao.commit();
@@ -69,13 +68,13 @@ public class StatusDAO extends AbstractDAO {
 
 	@Override
 	public boolean excluir(EntidadeDominio entidade) throws SQLException {
-		Status status = (Status) entidade;
+		Uri uri = (Uri) entidade;
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "delete from status where id_status=?";
+			String sql = "delete from uri where id_uri=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setLong(1, status.getId());
+			ps.setLong(1, uri.getId());
 			ps.execute();
 			ps.close();
 			conexao.commit();
@@ -94,30 +93,27 @@ public class StatusDAO extends AbstractDAO {
 
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
-		Status statusConsulta = (Status) entidade;
+		Uri uri = (Uri) entidade;
 		List<EntidadeDominio> consulta = new ArrayList<>();
 		conexao = factory.getConnection();
 		try {
-			Long idStatusConsulta = statusConsulta.getId();
+			Long idUri = uri.getId();
 			String sql = "";
 			PreparedStatement ps = null;
-			if(idStatusConsulta != null) {
-				sql = "select * from status where id_status=?";
+			if(idUri != null) {
+				sql = "select * from uri where id_uri=?";
 				ps = conexao.prepareStatement(sql);
-				ps.setLong(1, statusConsulta.getId());
+				ps.setLong(1, uri.getId());
 			}
 			else {
-				sql = "select * from status where nome=?";
-				
+				sql = "select * from uri";	
 				ps = conexao.prepareStatement(sql);
-				ps.setString(1, statusConsulta.getNome());
 			}
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
-				Status status = new Status();
-				status.setId(rs.getLong("id_status"));
-				status.setNome(rs.getString("nome"));
-				status.setDataCadastro(rs.getDate("dt_cadastro"));
+				Uri status = new Uri();
+				status.setId(rs.getLong("id_uri"));
+				status.setCaminho(rs.getString("caminho"));
 				consulta.add(status);
 			}
 		}

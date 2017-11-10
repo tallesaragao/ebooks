@@ -150,7 +150,7 @@ public class CarrinhoVH implements IViewHelper {
 		if(uri.equals(contexto + "/carrinhoPedidoRemover")) {
 			HttpSession session = request.getSession();
 			session.invalidate();
-			response.sendRedirect("loginCliente");
+			response.sendRedirect("loginSite");
 		}
 
 	}

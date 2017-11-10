@@ -7,25 +7,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ebooks.modelo.Cliente;
+import ebooks.modelo.Uri;
 import ebooks.modelo.EntidadeDominio;
-import ebooks.modelo.Login;
 import ebooks.modelo.PerfilAcesso;
 
-public class LoginDAO extends AbstractDAO {
+public class PerfilAcessoDAO extends AbstractDAO {
 
 	@Override
 	public boolean salvar(EntidadeDominio entidade) throws SQLException {
-		Login login = (Login) entidade;
-		Cliente clienteLogin = login.getCliente();
+		PerfilAcesso perfiAcesso = (PerfilAcesso) entidade;
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "insert into login(usuario, senha, dt_cadastro) values(?,?,?)";
+			String sql = "insert into perfil_acesso(nome) values(?)";
 			PreparedStatement ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setString(1, login.getUsuario());
-			ps.setString(2, login.getSenha());
-			ps.setDate(3, new Date(clienteLogin.getDataCadastro().getTime()));
+			ps.setString(1, perfiAcesso.getNome());
 			ps.execute();
 			ResultSet generatedKeys = ps.getGeneratedKeys();
 			while(generatedKeys.next()) {
@@ -43,15 +39,14 @@ public class LoginDAO extends AbstractDAO {
 
 	@Override
 	public boolean alterar(EntidadeDominio entidade) throws SQLException {
-		Login login = (Login) entidade;
+		PerfilAcesso perfilAcesso = (PerfilAcesso) entidade;
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "update login set usuario=?, senha=? where id_login=?";
+			String sql = "update perfil_acesso set nome=? id_perfil_acesso=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setString(1, login.getUsuario());
-			ps.setString(2, login.getSenha());
-			ps.setLong(3, login.getId());
+			ps.setString(1, perfilAcesso.getNome());
+			ps.setLong(2, perfilAcesso.getId());
 			ps.execute();
 			ps.close();
 			conexao.commit();
@@ -68,13 +63,13 @@ public class LoginDAO extends AbstractDAO {
 
 	@Override
 	public boolean excluir(EntidadeDominio entidade) throws SQLException {
-		Login login = (Login) entidade;
+		PerfilAcesso perfilAcesso = (PerfilAcesso) entidade;
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "delete from login where id_login=?";
+			String sql = "delete from perfil_acesso where id_perfil_acesso=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setLong(1, login.getId());
+			ps.setLong(1, perfilAcesso.getId());
 			ps.execute();
 			ps.close();
 			conexao.commit();
@@ -92,60 +87,56 @@ public class LoginDAO extends AbstractDAO {
 
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
-		Login loginConsulta = (Login) entidade;
+		PerfilAcesso perfilAcessoConsulta = (PerfilAcesso) entidade;
 		List<EntidadeDominio> consulta = new ArrayList<>();
 		conexao = factory.getConnection();
 		try {
-			Long idLoginConsulta = loginConsulta.getId();
+			Long idPerfilAcessoConsulta = perfilAcessoConsulta.getId();
 			String sql = "";
 			PreparedStatement ps = null;
-			if(idLoginConsulta != null) {
-				sql = "select * from login where id_login=?";
+			if(idPerfilAcessoConsulta != null) {
+				sql = "select * from perfil_acesso where id_perfil_acesso=?";
 				ps = conexao.prepareStatement(sql);
-				ps.setLong(1, loginConsulta.getId());
+				ps.setLong(1, perfilAcessoConsulta.getId());
 			}
 			else {
-				sql = "select * from login where usuario=? AND senha=?";
+				sql = "select * from perfil_acesso where nome=?";
 				
 				ps = conexao.prepareStatement(sql);
 				ps.setString(1, "%%");
-				if(loginConsulta.getUsuario() != null) {
-					ps.setString(1, loginConsulta.getUsuario());				
-				}
-				ps.setString(2, "%%");
-				if(loginConsulta.getSenha() != null) {
-					ps.setString(2, loginConsulta.getSenha());
+				if(perfilAcessoConsulta.getNome() != null) {
+					ps.setString(1, perfilAcessoConsulta.getNome());				
 				}
 			}
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
-				Login login = new Login();
-				login.setId(rs.getLong("id_login"));
-				login.setUsuario(rs.getString("usuario"));
-				login.setSenha(rs.getString("senha"));
 				PerfilAcesso perfilAcesso = new PerfilAcesso();
 				perfilAcesso.setId(rs.getLong("id_perfil_acesso"));
-				login.setPerfilAcesso(perfilAcesso);
-				consulta.add(login);
+				perfilAcesso.setNome(rs.getString("nome"));
+				consulta.add(perfilAcesso);
 			}
-			
-			PerfilAcessoDAO paDAO = new PerfilAcessoDAO();
-			ClienteDAO cliDAO = new ClienteDAO();
+
+			UriDAO uriDAO = new UriDAO();
 			for(EntidadeDominio ent : consulta) {
-				Login login = (Login) ent;
-				PerfilAcesso perfilAcesso = login.getPerfilAcesso();
-				List<EntidadeDominio> consultaPerfilAcesso = paDAO.consultar(perfilAcesso);
-				if(!consultaPerfilAcesso.isEmpty()) {
-					perfilAcesso = (PerfilAcesso) consultaPerfilAcesso.get(0);
-					login.setPerfilAcesso(perfilAcesso);
+				PerfilAcesso perfilAcesso = (PerfilAcesso) ent;
+				sql = "select * from uri_perfil up where id_perfil_acesso=?";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, perfilAcesso.getId());
+				rs = ps.executeQuery();
+				List<Uri> urisAcessiveis = new ArrayList<>();
+				while(rs.next()) {
+					Uri uri = new Uri();
+					uri.setId(rs.getLong("up.id_uri"));
+					urisAcessiveis.add(uri);
 				}
-				Cliente clienteConsulta = new Cliente();
-				clienteConsulta.setLogin(login);
-				List<EntidadeDominio> consultaCliente = cliDAO.consultar(clienteConsulta);
-				if(!consultaCliente.isEmpty()) {
-					Cliente cliente = (Cliente) consultaCliente.get(0);
-					login.setCliente(cliente);
+				
+				for(Uri uri : urisAcessiveis) {
+					List<EntidadeDominio> consultaUri = uriDAO.consultar(uri);
+					if(!consultaUri.isEmpty()) {
+						uri = (Uri) consultaUri.get(0);
+					}
 				}
+				perfilAcesso.setUrisAcessiveis(urisAcessiveis);
 			}
 			
 			if(conexao.isClosed()) {

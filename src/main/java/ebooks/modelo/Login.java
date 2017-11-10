@@ -5,6 +5,7 @@ public class Login extends EntidadeDominio {
 	private String senha;
 	private String senhaConfirmacao;
 	private Cliente cliente;
+	private PerfilAcesso perfilAcesso;
 
 	public String getUsuario() {
 		return usuario;
@@ -36,5 +37,13 @@ public class Login extends EntidadeDominio {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public PerfilAcesso getPerfilAcesso() {
+		return perfilAcesso;
+	}
+
+	public void setPerfilAcesso(PerfilAcesso perfilAcesso) {
+		this.perfilAcesso = perfilAcesso;
 	}
 }
