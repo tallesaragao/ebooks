@@ -1,4 +1,4 @@
-package ebooks.controle.web;
+package ebooks.controle.web.vh;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,15 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ebooks.modelo.Bandeira;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.GrupoPrecificacao;
 
-public class BandeiraVH implements IViewHelper {
+public class GrupoPrecificacaoVH implements IViewHelper {
 
 	@Override
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
-		Bandeira bandeira = new Bandeira();
-		return bandeira;
+		GrupoPrecificacao grupoPrecificacao = new GrupoPrecificacao();
+		return grupoPrecificacao;
 	}
 
 	@Override
@@ -24,13 +24,13 @@ public class BandeiraVH implements IViewHelper {
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
-		if(uri.equals(contexto + "/cartaoCreditoFormBandeiras") || uri.equals(contexto + "/cartaoCreditoEditBandeiras")) {
-			List<Bandeira> bandeiras = (List<Bandeira>) object;
+		if(uri.equals(contexto + "/livroFormGruposPrecificacao")) {
+			List<GrupoPrecificacao> gruposPrecificacao = (List<GrupoPrecificacao>) object;
 			HttpSession session = request.getSession();
-			String idCliente = request.getParameter("idCliente");
-			request.setAttribute("idCliente", idCliente);
-			session.setAttribute("bandeiras", bandeiras);
-			request.getRequestDispatcher("WEB-INF/jsp/cartaoCredito/form.jsp").forward(request, response);
+			session.setAttribute("gruposPrecificacao", gruposPrecificacao);
+			request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
 		}
+
 	}
+
 }

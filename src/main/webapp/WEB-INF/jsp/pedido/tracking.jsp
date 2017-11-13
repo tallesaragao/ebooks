@@ -66,20 +66,24 @@
 											${statusPedido.status.nome} -
 											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
 										</dd>
-										<dd>
-											<a href="statusSalvar?operacao=SALVAR&status=Aprovada&idPedido=${pedido.id}">Aprovar pedido</a>
-										</dd>
+										<c:if test="${login.perfilAcesso.nome eq 'Administrador'}">
+											<dd>
+												<a href="statusSalvar?operacao=SALVAR&status=Aprovada&idPedido=${pedido.id}">Aprovar pedido</a>
+											</dd>
+										</c:if>
 									</c:if>
 									<c:if test="${statusPedido.status.nome eq 'Aprovada'}">
 										<dd>
 											${statusPedido.status.nome} - 
 											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
 										</dd>
-										<dd>
-											<a href="statusSalvar?operacao=SALVAR&status=Em transporte&idPedido=${pedido.id}">
-												Liberar para entrega
-											</a>
-										</dd>
+										<c:if test="${login.perfilAcesso.nome eq 'Administrador'}">
+											<dd>
+												<a href="statusSalvar?operacao=SALVAR&status=Em transporte&idPedido=${pedido.id}">
+													Liberar para entrega
+												</a>
+											</dd>
+										</c:if>
 									</c:if>
 									<c:if test="${statusPedido.status.nome eq 'Reprovada'}">
 										<dd>
@@ -92,11 +96,13 @@
 											${statusPedido.status.nome} - 
 											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
 										</dd>
-										<dd>
-											<a href="statusSalvar?operacao=SALVAR&status=Entregue&idPedido=${pedido.id}">
-												Confirmar entrega
-											</a>
-										</dd>
+										<c:if test="${login.perfilAcesso.nome eq 'Administrador'}">
+											<dd>
+												<a href="statusSalvar?operacao=SALVAR&status=Entregue&idPedido=${pedido.id}">
+													Confirmar entrega
+												</a>
+											</dd>
+										</c:if>
 									</c:if>
 									<c:if test="${statusPedido.status.nome eq 'Entregue'}">
 										<dd>

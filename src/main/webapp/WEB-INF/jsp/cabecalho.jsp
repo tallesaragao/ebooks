@@ -19,29 +19,36 @@
 				<ul class="nav navbar-nav navbar-right">
 					<c:choose>
 						<c:when test="${login.usuario != null}">
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							  		Olá, ${login.usuario} <span class="caret"></span></a>				
-								<ul class="dropdown-menu" role="menu">
-									<li>
-					                	<a id="detalhesCliente" href="clienteView?operacao=CONSULTAR&id=${login.cliente.id}">
-											Dados da conta
-										</a>
-									</li>
-				                	<li class="divider"></li>
-				                	<li><a id="logoutSite" href="logoutSite">Logout</a></li>
-				             	</ul>                
-				            </li>
-							<li><a id="carrinhoCliente" href="carrinhoCliente">Carrinho</a></li>
-							
+							<c:if test="${login.perfilAcesso.nome eq 'Cliente' || login.perfilAcesso.nome eq 'Administrador'}">
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								  		Olá, ${login.usuario} <span class="caret"></span></a>				
+									<ul class="dropdown-menu" role="menu">
+										<c:if test="${login.perfilAcesso.nome eq 'Cliente' }">
+											<li>
+							                	<a id="detalhesCliente" href="clienteView?operacao=CONSULTAR&id=${login.cliente.id}">
+													Dados da conta
+												</a>
+											</li>
+						                	<li class="divider"></li>
+					                	</c:if>
+					                	<li><a id="logoutSite" href="logoutSite">Logout</a></li>
+					             	</ul>                
+					            </li>
+					            <c:if test="${login.perfilAcesso.nome eq 'Cliente' }">
+									<li><a id="carrinhoCliente" href="carrinhoCliente">Carrinho</a></li>
+								</c:if>
+							</c:if>
+							<c:if test="${login.perfilAcesso.nome eq 'Administrador'}">
+								<li><a id="clienteList" href="clienteList">Clientes</a></li>
+								<li><a id="categoriaList" href="categoriaList">Categorias</a></li>
+							</c:if>
 						</c:when>
 						<c:otherwise>
 							<li><a id="detalhesCliente" href="loginSite">Login</a></li>
 						</c:otherwise>
 					</c:choose>
-					<li><a id="categoriaList" href="categoriaList">Categoria</a></li>
-					<li><a id="livroList" href="livroList">Livro</a></li>
-					<li><a id="clienteList" href="clienteList">Cliente</a></li>
+					<li><a id="livroList" href="livroList">Livros</a></li>
 				</ul>
 			</div>
 		</div>

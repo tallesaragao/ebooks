@@ -130,13 +130,15 @@ public class PerfilAcessoDAO extends AbstractDAO {
 					urisAcessiveis.add(uri);
 				}
 				
+				List<Uri> urisConsultadas = new ArrayList<>();
 				for(Uri uri : urisAcessiveis) {
 					List<EntidadeDominio> consultaUri = uriDAO.consultar(uri);
 					if(!consultaUri.isEmpty()) {
 						uri = (Uri) consultaUri.get(0);
+						urisConsultadas.add(uri);
 					}
 				}
-				perfilAcesso.setUrisAcessiveis(urisAcessiveis);
+				perfilAcesso.setUrisAcessiveis(urisConsultadas);
 			}
 			
 			if(conexao.isClosed()) {

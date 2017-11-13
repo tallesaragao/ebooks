@@ -1,4 +1,4 @@
-package ebooks.controle.web;
+package ebooks.controle.web.vh;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,15 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.modelo.Bandeira;
 import ebooks.modelo.EntidadeDominio;
-import ebooks.modelo.TipoTelefone;
 
-public class TipoTelefoneVH implements IViewHelper {
+public class BandeiraVH implements IViewHelper {
 
 	@Override
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
-		TipoTelefone tipoTelefone = new TipoTelefone();
-		return tipoTelefone;
+		Bandeira bandeira = new Bandeira();
+		return bandeira;
 	}
 
 	@Override
@@ -24,15 +24,13 @@ public class TipoTelefoneVH implements IViewHelper {
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
-		if(uri.equals(contexto + "/clienteFormTiposTelefone") || uri.equals(contexto + "/clienteEditTiposTelefone")) {
-			List<TipoTelefone> tiposTelefone = (List<TipoTelefone>) object;
+		if(uri.equals(contexto + "/cartaoCreditoFormBandeiras") || uri.equals(contexto + "/cartaoCreditoEditBandeiras")) {
+			List<Bandeira> bandeiras = (List<Bandeira>) object;
 			HttpSession session = request.getSession();
-			session.setAttribute("tiposTelefone", tiposTelefone);
-			if(uri.equals(contexto + "/clienteEditTiposTelefone")) {
-				request.setAttribute("operacao", "ALTERAR");
-			}
-			request.getRequestDispatcher("WEB-INF/jsp/cliente/form.jsp").forward(request, response);
+			String idCliente = request.getParameter("idCliente");
+			request.setAttribute("idCliente", idCliente);
+			session.setAttribute("bandeiras", bandeiras);
+			request.getRequestDispatcher("WEB-INF/jsp/cartaoCredito/form.jsp").forward(request, response);
 		}
 	}
-
 }

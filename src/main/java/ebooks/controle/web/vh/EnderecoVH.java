@@ -1,4 +1,4 @@
-package ebooks.controle.web;
+package ebooks.controle.web.vh;
 import java.io.IOException;
 import java.util.List;
 
@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ebooks.controle.web.IViewHelper;
+import ebooks.controle.web.vh.IViewHelper;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;

@@ -19,6 +19,7 @@ import ebooks.dao.PedidoDAO;
 import ebooks.dao.StatusPedidoDAO;
 import ebooks.dao.TipoEnderecoDAO;
 import ebooks.dao.TipoTelefoneDAO;
+import ebooks.modelo.Acesso;
 import ebooks.modelo.Bandeira;
 import ebooks.modelo.Carrinho;
 import ebooks.modelo.CartaoCredito;
@@ -46,7 +47,6 @@ import ebooks.negocio.impl.CalcularFrete;
 import ebooks.negocio.impl.CalcularValorTotalPedido;
 import ebooks.negocio.impl.ComplementarDtCadastro;
 import ebooks.negocio.impl.ConsultarClienteCarrinho;
-import ebooks.negocio.impl.DarBaixaEstoque;
 import ebooks.negocio.impl.ExcluirCupomPagamento;
 import ebooks.negocio.impl.ExcluirLivroCarrinho;
 import ebooks.negocio.impl.GeradorCodigoLivro;
@@ -61,6 +61,7 @@ import ebooks.negocio.impl.ValidarCamposLivro;
 import ebooks.negocio.impl.ValidarCamposLogin;
 import ebooks.negocio.impl.ValidarConsistenciaFrete;
 import ebooks.negocio.impl.ValidarFormaPagamento;
+import ebooks.negocio.impl.VerificarAcesso;
 import ebooks.negocio.impl.VerificarDisponibilidadeLivros;
 import ebooks.negocio.impl.VerificarExistenciaCliente;
 import ebooks.negocio.impl.VerificarPedidoFinalizado;
@@ -106,6 +107,7 @@ public class Fachada implements IFachada {
 		ValidarFormaPagamento valFormaPag = new ValidarFormaPagamento();
 		VerificarDisponibilidadeLivros verDispLivros = new VerificarDisponibilidadeLivros();
 		AlterarStatusAtualPedido altStatusAtualPed = new AlterarStatusAtualPedido();
+		VerificarAcesso verAcesso = new VerificarAcesso();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -229,6 +231,11 @@ public class Fachada implements IFachada {
 		contextoStatusPedido.put(EXCLUIR, lStatusPedidoExcluir);
 		contextoStatusPedido.put(CONSULTAR, lStatusPedidoConsultar);
 		
+		Map<String, List<IStrategy>> contextoAcesso = new HashMap<String, List<IStrategy>>();
+		List<IStrategy> lAcessoConsultar = new ArrayList<>();
+		lAcessoConsultar.add(verAcesso);
+		contextoAcesso.put(CONSULTAR, lAcessoConsultar);
+		
 		
 		Map<String, List<IStrategy>> contextoGrupoPrecificacao = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lGrupoPrecificacaoConsultar = new ArrayList<>();
@@ -259,6 +266,7 @@ public class Fachada implements IFachada {
 		requisitos.put(TipoTelefone.class.getName(), contextoTipoTel);
 		requisitos.put(Carrinho.class.getName(), contextoCarrinho);
 		requisitos.put(StatusPedido.class.getName(), contextoStatusPedido);
+		requisitos.put(Acesso.class.getName(), contextoAcesso);
 		
 
 		Map<String, List<IStrategy>> contextoCarrinhoAfter = new HashMap<>();
@@ -297,19 +305,21 @@ public class Fachada implements IFachada {
 			return sb.toString();
 		}
 		IDAO dao = daos.get(entidade.getClass().getName());
-		try {
-			if(!dao.salvar(entidade)) {
-				return "Erro ao persistir a entidade";
-			}
-			else {
-				sb = executarRegras(entidade, SALVAR, requisitosAfter);
-				if(sb.length() > 0) {
-					return sb.toString();
+		if(dao != null) {
+			try {
+				if(!dao.salvar(entidade)) {
+					return "Erro ao persistir a entidade";
 				}
+				else {
+					sb = executarRegras(entidade, SALVAR, requisitosAfter);
+					if(sb.length() > 0) {
+						return sb.toString();
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return "Problema na transação SQL";
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return "Problema na transação SQL";
 		}
 		return null;
 		
@@ -318,23 +328,25 @@ public class Fachada implements IFachada {
 	@Override
 	public String alterar(EntidadeDominio entidade) {
 		IDAO dao = daos.get(entidade.getClass().getName());
-		StringBuilder sb = executarRegras(entidade, ALTERAR, requisitos);
-		if (sb.length() > 0) {
-			return sb.toString();
-		}
-		try {
-			if(!dao.alterar(entidade)) {
-				return "Problema na alteração";
+		if(dao != null) {
+			StringBuilder sb = executarRegras(entidade, ALTERAR, requisitos);
+			if (sb.length() > 0) {
+				return sb.toString();
 			}
-			else {
-				sb = executarRegras(entidade, ALTERAR, requisitosAfter);
-				if(sb.length() > 0) {
-					return sb.toString();
+			try {
+				if(!dao.alterar(entidade)) {
+					return "Problema na alteração";
 				}
+				else {
+					sb = executarRegras(entidade, ALTERAR, requisitosAfter);
+					if(sb.length() > 0) {
+						return sb.toString();
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return "Problema na transação SQL";
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return "Problema na transação SQL";
 		}
 		return null;
 	}
@@ -342,48 +354,53 @@ public class Fachada implements IFachada {
 	@Override
 	public String excluir(EntidadeDominio entidade) {
 		IDAO dao = daos.get(entidade.getClass().getName());
-		StringBuilder sb = executarRegras(entidade, EXCLUIR, requisitos);
-		if (sb.length() > 0) {
-			return sb.toString();
-		}
-		try {
-			if (!dao.excluir(entidade)) {
-				return "Problema na exclusão";
+		if(dao != null) {
+			StringBuilder sb = executarRegras(entidade, EXCLUIR, requisitos);
+			if (sb.length() > 0) {
+				return sb.toString();
 			}
-			else {
-				sb = executarRegras(entidade, EXCLUIR, requisitosAfter);
-				if(sb.length() > 0) {
-					return sb.toString();
+			try {
+				if (!dao.excluir(entidade)) {
+					return "Problema na exclusão";
 				}
+				else {
+					sb = executarRegras(entidade, EXCLUIR, requisitosAfter);
+					if(sb.length() > 0) {
+						return sb.toString();
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return "Problema na transação SQL";
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return "Problema na transação SQL";
+			return "Exclusão efetuada com sucesso";
 		}
-		return "Exclusão efetuada com sucesso";
+		return null;
 	}
 
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) {
-		IDAO dao = daos.get(entidade.getClass().getName());
 		StringBuilder sb = executarRegras(entidade, CONSULTAR, requisitos);
 		if (sb.length() > 0) {
 			return null;
 		}
-		List<EntidadeDominio> consulta;
-		try {
-			consulta = dao.consultar(entidade);
-			if(!consulta.isEmpty()) {
-				return consulta;
-			}
-			else {
-				sb = executarRegras(entidade, EXCLUIR, requisitosAfter);
-				if(sb.length() > 0) {
-					return null;
+		IDAO dao = daos.get(entidade.getClass().getName());
+		if(dao != null) {
+			List<EntidadeDominio> consulta;
+			try {
+				consulta = dao.consultar(entidade);
+				if(!consulta.isEmpty()) {
+					return consulta;
 				}
+				else {
+					sb = executarRegras(entidade, EXCLUIR, requisitosAfter);
+					if(sb.length() > 0) {
+						return null;
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 		return null;
 	}

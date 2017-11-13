@@ -94,11 +94,13 @@
 								<span class="glyphicon glyphicon-search"></span> Pesquisar
 							</button>
 						</div>
-						<div class="col-xs-6 col-md-2 btn-adicionar">			  	
-							<button class="btn btn-primary" type="submit" id="btnNovoLivro" formaction="livroForm">
-								<span class="glyphicon glyphicon-plus"></span> Novo Livro
-							</button>
-						</div>
+						<c:if test="${login.perfilAcesso.nome eq 'Administrador'}">
+							<div class="col-xs-6 col-md-2 btn-adicionar">			  	
+								<button class="btn btn-primary" type="submit" id="btnNovoLivro" formaction="livroForm">
+									<span class="glyphicon glyphicon-plus"></span> Novo Livro
+								</button>
+							</div>
+						</c:if>
 					</div>
 				</div>
 				</div>

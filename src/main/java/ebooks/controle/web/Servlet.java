@@ -14,6 +14,22 @@ import ebooks.controle.ConsultarCommand;
 import ebooks.controle.ExcluirCommand;
 import ebooks.controle.ICommand;
 import ebooks.controle.SalvarCommand;
+import ebooks.controle.web.vh.BandeiraVH;
+import ebooks.controle.web.vh.CarrinhoVH;
+import ebooks.controle.web.vh.CartaoCreditoVH;
+import ebooks.controle.web.vh.CategoriaVH;
+import ebooks.controle.web.vh.ClienteVH;
+import ebooks.controle.web.vh.EnderecoVH;
+import ebooks.controle.web.vh.FreteVH;
+import ebooks.controle.web.vh.GrupoPrecificacaoVH;
+import ebooks.controle.web.vh.IViewHelper;
+import ebooks.controle.web.vh.LivroVH;
+import ebooks.controle.web.vh.LoginVH;
+import ebooks.controle.web.vh.PagamentoVH;
+import ebooks.controle.web.vh.PedidoVH;
+import ebooks.controle.web.vh.StatusPedidoVH;
+import ebooks.controle.web.vh.TipoEnderecoVH;
+import ebooks.controle.web.vh.TipoTelefoneVH;
 import ebooks.modelo.EntidadeDominio;
 
 public class Servlet extends HttpServlet {
