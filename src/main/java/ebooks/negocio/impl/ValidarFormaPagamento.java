@@ -75,8 +75,8 @@ public class ValidarFormaPagamento implements IStrategy {
 								for(Pagamento pag : pagamentos) {
 									if(pag.getClass().getName().equals(PagamentoValeCompras.class.getName())) {
 										PagamentoValeCompras pagVale = (PagamentoValeCompras) pag;
-										long idVale = pagVale.getValeCompras().getId();
-										long idValeSession = pagValeSession.getValeCompras().getId();
+										long idVale = pagVale.getCupomTroca().getId();
+										long idValeSession = pagValeSession.getCupomTroca().getId();
 										if(idVale == idValeSession) {
 											pagValeSession.setValorPago(pagVale.getValorPago());
 										}

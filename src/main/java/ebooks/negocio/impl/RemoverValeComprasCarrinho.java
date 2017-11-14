@@ -40,8 +40,8 @@ public class RemoverValeComprasCarrinho implements IStrategy {
 									Pagamento pagamentoSession = iteratorSession.next();
 									if(pagamentoSession.getClass().getName().equals(PagamentoValeCompras.class.getName())) {
 										PagamentoValeCompras pagamentoValeComprasSession = (PagamentoValeCompras) pagamentoSession;
-										long idVale = pagamentoValeCompras.getValeCompras().getId();
-										long idValeSession = pagamentoValeComprasSession.getValeCompras().getId();
+										long idVale = pagamentoValeCompras.getCupomTroca().getId();
+										long idValeSession = pagamentoValeComprasSession.getCupomTroca().getId();
 										if(idVale == idValeSession) {
 											iteratorSession.remove();
 										}

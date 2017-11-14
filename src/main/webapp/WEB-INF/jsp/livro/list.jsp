@@ -146,21 +146,23 @@
 											</td>
 											<td>${livro.estoque.quantidadeAtual - livro.estoque.quantidadeReservada}</td>										
 											<td>
-												<button type="submit" data-toggle="tooltip" title="Editar" id="btnEdit${livro.id}"
-												class="btn btn-sm btn-default btn-icone" method="get"
-												formaction="livroEdit?operacao=CONSULTAR&id=${livro.id}">
-													<span class="glyphicon glyphicon-pencil"></span>
-												</button>
 												<button type="submit" data-toggle="tooltip" title="Adicionar ao carrinho"
 												id="btnCarrinho${livro.id}" class="btn btn-sm btn-primary btn-icone" method="get"
 												formaction="carrinhoAdicionar?operacao=SALVAR&id=${livro.id}">
 													<span class="glyphicon glyphicon-shopping-cart"></span>
 												</button>
-												<button type="submit" name="operacao" method="get" data-toggle="tooltip" id="btnExcluir${livro.id}"
-												title="Excluir" value="EXCLUIR"	onclick="return excluir()"
-												class="btn btn-sm btn-danger botao-excluir btn-icone" formaction="livroExcluir?id=${livro.id}">
-													<span class="glyphicon glyphicon-trash"></span>
-												</button>
+												<c:if test="${login.perfilAcesso.nome eq 'Administrador' }">
+													<button type="submit" data-toggle="tooltip" title="Editar" id="btnEdit${livro.id}"
+													class="btn btn-sm btn-default btn-icone" method="get"
+													formaction="livroEdit?operacao=CONSULTAR&id=${livro.id}">
+														<span class="glyphicon glyphicon-pencil"></span>
+													</button>
+													<button type="submit" name="operacao" method="get" data-toggle="tooltip" id="btnExcluir${livro.id}"
+													title="Excluir" value="EXCLUIR"	onclick="return excluir()"
+													class="btn btn-sm btn-danger botao-excluir btn-icone" formaction="livroExcluir?id=${livro.id}">
+														<span class="glyphicon glyphicon-trash"></span>
+													</button>
+												</c:if>
 											</td>
 										</tr>
 									</c:forEach>

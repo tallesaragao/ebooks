@@ -3,7 +3,7 @@ package ebooks.modelo;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class ValeCompras extends EntidadeDominio {
+public class CupomTroca extends EntidadeDominio {
 	private String codigo;
 	private BigDecimal valor;
 	private Date validade;

@@ -11,7 +11,7 @@ import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Pagamento;
 import ebooks.modelo.PagamentoCartao;
 import ebooks.modelo.PagamentoValeCompras;
-import ebooks.modelo.ValeCompras;
+import ebooks.modelo.CupomTroca;
 
 public class PagamentoDAO extends AbstractDAO {
 
@@ -46,7 +46,7 @@ public class PagamentoDAO extends AbstractDAO {
 				PagamentoValeCompras pagamentoValeCompras = (PagamentoValeCompras) pagamento;
 				ps = conexao.prepareStatement(sql);
 				ps.setLong(1, pagamentoValeCompras.getId());
-				ps.setLong(2, pagamentoValeCompras.getValeCompras().getId());
+				ps.setLong(2, pagamentoValeCompras.getCupomTroca().getId());
 				ps.execute();
 				ps.close();
 			}
@@ -132,9 +132,9 @@ public class PagamentoDAO extends AbstractDAO {
 					pagVale.setId(pagamento.getId());
 					pagVale.setFormaPagamento(pagamento.getFormaPagamento());
 					pagVale.setValorPago(pagamento.getValorPago());
-					ValeCompras vale = new ValeCompras();
+					CupomTroca vale = new CupomTroca();
 					vale.setId(rs.getLong("pvc.id_vale_compras"));
-					pagVale.setValeCompras(vale);
+					pagVale.setCupomTroca(vale);
 					pagamentosVale.add(pagVale);
 				}
 			}
@@ -147,11 +147,11 @@ public class PagamentoDAO extends AbstractDAO {
 				pagCartao.setCartaoCredito(cartao);
 			}
 			for(PagamentoValeCompras pagVale : pagamentosVale) {
-				ValeCompras vale = pagVale.getValeCompras();
+				CupomTroca vale = pagVale.getCupomTroca();
 				IDAO valeDAO = new ValeComprasDAO();
 				List<EntidadeDominio> consultaVale = valeDAO.consultar(vale);
-				vale = (ValeCompras) consultaVale.get(0);
-				pagVale.setValeCompras(vale);
+				vale = (CupomTroca) consultaVale.get(0);
+				pagVale.setCupomTroca(vale);
 			}
 			for(PagamentoCartao pagCartao : pagamentosCartao) {
 				consulta.add(pagCartao);

@@ -1,13 +1,13 @@
 package ebooks.modelo;
 
 public class PagamentoValeCompras extends Pagamento {
-	private ValeCompras valeCompras;
+	private CupomTroca cupomTroca;
 
-	public ValeCompras getValeCompras() {
-		return valeCompras;
+	public CupomTroca getCupomTroca() {
+		return cupomTroca;
 	}
 
-	public void setValeCompras(ValeCompras valeCompras) {
-		this.valeCompras = valeCompras;
+	public void setCupomTroca(CupomTroca cupomTroca) {
+		this.cupomTroca = cupomTroca;
 	}
 }	

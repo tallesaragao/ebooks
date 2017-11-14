@@ -15,7 +15,7 @@ import ebooks.modelo.FormaPagamento;
 import ebooks.modelo.Pagamento;
 import ebooks.modelo.PagamentoValeCompras;
 import ebooks.modelo.Pedido;
-import ebooks.modelo.ValeCompras;
+import ebooks.modelo.CupomTroca;
 import ebooks.negocio.IStrategy;
 
 public class AdicionarValeComprasPagamento implements IStrategy {
@@ -33,16 +33,16 @@ public class AdicionarValeComprasPagamento implements IStrategy {
 					for(Pagamento pagamento : pagamentos) {
 						if(pagamento.getClass().getName().equals(PagamentoValeCompras.class.getName())) {
 							PagamentoValeCompras pagValeCompras = (PagamentoValeCompras) pagamento;
-							ValeCompras valeComprasConsulta = pagValeCompras.getValeCompras();
-							if(valeComprasConsulta != null) {
+							CupomTroca cupomTrocaConsulta = pagValeCompras.getCupomTroca();
+							if(cupomTrocaConsulta != null) {
 								HttpSession session = carrinho.getSession();
 								Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
 								IDAO dao = new ValeComprasDAO();
 								try {
-									List<EntidadeDominio> consulta = dao.consultar(valeComprasConsulta);
+									List<EntidadeDominio> consulta = dao.consultar(cupomTrocaConsulta);
 									if(!consulta.isEmpty()) {
-										ValeCompras valeCompras = (ValeCompras) consulta.get(0);
-										if(valeCompras.getAtivo()) {
+										CupomTroca cupomTroca = (CupomTroca) consulta.get(0);
+										if(cupomTroca.getAtivo()) {
 											FormaPagamento formaPagamentoSession = pedidoSession.getFormaPagamento();
 											if(formaPagamentoSession == null) {
 												formaPagamentoSession = new FormaPagamento();
@@ -50,13 +50,13 @@ public class AdicionarValeComprasPagamento implements IStrategy {
 											}
 											List<Pagamento> pagamentosSession = formaPagamentoSession.getPagamentos();
 											PagamentoValeCompras pagamentoValeCompras = new PagamentoValeCompras();
-											pagamentoValeCompras.setValeCompras(valeCompras);
+											pagamentoValeCompras.setCupomTroca(cupomTroca);
 											boolean valeComprasIgual = false;
 											for(Pagamento pagamentoSession : pagamentosSession) {
 												if(pagamentoSession.getClass().getName().equals(PagamentoValeCompras.class.getName())) {
 													PagamentoValeCompras pagamentoValeComprasSession = (PagamentoValeCompras) pagamentoSession;
-													String codigoValeComprasSession = pagamentoValeComprasSession.getValeCompras().getCodigo();
-													String codigoValeCompras = pagamentoValeCompras.getValeCompras().getCodigo();
+													String codigoValeComprasSession = pagamentoValeComprasSession.getCupomTroca().getCodigo();
+													String codigoValeCompras = pagamentoValeCompras.getCupomTroca().getCodigo();
 													if(codigoValeCompras.toUpperCase().equals(codigoValeComprasSession.toUpperCase())) {
 														valeComprasIgual = true;
 														break;

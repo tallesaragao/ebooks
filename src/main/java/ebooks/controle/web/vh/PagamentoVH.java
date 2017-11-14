@@ -21,7 +21,7 @@ import ebooks.modelo.Pagamento;
 import ebooks.modelo.PagamentoCartao;
 import ebooks.modelo.PagamentoValeCompras;
 import ebooks.modelo.Pedido;
-import ebooks.modelo.ValeCompras;
+import ebooks.modelo.CupomTroca;
 
 public class PagamentoVH implements IViewHelper {
 
@@ -72,13 +72,13 @@ public class PagamentoVH implements IViewHelper {
 				carrinho.setPedido(pedido);
 			}
 			if(codigoValeCompras != null && !codigoValeCompras.equals("")) {
-				ValeCompras valeCompras = new ValeCompras();
-				valeCompras.setCodigo(codigoValeCompras);
+				CupomTroca cupomTroca = new CupomTroca();
+				cupomTroca.setCodigo(codigoValeCompras);
 				PagamentoValeCompras pagamentoValeCompras = new PagamentoValeCompras();
-				pagamentoValeCompras.setValeCompras(valeCompras);
+				pagamentoValeCompras.setCupomTroca(cupomTroca);
 				String idValeCompras = request.getParameter("idValeCompras");
 				if(idValeCompras != null) {
-					valeCompras.setId(Long.valueOf(idValeCompras));
+					cupomTroca.setId(Long.valueOf(idValeCompras));
 				}
 				String valorVale = request.getParameter("valorValeCompras" + idValeCompras);
 				if(valorVale != null) {
@@ -108,10 +108,10 @@ public class PagamentoVH implements IViewHelper {
 			FormaPagamento formaPagamento = new FormaPagamento();
 			formaPagamento.setPagamentos(new ArrayList<Pagamento>());
 			if(idVale != null && !idVale.equals("")) {
-				ValeCompras valeCompras = new ValeCompras();
-				valeCompras.setId(Long.valueOf(idVale));
+				CupomTroca cupomTroca = new CupomTroca();
+				cupomTroca.setId(Long.valueOf(idVale));
 				PagamentoValeCompras pagamentoValeCompras = new PagamentoValeCompras();
-				pagamentoValeCompras.setValeCompras(valeCompras);
+				pagamentoValeCompras.setCupomTroca(cupomTroca);
 				formaPagamento.getPagamentos().add(pagamentoValeCompras);
 			}
 			if(idCartao != null && !idCartao.equals("")) {

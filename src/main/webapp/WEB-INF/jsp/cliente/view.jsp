@@ -85,30 +85,32 @@
 							<span class="glyphicon glyphicon-pencil"></span>
 						</button>
 						
-						<c:choose>
-							<c:when test="${cliente.ativo}">
-								<button type="submit" data-toggle="tooltip" title="Inativar"
-								class="btn btn-sm btn-warning btn-icone" method="get" id="btnClienteInativar"
-								formaction="clienteInativar?operacao=CONSULTAR&id=${cliente.id}">
-									<span class="glyphicon glyphicon-ban-circle"></span>
-								</button>
-							</c:when>
-							<c:otherwise>
-								<button type="submit" data-toggle="tooltip" title="Ativar"
-								class="btn btn-sm btn-success btn-icone" method="get" id="btnClienteAtivar"
-								formaction="clienteAtivar?operacao=CONSULTAR&id=${cliente.id}">
-									<span class="glyphicon glyphicon-ok-sign"></span>
-								</button>
-							</c:otherwise>
-						</c:choose>
-							
-												
-						<button type="submit" name="operacao" method="get" data-toggle="tooltip"
-						title="Excluir" value="EXCLUIR"	onclick="return excluir()" id="btnClienteExcluir"
-						class="btn btn-sm btn-danger botao-excluir btn-icone"
-						 formaction="clienteExcluir?id=${cliente.id}">
-							<span class="glyphicon glyphicon-trash"></span>
-						</button>
+						<c:if test="${login.perfilAcesso.nome eq 'Administrador' }">
+							<c:choose>
+								<c:when test="${cliente.ativo}">
+									<button type="submit" data-toggle="tooltip" title="Inativar"
+									class="btn btn-sm btn-warning btn-icone" method="get" id="btnClienteInativar"
+									formaction="clienteInativar?operacao=CONSULTAR&id=${cliente.id}">
+										<span class="glyphicon glyphicon-ban-circle"></span>
+									</button>
+								</c:when>
+								<c:otherwise>
+									<button type="submit" data-toggle="tooltip" title="Ativar"
+									class="btn btn-sm btn-success btn-icone" method="get" id="btnClienteAtivar"
+									formaction="clienteAtivar?operacao=CONSULTAR&id=${cliente.id}">
+										<span class="glyphicon glyphicon-ok-sign"></span>
+									</button>
+								</c:otherwise>
+							</c:choose>
+											
+							<button type="submit" name="operacao" method="get" data-toggle="tooltip"
+							title="Excluir" value="EXCLUIR"	onclick="return excluir()" id="btnClienteExcluir"
+							class="btn btn-sm btn-danger botao-excluir btn-icone"
+							 formaction="clienteExcluir?id=${cliente.id}">
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
+						
+						</c:if>
 					</div>
 				</div>
 				</br>
