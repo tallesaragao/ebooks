@@ -30,6 +30,7 @@ import ebooks.controle.web.vh.PedidoVH;
 import ebooks.controle.web.vh.StatusPedidoVH;
 import ebooks.controle.web.vh.TipoEnderecoVH;
 import ebooks.controle.web.vh.TipoTelefoneVH;
+import ebooks.controle.web.vh.TrocaVH;
 import ebooks.modelo.EntidadeDominio;
 
 public class Servlet extends HttpServlet {
@@ -121,6 +122,8 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/pedidoConfirmarCompra", new PedidoVH());
 		vhs.put(contextoApp + "/pedidoView", new PedidoVH());
 		vhs.put(contextoApp + "/statusSalvar", new StatusPedidoVH());
+		vhs.put(contextoApp + "/pedidoTroca", new PedidoVH());
+		vhs.put(contextoApp + "/trocaForm", new TrocaVH());
 	}
 		
 	@Override

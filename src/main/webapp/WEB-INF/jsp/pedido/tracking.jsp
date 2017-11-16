@@ -109,6 +109,11 @@
 											${statusPedido.status.nome} - 
 											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
 										</dd>
+										<dd>
+											<a href="pedidoTroca?operacao=CONSULTAR&idPedido=${pedido.id}&idCliente=${pedido.cliente.id}">
+												Solicitar troca
+											</a>
+										</dd>
 									</c:if>
 								</c:if>
 							</c:forEach>

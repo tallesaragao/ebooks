@@ -75,6 +75,13 @@ public class PedidoVH implements IViewHelper {
 			}
 			request.getRequestDispatcher("WEB-INF/jsp/pedido/tracking.jsp").forward(request, response);
 		}
+		if(uri.equals(contexto + "/pedidoTroca")) {
+			if(object != null) {
+				List<EntidadeDominio> consulta = (List<EntidadeDominio>) object;
+				request.setAttribute("pedido", consulta.get(0));
+			}
+			request.getRequestDispatcher("trocaForm?operacao=").forward(request, response);
+		}
 	}
 
 }
