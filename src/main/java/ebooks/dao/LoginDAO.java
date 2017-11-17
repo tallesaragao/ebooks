@@ -21,11 +21,13 @@ public class LoginDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "insert into login(usuario, senha, dt_cadastro) values(?,?,?)";
+			String sql = "insert into login(usuario, senha, dt_cadastro, id_perfil_acesso) values(?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, login.getUsuario());
 			ps.setString(2, login.getSenha());
 			ps.setDate(3, new Date(clienteLogin.getDataCadastro().getTime()));
+			long idPerfilCliente = 2;
+			ps.setLong(4, idPerfilCliente);
 			ps.execute();
 			ResultSet generatedKeys = ps.getGeneratedKeys();
 			while(generatedKeys.next()) {

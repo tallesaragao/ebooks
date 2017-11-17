@@ -4,8 +4,10 @@ import java.util.List;
 
 public class Troca extends EntidadeDominio {
 	private Pedido pedido;
+	private Boolean compraToda;
 	private List<ItemTroca> itensTroca;
 	private CupomTroca cupomTroca;
+	private StatusTroca status;
 
 	public Pedido getPedido() {
 		return pedido;
@@ -13,6 +15,14 @@ public class Troca extends EntidadeDominio {
 
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
+	}
+	
+	public Boolean getCompraToda() {
+		return compraToda;
+	}
+
+	public void setCompraToda(Boolean compraToda) {
+		this.compraToda = compraToda;
 	}
 
 	public List<ItemTroca> getItensTroca() {
@@ -29,5 +39,13 @@ public class Troca extends EntidadeDominio {
 
 	public void setCupomTroca(CupomTroca cupomTroca) {
 		this.cupomTroca = cupomTroca;
+	}
+
+	public StatusTroca getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusTroca status) {
+		this.status = status;
 	}
 }

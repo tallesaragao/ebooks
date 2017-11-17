@@ -19,6 +19,7 @@ import ebooks.dao.PedidoDAO;
 import ebooks.dao.StatusPedidoDAO;
 import ebooks.dao.TipoEnderecoDAO;
 import ebooks.dao.TipoTelefoneDAO;
+import ebooks.dao.TrocaDAO;
 import ebooks.modelo.Acesso;
 import ebooks.modelo.Bandeira;
 import ebooks.modelo.Carrinho;
@@ -34,6 +35,7 @@ import ebooks.modelo.Pedido;
 import ebooks.modelo.StatusPedido;
 import ebooks.modelo.TipoEndereco;
 import ebooks.modelo.TipoTelefone;
+import ebooks.modelo.Troca;
 import ebooks.negocio.IStrategy;
 import ebooks.negocio.impl.AdicionarCartoesPagamento;
 import ebooks.negocio.impl.AdicionarCupomPromocionalPagamento;
@@ -231,6 +233,17 @@ public class Fachada implements IFachada {
 		contextoStatusPedido.put(EXCLUIR, lStatusPedidoExcluir);
 		contextoStatusPedido.put(CONSULTAR, lStatusPedidoConsultar);
 		
+		Map<String, List<IStrategy>> contextoTroca = new HashMap<String, List<IStrategy>>();
+		List<IStrategy> lTrocaSalvar = new ArrayList<>();
+		lTrocaSalvar.add(altStatusAtualPed);
+		List<IStrategy> lTrocaAlterar = new ArrayList<>();
+		List<IStrategy> lTrocaExcluir = new ArrayList<>();
+		List<IStrategy> lTrocaConsultar = new ArrayList<>();
+		contextoTroca.put(SALVAR, lTrocaSalvar);
+		contextoTroca.put(ALTERAR, lTrocaAlterar);
+		contextoTroca.put(EXCLUIR, lTrocaExcluir);
+		contextoTroca.put(CONSULTAR, lTrocaConsultar);
+		
 		Map<String, List<IStrategy>> contextoAcesso = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lAcessoConsultar = new ArrayList<>();
 		lAcessoConsultar.add(verAcesso);
@@ -267,6 +280,7 @@ public class Fachada implements IFachada {
 		requisitos.put(Carrinho.class.getName(), contextoCarrinho);
 		requisitos.put(StatusPedido.class.getName(), contextoStatusPedido);
 		requisitos.put(Acesso.class.getName(), contextoAcesso);
+		requisitos.put(Troca.class.getName(), contextoTroca);
 		
 
 		Map<String, List<IStrategy>> contextoCarrinhoAfter = new HashMap<>();
@@ -296,6 +310,7 @@ public class Fachada implements IFachada {
 		daos.put(Carrinho.class.getName(), new PedidoDAO());
 		daos.put(Pedido.class.getName(), new PedidoDAO());
 		daos.put(StatusPedido.class.getName(), new StatusPedidoDAO());
+		daos.put(Troca.class.getName(), new TrocaDAO());
 	}
 
 	@Override

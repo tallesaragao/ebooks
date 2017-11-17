@@ -106,20 +106,20 @@
 					<c:if test="${not empty pedido.formaPagamento.pagamentos}">
 						<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
 							<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">
-								<c:set var="codigoValeCompras" value="${pagamento.valeCompras.codigo}"/>
+								<c:set var="codigoCupomTroca" value="${pagamento.cupomTroca.codigo}"/>
 							</c:if>
 						</c:forEach>
 					</c:if>
 					<div class="col-xs-12 col-sm-4">
 						<div class="form-group">
-							<label for="valeCompras" class="control-label">Vale-compras</label>
-							<input type="text" name="codigoValeCompras" placeholder="Digite o código"
-							class="form-control" value="${codigoValeCompras}"/>
+							<label for="cupomTroca" class="control-label">Vale-compras</label>
+							<input type="text" name="cupomTroca" placeholder="Digite o código"
+							class="form-control" value="${codigoCupomTroca}"/>
 						</div>
 					</div>
 					<div class="col-xs-3">
 						<button type="submit" formaction="pagamentoAdicionarValeCompras" name="operacao"
-						value="SALVAR" id="btnAdicionarValeCompras" class="btn btn-primary btn-select">
+						value="SALVAR" id="btnAdicionarcupomTroca" class="btn btn-primary btn-select">
 							Aplicar
 						</button>
 					</div>
@@ -178,12 +178,12 @@
 							<div class="row">
 								<div class="col-xs-10 col-sm-4">
 									<div class="form-group">
-										<label for="valorValeCompras${pagamento.valeCompras.id}" class="control-label">
+										<label for="valorValeCompras${pagamento.cupomTroca.id}" class="control-label">
 											Vale-compras (Valor disponível: 
 											<fmt:setLocale value="pt-BR"/>
-											<fmt:formatNumber value="${pagamento.valeCompras.valor}" type="currency"/>) 
+											<fmt:formatNumber value="${pagamento.cupomTroca.valor}" type="currency"/>) 
 										</label>
-										<input type="number" step="any" name="valorValeCompras${pagamento.valeCompras.id}"
+										<input type="number" step="any" name="valorValeCompras${pagamento.cupomTroca.id}"
 										placeholder="Digite o valor a ser pago nesse vale-compras (R$)" class="form-control"/>
 									</div>
 								</div>								
@@ -191,12 +191,12 @@
 									<button type="submit" name="operacao" method="get" data-toggle="tooltip"
 									title="Remover" value="EXCLUIR"	onclick="return excluir()" id="btnValeComprasRemover"
 									class="btn btn-sm btn-danger botao-excluir btn-icone btn-select"
-									formaction="pagamentoRemoverValeCompras?idVale=${pagamento.valeCompras.id}">
+									formaction="pagamentoRemoverValeCompras?idVale=${pagamento.cupomTroca.id}">
 										<span class="glyphicon glyphicon-trash"></span>
 									</button>
 								</div>
 							</div>
-							<span><input type="hidden" name="idValeCompras" value="${pagamento.valeCompras.id}"/></span>
+							<span><input type="hidden" name="idValeCompras" value="${pagamento.cupomTroca.id}"/></span>
 						</c:if>
 						<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoCartao'}">
 							<div class="row">

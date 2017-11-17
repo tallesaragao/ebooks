@@ -8,7 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import ebooks.dao.IDAO;
-import ebooks.dao.ValeComprasDAO;
+import ebooks.dao.CupomTrocaDAO;
 import ebooks.modelo.Carrinho;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.FormaPagamento;
@@ -37,7 +37,7 @@ public class AdicionarValeComprasPagamento implements IStrategy {
 							if(cupomTrocaConsulta != null) {
 								HttpSession session = carrinho.getSession();
 								Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
-								IDAO dao = new ValeComprasDAO();
+								IDAO dao = new CupomTrocaDAO();
 								try {
 									List<EntidadeDominio> consulta = dao.consultar(cupomTrocaConsulta);
 									if(!consulta.isEmpty()) {

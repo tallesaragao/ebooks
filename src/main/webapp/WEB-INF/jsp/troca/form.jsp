@@ -44,7 +44,7 @@
 							<dd>
 								<div class="checkbox">
 									<label for="selecionarCompra" class="control-label">
-										<input type="checkbox" id="selecionarCompra" name="trocaTodaCompra" value="true"/>
+										<input type="checkbox" id="selecionarCompra" name="compraToda" value="true"/>
 										Trocar toda a compra						
 									</label>
 								</div>
@@ -59,6 +59,7 @@
 				</legend>
 				<p>Selecione os itens a serem trocados e informe as quantidades que deseja trocar</p>
 				<c:forEach items="${pedido.itensPedido}" var="item">
+					<input type="hidden" name="idItem" value="${item.id}"/>
 					<div class="row">
 						<div class="col-xs-6 col-md-4">
 							<div class="checkbox">
@@ -71,8 +72,9 @@
 						</div>
 						<div class="col-xs-2">
 							<div class="form-group">
-								<label for="quantidade" class="control-label">Quantidade</label>
-								<input type="number" name="quantidade" class="form-control" min="0" value="${item.quantidade}">
+								<label for="quantidade${item.id}" class="control-label">Quantidade</label>
+								<input type="number" name="quantidade${item.id}" class="form-control" min="1"
+								max=${item.quantidade } value="${item.quantidade}">
 							</div>
 						</div>
 					</div>

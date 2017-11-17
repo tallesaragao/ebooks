@@ -148,7 +148,7 @@ public class PagamentoDAO extends AbstractDAO {
 			}
 			for(PagamentoValeCompras pagVale : pagamentosVale) {
 				CupomTroca vale = pagVale.getCupomTroca();
-				IDAO valeDAO = new ValeComprasDAO();
+				IDAO valeDAO = new CupomTrocaDAO();
 				List<EntidadeDominio> consultaVale = valeDAO.consultar(vale);
 				vale = (CupomTroca) consultaVale.get(0);
 				pagVale.setCupomTroca(vale);

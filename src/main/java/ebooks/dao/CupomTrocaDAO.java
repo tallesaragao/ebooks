@@ -10,7 +10,7 @@ import java.util.List;
 import ebooks.modelo.CupomTroca;
 import ebooks.modelo.EntidadeDominio;
 
-public class ValeComprasDAO extends AbstractDAO {
+public class CupomTrocaDAO extends AbstractDAO {
 	
 	@Override
 	public boolean salvar(EntidadeDominio entidade) throws SQLException {
@@ -18,7 +18,7 @@ public class ValeComprasDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "insert into vale_compras(codigo, valor, validade, ativo) values(?,?,?,?)";
+			String sql = "insert into cupom_troca(codigo, valor, validade, ativo) values(?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			ps.setString(1, cupomTroca.getCodigo());
 			ps.setBigDecimal(2, cupomTroca.getValor());
@@ -49,7 +49,7 @@ public class ValeComprasDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "update vale_compras set codigo=?, valor=?, validade=?, ativo=? where id_vale_compras=?";
+			String sql = "update cupom_troca set codigo=?, valor=?, validade=?, ativo=? where id_cupom_troca=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			ps.setString(1, cupomTroca.getCodigo() != null ? cupomTroca.getCodigo() : cupomTrocaOld.getCodigo());
 			ps.setBigDecimal(2, cupomTroca.getValor() != null ?
@@ -78,7 +78,7 @@ public class ValeComprasDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "delete from vale_compras where id_vale_compras=?";
+			String sql = "delete from cupom_troca where id_cupom_troca=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			ps.setLong(1, cupomTroca.getId());
 			ps.execute();
@@ -103,16 +103,16 @@ public class ValeComprasDAO extends AbstractDAO {
 		List<EntidadeDominio> consulta = new ArrayList<>();
 		conexao = factory.getConnection();
 		try {
-			Long idValeComprasConsulta = cupomTrocaConsulta.getId();
+			Long idCupomTrocaConsulta = cupomTrocaConsulta.getId();
 			String sql = "";
 			PreparedStatement ps = null;
-			if(idValeComprasConsulta != null) {
-				sql = "select * from vale_compras where id_vale_compras=?";
+			if(idCupomTrocaConsulta != null) {
+				sql = "select * from cupom_troca where id_cupom_troca=?";
 				ps = conexao.prepareStatement(sql);
 				ps.setLong(1, cupomTrocaConsulta.getId());
 			}
 			else {
-				sql = "select * from vale_compras where codigo=?";
+				sql = "select * from cupom_troca where codigo=?";
 				
 				ps = conexao.prepareStatement(sql);
 				ps.setString(1, cupomTrocaConsulta.getCodigo());
@@ -120,7 +120,7 @@ public class ValeComprasDAO extends AbstractDAO {
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				CupomTroca cupomTroca = new CupomTroca();
-				cupomTroca.setId(rs.getLong("id_vale_compras"));
+				cupomTroca.setId(rs.getLong("id_cupom_troca"));
 				cupomTroca.setCodigo(rs.getString("codigo"));
 				cupomTroca.setValor(rs.getBigDecimal("valor"));
 				cupomTroca.setAtivo(rs.getBoolean("ativo"));
