@@ -385,7 +385,7 @@ CREATE TABLE `estoque` (
 
 LOCK TABLES `estoque` WRITE;
 /*!40000 ALTER TABLE `estoque` DISABLE KEYS */;
-INSERT INTO `estoque` VALUES (1,'0','300','89','1'),(2,'0','30','3','1');
+INSERT INTO `estoque` VALUES (1,'0','300','82','1'),(2,'0','30','2','1');
 /*!40000 ALTER TABLE `estoque` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -400,7 +400,7 @@ CREATE TABLE `forma_pag` (
   `id_forma_pag` int(11) NOT NULL AUTO_INCREMENT,
   `parcelas` mediumtext NOT NULL,
   PRIMARY KEY (`id_forma_pag`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -409,7 +409,7 @@ CREATE TABLE `forma_pag` (
 
 LOCK TABLES `forma_pag` WRITE;
 /*!40000 ALTER TABLE `forma_pag` DISABLE KEYS */;
-INSERT INTO `forma_pag` VALUES (7,'1'),(8,'1'),(9,'1'),(10,'1');
+INSERT INTO `forma_pag` VALUES (7,'1'),(8,'1'),(9,'1'),(10,'1'),(14,'1');
 /*!40000 ALTER TABLE `forma_pag` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -426,7 +426,7 @@ CREATE TABLE `frete` (
   `dias_entrega` mediumtext NOT NULL,
   `prazo_estimado` date NOT NULL,
   PRIMARY KEY (`id_frete`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -435,7 +435,7 @@ CREATE TABLE `frete` (
 
 LOCK TABLES `frete` WRITE;
 /*!40000 ALTER TABLE `frete` DISABLE KEYS */;
-INSERT INTO `frete` VALUES (8,38.00,'10','2017-11-11'),(9,7.00,'2','2017-11-09'),(10,24.00,'8','2017-11-17'),(11,5.00,'2','2017-11-15');
+INSERT INTO `frete` VALUES (8,38.00,'10','2017-11-11'),(9,7.00,'2','2017-11-09'),(10,24.00,'8','2017-11-17'),(11,5.00,'2','2017-11-15'),(15,12.00,'5','2017-11-27');
 /*!40000 ALTER TABLE `frete` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -512,7 +512,7 @@ CREATE TABLE `item_pedido` (
   KEY `fk_item_pedido_livro_idx` (`id_livro`),
   CONSTRAINT `fk_item_pedido_livro` FOREIGN KEY (`id_livro`) REFERENCES `livro` (`id_livro`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_item_pedido_pedido` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -521,8 +521,39 @@ CREATE TABLE `item_pedido` (
 
 LOCK TABLES `item_pedido` WRITE;
 /*!40000 ALTER TABLE `item_pedido` DISABLE KEYS */;
-INSERT INTO `item_pedido` VALUES (1,'1',16.00,3,2),(2,'1',40.12,3,3),(3,'5',80.00,4,2),(4,'5',200.60,4,3),(5,'5',80.00,5,2),(6,'3',120.36,5,3),(7,'1',16.00,6,2),(8,'1',40.12,6,3);
+INSERT INTO `item_pedido` VALUES (1,'1',16.00,3,2),(2,'1',40.12,3,3),(3,'5',80.00,4,2),(4,'5',200.60,4,3),(5,'5',80.00,5,2),(6,'3',120.36,5,3),(7,'1',16.00,6,2),(8,'1',40.12,6,3),(9,'7',112.00,7,2),(10,'1',40.12,7,3);
 /*!40000 ALTER TABLE `item_pedido` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `item_troca`
+--
+
+DROP TABLE IF EXISTS `item_troca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `item_troca` (
+  `id_item_troca` int(11) NOT NULL AUTO_INCREMENT,
+  `quant_trocada` mediumtext NOT NULL,
+  `quant_retornavel` mediumtext NOT NULL,
+  `id_item_pedido` int(11) NOT NULL,
+  `id_troca` int(11) NOT NULL,
+  PRIMARY KEY (`id_item_troca`),
+  KEY `fk_item_troca_item_pedido_idx` (`id_item_pedido`),
+  KEY `fk_item_troca_troca_idx` (`id_troca`),
+  CONSTRAINT `fk_item_troca_item_pedido` FOREIGN KEY (`id_item_pedido`) REFERENCES `item_pedido` (`id_item_pedido`),
+  CONSTRAINT `fk_item_troca_troca` FOREIGN KEY (`id_troca`) REFERENCES `troca` (`id_troca`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `item_troca`
+--
+
+LOCK TABLES `item_troca` WRITE;
+/*!40000 ALTER TABLE `item_troca` DISABLE KEYS */;
+INSERT INTO `item_troca` VALUES (9,'5','0',3,8),(10,'5','0',4,8),(11,'1','0',7,9),(12,'1','0',8,9),(13,'3','0',9,11),(14,'1','0',10,11);
+/*!40000 ALTER TABLE `item_troca` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -708,7 +739,7 @@ CREATE TABLE `pag_cartao` (
 
 LOCK TABLES `pag_cartao` WRITE;
 /*!40000 ALTER TABLE `pag_cartao` DISABLE KEYS */;
-INSERT INTO `pag_cartao` VALUES (10,4),(11,5),(12,6),(14,6),(13,7),(15,7),(16,8),(17,9),(18,10);
+INSERT INTO `pag_cartao` VALUES (10,4),(11,5),(22,5),(12,6),(14,6),(13,7),(15,7),(16,8),(17,9),(18,10);
 /*!40000 ALTER TABLE `pag_cartao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -753,7 +784,7 @@ CREATE TABLE `pagamento` (
   PRIMARY KEY (`id_pagamento`),
   KEY `fk_pagamento_forma_pag_idx` (`id_forma_pag`),
   CONSTRAINT `fk_pagamento_forma_pag` FOREIGN KEY (`id_forma_pag`) REFERENCES `forma_pag` (`id_forma_pag`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -762,7 +793,7 @@ CREATE TABLE `pagamento` (
 
 LOCK TABLES `pagamento` WRITE;
 /*!40000 ALTER TABLE `pagamento` DISABLE KEYS */;
-INSERT INTO `pagamento` VALUES (10,227.50,7),(11,200.01,7),(12,200.80,8),(13,58.04,8),(14,70.70,9),(15,100.00,9),(16,20.00,9),(17,27.50,10),(18,27.50,10);
+INSERT INTO `pagamento` VALUES (10,227.50,7),(11,200.01,7),(12,200.80,8),(13,58.04,8),(14,70.70,9),(15,100.00,9),(16,20.00,9),(17,27.50,10),(18,27.50,10),(22,164.12,14);
 /*!40000 ALTER TABLE `pagamento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -797,7 +828,7 @@ CREATE TABLE `pedido` (
   CONSTRAINT `fk_pedido_endereco_entrega` FOREIGN KEY (`id_endereco_entrega`) REFERENCES `endereco` (`id_endereco`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_forma_pag` FOREIGN KEY (`id_forma_pag`) REFERENCES `forma_pag` (`id_forma_pag`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_pedido_frete` FOREIGN KEY (`id_frete`) REFERENCES `frete` (`id_frete`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -806,7 +837,7 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-INSERT INTO `pedido` VALUES (3,427.51,'31840183347',17,17,1,3,8,7,'2017-11-01 00:00:00'),(4,258.84,'465191606753',19,19,11,1,9,8,'2017-11-07 00:00:00'),(5,190.70,'3161645033',20,20,11,3,10,9,'2017-11-09 00:00:00'),(6,55.00,'31065042643',21,21,12,1,11,10,'2017-11-13 00:00:00');
+INSERT INTO `pedido` VALUES (3,427.51,'31840183347',17,17,1,3,8,7,'2017-11-01 00:00:00'),(4,258.84,'465191606753',19,19,11,1,9,8,'2017-11-07 00:00:00'),(5,190.70,'3161645033',20,20,11,3,10,9,'2017-11-09 00:00:00'),(6,55.00,'31065042643',21,21,12,1,11,10,'2017-11-13 00:00:00'),(7,164.12,'1315706621',1,1,1,NULL,15,14,'2017-11-22 00:00:00');
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -952,7 +983,7 @@ CREATE TABLE `status` (
   `nome` varchar(45) NOT NULL,
   `dt_cadastro` datetime NOT NULL,
   PRIMARY KEY (`id_status`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -961,7 +992,7 @@ CREATE TABLE `status` (
 
 LOCK TABLES `status` WRITE;
 /*!40000 ALTER TABLE `status` DISABLE KEYS */;
-INSERT INTO `status` VALUES (1,'Em processamento','2017-11-07 19:08:46'),(2,'Aprovada','2017-11-08 08:40:04'),(3,'Reprovada','2017-11-08 08:41:34'),(4,'Em transporte','2017-11-08 08:41:52'),(5,'Entregue','2017-11-08 08:41:56'),(6,'Em troca','2017-11-08 08:42:00');
+INSERT INTO `status` VALUES (1,'Em processamento','2017-11-07 19:08:46'),(2,'Aprovada','2017-11-08 08:40:04'),(3,'Reprovada','2017-11-08 08:41:34'),(4,'Em transporte','2017-11-08 08:41:52'),(5,'Entregue','2017-11-08 08:41:56'),(6,'Em troca','2017-11-08 08:42:00'),(7,'Trocado','2017-11-22 08:46:03');
 /*!40000 ALTER TABLE `status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -983,7 +1014,7 @@ CREATE TABLE `status_pedido` (
   KEY `fk_status_pedido_status_idx` (`id_status`),
   CONSTRAINT `fk_status_pedido_pedido` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_status_pedido_status` FOREIGN KEY (`id_status`) REFERENCES `status` (`id_status`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -992,8 +1023,39 @@ CREATE TABLE `status_pedido` (
 
 LOCK TABLES `status_pedido` WRITE;
 /*!40000 ALTER TABLE `status_pedido` DISABLE KEYS */;
-INSERT INTO `status_pedido` VALUES (1,0,3,1,'2017-11-01 00:00:00'),(2,0,4,1,'2017-11-07 00:00:00'),(5,0,4,2,'2017-11-08 00:00:00'),(6,0,3,2,'2017-11-08 00:00:00'),(7,0,5,1,'2017-11-09 00:00:00'),(8,0,5,2,'2017-11-09 00:00:00'),(9,0,4,4,'2017-11-09 00:00:00'),(10,0,5,4,'2017-11-09 00:00:00'),(11,1,5,5,'2017-11-09 00:00:00'),(12,1,4,5,'2017-11-13 00:00:00'),(13,0,6,1,'2017-11-13 00:00:00'),(14,1,6,2,'2017-11-13 00:00:00'),(15,0,3,4,'2017-11-16 00:00:00'),(16,1,3,5,'2017-11-16 00:00:00');
+INSERT INTO `status_pedido` VALUES (1,0,3,1,'2017-11-01 00:00:00'),(2,0,4,1,'2017-11-07 00:00:00'),(5,0,4,2,'2017-11-08 00:00:00'),(6,0,3,2,'2017-11-08 00:00:00'),(7,0,5,1,'2017-11-09 00:00:00'),(8,0,5,2,'2017-11-09 00:00:00'),(9,0,4,4,'2017-11-09 00:00:00'),(10,0,5,4,'2017-11-09 00:00:00'),(11,1,5,5,'2017-11-09 00:00:00'),(12,0,4,5,'2017-11-13 00:00:00'),(13,0,6,1,'2017-11-13 00:00:00'),(14,0,6,2,'2017-11-13 00:00:00'),(15,0,3,4,'2017-11-16 00:00:00'),(16,1,3,5,'2017-11-16 00:00:00'),(17,1,4,6,'2017-11-22 09:13:35'),(18,0,6,4,'2017-11-22 00:00:00'),(19,0,6,5,'2017-11-22 00:00:00'),(20,1,6,6,'2017-11-22 09:19:49'),(21,0,7,1,'2017-11-22 00:00:00'),(22,0,7,2,'2017-11-22 00:00:00'),(23,0,7,4,'2017-11-22 00:00:00'),(24,1,7,5,'2017-11-22 00:00:00');
 /*!40000 ALTER TABLE `status_pedido` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `status_troca`
+--
+
+DROP TABLE IF EXISTS `status_troca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `status_troca` (
+  `id_status_troca` int(11) NOT NULL AUTO_INCREMENT,
+  `atual` tinyint(1) NOT NULL,
+  `id_troca` int(11) NOT NULL,
+  `id_status` int(11) NOT NULL,
+  `dt_cadastro` datetime NOT NULL,
+  PRIMARY KEY (`id_status_troca`),
+  KEY `fk_status_troca_troca_idx` (`id_troca`),
+  KEY `fk_status_troca_status_idx` (`id_status`),
+  CONSTRAINT `fk_status_troca_status` FOREIGN KEY (`id_status`) REFERENCES `status` (`id_status`),
+  CONSTRAINT `fk_status_troca_troca` FOREIGN KEY (`id_troca`) REFERENCES `troca` (`id_troca`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `status_troca`
+--
+
+LOCK TABLES `status_troca` WRITE;
+/*!40000 ALTER TABLE `status_troca` DISABLE KEYS */;
+INSERT INTO `status_troca` VALUES (6,1,8,6,'2017-11-22 00:00:00'),(7,1,9,6,'2017-11-22 00:00:00'),(8,1,11,6,'2017-11-22 00:00:00');
+/*!40000 ALTER TABLE `status_troca` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1112,12 +1174,16 @@ CREATE TABLE `troca` (
   `fl_compra_toda` tinyint(4) NOT NULL,
   `id_pedido` int(11) NOT NULL,
   `id_cupom_troca` int(11) DEFAULT NULL,
+  `dt_cadastro` datetime NOT NULL,
+  `id_cliente` int(11) NOT NULL,
   PRIMARY KEY (`id_troca`),
   KEY `fk_troca_pedido_idx` (`id_pedido`),
   KEY `fk_troca_cupom_troca_idx` (`id_cupom_troca`),
+  KEY `fk_troca_cliente_idx` (`id_cliente`),
+  CONSTRAINT `fk_troca_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_troca_cupom_troca` FOREIGN KEY (`id_cupom_troca`) REFERENCES `cupom_troca` (`id_cupom_troca`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_troca_pedido` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1126,6 +1192,7 @@ CREATE TABLE `troca` (
 
 LOCK TABLES `troca` WRITE;
 /*!40000 ALTER TABLE `troca` DISABLE KEYS */;
+INSERT INTO `troca` VALUES (8,1,4,NULL,'2017-11-22 00:00:00',11),(9,1,6,NULL,'2017-11-22 00:00:00',12),(11,0,7,NULL,'2017-11-22 00:00:00',1);
 /*!40000 ALTER TABLE `troca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1140,7 +1207,7 @@ CREATE TABLE `uri` (
   `id_uri` int(11) NOT NULL AUTO_INCREMENT,
   `caminho` varchar(255) NOT NULL,
   PRIMARY KEY (`id_uri`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1149,7 +1216,7 @@ CREATE TABLE `uri` (
 
 LOCK TABLES `uri` WRITE;
 /*!40000 ALTER TABLE `uri` DISABLE KEYS */;
-INSERT INTO `uri` VALUES (18,'/categoriaForm'),(19,'/categoriaList'),(20,'/categoriaEdit'),(21,'/categoriaSalvar'),(22,'/categoriaConsultar'),(23,'/categoriaAlterar'),(24,'/categoriaExcluir'),(25,'/livroForm'),(26,'/livroFormCategorias'),(27,'/livroFormGruposPrecificacao'),(28,'/livroList'),(29,'/livroEdit'),(30,'/livroSalvar'),(31,'/livroConsultar'),(32,'/livroAlterar'),(34,'/livroExcluir'),(35,'/loginSite'),(36,'/logoutSite'),(37,'/loginForm'),(38,'/loginSalvar'),(39,'/loginConsultar'),(40,'/loginAlterar'),(41,'/clienteForm'),(42,'/clienteFormTiposEndereco'),(43,'/clienteFormTiposTelefone'),(44,'/clienteList'),(45,'/clienteEdit'),(46,'/clienteEditTiposEndereco'),(47,'/clienteEditTiposTelefone'),(48,'/clienteView'),(49,'/clienteSalvar'),(50,'/clienteAlterar'),(51,'/clienteExcluir'),(52,'/clienteConsultar'),(53,'/clienteAtivar'),(54,'/clienteInativar'),(55,'/cartaoCreditoForm'),(56,'/cartaoCreditoFormBandeiras'),(57,'/cartaoCreditoEditBandeiras'),(59,'/cartaoCreditoEdit'),(60,'/cartaoCreditoView'),(61,'/cartaoCreditoSalvar'),(62,'/cartaoCreditoAlterar'),(63,'/cartaoCreditoExcluir'),(64,'/cartaoCreditoConsultar'),(65,'/enderecoForm'),(67,'/enderecoEdit'),(69,'/enderecoSalvar'),(70,'/enderecoAlterar'),(71,'/enderecoExcluir'),(72,'/enderecoConsultar'),(73,'/carrinhoCliente'),(74,'/carrinhoAdicionar'),(75,'/carrinhoRemover'),(76,'/carrinhoAlterar'),(77,'/carrinhoConsultar'),(78,'/carrinhoPedidoRemover'),(79,'/freteCalcular'),(80,'/carrinhoPagamento'),(81,'/pagamentoSelecionarCartoes'),(82,'/pagamentoRemoverCartao'),(83,'/pagamentoAdicionarCupom'),(84,'/pagamentoRemoverCupom'),(85,'/pagamentoAdicionarValeCompras'),(86,'/pagamentoRemoverValeCompras'),(87,'/validarFormaPagamento'),(88,'/pedidoDetalhes'),(89,'/pedidoConfirmarCompra'),(90,'/pedidoView'),(91,'/statusSalvar'),(92,'/pedidoTroca'),(93,'/trocaForm');
+INSERT INTO `uri` VALUES (18,'/categoriaForm'),(19,'/categoriaList'),(20,'/categoriaEdit'),(21,'/categoriaSalvar'),(22,'/categoriaConsultar'),(23,'/categoriaAlterar'),(24,'/categoriaExcluir'),(25,'/livroForm'),(26,'/livroFormCategorias'),(27,'/livroFormGruposPrecificacao'),(28,'/livroList'),(29,'/livroEdit'),(30,'/livroSalvar'),(31,'/livroConsultar'),(32,'/livroAlterar'),(34,'/livroExcluir'),(35,'/loginSite'),(36,'/logoutSite'),(37,'/loginForm'),(38,'/loginSalvar'),(39,'/loginConsultar'),(40,'/loginAlterar'),(41,'/clienteForm'),(42,'/clienteFormTiposEndereco'),(43,'/clienteFormTiposTelefone'),(44,'/clienteList'),(45,'/clienteEdit'),(46,'/clienteEditTiposEndereco'),(47,'/clienteEditTiposTelefone'),(48,'/clienteView'),(49,'/clienteSalvar'),(50,'/clienteAlterar'),(51,'/clienteExcluir'),(52,'/clienteConsultar'),(53,'/clienteAtivar'),(54,'/clienteInativar'),(55,'/cartaoCreditoForm'),(56,'/cartaoCreditoFormBandeiras'),(57,'/cartaoCreditoEditBandeiras'),(59,'/cartaoCreditoEdit'),(60,'/cartaoCreditoView'),(61,'/cartaoCreditoSalvar'),(62,'/cartaoCreditoAlterar'),(63,'/cartaoCreditoExcluir'),(64,'/cartaoCreditoConsultar'),(65,'/enderecoForm'),(67,'/enderecoEdit'),(69,'/enderecoSalvar'),(70,'/enderecoAlterar'),(71,'/enderecoExcluir'),(72,'/enderecoConsultar'),(73,'/carrinhoCliente'),(74,'/carrinhoAdicionar'),(75,'/carrinhoRemover'),(76,'/carrinhoAlterar'),(77,'/carrinhoConsultar'),(78,'/carrinhoPedidoRemover'),(79,'/freteCalcular'),(80,'/carrinhoPagamento'),(81,'/pagamentoSelecionarCartoes'),(82,'/pagamentoRemoverCartao'),(83,'/pagamentoAdicionarCupom'),(84,'/pagamentoRemoverCupom'),(85,'/pagamentoAdicionarValeCompras'),(86,'/pagamentoRemoverValeCompras'),(87,'/validarFormaPagamento'),(88,'/pedidoDetalhes'),(89,'/pedidoConfirmarCompra'),(90,'/pedidoView'),(91,'/statusSalvar'),(92,'/pedidoTroca'),(93,'/trocaForm'),(94,'/trocaSalvar'),(95,'/trocaConsultar'),(96,'/trocaView'),(97,'/trocaList');
 /*!40000 ALTER TABLE `uri` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1177,7 +1244,7 @@ CREATE TABLE `uri_perfil` (
 
 LOCK TABLES `uri_perfil` WRITE;
 /*!40000 ALTER TABLE `uri_perfil` DISABLE KEYS */;
-INSERT INTO `uri_perfil` VALUES (1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(1,28),(2,28),(1,29),(1,30),(1,31),(2,31),(1,32),(1,34),(1,35),(2,35),(1,36),(2,36),(1,37),(2,37),(1,38),(2,38),(1,39),(2,39),(1,40),(2,40),(1,41),(2,41),(1,42),(2,42),(1,43),(2,43),(1,44),(1,45),(2,45),(1,46),(2,46),(1,47),(2,47),(1,48),(2,48),(1,49),(2,49),(1,50),(2,50),(1,51),(1,52),(2,52),(1,53),(1,54),(1,55),(2,55),(1,56),(2,56),(1,57),(2,57),(1,59),(2,59),(1,60),(2,60),(1,61),(2,61),(1,62),(2,62),(1,63),(2,63),(1,64),(2,64),(1,65),(2,65),(1,67),(2,67),(1,69),(2,69),(1,70),(2,70),(1,71),(2,71),(1,72),(2,72),(1,73),(2,73),(1,74),(2,74),(1,75),(2,75),(1,76),(2,76),(1,77),(2,77),(1,78),(2,78),(1,79),(2,79),(1,80),(2,80),(1,81),(2,81),(1,82),(2,82),(1,83),(2,83),(1,84),(2,84),(1,85),(2,85),(1,86),(2,86),(1,87),(2,87),(1,88),(2,88),(1,89),(2,89),(1,90),(2,90),(1,91),(1,92),(2,92),(1,93),(2,93);
+INSERT INTO `uri_perfil` VALUES (1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(1,28),(2,28),(1,29),(1,30),(1,31),(2,31),(1,32),(1,34),(1,35),(2,35),(1,36),(2,36),(1,37),(2,37),(1,38),(2,38),(1,39),(2,39),(1,40),(2,40),(1,41),(2,41),(1,42),(2,42),(1,43),(2,43),(1,44),(1,45),(2,45),(1,46),(2,46),(1,47),(2,47),(1,48),(2,48),(1,49),(2,49),(1,50),(2,50),(1,51),(1,52),(2,52),(1,53),(1,54),(1,55),(2,55),(1,56),(2,56),(1,57),(2,57),(1,59),(2,59),(1,60),(2,60),(1,61),(2,61),(1,62),(2,62),(1,63),(2,63),(1,64),(2,64),(1,65),(2,65),(1,67),(2,67),(1,69),(2,69),(1,70),(2,70),(1,71),(2,71),(1,72),(2,72),(1,73),(2,73),(1,74),(2,74),(1,75),(2,75),(1,76),(2,76),(1,77),(2,77),(1,78),(2,78),(1,79),(2,79),(1,80),(2,80),(1,81),(2,81),(1,82),(2,82),(1,83),(2,83),(1,84),(2,84),(1,85),(2,85),(1,86),(2,86),(1,87),(2,87),(1,88),(2,88),(1,89),(2,89),(1,90),(2,90),(1,91),(1,92),(2,92),(1,93),(2,93),(1,94),(2,94),(1,95),(1,96),(2,96),(1,97);
 /*!40000 ALTER TABLE `uri_perfil` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1190,4 +1257,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-17 12:20:37
+-- Dump completed on 2017-11-22 12:45:30

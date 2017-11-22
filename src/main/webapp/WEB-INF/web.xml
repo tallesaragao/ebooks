@@ -399,7 +399,22 @@
   
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/trocaList</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/trocaView</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
   	<url-pattern>/trocaSalvar</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/trocaConsultar</url-pattern>
   </servlet-mapping>
   
   <resource-ref>

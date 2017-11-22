@@ -56,7 +56,8 @@ public class VerificarAcesso implements IStrategy {
 									|| caminhoAcesso.equals(contexto + "/cartaoCreditoExcluir")
 									|| caminhoAcesso.equals(contexto + "/enderecoEdit")
 									|| caminhoAcesso.equals(contexto + "/enderecoExcluir")
-									|| caminhoAcesso.equals(contexto + "/pedidoView")) {
+									|| caminhoAcesso.equals(contexto + "/pedidoView")
+									|| caminhoAcesso.equals(contexto + "/trocaView")) {
 								String id = request.getParameter("idCliente");
 								Cliente cliente = login.getCliente();
 								if(cliente != null) {

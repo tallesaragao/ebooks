@@ -79,7 +79,18 @@ public class TrocaVH implements IViewHelper {
 				entidade = troca;
 			}
 			if(operacao.equals("CONSULTAR")) {
-				
+				Troca troca = new Troca();
+				String idTroca = request.getParameter("idTroca");
+				String idCliente = request.getParameter("idCliente");
+				if(idCliente != null && !idCliente.equals("")) {
+					Cliente cliente = new Cliente();
+					cliente.setId(Long.valueOf(idCliente));
+					troca.setCliente(cliente);
+				}
+				if(idTroca != null && !idTroca.equals("")) {
+					troca.setId(Long.valueOf(idTroca));
+				}
+				entidade = troca;
 			}
 		}		
 		return entidade;
@@ -92,6 +103,9 @@ public class TrocaVH implements IViewHelper {
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/trocaForm")) {
 			request.getRequestDispatcher("WEB-INF/jsp/troca/form.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/trocaList")) {
+			request.getRequestDispatcher("WEB-INF/jsp/troca/list.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/trocaSalvar")) {
 			if(object != null) {
@@ -107,7 +121,20 @@ public class TrocaVH implements IViewHelper {
 				request.getRequestDispatcher("WEB-INF/jsp/troca/success.jsp").forward(request, response);
 			}
 		}
-
+		if(uri.equals(contexto + "/trocaConsultar")) {
+			if(object != null) {
+				List<Troca> consulta = (List<Troca>) object;
+				request.setAttribute("consulta", consulta);
+			}
+			request.getRequestDispatcher("WEB-INF/jsp/troca/list.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/trocaView")) {
+			if(object != null) {
+				List<EntidadeDominio> consulta = (List<EntidadeDominio>) object;
+				request.setAttribute("troca", consulta.get(0));
+			}
+			request.getRequestDispatcher("WEB-INF/jsp/troca/tracking.jsp").forward(request, response);
+		}
 	}
 
 }

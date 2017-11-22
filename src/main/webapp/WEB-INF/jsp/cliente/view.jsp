@@ -338,7 +338,7 @@
 											<td>
 												<button type="submit" data-toggle="tooltip" title="Detalhes" name="detalhes"
 												id="btnDetalhesPedido${pedido.id}"class="btn btn-sm btn-default btn-icone" method="get" 
-												formaction="pedidoView?operacao=CONSULTAR&idPedido=${pedido.id}&idCliente=${pedido.cliente.id}">
+												formaction="trocaView?operacao=CONSULTAR&idTroca=${troca.id}&idCliente=${troca.cliente.id}">
 													<span class="glyphicon glyphicon-eye-open"></span>
 												</button>
 											</td>
