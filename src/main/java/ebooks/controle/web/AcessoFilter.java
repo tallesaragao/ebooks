@@ -39,7 +39,7 @@ public class AcessoFilter implements Filter {
 		Acesso acesso = new Acesso();
 		acesso.setRequest(request);
 		acesso.setLogin(login);
-		Object obj = command.executar(acesso);
+ 		Object obj = command.executar(acesso);
 		if(obj != null) {
 			String mensagem = (String) obj;
 			httpRequest.getRequestDispatcher("404").forward(request, response);
@@ -49,7 +49,7 @@ public class AcessoFilter implements Filter {
 				chain.doFilter(request, response);
 			}
 			else {
-				String erro = "Acesso negado. Faça login para continuar";
+				String erro = "Faça login para continuar";
 				httpRequest.setAttribute("erro", erro);
 				httpRequest.getRequestDispatcher("loginSite").forward(httpRequest, response);
 			}

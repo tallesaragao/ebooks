@@ -115,6 +115,12 @@
 											</a>
 										</dd>
 									</c:if>
+									<c:if test="${statusPedido.status.nome eq 'Em troca'}">
+										<dd>
+											${statusPedido.status.nome} - 
+											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
+										</dd>
+									</c:if>
 								</c:if>
 							</c:forEach>
 						</dl>

@@ -3,8 +3,10 @@ package ebooks.negocio.impl;
 import java.sql.SQLException;
 import java.util.List;
 
+import ebooks.dao.ClienteDAO;
 import ebooks.dao.IDAO;
 import ebooks.dao.PedidoDAO;
+import ebooks.modelo.Cliente;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.ItemPedido;
 import ebooks.modelo.ItemTroca;
@@ -24,22 +26,46 @@ public class ValidarTroca implements IStrategy {
 			if(pedido != null) {
 				dao = new PedidoDAO();
 				try {
-					List<EntidadeDominio> consulta = dao.consultar(entidade);
+					List<EntidadeDominio> consulta = dao.consultar(pedido);
 					if(!consulta.isEmpty()) {
 						pedido = (Pedido) consulta.get(0);
 						troca.setPedido(pedido);
-						List<ItemPedido> itensPedido = pedido.getItensPedido();
-						List<ItemTroca> itensTroca = troca.getItensTroca();
-						for(ItemTroca itemTroca : itensTroca) {
-							long idItemTroca = itemTroca.getItemPedido().getId();
-							for(ItemPedido itemPedido : itensPedido) {
-								long idItemPedido = itemPedido.getId();
-								if(idItemTroca == idItemPedido) {
-									if(itemTroca.getQuantidadeRetornavel() > itemPedido.getQuantidade()) {
-										sb.append("Quantidade a trocar não pode ser maior que a quantidade comprada:");
+						dao = new ClienteDAO();
+						Cliente cliente = troca.getCliente();
+						consulta = dao.consultar(cliente);
+						if(!consulta.isEmpty()) {
+							List<ItemPedido> itensPedido = pedido.getItensPedido();
+							List<ItemTroca> itensTroca = troca.getItensTroca();
+							if(!itensTroca.isEmpty()) {
+								for(ItemTroca itemTroca : itensTroca) {
+									long idItemTroca = itemTroca.getItemPedido().getId();
+									for(ItemPedido itemPedido : itensPedido) {
+										long idItemPedido = itemPedido.getId();
+										if(idItemTroca == idItemPedido) {
+											if(itemTroca.getQuantidadeTrocada() > itemPedido.getQuantidade()) {
+												sb.append("Quantidade a trocar não pode ser maior que a quantidade comprada:");
+											}
+										}
 									}
 								}
 							}
+							else {
+								if(troca.getCompraToda()) {
+									for(ItemPedido itemPedido : itensPedido) {
+										ItemTroca itemTroca = new ItemTroca();
+										itemTroca.setItemPedido(itemPedido);
+										itemTroca.setQuantidadeTrocada(itemPedido.getQuantidade());
+										itemTroca.setTroca(troca);
+										itensTroca.add(itemTroca);
+									}
+								}
+								else {
+									sb.append("Você deve selecionar a compra ou itens para solicitar uma troca:");
+								}
+							}
+						}
+						else {
+							sb.append("Cliente não encontrado:");
 						}
 					}
 					else {

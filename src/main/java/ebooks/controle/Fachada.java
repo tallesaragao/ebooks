@@ -43,6 +43,7 @@ import ebooks.negocio.impl.AdicionarLivroCarrinho;
 import ebooks.negocio.impl.AdicionarValeComprasPagamento;
 import ebooks.negocio.impl.AlterarQuantidadeItemCarrinho;
 import ebooks.negocio.impl.AlterarStatusAtualPedido;
+import ebooks.negocio.impl.AlterarStatusCompraEmTroca;
 import ebooks.negocio.impl.AtivadorClientePrimeiroCadastro;
 import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
 import ebooks.negocio.impl.CalcularFrete;
@@ -63,6 +64,7 @@ import ebooks.negocio.impl.ValidarCamposLivro;
 import ebooks.negocio.impl.ValidarCamposLogin;
 import ebooks.negocio.impl.ValidarConsistenciaFrete;
 import ebooks.negocio.impl.ValidarFormaPagamento;
+import ebooks.negocio.impl.ValidarTroca;
 import ebooks.negocio.impl.VerificarAcesso;
 import ebooks.negocio.impl.VerificarDisponibilidadeLivros;
 import ebooks.negocio.impl.VerificarExistenciaCliente;
@@ -110,6 +112,8 @@ public class Fachada implements IFachada {
 		VerificarDisponibilidadeLivros verDispLivros = new VerificarDisponibilidadeLivros();
 		AlterarStatusAtualPedido altStatusAtualPed = new AlterarStatusAtualPedido();
 		VerificarAcesso verAcesso = new VerificarAcesso();
+		ValidarTroca valTroca = new ValidarTroca();
+		AlterarStatusCompraEmTroca altStatusCompTroca = new AlterarStatusCompraEmTroca();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -235,7 +239,8 @@ public class Fachada implements IFachada {
 		
 		Map<String, List<IStrategy>> contextoTroca = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lTrocaSalvar = new ArrayList<>();
-		lTrocaSalvar.add(altStatusAtualPed);
+		lTrocaSalvar.add(valTroca);
+		lTrocaSalvar.add(compDtCad);
 		List<IStrategy> lTrocaAlterar = new ArrayList<>();
 		List<IStrategy> lTrocaExcluir = new ArrayList<>();
 		List<IStrategy> lTrocaConsultar = new ArrayList<>();
@@ -281,7 +286,6 @@ public class Fachada implements IFachada {
 		requisitos.put(StatusPedido.class.getName(), contextoStatusPedido);
 		requisitos.put(Acesso.class.getName(), contextoAcesso);
 		requisitos.put(Troca.class.getName(), contextoTroca);
-		
 
 		Map<String, List<IStrategy>> contextoCarrinhoAfter = new HashMap<>();
 		List<IStrategy> lCarrinhoAfterSalvar = new ArrayList<>();
@@ -292,9 +296,21 @@ public class Fachada implements IFachada {
 		contextoCarrinhoAfter.put(ALTERAR, lCarrinhoAfterAlterar);
 		contextoCarrinhoAfter.put(EXCLUIR, lCarrinhoAfterExcluir);
 		contextoCarrinhoAfter.put(CONSULTAR, lCarrinhoAfterConsultar);
+
+		Map<String, List<IStrategy>> contextoTrocaAfter = new HashMap<>();
+		List<IStrategy> lTrocaAfterSalvar = new ArrayList<>();
+		lTrocaAfterSalvar.add(altStatusCompTroca);
+		List<IStrategy> lTrocaAfterAlterar = new ArrayList<>();
+		List<IStrategy> lTrocaAfterExcluir = new ArrayList<>();
+		List<IStrategy> lTrocaAfterConsultar = new ArrayList<>();
+		contextoTrocaAfter.put(SALVAR, lTrocaAfterSalvar);
+		contextoTrocaAfter.put(ALTERAR, lTrocaAfterAlterar);
+		contextoTrocaAfter.put(EXCLUIR, lTrocaAfterExcluir);
+		contextoTrocaAfter.put(CONSULTAR, lTrocaAfterConsultar);
 		
 		requisitosAfter = new HashMap<String, Map<String, List<IStrategy>>>();
 		requisitosAfter.put(Carrinho.class.getName(), contextoCarrinhoAfter);
+		requisitosAfter.put(Troca.class.getName(), contextoTrocaAfter);
 		
 		daos = new HashMap<String, IDAO>();
 		daos.put(Categoria.class.getName(), new CategoriaDAO());

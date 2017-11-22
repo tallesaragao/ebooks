@@ -31,6 +31,8 @@
 			</div>
 		</c:if>
 		<form class="form" action="#" method="post">
+			<input type="hidden" name="idPedido" value="${idPedido}"/>
+			<input type="hidden" name="idCliente" value="${idCliente}"/>
 			<fieldset>
 				<legend>
 					<span class="legend-logo glyphicon glyphicon-shopping-cart"></span> Informações do pedido
@@ -44,7 +46,8 @@
 							<dd>
 								<div class="checkbox">
 									<label for="selecionarCompra" class="control-label">
-										<input type="checkbox" id="selecionarCompra" name="compraToda" value="true"/>
+										<input type="checkbox" id="selecionarCompra" class="select-compra" 
+										name="compraToda" value="true"/>
 										Trocar toda a compra						
 									</label>
 								</div>
@@ -64,8 +67,8 @@
 						<div class="col-xs-6 col-md-4">
 							<div class="checkbox">
 								<label for="selecionarItem${item.id}" class="control-label">
-									<input type="checkbox" id="selecionarItem${item.id}"
-									name="item${item.id}" value="true"/> ${item.livro.titulo} 
+									<input type="checkbox" id="selecionarItem${item.id}" class="selectItem"
+									name="item${item.id}" value="true"/> ${item.livro.titulo}
 									- (${item.quantidade} un) - <fmt:formatNumber value="${item.subtotal}" type="currency"/>					
 								</label>
 							</div>
@@ -73,12 +76,14 @@
 						<div class="col-xs-2">
 							<div class="form-group">
 								<label for="quantidade${item.id}" class="control-label">Quantidade</label>
-								<input type="number" name="quantidade${item.id}" class="form-control" min="1"
-								max=${item.quantidade } value="${item.quantidade}">
+								<input type="number" min="1" max=${item.quantidade } class="form-control selectItem"
+								id="quantidade${item.id}" name="quantidade${item.id}" disabled="disabled" 
+								value="${item.quantidade}">
 							</div>
 						</div>
 					</div>
-				</c:forEach>				
+				</c:forEach>
+			</fieldset>			
 			<div class="row">
 				<div class="col-xs-12">				
 					<button type="submit" name="operacao" value="SALVAR" formaction="trocaSalvar" class="btn btn-success">
@@ -93,5 +98,6 @@
 	<script src="resources/bootstrap/js/bootstrap.js"></script>
 	<script src="resources/js/jquery.mask.js"></script>
 	<script src="resources/js/ebooks.js"></script>
+	<script src="resources/js/trocaForm.js"></script>
 </body>
 </html>

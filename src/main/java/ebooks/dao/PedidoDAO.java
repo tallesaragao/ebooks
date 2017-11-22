@@ -33,7 +33,7 @@ public class PedidoDAO extends AbstractDAO {
 		try {
 			conexao.setAutoCommit(false);
 			String sql = "insert into pedido(valor_total, numero, id_endereco_entrega, id_endereco_cobranca, id_cliente,"
-						+ " id_cupom_promo, id_frete, id_forma_pag, dt_cadastro) values(?,?,?,?,?,?,?,?,?)";
+						+ " id_frete, id_forma_pag, dt_cadastro) values(?,?,?,?,?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setBigDecimal(1, pedido.getValorTotal());
 			ps.setString(2, pedido.getNumero());
@@ -41,16 +41,24 @@ public class PedidoDAO extends AbstractDAO {
 			// FALTA DEFINIR O ENDEREÇO DE COBRANÇA AO CADASTRAR O CLIENTE (ENDEREÇO PRINCIPAL) - SOLUÇÃO TEMPORÁRIA
 			ps.setLong(4, pedido.getEnderecoCobranca().getId());
 			ps.setLong(5, pedido.getCliente().getId());
-			ps.setLong(6, pedido.getCupomPromocional().getId());
-			ps.setLong(7, pedido.getFrete().getId());
-			ps.setLong(8, pedido.getFormaPagamento().getId());
-			ps.setDate(9, new Date(pedido.getDataCadastro().getTime()));
+			ps.setLong(6, pedido.getFrete().getId());
+			ps.setLong(7, pedido.getFormaPagamento().getId());
+			ps.setDate(8, new Date(pedido.getDataCadastro().getTime()));
 			ps.execute();
 			ResultSet generatedKeys = ps.getGeneratedKeys();
 			while (generatedKeys.next()) {
 				pedido.setId(generatedKeys.getLong(1));
 			}
 			ps.close();
+			
+			if(pedido.getCupomPromocional() != null) {
+				sql = "update pedido set id_cupom_promo=? where id_pedido=?";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, pedido.getCupomPromocional().getId());
+				ps.setLong(2, pedido.getId());
+				ps.execute();
+				ps.close();
+			}
 			
 			dao = new ItemPedidoDAO();
 			boolean itensSalvos = false;

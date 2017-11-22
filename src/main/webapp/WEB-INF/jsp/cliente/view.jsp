@@ -296,6 +296,60 @@
 					</div>
 				</div>	
 			</fieldset>
+			<fieldset>
+				<legend>
+					<span class="legend-logo glyphicon glyphicon-transfer"></span> Trocas
+				</legend>
+				<div class="row">
+					<div class="table-responsive">
+						<div class="col-sm-11 col-sm-12 col-md-12">
+							<table class="table table-striped table-condensed">
+								<thead>
+									<tr>
+										<th>Nº PEDIDO</th>
+										<th>ITENS</th>
+										<th>DATA SOLICITAÇÃO</th>
+										<th>STATUS</th>
+										<th>
+											<span class="glyphicon glyphicon-cog icone-engrenagem"></span> AÇÕES
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${cliente.trocas}" var="troca">
+										<tr>
+											<td>${troca.pedido.numero}</td>
+											<td>
+												<c:forEach items="${troca.itensTroca}" var="item" varStatus="status">
+													<span>
+														${item.itemPedido.livro.titulo} (${item.quantidadeTrocada} un)
+														<c:if test="${!status.last}">, </c:if>
+													</span>
+												</c:forEach>
+											</td>											
+											<td><fmt:formatDate value="${troca.dataCadastro}" pattern="dd/MM/yyyy"/></td>
+											<td>
+												<c:forEach items="${troca.statusesTroca}" var="statusTroca">
+													<c:if test="${statusTroca.atual}">
+														${statusTroca.status.nome}
+													</c:if>
+												</c:forEach>
+											</td>					
+											<td>
+												<button type="submit" data-toggle="tooltip" title="Detalhes" name="detalhes"
+												id="btnDetalhesPedido${pedido.id}"class="btn btn-sm btn-default btn-icone" method="get" 
+												formaction="pedidoView?operacao=CONSULTAR&idPedido=${pedido.id}&idCliente=${pedido.cliente.id}">
+													<span class="glyphicon glyphicon-eye-open"></span>
+												</button>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>	
+			</fieldset>
 		</div>
 	</form>
 	<script src="resources/js/jquery-3.1.1.js"></script>

@@ -3,11 +3,20 @@ package ebooks.modelo;
 import java.util.List;
 
 public class Troca extends EntidadeDominio {
+	private Cliente cliente;
 	private Pedido pedido;
 	private Boolean compraToda;
 	private List<ItemTroca> itensTroca;
 	private CupomTroca cupomTroca;
-	private StatusTroca status;
+	private List<StatusTroca> statusesTroca;
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 
 	public Pedido getPedido() {
 		return pedido;
@@ -41,11 +50,12 @@ public class Troca extends EntidadeDominio {
 		this.cupomTroca = cupomTroca;
 	}
 
-	public StatusTroca getStatus() {
-		return status;
+	public List<StatusTroca> getStatusesTroca() {
+		return statusesTroca;
 	}
 
-	public void setStatus(StatusTroca status) {
-		this.status = status;
+	public void setStatusesTroca(List<StatusTroca> statusesTroca) {
+		this.statusesTroca = statusesTroca;
 	}
+
 }

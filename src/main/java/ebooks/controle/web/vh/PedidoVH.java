@@ -80,6 +80,10 @@ public class PedidoVH implements IViewHelper {
 				List<EntidadeDominio> consulta = (List<EntidadeDominio>) object;
 				request.setAttribute("pedido", consulta.get(0));
 			}
+			String idPedido = request.getParameter("idPedido");
+			String idCliente = request.getParameter("idCliente");
+			request.setAttribute("idPedido", idPedido);
+			request.setAttribute("idCliente", idCliente);
 			request.getRequestDispatcher("trocaForm?operacao=").forward(request, response);
 		}
 	}

@@ -15,6 +15,7 @@ import ebooks.modelo.Login;
 import ebooks.modelo.Pedido;
 import ebooks.modelo.Telefone;
 import ebooks.modelo.TipoTelefone;
+import ebooks.modelo.Troca;
 
 public class ClienteDAO extends AbstractDAO {
 
@@ -338,6 +339,7 @@ public class ClienteDAO extends AbstractDAO {
 			CartaoCreditoDAO ccDAO = new CartaoCreditoDAO();
 			EnderecoDAO endDAO = new EnderecoDAO();
 			PedidoDAO pedidoDAO = new PedidoDAO();
+			TrocaDAO trocaDAO = new TrocaDAO();
 			for(Cliente cliente : clientes) {
 				CartaoCredito cartaoCredito = new CartaoCredito();
 				cartaoCredito.setCliente(cliente);
@@ -365,6 +367,15 @@ public class ClienteDAO extends AbstractDAO {
 					pedidos.add((Pedido) ent);
 				}
 				cliente.setPedidos(pedidos);
+				
+				Troca troca = new Troca();
+				troca.setCliente(cliente);
+				List<EntidadeDominio> trocasConsulta = trocaDAO.consultar(troca);
+				List<Troca> trocas = new ArrayList<>();
+				for(EntidadeDominio ent : trocasConsulta) {
+					trocas.add((Troca) ent);
+				}
+				cliente.setTrocas(trocas);
 			}
 		}
 		catch(SQLException e) {

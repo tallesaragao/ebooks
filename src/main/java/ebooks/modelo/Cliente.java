@@ -13,6 +13,7 @@ public class Cliente extends PessoaFisica {
 	private List<Ativacao> ativacoes;
 	private List<Inativacao> inativacoes;
 	private List<Pedido> pedidos;
+	private List<Troca> trocas;
 
 	public Character getGenero() {
 		return genero;
@@ -92,5 +93,13 @@ public class Cliente extends PessoaFisica {
 
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
+	}
+
+	public List<Troca> getTrocas() {
+		return trocas;
+	}
+
+	public void setTrocas(List<Troca> trocas) {
+		this.trocas = trocas;
 	}
 }
