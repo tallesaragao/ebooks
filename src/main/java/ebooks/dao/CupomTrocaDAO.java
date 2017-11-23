@@ -19,13 +19,18 @@ public class CupomTrocaDAO extends AbstractDAO {
 		try {
 			conexao.setAutoCommit(false);
 			String sql = "insert into cupom_troca(codigo, valor, validade, ativo) values(?,?,?,?)";
-			PreparedStatement ps = conexao.prepareStatement(sql);
+			PreparedStatement ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, cupomTroca.getCodigo());
 			ps.setBigDecimal(2, cupomTroca.getValor());
 			ps.setDate(3, new Date(cupomTroca.getValidade().getTime()));
 			ps.setBoolean(4, cupomTroca.getAtivo());
 			ps.execute();
+			ResultSet generatedKeys = ps.getGeneratedKeys();
+			while (generatedKeys.next()) {
+				entidade.setId(generatedKeys.getLong(1));
+			}
 			ps.close();
+			conexao.commit();
 			return true;
 		}
 		catch(SQLException e) {
@@ -60,6 +65,7 @@ public class CupomTrocaDAO extends AbstractDAO {
 			ps.setLong(5, cupomTroca.getId());
 			ps.execute();
 			ps.close();
+			conexao.commit();
 			return true;
 		}
 		catch(SQLException e) {

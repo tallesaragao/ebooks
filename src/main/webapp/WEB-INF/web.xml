@@ -417,6 +417,16 @@
   	<url-pattern>/trocaConsultar</url-pattern>
   </servlet-mapping>
   
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/trocaAprovar</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/statusTrocaSalvar</url-pattern>
+  </servlet-mapping>  
+  
   <resource-ref>
     <description>E-books LES</description>
     <res-ref-name>jdbc/ebooks_les</res-ref-name>

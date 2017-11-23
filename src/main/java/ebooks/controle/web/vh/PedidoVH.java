@@ -32,12 +32,6 @@ public class PedidoVH implements IViewHelper {
 			if(operacao.equals("CONSULTAR")) {
 				Pedido pedido = new Pedido();
 				String idPedido = request.getParameter("idPedido");
-				String idCliente = request.getParameter("idCliente");
-				if(idCliente != null && !idCliente.equals("")) {
-					Cliente cliente = new Cliente();
-					cliente.setId(Long.valueOf(idCliente));
-					pedido.setCliente(cliente);
-				}
 				if(idPedido != null && !idPedido.equals("")) {
 					pedido.setId(Long.valueOf(idPedido));
 				}

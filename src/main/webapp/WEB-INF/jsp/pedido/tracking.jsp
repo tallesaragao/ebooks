@@ -38,7 +38,7 @@
 		<div class="container">
 			<fieldset>
 				<legend>
-					<span class="legend-logo glyphicon glyphicon-usd"></span> Informações da compra
+					<span class="legend-logo glyphicon glyphicon-shopping-cart"></span> Informações da compra
 				</legend>
 				<div class="row">
 					<fmt:setLocale value="pt-BR"/>
@@ -48,6 +48,10 @@
 							<dd>${pedido.numero}</dd>
 							<dt>VALOR TOTAL</dt>
 							<dd><fmt:formatNumber value="${pedido.valorTotal}" type="currency"/></dd>
+							<c:if test="${login.perfilAcesso.nome eq 'Administrador' }">
+								<dt>CLIENTE</dt>
+								<dd>${pedido.cliente.nome}</dd>
+							</c:if>
 							<dt>DATA DA COMPRA</dt>
 							<dd><fmt:formatDate value="${pedido.dataCadastro}" pattern="dd/MM/yyyy"/></dd>
 							<dt>ENTREGA (PREVISÃO)</dt>
@@ -129,7 +133,7 @@
 			</fieldset>
 			<fieldset>
 				<legend>
-					<span class="legend-logo glyphicon glyphicon-shopping-cart"></span> Informações dos produtos
+					<span class="legend-logo glyphicon glyphicon-book"></span> Informações dos produtos
 				</legend>
 				<div class="row">
 					<fmt:setLocale value="pt-BR"/>
@@ -188,7 +192,7 @@
 			
 			<fieldset>
 				<legend>
-					<span class="legend-logo glyphicon glyphicon-tags"></span> Informações do pagamento
+					<span class="legend-logo glyphicon glyphicon-usd"></span> Informações do pagamento
 				</legend>
 				<div class="row">
 					<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">

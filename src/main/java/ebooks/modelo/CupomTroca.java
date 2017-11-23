@@ -8,6 +8,7 @@ public class CupomTroca extends EntidadeDominio {
 	private BigDecimal valor;
 	private Date validade;
 	private Boolean ativo;
+	private Cliente cliente;
 
 	public String getCodigo() {
 		return codigo;
@@ -39,5 +40,13 @@ public class CupomTroca extends EntidadeDominio {
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 }

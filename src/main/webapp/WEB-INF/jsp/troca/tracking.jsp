@@ -46,6 +46,10 @@
 						<dl class="dl-horizontal">
 							<dt>Nº DO PEDIDO</dt>
 							<dd>${troca.pedido.numero}</dd>
+							<c:if test="${login.perfilAcesso.nome eq 'Administrador' }">
+								<dt>CLIENTE</dt>
+								<dd>${troca.pedido.cliente.nome}</dd>
+							</c:if>
 							<dt>DATA SOLICITAÇÃO</dt>
 							<dd><fmt:formatDate value="${troca.dataCadastro}" pattern="dd/MM/yyyy"/></dd>
 							<dt>STATUS</dt>
@@ -64,11 +68,24 @@
 										</dd>
 										<c:if test="${login.perfilAcesso.nome eq 'Administrador'}">
 											<dd>
-												<a href="statusTrocaSalvar?operacao=SALVAR&status=Trocado&idPedido=${troca.id}">
+												<a href="trocaAprovar?operacao=CONSULTAR&idTroca=
+												${troca.id}&idCliente=${troca.cliente.id}">
 													Aprovar troca
 												</a>
 											</dd>
 										</c:if>
+									</c:if>
+									<c:if test="${statusTroca.status.nome eq 'Trocado'}">
+										<dd>
+											${statusTroca.status.nome} - 
+											<fmt:formatDate value="${statusTroca.dataCadastro}" pattern="dd/MM/yyyy"/>
+										</dd>
+										<fmt:setLocale value="pt-BR"/>
+										<dd>
+											OBS: Foi gerado um cupom de troca, com código ${troca.cupomTroca.codigo}
+											e valor de <fmt:formatNumber value="${troca.cupomTroca.valor}" type="currency"/>,
+											podendo ser utilizado no pagamento de compras futuras.
+										</dd>
 									</c:if>
 								</c:if>
 							</c:forEach>

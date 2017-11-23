@@ -28,6 +28,7 @@ import ebooks.controle.web.vh.LoginVH;
 import ebooks.controle.web.vh.PagamentoVH;
 import ebooks.controle.web.vh.PedidoVH;
 import ebooks.controle.web.vh.StatusPedidoVH;
+import ebooks.controle.web.vh.StatusTrocaVH;
 import ebooks.controle.web.vh.TipoEnderecoVH;
 import ebooks.controle.web.vh.TipoTelefoneVH;
 import ebooks.controle.web.vh.TrocaVH;
@@ -128,6 +129,8 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/trocaView", new TrocaVH());
 		vhs.put(contextoApp + "/trocaSalvar", new TrocaVH());
 		vhs.put(contextoApp + "/trocaConsultar", new TrocaVH());
+		vhs.put(contextoApp + "/trocaAprovar", new TrocaVH());
+		vhs.put(contextoApp + "/statusTrocaSalvar", new StatusTrocaVH());
 	}
 		
 	@Override

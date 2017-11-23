@@ -80,8 +80,44 @@ public class TrocaDAO extends AbstractDAO {
 
 	@Override
 	public boolean alterar(EntidadeDominio entidade) throws SQLException {
-		//Implementar
-		return false;
+		Troca troca = (Troca) entidade;
+		List<EntidadeDominio> consulta = consultar(troca);
+		Troca trocaOld = new Troca();
+		if(!consulta.isEmpty()) {
+			trocaOld = (Troca) consulta.get(0);
+		}
+		Pedido pedido = troca.getPedido();
+		IDAO dao;
+		conexao = factory.getConnection();
+		try {
+			conexao.setAutoCommit(false);
+			String sql = "update troca set fl_compra_toda=?, id_pedido=?, id_cliente=?,"
+						+ " dt_cadastro=?, id_cupom_troca=? where id_troca=?";
+			PreparedStatement ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			ps.setBoolean(1, troca.getCompraToda() == null ? trocaOld.getCompraToda() : troca.getCompraToda());
+			ps.setLong(2, troca.getPedido() == null ? trocaOld.getPedido().getId() : troca.getPedido().getId());
+			ps.setLong(3, troca.getCliente() == null ? trocaOld.getCliente().getId() : troca.getCliente().getId());
+			ps.setDate(4, new Date(troca.getDataCadastro() == null ? 
+					trocaOld.getDataCadastro().getTime() : troca.getDataCadastro().getTime()));
+			ps.setLong(5, troca.getCupomTroca().getId());
+			ps.setLong(6, troca.getId());
+			ps.execute();
+			ResultSet generatedKeys = ps.getGeneratedKeys();
+			while (generatedKeys.next()) {
+				entidade.setId(generatedKeys.getLong(1));
+			}
+			ps.close();
+			conexao.commit();
+			return true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			conexao.rollback();
+			return false;
+		}
+		finally {
+			conexao.close();
+		}
 	}
 
 	@Override
@@ -116,9 +152,11 @@ public class TrocaDAO extends AbstractDAO {
 				Troca troca = new Troca();
 				troca.setId(rs.getLong("t.id_troca"));
 				
-				Cliente cliente = new Cliente();
-				cliente.setId(rs.getLong("t.id_cliente"));
-				troca.setCliente(cliente);
+				if(trocaConsulta.getCliente() != null) {
+					Cliente cliente = new Cliente();
+					cliente.setId(rs.getLong("t.id_cliente"));
+					troca.setCliente(cliente);
+				}
 				
 				Pedido pedido = new Pedido();
 				pedido.setId(rs.getLong("t.id_pedido"));
@@ -159,7 +197,7 @@ public class TrocaDAO extends AbstractDAO {
 					if(!consultaEntidades.isEmpty()) {
 						Pedido pedidoConsulta = (Pedido) consultaEntidades.get(0);
 						troca.setPedido(pedidoConsulta);
-						troca.setCliente(pedido.getCliente());
+						troca.setCliente(pedidoConsulta.getCliente());
 					}
 				}
 				

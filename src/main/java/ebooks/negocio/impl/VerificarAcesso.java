@@ -62,7 +62,7 @@ public class VerificarAcesso implements IStrategy {
 								Cliente cliente = login.getCliente();
 								if(cliente != null) {
 									long idCliente = cliente.getId();
-									if(idCliente == Long.valueOf(id)) {
+									if(id != null && idCliente == Long.valueOf(id)) {
 										acessivel = true;
 										break;
 									}

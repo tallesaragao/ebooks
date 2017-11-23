@@ -81,12 +81,6 @@ public class TrocaVH implements IViewHelper {
 			if(operacao.equals("CONSULTAR")) {
 				Troca troca = new Troca();
 				String idTroca = request.getParameter("idTroca");
-				String idCliente = request.getParameter("idCliente");
-				if(idCliente != null && !idCliente.equals("")) {
-					Cliente cliente = new Cliente();
-					cliente.setId(Long.valueOf(idCliente));
-					troca.setCliente(cliente);
-				}
 				if(idTroca != null && !idTroca.equals("")) {
 					troca.setId(Long.valueOf(idTroca));
 				}
@@ -134,6 +128,16 @@ public class TrocaVH implements IViewHelper {
 				request.setAttribute("troca", consulta.get(0));
 			}
 			request.getRequestDispatcher("WEB-INF/jsp/troca/tracking.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/trocaAprovar")) {
+			if(object != null) {
+				List<Troca> consulta = (List<Troca>) object;
+				if(!consulta.isEmpty()) {
+					Troca troca = (Troca) consulta.get(0);
+					request.setAttribute("troca", troca);
+				}
+			}
+			request.getRequestDispatcher("WEB-INF/jsp/troca/approve.jsp").forward(request, response);
 		}
 	}
 
