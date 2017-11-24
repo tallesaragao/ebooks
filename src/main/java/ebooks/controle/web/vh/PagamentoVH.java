@@ -43,7 +43,7 @@ public class PagamentoVH implements IViewHelper {
 		if(operacao.equals("SALVAR")) {
 			
 			String codigoPromocional = request.getParameter("codigoPromocional");
-			String codigoValeCompras = request.getParameter("codigoValeCompras");
+			String[] idsCuponsTroca = request.getParameterValues("cuponsTroca");
 			String[] idsCartoesCredito = request.getParameterValues("cartoesCredito");
 			List<Pagamento> pagamentos = new ArrayList<>();
 			
@@ -65,32 +65,33 @@ public class PagamentoVH implements IViewHelper {
 					pagamentos.add(pagCartao);
 				}
 			}
+			
+			if(idsCuponsTroca != null && idsCuponsTroca.length > 0) {
+				for(String idCupom : idsCuponsTroca) {
+					CupomTroca cupom = new CupomTroca();
+					cupom.setId(Long.valueOf(idCupom));
+					PagamentoValeCompras pagamentoValeCompras = new PagamentoValeCompras();
+					pagamentoValeCompras.setCupomTroca(cupom);
+					String valorCupom = request.getParameter("valorCupom" + idCupom);
+					if(valorCupom != null) {
+						if(!valorCupom.equals(""))	{
+							pagamentoValeCompras.setValorPago(new BigDecimal(valorCupom));
+						}
+						else {
+							pagamentoValeCompras.setValorPago(new BigDecimal("0.0"));
+						}
+					}
+					pagamentos.add(pagamentoValeCompras);
+				}
+			}
+			
 			if(codigoPromocional != null && !codigoPromocional.equals("")) {
 				CupomPromocional cupomPromocional = new CupomPromocional();
 				cupomPromocional.setCodigo(codigoPromocional);
 				pedido.setCupomPromocional(cupomPromocional);
 				carrinho.setPedido(pedido);
 			}
-			if(codigoValeCompras != null && !codigoValeCompras.equals("")) {
-				CupomTroca cupomTroca = new CupomTroca();
-				cupomTroca.setCodigo(codigoValeCompras);
-				PagamentoValeCompras pagamentoValeCompras = new PagamentoValeCompras();
-				pagamentoValeCompras.setCupomTroca(cupomTroca);
-				String idValeCompras = request.getParameter("idValeCompras");
-				if(idValeCompras != null) {
-					cupomTroca.setId(Long.valueOf(idValeCompras));
-				}
-				String valorVale = request.getParameter("valorValeCompras" + idValeCompras);
-				if(valorVale != null) {
-					if(!valorVale.equals("")) {
-						pagamentoValeCompras.setValorPago(new BigDecimal(valorVale));
-					}
-					else {
-						pagamentoValeCompras.setValorPago(new BigDecimal("0.0"));
-					}
-				}
-				pagamentos.add(pagamentoValeCompras);
-			}
+			
 			FormaPagamento formaPagamento = new FormaPagamento();
 			formaPagamento.setPagamentos(pagamentos);
 			pedido.setFormaPagamento(formaPagamento);
@@ -146,6 +147,9 @@ public class PagamentoVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/pagamento/view.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pagamentoSelecionarCartoes")) {
+			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
+		}
+		if(uri.equals(contexto + "/pagamentoSelecionarCupons")) {
 			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pagamentoAdicionarCupom")) {

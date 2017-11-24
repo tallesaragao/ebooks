@@ -25,14 +25,12 @@ public class StatusTrocaDAO extends AbstractDAO {
 			ps.setBoolean(1, statusTroca.getAtual());
 			ps.setLong(2, statusTroca.getTroca().getId());
 			ps.setLong(3, statusTroca.getStatus().getId());
-			ps.setDate(4, new Date(statusTroca.getTroca().getDataCadastro().getTime()));
+			ps.setDate(4, new Date(statusTroca.getDataCadastro().getTime()));
 			ps.execute();
 			ps.close();
-			/*
-			if(statusTroca.getPedido().getNumero() == null || statusTroca.getPedido().getNumero().equals("")) {
+			if(statusTroca.getStatus().getNome().equals("Trocado")) {
 				conexao.commit();
 			}
-			*/
 			return true;
 		}
 		catch(SQLException e) {

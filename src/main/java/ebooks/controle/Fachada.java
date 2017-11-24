@@ -41,6 +41,7 @@ import ebooks.modelo.Troca;
 import ebooks.negocio.IStrategy;
 import ebooks.negocio.impl.AdicionarCartoesPagamento;
 import ebooks.negocio.impl.AdicionarCupomPromocionalPagamento;
+import ebooks.negocio.impl.AdicionarCuponsTrocaPagamento;
 import ebooks.negocio.impl.AdicionarLivroCarrinho;
 import ebooks.negocio.impl.AdicionarValeComprasPagamento;
 import ebooks.negocio.impl.AlterarQuantidadeItemCarrinho;
@@ -108,6 +109,7 @@ public class Fachada implements IFachada {
 		AdicionarCartoesPagamento adicCartPag = new AdicionarCartoesPagamento();
 		AdicionarCupomPromocionalPagamento adicCupomPromoPag = new AdicionarCupomPromocionalPagamento();
 		ExcluirCupomPagamento excluirCupomPag = new ExcluirCupomPagamento();
+		AdicionarCuponsTrocaPagamento adicCupomTrocaPag = new AdicionarCuponsTrocaPagamento();
 		AdicionarValeComprasPagamento adicValeCompPag = new AdicionarValeComprasPagamento();
 		RemoverValeComprasCarrinho remValeCarrinho = new RemoverValeComprasCarrinho();
 		RemoverCartaoCreditoCarrinho remCarCredCarrinho = new RemoverCartaoCreditoCarrinho();
@@ -206,7 +208,8 @@ public class Fachada implements IFachada {
 		lCarrinhoSalvar.add(adcLivCar);
 		lCarrinhoSalvar.add(adicCartPag);
 		lCarrinhoSalvar.add(adicCupomPromoPag);
-		lCarrinhoSalvar.add(adicValeCompPag);
+		lCarrinhoSalvar.add(adicCupomTrocaPag);
+		//lCarrinhoSalvar.add(adicValeCompPag);
 		lCarrinhoSalvar.add(valFormaPag);
 		lCarrinhoSalvar.add(verDispLivros);
 		lCarrinhoSalvar.add(verPedFin);

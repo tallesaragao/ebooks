@@ -56,8 +56,9 @@ public class DarBaixaEstoque implements IStrategy {
 			StatusTroca statusTroca = (StatusTroca) entidade;
 			Troca troca = statusTroca.getTroca();
 			List<ItemTroca> itensTroca = troca.getItensTroca();
-			IDAO dao = new ItemPedidoDAO();
+			IDAO dao;
 			for(ItemTroca item : itensTroca) {
+				dao = new ItemPedidoDAO();
 				ItemPedido itemPedido = item.getItemPedido();
 				try {
 					List<EntidadeDominio> consulta = dao.consultar(itemPedido);
@@ -73,6 +74,7 @@ public class DarBaixaEstoque implements IStrategy {
 							estoque.setQuantidadeAtual(quantidadeAtual);
 						}
 						livro.setEstoque(estoque);
+							dao = new LivroDAO();
 							boolean alterado = dao.alterar(livro);
 							if(!alterado) {
 								sb.append("Problema ao dar baixa no estoque:");

@@ -354,6 +354,11 @@
   
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/pagamentoSelecionarCupons</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
   	<url-pattern>/pagamentoAdicionarValeCompras</url-pattern>
   </servlet-mapping>
   

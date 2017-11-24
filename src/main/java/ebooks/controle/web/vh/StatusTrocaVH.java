@@ -24,9 +24,9 @@ public class StatusTrocaVH implements IViewHelper {
 		if(operacao != null) {
 			if(operacao.equals("SALVAR")) {
 				StatusTroca statusTroca = new StatusTroca();
+				Troca troca = new Troca();
 				String idTroca = request.getParameter("idTroca");
 				if(idTroca != null && !idTroca.equals("")) {
-					Troca troca = new Troca();
 					troca.setId(Long.valueOf(idTroca));
 					statusTroca.setTroca(troca);
 				}
@@ -48,9 +48,8 @@ public class StatusTrocaVH implements IViewHelper {
 						itemTroca.setId(Long.valueOf(idItem));
 						itensTroca.add(itemTroca);
 					}
+					troca.setItensTroca(itensTroca);
 				}
-				Troca troca = statusTroca.getTroca();
-				troca.setItensTroca(itensTroca);
 				
 				entidade = statusTroca;
 			}

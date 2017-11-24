@@ -24,7 +24,7 @@ public class ValidarFormaPagamento implements IStrategy {
 		Pedido pedido = carrinho.getPedido();
 		HttpSession session = carrinho.getSession();
 		Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
-		
+		long quantidadeCartoes = 0;
 		if(pedido != null) {
 			FormaPagamento formaPagamento = pedido.getFormaPagamento();
 			if(formaPagamento != null) {
@@ -32,10 +32,20 @@ public class ValidarFormaPagamento implements IStrategy {
 				BigDecimal valorTotalPagamentos = new BigDecimal("0.0");
 				if(pagamentos != null && !pagamentos.isEmpty()) {
 					for(Pagamento pag : pagamentos) {
+						if(pag.getClass().getName().equals(PagamentoCartao.class.getName())) {
+							quantidadeCartoes++;
+						}
+					}
+					for(Pagamento pag : pagamentos) {
 						if(pag.getValorPago() != null) {
 							if(pag.getValorPago().doubleValue() == 0.0) {
 								sb.append("O(s) valor(es) do(s) pagamento(s) deve(m) ser informado(s):");
 								break;
+							}
+							else if(pag.getClass().getName().equals(PagamentoCartao.class.getName())
+									&& quantidadeCartoes >= 2
+									&& pag.getValorPago().longValue() < 10) {
+								sb.append("O valor mínimo a pagar em cada cartão é de R$ 10,00");
 							}
 							else {
 								valorTotalPagamentos = valorTotalPagamentos.add(pag.getValorPago());
@@ -50,7 +60,14 @@ public class ValidarFormaPagamento implements IStrategy {
 					valorTotalPagamentos = valorTotalPagamentos.setScale(2, BigDecimal.ROUND_CEILING);
 					BigDecimal valorTotalPedido = pedidoSession.getValorTotal();
 					valorTotalPedido = valorTotalPedido.setScale(2, BigDecimal.ROUND_CEILING);
-					if(valorTotalPagamentos.doubleValue() == valorTotalPedido.doubleValue()) {
+					boolean valorValido = false;
+					if(quantidadeCartoes > 0) {
+						valorValido = valorTotalPagamentos.doubleValue() == valorTotalPedido.doubleValue();
+					}
+					else {
+						valorValido = valorTotalPagamentos.doubleValue() >= valorTotalPedido.doubleValue();
+					}
+					if(valorValido) {
 						FormaPagamento formaPagamentoSession = pedidoSession.getFormaPagamento();
 						Iterator<Pagamento> iterator = formaPagamentoSession.getPagamentos().iterator();
 						//Iterando a lista de pagamentos dentro da Session, para setar o valor de cada pagamento
@@ -90,7 +107,10 @@ public class ValidarFormaPagamento implements IStrategy {
 					}
 					else {
 						if(valorTotalPagamentos.doubleValue() > 0) {
-							sb.append("A soma dos valores divididos entre cartões e vale-compras deve totalizar o valor do pedido:");
+							sb.append("Pagamento inválido. Se estiver utilizando somente cupons de troca, certifique-se de que a"
+									+ " soma de seus valores seja, no mínimo, igual ao valor do pedido. Caso esteja utilizando"
+									+ " cartão de crédito, a soma dos cupons e o valor pago nos cartões deve ser igual ao valor"
+									+ " total do pedido.:");
 						}
 					}
 				}

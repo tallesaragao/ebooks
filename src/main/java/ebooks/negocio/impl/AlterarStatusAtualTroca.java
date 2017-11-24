@@ -7,6 +7,7 @@ import ebooks.dao.TrocaDAO;
 import ebooks.dao.StatusDAO;
 import ebooks.dao.StatusTrocaDAO;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.ItemTroca;
 import ebooks.modelo.Troca;
 import ebooks.modelo.Status;
 import ebooks.modelo.StatusTroca;
@@ -25,7 +26,15 @@ public class AlterarStatusAtualTroca implements IStrategy {
 		try {
 			List<EntidadeDominio> consulta = trocaDAO.consultar(troca);
 			if(!consulta.isEmpty()) {
+				List<ItemTroca> itensTrocaRetornaveis = troca.getItensTroca();
 				troca = (Troca) consulta.get(0);
+				for(ItemTroca item : troca.getItensTroca()) {
+					for(ItemTroca itemRetornavel : itensTrocaRetornaveis) {
+						if(item.getId().longValue() == itemRetornavel.getId().longValue()) {
+							item.setQuantidadeRetornavel(itemRetornavel.getQuantidadeRetornavel());
+						}
+					}
+				}
 				statusTroca.setTroca(troca);
 				Status status = statusTroca.getStatus();
 				consulta = statusDAO.consultar(status);
@@ -48,6 +57,8 @@ public class AlterarStatusAtualTroca implements IStrategy {
 								statusTroca.setStatus(status);
 								statusTroca.setAtual(true);
 								strategy = new DarBaixaEstoque();
+								strategy.processar(statusTroca);
+								strategy = new ComplementarDtCadastro();
 								strategy.processar(statusTroca);
 								Troca t = new Troca();
 								t.setId(statusTroca.getTroca().getId());

@@ -112,17 +112,21 @@
 				<legend>
 					<span class="legend-logo glyphicon glyphicon-tags"></span> Informações do pagamento
 				</legend>
+				<p>
+					OBS: Caso o valor dos cupons de troca ultrapasse o valor da compra,
+					será gerado e vinculado à sua conta um novo cupom de troca com a diferença.
+				</p>
 				<div class="row">
 					<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
 						<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">
 							<div class="col-xs-4">
 								<dl>					
-									<dt>VALE-COMPRAS</dt>
-									<dd>${pagamento.valeCompras.codigo}</dd>
+									<dt>CUPOM DE TROCA</dt>
+									<dd>${pagamento.cupomTroca.codigo}</dd>
 									<dt>SALDO</dt>
 									<dd>
 										<fmt:setLocale value="pt-BR"/>
-										<fmt:formatNumber value="${pagamento.valeCompras.valor}" type="currency"/>
+										<fmt:formatNumber value="${pagamento.cupomTroca.valor}" type="currency"/>
 									</dd>
 									<dt>PAGAMENTO (R$)</dt>
 									<dd>

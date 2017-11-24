@@ -127,6 +127,38 @@
 				<div class="row">
 					<div class="col-xs-12 col-sm-4">
 						<div class="form-group">
+							<label for="endereco" class="control-label">Cupom de troca</label>
+							<select multiple name="cuponsTroca" class="form-control">
+								<option disabled value="">Escolha um ou mais cupons</option>
+								<c:forEach items="${pedido.cliente.trocas}" var="troca">
+									<option 
+									<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
+										<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">
+											<c:if test="${pagamento.cupomTroca.id eq troca.cupomTroca.id}">
+												selected
+											</c:if>
+										</c:if>
+									</c:forEach>
+									value="${troca.cupomTroca.id}">
+										${troca.cupomTroca.codigo} - 
+										<fmt:formatNumber value="${troca.cupomTroca.valor}" type="currency"/>
+									</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="row">
+							<button type="submit" formaction="pagamentoSelecionarCupons" name="operacao"
+							value="SALVAR" id="btnSelecionarCupons" class="btn btn-primary btn-select btn-select-multiple">
+								Selecionar
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-4">
+						<div class="form-group">
 							<label for="endereco" class="control-label">Cartão de crédito</label>
 							<select multiple name="cartoesCredito" class="form-control">
 								<option disabled value="">Escolha um ou mais cartões</option>
@@ -178,13 +210,14 @@
 							<div class="row">
 								<div class="col-xs-10 col-sm-4">
 									<div class="form-group">
-										<label for="valorValeCompras${pagamento.cupomTroca.id}" class="control-label">
-											Vale-compras (Valor disponível: 
+										<label for="valorCupom${pagamento.cupomTroca.id}" class="control-label">
+											Cupom de troca (Valor disponível: 
 											<fmt:setLocale value="pt-BR"/>
 											<fmt:formatNumber value="${pagamento.cupomTroca.valor}" type="currency"/>) 
 										</label>
-										<input type="number" step="any" name="valorValeCompras${pagamento.cupomTroca.id}"
-										placeholder="Digite o valor a ser pago nesse vale-compras (R$)" class="form-control"/>
+										<input type="number" step="any" name="valorCupom${pagamento.cupomTroca.id}"
+										placeholder="Digite o valor a ser pago com esse cupom (R$)"
+										value="${pagamento.valorPago}" readonly="true" class="form-control"/>
 									</div>
 								</div>								
 								<div class="col-xs-2">

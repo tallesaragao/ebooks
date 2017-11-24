@@ -23,27 +23,14 @@ public class GerarCupomTroca implements IStrategy {
 	public String processar(EntidadeDominio entidade) {
 		StringBuilder sb = new StringBuilder();
 		Troca troca = (Troca) entidade;
+		IStrategy strategy;
 		try {
 			IDAO dao = new TrocaDAO();
 			List<EntidadeDominio> consulta = dao.consultar(troca);
 			if(!consulta.isEmpty()) {
-				List<ItemTroca> itensTrocaRetornaveis = troca.getItensTroca();
-				troca = (Troca) consulta.get(0);
-				for(ItemTroca item : troca.getItensTroca()) {
-					for(ItemTroca itemRetornavel : itensTrocaRetornaveis) {
-						if(item.getId().longValue() == itemRetornavel.getId().longValue()) {
-							item.setQuantidadeRetornavel(itemRetornavel.getQuantidadeRetornavel());
-						}
-					}
-				}
 				CupomTroca cupom = new CupomTroca();
-				String alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-				Random r = new Random();
-				String codigoCupom = "";
-				for(int i = 0; i < 10; i++) {
-					codigoCupom += alfabeto.charAt(r.nextInt(25));
-				}
-				cupom.setCodigo(codigoCupom);
+				strategy = new GerarCodigoCupom();
+				strategy.processar(cupom);
 				BigDecimal valorCupom = new BigDecimal("0");
 				List<ItemTroca> itensTroca = troca.getItensTroca();
 				for(ItemTroca itemTroca : itensTroca) {
@@ -60,7 +47,7 @@ public class GerarCupomTroca implements IStrategy {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				Date validade = sdf.parse("01/01/2099");
 				cupom.setValidade(validade);
-				IStrategy strategy = new ComplementarDtCadastro();
+				strategy = new ComplementarDtCadastro();
 				strategy.processar(cupom);
 				dao = new CupomTrocaDAO();
 				boolean salvo = dao.salvar(cupom);
