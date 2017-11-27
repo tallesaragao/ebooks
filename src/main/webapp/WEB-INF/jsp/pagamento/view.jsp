@@ -103,46 +103,26 @@
 					<span class="legend-logo glyphicon glyphicon-usd"></span> Forma de pagamento
 				</legend>
 				<div class="row">
-					<c:if test="${not empty pedido.formaPagamento.pagamentos}">
-						<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
-							<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">
-								<c:set var="codigoCupomTroca" value="${pagamento.cupomTroca.codigo}"/>
-							</c:if>
-						</c:forEach>
-					</c:if>
-					<div class="col-xs-12 col-sm-4">
-						<div class="form-group">
-							<label for="cupomTroca" class="control-label">Vale-compras</label>
-							<input type="text" name="cupomTroca" placeholder="Digite o código"
-							class="form-control" value="${codigoCupomTroca}"/>
-						</div>
-					</div>
-					<div class="col-xs-3">
-						<button type="submit" formaction="pagamentoAdicionarValeCompras" name="operacao"
-						value="SALVAR" id="btnAdicionarcupomTroca" class="btn btn-primary btn-select">
-							Aplicar
-						</button>
-					</div>
-				</div>
-				<div class="row">
 					<div class="col-xs-12 col-sm-4">
 						<div class="form-group">
 							<label for="endereco" class="control-label">Cupom de troca</label>
 							<select multiple name="cuponsTroca" class="form-control">
 								<option disabled value="">Escolha um ou mais cupons</option>
-								<c:forEach items="${pedido.cliente.trocas}" var="troca">
-									<option 
-									<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
-										<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">
-											<c:if test="${pagamento.cupomTroca.id eq troca.cupomTroca.id}">
-												selected
+								<c:forEach items="${pedido.cliente.cuponsTroca}" var="cupomTroca">
+									<c:if test="${cupomTroca.ativo}">
+										<option 
+										<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
+											<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">
+												<c:if test="${pagamento.cupomTroca.id eq cupomTroca.id}">
+													selected
+												</c:if>
 											</c:if>
-										</c:if>
-									</c:forEach>
-									value="${troca.cupomTroca.id}">
-										${troca.cupomTroca.codigo} - 
-										<fmt:formatNumber value="${troca.cupomTroca.valor}" type="currency"/>
-									</option>
+										</c:forEach>
+										value="${cupomTroca.id}">
+											${cupomTroca.codigo} - 
+											<fmt:formatNumber value="${cupomTroca.valor}" type="currency"/>
+										</option>
+									</c:if>
 								</c:forEach>
 							</select>
 						</div>
@@ -199,6 +179,16 @@
 						</div>
 					</div>
 				</div>
+				<c:if test="${pedido.formaPagamento == null || pedido.formaPagamento.pagamentos.isEmpty()}">
+					<div class="row">
+						<div class="col-xs-12">						
+							<button type="submit" id="btnVoltarCarrinho" 
+							formaction="carrinhoCliente" class="btn btn-default">
+								Voltar ao carrinho
+							</button>
+						</div>
+					</div>
+				</c:if>
 			</fieldset>
 			<c:if test="${pedido.formaPagamento != null && !pedido.formaPagamento.pagamentos.isEmpty()}">
 				<fieldset>

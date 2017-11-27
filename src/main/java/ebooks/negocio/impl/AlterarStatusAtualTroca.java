@@ -3,14 +3,16 @@ package ebooks.negocio.impl;
 import java.sql.SQLException;
 import java.util.List;
 
-import ebooks.dao.TrocaDAO;
 import ebooks.dao.StatusDAO;
 import ebooks.dao.StatusTrocaDAO;
+import ebooks.dao.TrocaDAO;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.ItemTroca;
-import ebooks.modelo.Troca;
+import ebooks.modelo.Pedido;
 import ebooks.modelo.Status;
+import ebooks.modelo.StatusPedido;
 import ebooks.modelo.StatusTroca;
+import ebooks.modelo.Troca;
 import ebooks.negocio.IStrategy;
 
 public class AlterarStatusAtualTroca implements IStrategy {
@@ -66,6 +68,18 @@ public class AlterarStatusAtualTroca implements IStrategy {
 								for(StatusTroca st : troca.getStatusesTroca()) {
 									st.setAtual(false);
 									statusTrocaDAO.alterar(st);
+								}
+								if(statusTroca.getTroca().getCompraToda() != null && statusTroca.getTroca().getCompraToda()) {
+									Pedido pedido = troca.getPedido();
+									StatusPedido statusPedido = new StatusPedido();
+									Status statusNovo = new Status();
+									statusNovo.setId(Long.valueOf(7));
+									statusNovo.setNome("Trocado");
+									statusPedido.setStatus(statusNovo);
+									statusPedido.setAtual(true);
+									statusPedido.setPedido(pedido);
+									strategy = new AlterarStatusAtualPedido();
+									strategy.processar(statusPedido);
 								}
 							}
 						}

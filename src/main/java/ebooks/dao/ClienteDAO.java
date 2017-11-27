@@ -9,6 +9,7 @@ import java.util.List;
 
 import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Cliente;
+import ebooks.modelo.CupomTroca;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Login;
@@ -340,6 +341,7 @@ public class ClienteDAO extends AbstractDAO {
 			EnderecoDAO endDAO = new EnderecoDAO();
 			PedidoDAO pedidoDAO = new PedidoDAO();
 			TrocaDAO trocaDAO = new TrocaDAO();
+			CupomTrocaDAO cupomTrocaDAO = new CupomTrocaDAO();
 			for(Cliente cliente : clientes) {
 				CartaoCredito cartaoCredito = new CartaoCredito();
 				cartaoCredito.setCliente(cliente);
@@ -376,6 +378,15 @@ public class ClienteDAO extends AbstractDAO {
 					trocas.add((Troca) ent);
 				}
 				cliente.setTrocas(trocas);
+				
+				CupomTroca cupomTroca = new CupomTroca();
+				cupomTroca.setCliente(cliente);
+				List<EntidadeDominio> cuponsTrocaConsulta = cupomTrocaDAO.consultar(cupomTroca);
+				List<CupomTroca> cuponsTroca = new ArrayList<>();
+				for(EntidadeDominio ent : cuponsTrocaConsulta) {
+					cuponsTroca.add((CupomTroca) ent);
+				}
+				cliente.setCuponsTroca(cuponsTroca);
 			}
 		}
 		catch(SQLException e) {

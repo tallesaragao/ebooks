@@ -34,38 +34,50 @@ public class AbaterValorCupons implements IStrategy {
 				CupomTroca cupomTroca = pagamentoValeCompras.getCupomTroca();
 				BigDecimal valorPago = pagamentoValeCompras.getValorPago();
 				dao = new CupomTrocaDAO();
-				cupomTroca.setAtivo(false);
-				BigDecimal valor = cupomTroca.getValor();
-				valor = valor.subtract(valorPago);
-				cupomTroca.setValor(valor);
-				//Se houver algum pagamento com cupom que não utilizou todo o saldo, gera um novo cupom
-				if(valorPago.doubleValue() < cupomTroca.getValor().doubleValue()) {
-					CupomTroca cupomTrocaNovo = new CupomTroca();
-					cupomTrocaNovo.setAtivo(true);
-					IStrategy strategy = new GerarCodigoCupom();
-					strategy.processar(cupomTrocaNovo);
-					cupomTrocaNovo.setValor(valor);
-					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-					Date validade = Calendar.getInstance().getTime();
-					try {
-						validade = df.parse("01/01/2099");
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					cupomTrocaNovo.setValidade(validade);
-				}
-				else {
-					cupomTroca.setAtivo(false);
-					try {
-						boolean alterado = dao.alterar(cupomTroca);
-						if(!alterado) {
-							sb.append("Problema na inativação do cupom:");
+				try {
+					List<EntidadeDominio> consulta = dao.consultar(cupomTroca);
+					if(!consulta.isEmpty()) {
+						cupomTroca = (CupomTroca) consulta.get(0);
+						BigDecimal valor = cupomTroca.getValor();
+						valor = valor.subtract(valorPago);
+						cupomTroca.setAtivo(false);
+						//Se houver algum pagamento com cupom que não utilizou todo o saldo, gera um novo cupom
+						if(valorPago.doubleValue() < cupomTroca.getValor().doubleValue()) {
+							CupomTroca cupomTrocaNovo = new CupomTroca();
+							cupomTrocaNovo.setAtivo(true);
+							cupomTrocaNovo.setCliente(pedido.getCliente());
+							IStrategy strategy = new GerarCodigoCupom();
+							strategy.processar(cupomTrocaNovo);
+							cupomTrocaNovo.setValor(valor);
+							DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+							Date validade = Calendar.getInstance().getTime();
+							try {
+								validade = df.parse("01/01/2099");
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
+							cupomTrocaNovo.setValidade(validade);
+							dao.salvar(cupomTrocaNovo);
 						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-						sb.append("Problema na transação SQL:");
+						cupomTroca.setAtivo(false);
+						try {
+							boolean alterado = dao.alterar(cupomTroca);
+							if(!alterado) {
+								sb.append("Problema na inativação do cupom:");
+							}
+						} catch (SQLException e) {
+							e.printStackTrace();
+							sb.append("Problema na transação SQL:");
+						}
 					}
+					else {
+						sb.append("Problema na consulta de cupom:");
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+				
 			}
 		}
 		

@@ -11,6 +11,7 @@ import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.ItemPedido;
 import ebooks.modelo.ItemTroca;
 import ebooks.modelo.Pedido;
+import ebooks.modelo.StatusTroca;
 import ebooks.modelo.Troca;
 import ebooks.negocio.IStrategy;
 
@@ -20,6 +21,10 @@ public class ValidarTroca implements IStrategy {
 	public String processar(EntidadeDominio entidade) {
 		StringBuilder sb = new StringBuilder();
 		Troca troca = (Troca) entidade;
+		List<StatusTroca> statusesTroca = troca.getStatusesTroca();
+		for(StatusTroca statusTroca : statusesTroca) {
+			new ComplementarDtCadastro().processar(statusTroca);
+		}
 		IDAO dao;
 		if(troca.getCompraToda() || troca.getItensTroca().size() > 0) {
 			Pedido pedido = troca.getPedido();

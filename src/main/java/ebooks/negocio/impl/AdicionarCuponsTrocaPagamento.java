@@ -73,9 +73,10 @@ public class AdicionarCuponsTrocaPagamento implements IStrategy {
 											if(!cupomIgual) {
 												boolean valorNaoExtrapolado = totalPagamentosCupom.doubleValue() < totalPedido.doubleValue();
 												if(valorNaoExtrapolado) {
-													totalPagamentosCupom = totalPagamentosCupom.add(pagamentoValeCompras.getValorPago());
-													if(totalPagamentosCupom.doubleValue() > totalPedido.doubleValue()) {
-														BigDecimal diferenca = totalPagamentosCupom.subtract(totalPedido);
+													BigDecimal totalPagamentosCupomTemp = new BigDecimal("0");
+													totalPagamentosCupomTemp = totalPagamentosCupom.add(pagamentoValeCompras.getValorPago());
+													if(totalPagamentosCupomTemp.doubleValue() > totalPedido.doubleValue()) {
+														BigDecimal diferenca = totalPagamentosCupomTemp.subtract(totalPedido);
 														BigDecimal valorPago = pagamentoValeCompras.getValorPago();
 														valorPago = valorPago.subtract(diferenca);
 														pagamentoValeCompras.setValorPago(valorPago);

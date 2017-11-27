@@ -22,7 +22,7 @@ public class AprovarPedido implements IStrategy {
 				pedido = (Pedido) consulta.get(0);
 				//método temporário para aprovação do pedido
 				long aprovacao = Math.round(Math.random() * 10);
-				if(aprovacao < 3) {
+				if(aprovacao < 2) {
 					sb.append("Pedido reprovado:");
 				}
 			}

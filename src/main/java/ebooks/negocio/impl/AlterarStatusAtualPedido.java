@@ -49,6 +49,8 @@ public class AlterarStatusAtualPedido implements IStrategy {
 								statusPedido.setAtual(true);
 								strategy = new DarBaixaEstoque();
 								strategy.processar(statusPedido);
+								strategy = new AbaterValorCupons();
+								strategy.processar(statusPedido.getPedido());
 								Pedido p = new Pedido();
 								p.setId(statusPedido.getPedido().getId());
 								statusPedido.setPedido(p);

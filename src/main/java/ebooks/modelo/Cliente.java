@@ -14,6 +14,7 @@ public class Cliente extends PessoaFisica {
 	private List<Inativacao> inativacoes;
 	private List<Pedido> pedidos;
 	private List<Troca> trocas;
+	private List<CupomTroca> cuponsTroca;
 
 	public Character getGenero() {
 		return genero;
@@ -101,5 +102,13 @@ public class Cliente extends PessoaFisica {
 
 	public void setTrocas(List<Troca> trocas) {
 		this.trocas = trocas;
+	}
+
+	public List<CupomTroca> getCuponsTroca() {
+		return cuponsTroca;
+	}
+
+	public void setCuponsTroca(List<CupomTroca> cuponsTroca) {
+		this.cuponsTroca = cuponsTroca;
 	}
 }

@@ -138,6 +138,7 @@ public class PagamentoDAO extends AbstractDAO {
 					pagamentosVale.add(pagVale);
 				}
 			}
+			consulta = new ArrayList<>();
 			
 			for(PagamentoCartao pagCartao : pagamentosCartao) {
 				CartaoCredito cartao = pagCartao.getCartaoCredito();

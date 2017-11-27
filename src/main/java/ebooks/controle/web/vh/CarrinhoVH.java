@@ -103,6 +103,10 @@ public class CarrinhoVH implements IViewHelper {
 				pedidoSession.setItensPedido(new ArrayList<ItemPedido>());
 				session.setAttribute("pedido", pedidoSession);
 			}
+			else {
+				pedidoSession.setFormaPagamento(null);
+				session.setAttribute("pedido", pedidoSession);
+			}
 			request.getRequestDispatcher("carrinhoConsultar?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/carrinhoConsultar")) {

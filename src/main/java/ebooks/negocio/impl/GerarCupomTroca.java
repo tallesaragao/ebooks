@@ -47,6 +47,7 @@ public class GerarCupomTroca implements IStrategy {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				Date validade = sdf.parse("01/01/2099");
 				cupom.setValidade(validade);
+				cupom.setCliente(troca.getCliente());
 				strategy = new ComplementarDtCadastro();
 				strategy.processar(cupom);
 				dao = new CupomTrocaDAO();

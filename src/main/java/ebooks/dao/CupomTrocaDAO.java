@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ebooks.modelo.Cliente;
 import ebooks.modelo.CupomTroca;
 import ebooks.modelo.EntidadeDominio;
 
@@ -18,12 +19,13 @@ public class CupomTrocaDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "insert into cupom_troca(codigo, valor, validade, ativo) values(?,?,?,?)";
+			String sql = "insert into cupom_troca(codigo, valor, validade, ativo, id_cliente) values(?,?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, cupomTroca.getCodigo());
 			ps.setBigDecimal(2, cupomTroca.getValor());
 			ps.setDate(3, new Date(cupomTroca.getValidade().getTime()));
 			ps.setBoolean(4, cupomTroca.getAtivo());
+			ps.setLong(5, cupomTroca.getCliente().getId());
 			ps.execute();
 			ResultSet generatedKeys = ps.getGeneratedKeys();
 			while (generatedKeys.next()) {
@@ -54,7 +56,7 @@ public class CupomTrocaDAO extends AbstractDAO {
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
-			String sql = "update cupom_troca set codigo=?, valor=?, validade=?, ativo=? where id_cupom_troca=?";
+			String sql = "update cupom_troca set codigo=?, valor=?, validade=?, ativo=?, id_cliente=? where id_cupom_troca=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			ps.setString(1, cupomTroca.getCodigo() != null ? cupomTroca.getCodigo() : cupomTrocaOld.getCodigo());
 			ps.setBigDecimal(2, cupomTroca.getValor() != null ?
@@ -62,7 +64,8 @@ public class CupomTrocaDAO extends AbstractDAO {
 			ps.setDate(3, cupomTroca.getValidade() != null ? 
 					new Date(cupomTroca.getValidade().getTime()) : new Date(cupomTrocaOld.getValidade().getTime()));
 			ps.setBoolean(4, cupomTroca.getAtivo() != null ? cupomTroca.getAtivo() : cupomTrocaOld.getAtivo());
-			ps.setLong(5, cupomTroca.getId());
+			ps.setLong(5, cupomTroca.getCliente() != null ? cupomTroca.getCliente().getId() : cupomTrocaOld.getCliente().getId());
+			ps.setLong(6, cupomTroca.getId());
 			ps.execute();
 			ps.close();
 			conexao.commit();
@@ -106,6 +109,7 @@ public class CupomTrocaDAO extends AbstractDAO {
 	@Override
 	public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
 		CupomTroca cupomTrocaConsulta = (CupomTroca) entidade;
+		Cliente clienteConsulta = cupomTrocaConsulta.getCliente();
 		List<EntidadeDominio> consulta = new ArrayList<>();
 		conexao = factory.getConnection();
 		try {
@@ -116,6 +120,11 @@ public class CupomTrocaDAO extends AbstractDAO {
 				sql = "select * from cupom_troca where id_cupom_troca=?";
 				ps = conexao.prepareStatement(sql);
 				ps.setLong(1, cupomTrocaConsulta.getId());
+			}
+			else if(clienteConsulta != null && clienteConsulta.getId() != null) {
+				sql = "select * from cupom_troca where id_cliente=?";
+				ps = conexao.prepareStatement(sql);
+				ps.setLong(1, clienteConsulta.getId());
 			}
 			else {
 				sql = "select * from cupom_troca where codigo=?";
@@ -130,6 +139,10 @@ public class CupomTrocaDAO extends AbstractDAO {
 				cupomTroca.setCodigo(rs.getString("codigo"));
 				cupomTroca.setValor(rs.getBigDecimal("valor"));
 				cupomTroca.setAtivo(rs.getBoolean("ativo"));
+				cupomTroca.setValidade(rs.getDate("validade"));
+				Cliente cliente = new Cliente();
+				cliente.setId(rs.getLong("id_cliente"));
+				cupomTroca.setCliente(cliente);
 				consulta.add(cupomTroca);
 			}
 		}

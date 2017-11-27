@@ -247,6 +247,7 @@ public class Fachada implements IFachada {
 		Map<String, List<IStrategy>> contextoStatusTroca = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lStatusTrocaSalvar = new ArrayList<>();
 		lStatusTrocaSalvar.add(altStatusAtualTroc);
+		lStatusTrocaSalvar.add(compDtCad);
 		List<IStrategy> lStatusTrocaAlterar = new ArrayList<>();
 		List<IStrategy> lStatusTrocaExcluir = new ArrayList<>();
 		List<IStrategy> lStatusTrocaConsultar = new ArrayList<>();

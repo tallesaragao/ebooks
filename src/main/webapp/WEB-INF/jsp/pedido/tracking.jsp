@@ -200,11 +200,11 @@
 							<div class="col-xs-4">
 								<dl>					
 									<dt>VALE-COMPRAS</dt>
-									<dd>${pagamento.valeCompras.codigo}</dd>
+									<dd>${pagamento.cupomTroca.codigo}</dd>
 									<dt>SALDO</dt>
 									<dd>
 										<fmt:setLocale value="pt-BR"/>
-										<fmt:formatNumber value="${pagamento.valeCompras.valor}" type="currency"/>
+										<fmt:formatNumber value="${pagamento.cupomTroca.valor}" type="currency"/>
 									</dd>
 									<dt>PAGAMENTO (R$)</dt>
 									<dd>
