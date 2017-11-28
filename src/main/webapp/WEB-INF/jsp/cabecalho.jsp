@@ -20,7 +20,7 @@
 					<c:choose>
 						<c:when test="${login.usuario != null}">
 							<c:if test="${login.perfilAcesso.nome eq 'Cliente' || login.perfilAcesso.nome eq 'Administrador'}">
-								<li class="dropdown">
+								<li id="idLoginDrop" class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 								  		Olá, ${login.usuario} <span class="caret"></span></a>				
 									<ul class="dropdown-menu" role="menu">

@@ -106,7 +106,7 @@
 					<div class="col-xs-12 col-sm-4">
 						<div class="form-group">
 							<label for="endereco" class="control-label">Cupom de troca</label>
-							<select multiple name="cuponsTroca" class="form-control">
+							<select multiple name="cuponsTroca" id="cuponsTroca" class="form-control">
 								<option disabled value="">Escolha um ou mais cupons</option>
 								<c:forEach items="${pedido.cliente.cuponsTroca}" var="cupomTroca">
 									<c:if test="${cupomTroca.ativo}">
@@ -140,7 +140,7 @@
 					<div class="col-xs-12 col-sm-4">
 						<div class="form-group">
 							<label for="endereco" class="control-label">Cartão de crédito</label>
-							<select multiple name="cartoesCredito" class="form-control">
+							<select multiple name="cartoesCredito" id="cartoesCredito" class="form-control">
 								<option disabled value="">Escolha um ou mais cartões</option>
 								<c:forEach items="${pedido.cliente.cartoesCredito}" var="cartao">
 									<option 
