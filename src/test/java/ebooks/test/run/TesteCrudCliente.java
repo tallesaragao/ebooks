@@ -1,4 +1,4 @@
-package ebooks.test;
+package ebooks.test.run;
 
 import static org.junit.Assert.assertTrue;
 

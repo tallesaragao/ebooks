@@ -20,6 +20,7 @@ import ebooks.controle.web.vh.CartaoCreditoVH;
 import ebooks.controle.web.vh.CategoriaVH;
 import ebooks.controle.web.vh.ClienteVH;
 import ebooks.controle.web.vh.EnderecoVH;
+import ebooks.controle.web.vh.ErroVH;
 import ebooks.controle.web.vh.FreteVH;
 import ebooks.controle.web.vh.GrupoPrecificacaoVH;
 import ebooks.controle.web.vh.IViewHelper;
@@ -123,6 +124,8 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/pedidoDetalhes", new PedidoVH());
 		vhs.put(contextoApp + "/pedidoConfirmarCompra", new PedidoVH());
 		vhs.put(contextoApp + "/pedidoView", new PedidoVH());
+		vhs.put(contextoApp + "/pedidoList", new PedidoVH());
+		vhs.put(contextoApp + "/pedidoConsultar", new PedidoVH());
 		vhs.put(contextoApp + "/statusSalvar", new StatusPedidoVH());
 		vhs.put(contextoApp + "/pedidoTroca", new PedidoVH());
 		vhs.put(contextoApp + "/trocaForm", new TrocaVH());
@@ -132,6 +135,7 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/trocaConsultar", new TrocaVH());
 		vhs.put(contextoApp + "/trocaAprovar", new TrocaVH());
 		vhs.put(contextoApp + "/statusTrocaSalvar", new StatusTrocaVH());
+		vhs.put(contextoApp + "/404", new ErroVH());
 	}
 		
 	@Override

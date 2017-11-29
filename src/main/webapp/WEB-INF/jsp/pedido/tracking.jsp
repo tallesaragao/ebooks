@@ -72,7 +72,10 @@
 										</dd>
 										<c:if test="${login.perfilAcesso.nome eq 'Administrador'}">
 											<dd>
-												<a href="statusSalvar?operacao=SALVAR&status=Aprovada&idPedido=${pedido.id}">Aprovar pedido</a>
+												<a id="aprovarPedido" 
+												href="statusSalvar?operacao=SALVAR&status=Aprovada&idPedido=${pedido.id}">
+													Aprovar pedido
+												</a>
 											</dd>
 										</c:if>
 									</c:if>
@@ -83,7 +86,8 @@
 										</dd>
 										<c:if test="${login.perfilAcesso.nome eq 'Administrador'}">
 											<dd>
-												<a href="statusSalvar?operacao=SALVAR&status=Em transporte&idPedido=${pedido.id}">
+												<a id="liberarParaEntrega"
+												href="statusSalvar?operacao=SALVAR&status=Em transporte&idPedido=${pedido.id}">
 													Liberar para entrega
 												</a>
 											</dd>
@@ -102,7 +106,8 @@
 										</dd>
 										<c:if test="${login.perfilAcesso.nome eq 'Administrador'}">
 											<dd>
-												<a href="statusSalvar?operacao=SALVAR&status=Entregue&idPedido=${pedido.id}">
+												<a id="confirmarEntrega"
+												href="statusSalvar?operacao=SALVAR&status=Entregue&idPedido=${pedido.id}">
 													Confirmar entrega
 												</a>
 											</dd>
@@ -114,12 +119,19 @@
 											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
 										</dd>
 										<dd>
-											<a href="pedidoTroca?operacao=CONSULTAR&idPedido=${pedido.id}&idCliente=${pedido.cliente.id}">
+											<a id="solicitarTroca"
+											href="pedidoTroca?operacao=CONSULTAR&idPedido=${pedido.id}&idCliente=${pedido.cliente.id}">
 												Solicitar troca
 											</a>
 										</dd>
 									</c:if>
 									<c:if test="${statusPedido.status.nome eq 'Em troca'}">
+										<dd>
+											${statusPedido.status.nome} - 
+											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
+										</dd>
+									</c:if>
+									<c:if test="${statusPedido.status.nome eq 'Trocado'}">
 										<dd>
 											${statusPedido.status.nome} - 
 											<fmt:formatDate value="${statusPedido.dataCadastro}" pattern="dd/MM/yyyy"/>
@@ -199,7 +211,7 @@
 						<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoValeCompras'}">
 							<div class="col-xs-4">
 								<dl>					
-									<dt>VALE-COMPRAS</dt>
+									<dt>CUPOM DE TROCA (CÓDIGO)</dt>
 									<dd>${pagamento.cupomTroca.codigo}</dd>
 									<dt>SALDO</dt>
 									<dd>

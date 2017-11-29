@@ -68,7 +68,7 @@
 										</dd>
 										<c:if test="${login.perfilAcesso.nome eq 'Administrador'}">
 											<dd>
-												<a href="trocaAprovar?operacao=CONSULTAR&idTroca=
+												<a id="aprovarTroca" href="trocaAprovar?operacao=CONSULTAR&idTroca=
 												${troca.id}&idCliente=${troca.cliente.id}">
 													Aprovar troca
 												</a>

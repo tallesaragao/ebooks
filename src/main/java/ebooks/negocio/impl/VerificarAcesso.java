@@ -18,12 +18,16 @@ public class VerificarAcesso implements IStrategy {
 	public String processar(EntidadeDominio entidade) {
 		StringBuilder sb = new StringBuilder();
 		Acesso acesso = (Acesso) entidade;
+		acesso.setPaginaEncontrada(true);
 		String contexto = "/ebooks";
 		boolean acessivel = false;
 		boolean paginaEncontrada = false;
 		HttpServletRequest request = (HttpServletRequest) acesso.getRequest();
 		String caminhoAcesso = request.getRequestURI();
 		if(caminhoAcesso.contains("resources") 
+				|| caminhoAcesso.equals(contexto + "/404")
+				|| caminhoAcesso.equals(contexto + "/clienteForm")
+				|| caminhoAcesso.equals(contexto + "/clienteSalvar")
 				|| caminhoAcesso.equals(contexto + "/livroList")
 				|| caminhoAcesso.equals(contexto + "/livroConsultar")
 				|| caminhoAcesso.equals(contexto + "/loginSite")
@@ -80,6 +84,7 @@ public class VerificarAcesso implements IStrategy {
 			}
 		}
 		if(!paginaEncontrada) {
+			acesso.setPaginaEncontrada(false);
 			sb.append("Página não encontrada:");
 		}
 		acesso.setLiberado(acessivel);

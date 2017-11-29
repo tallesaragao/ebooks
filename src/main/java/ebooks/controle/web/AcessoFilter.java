@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ebooks.controle.ConsultarCommand;
@@ -40,19 +41,17 @@ public class AcessoFilter implements Filter {
 		acesso.setRequest(request);
 		acesso.setLogin(login);
  		Object obj = command.executar(acesso);
-		if(obj != null) {
-			String mensagem = (String) obj;
-			httpRequest.getRequestDispatcher("404").forward(request, response);
+ 		if(acesso.isLiberado()) {
+			chain.doFilter(request, response);
 		}
+ 		else if(!acesso.isPaginaEncontrada()) {
+ 			HttpServletResponse httpResponse = (HttpServletResponse) response;
+ 			httpResponse.sendRedirect("404");
+ 		}
 		else {
-			if(acesso.isLiberado()) {
-				chain.doFilter(request, response);
-			}
-			else {
-				String erro = "Faça login para continuar";
-				httpRequest.setAttribute("erro", erro);
-				httpRequest.getRequestDispatcher("loginSite").forward(httpRequest, response);
-			}
+			String erro = "Faça login para continuar";
+			httpRequest.setAttribute("erro", erro);
+			httpRequest.getRequestDispatcher("loginSite").forward(httpRequest, response);
 		}
 	}
 

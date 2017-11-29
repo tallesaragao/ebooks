@@ -12,6 +12,7 @@ import ebooks.modelo.Carrinho;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Pedido;
+import ebooks.modelo.Troca;
 
 public class PedidoVH implements IViewHelper {
 
@@ -54,7 +55,9 @@ public class PedidoVH implements IViewHelper {
 				HttpSession session = request.getSession();
 				Pedido pedido = (Pedido) session.getAttribute("pedido");
 				String numeroPedido = pedido.getNumero();
+				Long idPedido = pedido.getId();
 				request.setAttribute("numeroPedido", numeroPedido);
+				request.setAttribute("idPedido", idPedido);
 				session.removeAttribute("pedido");
 				request.getRequestDispatcher("WEB-INF/jsp/pedido/success.jsp").forward(request, response);
 			}
@@ -68,6 +71,16 @@ public class PedidoVH implements IViewHelper {
 				request.setAttribute("pedido", consulta.get(0));
 			}
 			request.getRequestDispatcher("WEB-INF/jsp/pedido/tracking.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/pedidoList")) {
+			request.getRequestDispatcher("WEB-INF/jsp/pedido/list.jsp").forward(request, response);
+		}
+		if(uri.equals(contexto + "/pedidoConsultar")) {
+			if(object != null) {
+				List<Pedido> consulta = (List<Pedido>) object;
+				request.setAttribute("consulta", consulta);
+			}
+			request.getRequestDispatcher("WEB-INF/jsp/pedido/list.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pedidoTroca")) {
 			if(object != null) {

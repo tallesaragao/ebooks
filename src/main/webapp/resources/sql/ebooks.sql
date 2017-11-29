@@ -258,7 +258,10 @@ CREATE TABLE `cupom_troca` (
   `valor` decimal(20,2) NOT NULL,
   `validade` date NOT NULL,
   `ativo` tinyint(4) NOT NULL,
-  PRIMARY KEY (`id_cupom_troca`)
+  `id_cliente` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id_cupom_troca`),
+  KEY `fk_cupom_troca_cliente_idx` (`id_cliente`),
+  CONSTRAINT `fk_cupom_troca_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -268,7 +271,7 @@ CREATE TABLE `cupom_troca` (
 
 LOCK TABLES `cupom_troca` WRITE;
 /*!40000 ALTER TABLE `cupom_troca` DISABLE KEYS */;
-INSERT INTO `cupom_troca` VALUES (1,'9PQZ0HDK3K',200.00,'2018-05-30',1),(2,'BLJLUFAC51',500.00,'2018-02-19',1),(3,'EZN0FYJ0OQ',100.00,'2018-07-06',1),(4,'Z2FB4APKGR',150.00,'2018-07-06',0),(5,'WHRUWBFOTD',280.60,'2099-01-01',1),(8,'XQGVEMSJAM',88.12,'2099-01-01',1),(9,'JXEVUMLSCU',56.12,'2099-01-01',1);
+INSERT INTO `cupom_troca` VALUES (1,'9PQZ0HDK3K',200.00,'2018-05-30',1,1),(2,'BLJLUFAC51',500.00,'2018-02-19',1,1),(3,'EZN0FYJ0OQ',100.00,'2018-07-06',1,1),(4,'Z2FB4APKGR',150.00,'2018-07-06',0,1),(5,'WHRUWBFOTD',280.60,'2099-01-01',1,11),(8,'XQGVEMSJAM',88.12,'2099-01-01',1,1),(9,'JXEVUMLSCU',56.12,'2099-01-01',1,12);
 /*!40000 ALTER TABLE `cupom_troca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -385,7 +388,7 @@ CREATE TABLE `estoque` (
 
 LOCK TABLES `estoque` WRITE;
 /*!40000 ALTER TABLE `estoque` DISABLE KEYS */;
-INSERT INTO `estoque` VALUES (1,'0','300','90','0'),(2,'0','30','9','0');
+INSERT INTO `estoque` VALUES (1,'0','300','90','2'),(2,'0','30','9','0');
 /*!40000 ALTER TABLE `estoque` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1207,7 +1210,7 @@ CREATE TABLE `uri` (
   `id_uri` int(11) NOT NULL AUTO_INCREMENT,
   `caminho` varchar(255) NOT NULL,
   PRIMARY KEY (`id_uri`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1216,7 +1219,7 @@ CREATE TABLE `uri` (
 
 LOCK TABLES `uri` WRITE;
 /*!40000 ALTER TABLE `uri` DISABLE KEYS */;
-INSERT INTO `uri` VALUES (18,'/categoriaForm'),(19,'/categoriaList'),(20,'/categoriaEdit'),(21,'/categoriaSalvar'),(22,'/categoriaConsultar'),(23,'/categoriaAlterar'),(24,'/categoriaExcluir'),(25,'/livroForm'),(26,'/livroFormCategorias'),(27,'/livroFormGruposPrecificacao'),(28,'/livroList'),(29,'/livroEdit'),(30,'/livroSalvar'),(31,'/livroConsultar'),(32,'/livroAlterar'),(34,'/livroExcluir'),(35,'/loginSite'),(36,'/logoutSite'),(37,'/loginForm'),(38,'/loginSalvar'),(39,'/loginConsultar'),(40,'/loginAlterar'),(41,'/clienteForm'),(42,'/clienteFormTiposEndereco'),(43,'/clienteFormTiposTelefone'),(44,'/clienteList'),(45,'/clienteEdit'),(46,'/clienteEditTiposEndereco'),(47,'/clienteEditTiposTelefone'),(48,'/clienteView'),(49,'/clienteSalvar'),(50,'/clienteAlterar'),(51,'/clienteExcluir'),(52,'/clienteConsultar'),(53,'/clienteAtivar'),(54,'/clienteInativar'),(55,'/cartaoCreditoForm'),(56,'/cartaoCreditoFormBandeiras'),(57,'/cartaoCreditoEditBandeiras'),(59,'/cartaoCreditoEdit'),(60,'/cartaoCreditoView'),(61,'/cartaoCreditoSalvar'),(62,'/cartaoCreditoAlterar'),(63,'/cartaoCreditoExcluir'),(64,'/cartaoCreditoConsultar'),(65,'/enderecoForm'),(67,'/enderecoEdit'),(69,'/enderecoSalvar'),(70,'/enderecoAlterar'),(71,'/enderecoExcluir'),(72,'/enderecoConsultar'),(73,'/carrinhoCliente'),(74,'/carrinhoAdicionar'),(75,'/carrinhoRemover'),(76,'/carrinhoAlterar'),(77,'/carrinhoConsultar'),(78,'/carrinhoPedidoRemover'),(79,'/freteCalcular'),(80,'/carrinhoPagamento'),(81,'/pagamentoSelecionarCartoes'),(82,'/pagamentoRemoverCartao'),(83,'/pagamentoAdicionarCupom'),(84,'/pagamentoRemoverCupom'),(85,'/pagamentoAdicionarValeCompras'),(86,'/pagamentoRemoverValeCompras'),(87,'/validarFormaPagamento'),(88,'/pedidoDetalhes'),(89,'/pedidoConfirmarCompra'),(90,'/pedidoView'),(91,'/statusSalvar'),(92,'/pedidoTroca'),(93,'/trocaForm'),(94,'/trocaSalvar'),(95,'/trocaConsultar'),(96,'/trocaView'),(97,'/trocaList'),(98,'/trocaAprovar'),(99,'/statusTrocaSalvar'),(100,'/pagamentoSelecionarCupons');
+INSERT INTO `uri` VALUES (18,'/categoriaForm'),(19,'/categoriaList'),(20,'/categoriaEdit'),(21,'/categoriaSalvar'),(22,'/categoriaConsultar'),(23,'/categoriaAlterar'),(24,'/categoriaExcluir'),(25,'/livroForm'),(26,'/livroFormCategorias'),(27,'/livroFormGruposPrecificacao'),(28,'/livroList'),(29,'/livroEdit'),(30,'/livroSalvar'),(31,'/livroConsultar'),(32,'/livroAlterar'),(34,'/livroExcluir'),(35,'/loginSite'),(36,'/logoutSite'),(37,'/loginForm'),(38,'/loginSalvar'),(39,'/loginConsultar'),(40,'/loginAlterar'),(41,'/clienteForm'),(42,'/clienteFormTiposEndereco'),(43,'/clienteFormTiposTelefone'),(44,'/clienteList'),(45,'/clienteEdit'),(46,'/clienteEditTiposEndereco'),(47,'/clienteEditTiposTelefone'),(48,'/clienteView'),(49,'/clienteSalvar'),(50,'/clienteAlterar'),(51,'/clienteExcluir'),(52,'/clienteConsultar'),(53,'/clienteAtivar'),(54,'/clienteInativar'),(55,'/cartaoCreditoForm'),(56,'/cartaoCreditoFormBandeiras'),(57,'/cartaoCreditoEditBandeiras'),(59,'/cartaoCreditoEdit'),(60,'/cartaoCreditoView'),(61,'/cartaoCreditoSalvar'),(62,'/cartaoCreditoAlterar'),(63,'/cartaoCreditoExcluir'),(64,'/cartaoCreditoConsultar'),(65,'/enderecoForm'),(67,'/enderecoEdit'),(69,'/enderecoSalvar'),(70,'/enderecoAlterar'),(71,'/enderecoExcluir'),(72,'/enderecoConsultar'),(73,'/carrinhoCliente'),(74,'/carrinhoAdicionar'),(75,'/carrinhoRemover'),(76,'/carrinhoAlterar'),(77,'/carrinhoConsultar'),(78,'/carrinhoPedidoRemover'),(79,'/freteCalcular'),(80,'/carrinhoPagamento'),(81,'/pagamentoSelecionarCartoes'),(82,'/pagamentoRemoverCartao'),(83,'/pagamentoAdicionarCupom'),(84,'/pagamentoRemoverCupom'),(85,'/pagamentoAdicionarValeCompras'),(86,'/pagamentoRemoverValeCompras'),(87,'/validarFormaPagamento'),(88,'/pedidoDetalhes'),(89,'/pedidoConfirmarCompra'),(90,'/pedidoView'),(91,'/statusSalvar'),(92,'/pedidoTroca'),(93,'/trocaForm'),(94,'/trocaSalvar'),(95,'/trocaConsultar'),(96,'/trocaView'),(97,'/trocaList'),(98,'/trocaAprovar'),(99,'/statusTrocaSalvar'),(100,'/pagamentoSelecionarCupons'),(101,'/pedidoList'),(102,'/pedidoConsultar');
 /*!40000 ALTER TABLE `uri` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1244,7 +1247,7 @@ CREATE TABLE `uri_perfil` (
 
 LOCK TABLES `uri_perfil` WRITE;
 /*!40000 ALTER TABLE `uri_perfil` DISABLE KEYS */;
-INSERT INTO `uri_perfil` VALUES (1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(1,28),(2,28),(1,29),(1,30),(1,31),(2,31),(1,32),(1,34),(1,35),(2,35),(1,36),(2,36),(1,37),(2,37),(1,38),(2,38),(1,39),(2,39),(1,40),(2,40),(1,41),(2,41),(1,42),(2,42),(1,43),(2,43),(1,44),(1,45),(2,45),(1,46),(2,46),(1,47),(2,47),(1,48),(2,48),(1,49),(2,49),(1,50),(2,50),(1,51),(1,52),(2,52),(1,53),(1,54),(1,55),(2,55),(1,56),(2,56),(1,57),(2,57),(1,59),(2,59),(1,60),(2,60),(1,61),(2,61),(1,62),(2,62),(1,63),(2,63),(1,64),(2,64),(1,65),(2,65),(1,67),(2,67),(1,69),(2,69),(1,70),(2,70),(1,71),(2,71),(1,72),(2,72),(1,73),(2,73),(1,74),(2,74),(1,75),(2,75),(1,76),(2,76),(1,77),(2,77),(1,78),(2,78),(1,79),(2,79),(1,80),(2,80),(1,81),(2,81),(1,82),(2,82),(1,83),(2,83),(1,84),(2,84),(1,85),(2,85),(1,86),(2,86),(1,87),(2,87),(1,88),(2,88),(1,89),(2,89),(1,90),(2,90),(1,91),(1,92),(2,92),(1,93),(2,93),(1,94),(2,94),(1,95),(1,96),(2,96),(1,97),(1,98),(1,99),(1,100),(2,100);
+INSERT INTO `uri_perfil` VALUES (1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(1,28),(2,28),(1,29),(1,30),(1,31),(2,31),(1,32),(1,34),(1,35),(2,35),(1,36),(2,36),(1,37),(2,37),(1,38),(2,38),(1,39),(2,39),(1,40),(2,40),(1,41),(2,41),(1,42),(2,42),(1,43),(2,43),(1,44),(1,45),(2,45),(1,46),(2,46),(1,47),(2,47),(1,48),(2,48),(1,49),(2,49),(1,50),(2,50),(1,51),(1,52),(2,52),(1,53),(1,54),(1,55),(2,55),(1,56),(2,56),(1,57),(2,57),(1,59),(2,59),(1,60),(2,60),(1,61),(2,61),(1,62),(2,62),(1,63),(2,63),(1,64),(2,64),(1,65),(2,65),(1,67),(2,67),(1,69),(2,69),(1,70),(2,70),(1,71),(2,71),(1,72),(2,72),(1,73),(2,73),(1,74),(2,74),(1,75),(2,75),(1,76),(2,76),(1,77),(2,77),(1,78),(2,78),(1,79),(2,79),(1,80),(2,80),(1,81),(2,81),(1,82),(2,82),(1,83),(2,83),(1,84),(2,84),(1,85),(2,85),(1,86),(2,86),(1,87),(2,87),(1,88),(2,88),(1,89),(2,89),(1,90),(2,90),(1,91),(1,92),(2,92),(1,93),(2,93),(1,94),(2,94),(1,95),(1,96),(2,96),(1,97),(1,98),(1,99),(1,100),(2,100),(1,101),(1,102);
 /*!40000 ALTER TABLE `uri_perfil` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1257,4 +1260,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-24 12:49:16
+-- Dump completed on 2017-11-29 12:18:47

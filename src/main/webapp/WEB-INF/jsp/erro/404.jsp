@@ -13,14 +13,12 @@
 </head>
 <body>
 	<c:import url="../cabecalho.jsp"/>
-	<input type="hidden" name="idPedido" value="${idPedido}"/>
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="jumbotron">
-					<h1>Compra confirmada com sucesso!</h1>
-					<p>Número do pedido: ${numeroPedido}</p>
-					<p>A sua compra está sendo processada no momento. Para mais informações, acompanhe o pedido na página da sua conta.</p>
+					<h1>Oops, página não encontrada</h1>
+					<p>A url acessada não foi reconhecida. (Erro 404)</p>
 					<p><a class="btn btn-primary btn-lg" href="livroList" role="button">Voltar ao site</a></p>
 				</div>
 			</div>

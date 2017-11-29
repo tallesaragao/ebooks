@@ -1,4 +1,4 @@
-package ebooks.test;
+package ebooks.test.run;
 
 import static org.junit.Assert.assertTrue;
 
@@ -19,6 +19,7 @@ public class TesteVendas {
 	public void iniciar() {
 		System.setProperty("webdriver.chrome.driver", "D:\\Users\\tallesaragao\\Downloads\\chromedriver.exe");
 		driver = new ChromeDriver();
+		//driver.manage().window().maximize();
 	}
 	
 	@After
@@ -142,9 +143,47 @@ public class TesteVendas {
 		adicionarLivroCarrinho();
 		calcularFrete();
 		selecionarCartaoCredito();
-		boolean sucesso = removerCupomTroca();
+		boolean sucesso = removerCartaoCredito();
 		fazerLogoutSite();
 		assertTrue(sucesso);	
+	}
+	
+	@Test
+	public void deveFazerUmPedido() {
+		fazerLoginSite();
+		pesquisarLivro();
+		adicionarLivroCarrinho();
+		alterarQuantidadeCarrinho();
+		calcularFrete();
+		selecionarCupomTroca();
+		selecionarCartaoCredito();
+		informarValorPagamentoCredito();
+		boolean sucesso = fazerPedido();
+		assertTrue(sucesso);
+	}
+	
+	@Test
+	public void deveMostrarPedidos() {
+		fazerLoginAdministrador();
+		boolean sucesso = mostrarPedidos();
+		assertTrue(sucesso);
+	}
+	
+	@Test
+	public void deveMostrarDetalhesPedido() {
+		fazerLoginAdministrador();
+		mostrarPedidos();
+		boolean sucesso = mostrarDetalhesPedido();
+		assertTrue(sucesso);
+	}
+	
+	@Test
+	public void deveAprovarUmPedido() {
+		fazerLoginAdministrador();
+		mostrarPedidos();
+		mostrarDetalhesPedido();
+		boolean sucesso = aprovarPedido();
+		assertTrue(sucesso);
 	}
 	
 	//Divisão das funções
@@ -159,6 +198,20 @@ public class TesteVendas {
 		btnLogar.click();
 		String pageSource = driver.getPageSource();
 		boolean logado = pageSource.contains("Olá, tobias");
+		return logado;
+	}
+	
+	public boolean fazerLoginAdministrador() {
+		driver.get(contexto + "loginSite");
+		WebElement usuario = driver.findElement(By.name("usuario"));
+		WebElement senha = driver.findElement(By.name("senha"));
+		WebElement btnLogar = driver.findElement(By.id("btnLogar"));
+		usuario.sendKeys("admin");
+		senha.sendKeys("Admin12#");
+		aguardar();
+		btnLogar.click();
+		String pageSource = driver.getPageSource();
+		boolean logado = pageSource.contains("Olá, admin");
 		return logado;
 	}
 	
@@ -194,7 +247,6 @@ public class TesteVendas {
 		String pageSource = driver.getPageSource();
 		boolean carrinhoMostrado = pageSource.contains("Carrinho de compras");
 		livroAdicionado = pageSource.contains("Memórias Póstumas de Brás Cubas");
-		aguardar();
 		return carrinhoMostrado && livroAdicionado;
 	}
 	
@@ -211,7 +263,6 @@ public class TesteVendas {
 		if(valor != null && valor.equals("10")) {
 			quantidadeAlterada = true;
 		}
-		aguardar();
 		return quantidadeAlterada;
 	}
 	
@@ -219,6 +270,7 @@ public class TesteVendas {
 		boolean livroRemovido = false;
 		WebElement btnRemoverCarrinho = driver.findElement(By.id("btnRemoverCarrinho"));
 		btnRemoverCarrinho.click();
+		aguardar();
 		driver.switchTo().alert().accept();
 		aguardar();
 		String pageSource = driver.getPageSource();
@@ -267,7 +319,7 @@ public class TesteVendas {
 		driver.get(contexto + "carrinhoPagamento");
 		boolean cupomSelecionado = false;
 		Select cuponsTroca = new Select(driver.findElement(By.id("cuponsTroca")));
-		cuponsTroca.selectByValue("14");
+		cuponsTroca.selectByIndex(1);
 		WebElement btnSelecionarCupons = driver.findElement(By.id("btnSelecionarCupons"));
 		btnSelecionarCupons.click();
 		aguardar();
@@ -281,6 +333,7 @@ public class TesteVendas {
 		boolean cupomRemovido = false;
 		WebElement btnRemoverCupom = driver.findElement(By.id("btnValeComprasRemover"));
 		btnRemoverCupom.click();
+		aguardar();
 		driver.switchTo().alert().accept();
 		aguardar();
 		String pageSource = driver.getPageSource();
@@ -292,7 +345,7 @@ public class TesteVendas {
 		driver.get(contexto + "carrinhoPagamento");
 		boolean cartaoSelecionado = false;
 		Select cuponsTroca = new Select(driver.findElement(By.id("cartoesCredito")));
-		cuponsTroca.selectByValue("5");
+		cuponsTroca.selectByIndex(1);
 		WebElement btnSelecionarCartoes = driver.findElement(By.id("btnSelecionarCartoes"));
 		btnSelecionarCartoes.click();
 		aguardar();
@@ -301,11 +354,22 @@ public class TesteVendas {
 		return cartaoSelecionado;		
 	}
 	
+	public boolean informarValorPagamentoCredito() {
+		boolean informado = false;
+		WebElement valorCartao = driver.findElement(By.name("valorCartao5"));
+		valorCartao.clear();
+		valorCartao.sendKeys("165,88");
+		informado = valorCartao.getAttribute("value").equals("165.88");
+		aguardar();
+		return informado;
+	}
+	
 	public boolean removerCartaoCredito() {
 		driver.get(contexto + "carrinhoPagamento");
 		boolean cartaoRemovido = false;
 		WebElement btnRemoverCartao = driver.findElement(By.id("btnCartaoCreditoRemover"));
 		btnRemoverCartao.click();
+		aguardar();
 		driver.switchTo().alert().accept();
 		aguardar();
 		String pageSource = driver.getPageSource();
@@ -313,11 +377,64 @@ public class TesteVendas {
 		return cartaoRemovido;
 	}
 	
+	public boolean fazerPedido() {
+		boolean confirmada = false;
+		WebElement btnValidarFormaPagamento = driver.findElement(By.id("btnValidarFormaPagamento"));
+		btnValidarFormaPagamento.click();
+		aguardar();
+		WebElement btnPedidoConfirmarCompra = driver.findElement(By.id("btnPedidoConfirmarCompra"));
+		btnPedidoConfirmarCompra.click();
+		aguardar();
+		String pageSource = driver.getPageSource();
+		confirmada = pageSource.contains("Compra confirmada com sucesso");
+		return confirmada;
+	}
+	
+	public boolean mostrarPedidos() {
+		boolean listados = false;
+		WebElement pedidoList = driver.findElement(By.id("pedidoList"));
+		pedidoList.click();
+		aguardar();
+		WebElement btnPesquisar = driver.findElement(By.id("btnPesquisar"));
+		btnPesquisar.click();
+		aguardar();
+		String pageSource = driver.getPageSource();
+		listados = pageSource.contains("Detalhes");
+		aguardar();
+		return listados;
+	}
+	
+	public boolean mostrarDetalhesPedido() {
+		boolean mostrado = false;
+		WebElement btnDetalhesPedido = driver.findElement(By.id("btnDetalhesPedido"));
+		btnDetalhesPedido.click();
+		aguardar();
+		String pageSource = driver.getPageSource();
+		mostrado = pageSource.contains("Acompanhamento do pedido");
+		return mostrado;
+	}
+	
+	public boolean aprovarPedido() {
+		boolean aprovado = false;
+		WebElement aprovarPedido = driver.findElement(By.id("aprovarPedido"));
+		aprovarPedido.click();
+		aguardar();
+		String pageSource = driver.getPageSource();
+		aprovado = pageSource.contains("Aprovado");
+		return aprovado;
+	}
+	
+	public void mostrarTrocas() {
+		WebElement trocaList = driver.findElement(By.id("trocaList"));
+		trocaList.click();
+		WebElement btnPesquisar = driver.findElement(By.id("btnPesquisar"));
+		btnPesquisar.click();
+	}
+	
 	public void aguardar() {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
