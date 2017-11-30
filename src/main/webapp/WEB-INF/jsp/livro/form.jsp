@@ -81,21 +81,21 @@
 					<div class="col-xs-12 col-md-2">
 						<div class="form-group">
 							<label for="quantMin" class="control-label">Qtde. Mínima</label>						
-							<input type="number" name="quantMin" placeholder="0"
+							<input type="number" name="quantMin"
 							value="${livro.estoque.quantidadeMinima}" class="form-control"/>
 						</div>
 					</div>
 					<div class="col-xs-12 col-md-2">
 						<div class="form-group">
 							<label for="quantMax" class="control-label">Qtde. Máxima</label>						
-							<input type="number" name="quantMax" placeholder="0"
+							<input type="number" name="quantMax"
 							value="${livro.estoque.quantidadeMaxima}" class="form-control"/>
 						</div>
 					</div>
 					<div class="col-xs-12 col-md-2">
 						<div class="form-group">
 							<label for="quantAtual" class="control-label">Qtde. em Estoque</label>						
-							<input type="number" name="quantAtual" placeholder="0"
+							<input type="number" name="quantAtual"
 							value="${livro.estoque.quantidadeAtual}" class="form-control"/>
 						</div>
 					</div>

@@ -44,6 +44,7 @@
 								<li><a id="categoriaList" href="categoriaList">Categorias</a></li>
 								<li><a id="pedidoList" href="pedidoList">Pedidos</a></li>
 								<li><a id="trocaList" href="trocaList">Trocas</a></li>
+								<li><a id="vendasAnalise" href="vendasAnalise?operacao=CONSULTAR">Análise</a></li>
 							</c:if>
 						</c:when>
 						<c:otherwise>

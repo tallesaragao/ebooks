@@ -22,6 +22,7 @@ import ebooks.dao.TipoEnderecoDAO;
 import ebooks.dao.TipoTelefoneDAO;
 import ebooks.dao.TrocaDAO;
 import ebooks.modelo.Acesso;
+import ebooks.modelo.Analise;
 import ebooks.modelo.Bandeira;
 import ebooks.modelo.Carrinho;
 import ebooks.modelo.CartaoCredito;
@@ -43,7 +44,6 @@ import ebooks.negocio.impl.AdicionarCartoesPagamento;
 import ebooks.negocio.impl.AdicionarCupomPromocionalPagamento;
 import ebooks.negocio.impl.AdicionarCuponsTrocaPagamento;
 import ebooks.negocio.impl.AdicionarLivroCarrinho;
-import ebooks.negocio.impl.AdicionarValeComprasPagamento;
 import ebooks.negocio.impl.AlterarQuantidadeItemCarrinho;
 import ebooks.negocio.impl.AlterarStatusAtualPedido;
 import ebooks.negocio.impl.AlterarStatusAtualTroca;
@@ -58,6 +58,7 @@ import ebooks.negocio.impl.ExcluirCupomPagamento;
 import ebooks.negocio.impl.ExcluirLivroCarrinho;
 import ebooks.negocio.impl.GeradorCodigoLivro;
 import ebooks.negocio.impl.GeradorPrecoLivro;
+import ebooks.negocio.impl.GerarGraficoAnalise;
 import ebooks.negocio.impl.RemoverCartaoCreditoCarrinho;
 import ebooks.negocio.impl.RemoverValeComprasCarrinho;
 import ebooks.negocio.impl.ValidarCamposCartaoCredito;
@@ -110,7 +111,6 @@ public class Fachada implements IFachada {
 		AdicionarCupomPromocionalPagamento adicCupomPromoPag = new AdicionarCupomPromocionalPagamento();
 		ExcluirCupomPagamento excluirCupomPag = new ExcluirCupomPagamento();
 		AdicionarCuponsTrocaPagamento adicCupomTrocaPag = new AdicionarCuponsTrocaPagamento();
-		AdicionarValeComprasPagamento adicValeCompPag = new AdicionarValeComprasPagamento();
 		RemoverValeComprasCarrinho remValeCarrinho = new RemoverValeComprasCarrinho();
 		RemoverCartaoCreditoCarrinho remCarCredCarrinho = new RemoverCartaoCreditoCarrinho();
 		ValidarFormaPagamento valFormaPag = new ValidarFormaPagamento();
@@ -120,6 +120,7 @@ public class Fachada implements IFachada {
 		ValidarTroca valTroca = new ValidarTroca();
 		AlterarStatusCompraEmTroca altStatusCompTroca = new AlterarStatusCompraEmTroca();
 		AlterarStatusAtualTroca altStatusAtualTroc = new AlterarStatusAtualTroca();
+		GerarGraficoAnalise gerarGraficoAnalise = new GerarGraficoAnalise();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -272,7 +273,11 @@ public class Fachada implements IFachada {
 		List<IStrategy> lAcessoConsultar = new ArrayList<>();
 		lAcessoConsultar.add(verAcesso);
 		contextoAcesso.put(CONSULTAR, lAcessoConsultar);
-		
+
+		Map<String, List<IStrategy>> contextoAnalise = new HashMap<String, List<IStrategy>>();
+		List<IStrategy> lAnaliseConsultar = new ArrayList<>();
+		lAnaliseConsultar.add(gerarGraficoAnalise);
+		contextoAnalise.put(CONSULTAR, lAnaliseConsultar);
 		
 		Map<String, List<IStrategy>> contextoGrupoPrecificacao = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lGrupoPrecificacaoConsultar = new ArrayList<>();
@@ -306,6 +311,7 @@ public class Fachada implements IFachada {
 		requisitos.put(Acesso.class.getName(), contextoAcesso);
 		requisitos.put(Troca.class.getName(), contextoTroca);
 		requisitos.put(StatusTroca.class.getName(), contextoStatusTroca);
+		requisitos.put(Analise.class.getName(), contextoAnalise);
 
 		Map<String, List<IStrategy>> contextoCarrinhoAfter = new HashMap<>();
 		List<IStrategy> lCarrinhoAfterSalvar = new ArrayList<>();

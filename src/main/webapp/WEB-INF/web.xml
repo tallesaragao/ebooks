@@ -444,6 +444,16 @@
   
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/vendasAnalise</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/vendasAnaliseCategorias</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
   	<url-pattern>/404</url-pattern>
   </servlet-mapping>  
   

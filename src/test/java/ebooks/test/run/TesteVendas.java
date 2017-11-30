@@ -28,19 +28,19 @@ public class TesteVendas {
 	}
 	
 	//Execução dos testes
-	@Test
+	//@Test
 	public void deveLogarNoSite() {
 		boolean sucesso = fazerLoginSite();
 		assertTrue(sucesso);
 	}
 	
-	@Test
+	//@Test
 	public void devePesquisarLivro() {
 		boolean sucesso = pesquisarLivro();
 		assertTrue(sucesso);		
 	}
 	
-	@Test
+	//@Test
 	public void deveAdicionarLivroCarrinho() {
 		fazerLoginSite();
 		pesquisarLivro();
@@ -49,7 +49,7 @@ public class TesteVendas {
 		assertTrue(sucesso);		
 	}
 	
-	@Test
+	//@Test
 	public void deveAlterarQuantidadeLivroCarrinho() {
 		fazerLoginSite();
 		pesquisarLivro();
@@ -59,7 +59,7 @@ public class TesteVendas {
 		assertTrue(sucesso);		
 	}
 	
-	@Test
+	//@Test
 	public void deveRemoverLivroCarrinho() {
 		fazerLoginSite();
 		pesquisarLivro();
@@ -69,7 +69,7 @@ public class TesteVendas {
 		assertTrue(sucesso);	
 	}
 	
-	@Test
+	//@Test
 	public void deveCalcularFrete() {
 		fazerLoginSite();
 		pesquisarLivro();
@@ -79,7 +79,7 @@ public class TesteVendas {
 		assertTrue(sucesso);	
 	}
 	
-	@Test
+	//@Test
 	public void deveAdicionarCupomPromocional() {
 		fazerLoginSite();
 		pesquisarLivro();
@@ -90,7 +90,7 @@ public class TesteVendas {
 		assertTrue(sucesso);	
 	}
 	
-	@Test
+	//@Test
 	public void deveRemoverCupomPromocional() {
 		fazerLoginSite();
 		pesquisarLivro();
@@ -102,7 +102,7 @@ public class TesteVendas {
 		assertTrue(sucesso);	
 	}
 
-	@Test
+	//@Test
 	public void deveSelecionarCupomTroca() {
 		fazerLoginSite();
 		pesquisarLivro();
@@ -113,7 +113,7 @@ public class TesteVendas {
 		assertTrue(sucesso);	
 	}
 
-	@Test
+	//@Test
 	public void deveRemoverCupomTroca() {
 		fazerLoginSite();
 		pesquisarLivro();
@@ -125,7 +125,7 @@ public class TesteVendas {
 		assertTrue(sucesso);	
 	}
 	
-	@Test
+	//@Test
 	public void deveSelecionarCartaoCredito() {
 		fazerLoginSite();
 		pesquisarLivro();
@@ -136,7 +136,7 @@ public class TesteVendas {
 		assertTrue(sucesso);	
 	}
 
-	@Test
+	//@Test
 	public void deveRemoverCartaoCredito() {
 		fazerLoginSite();
 		pesquisarLivro();
@@ -148,7 +148,7 @@ public class TesteVendas {
 		assertTrue(sucesso);	
 	}
 	
-	@Test
+	//@Test
 	public void deveFazerUmPedido() {
 		fazerLoginSite();
 		pesquisarLivro();
@@ -162,14 +162,14 @@ public class TesteVendas {
 		assertTrue(sucesso);
 	}
 	
-	@Test
+	//@Test
 	public void deveMostrarPedidos() {
 		fazerLoginAdministrador();
 		boolean sucesso = mostrarPedidos();
 		assertTrue(sucesso);
 	}
 	
-	@Test
+	//@Test
 	public void deveMostrarDetalhesPedido() {
 		fazerLoginAdministrador();
 		mostrarPedidos();
@@ -177,7 +177,7 @@ public class TesteVendas {
 		assertTrue(sucesso);
 	}
 	
-	@Test
+	//@Test
 	public void deveAprovarUmPedido() {
 		fazerLoginAdministrador();
 		mostrarPedidos();

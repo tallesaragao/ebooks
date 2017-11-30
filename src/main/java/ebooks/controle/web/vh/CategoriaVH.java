@@ -83,6 +83,12 @@ public class CategoriaVH implements IViewHelper {
 			request.getRequestDispatcher("livroFormGruposPrecificacao?operacao=CONSULTAR").forward(request, response);
 		}
 		
+		if(uri.equals(contexto + "/vendasAnaliseCategorias")) {
+			List<Categoria> categorias = (List<Categoria>) object;
+			request.setAttribute("categorias", categorias);
+			request.getRequestDispatcher("vendasAnalise?operacao=CONSULTAR").forward(request, response);
+		}
+		
 		if(uri.equals(contexto + "/categoriaSalvar")) {
 			if(object == null) {
 				String sucesso = "Categoria cadastrada com sucesso";

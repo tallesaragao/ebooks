@@ -45,7 +45,7 @@ public class ValidarFormaPagamento implements IStrategy {
 							else if(pag.getClass().getName().equals(PagamentoCartao.class.getName())
 									&& quantidadeCartoes >= 2
 									&& pag.getValorPago().longValue() < 10) {
-								sb.append("O valor mínimo a pagar em cada cartão é de R$ 10,00");
+								sb.append("O valor mínimo a pagar em cada cartão é de R$ 10,00:");
 							}
 							else {
 								valorTotalPagamentos = valorTotalPagamentos.add(pag.getValorPago());
@@ -110,7 +110,7 @@ public class ValidarFormaPagamento implements IStrategy {
 							sb.append("Pagamento inválido. Se estiver utilizando somente cupons de troca, certifique-se de que a"
 									+ " soma de seus valores seja, no mínimo, igual ao valor do pedido. Caso esteja utilizando"
 									+ " cartão de crédito, a soma dos cupons e o valor pago nos cartões deve ser igual ao valor"
-									+ " total do pedido.:");
+									+ " total do pedido:");
 						}
 					}
 				}

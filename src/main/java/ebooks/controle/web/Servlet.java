@@ -14,6 +14,7 @@ import ebooks.controle.ConsultarCommand;
 import ebooks.controle.ExcluirCommand;
 import ebooks.controle.ICommand;
 import ebooks.controle.SalvarCommand;
+import ebooks.controle.web.vh.AnaliseVH;
 import ebooks.controle.web.vh.BandeiraVH;
 import ebooks.controle.web.vh.CarrinhoVH;
 import ebooks.controle.web.vh.CartaoCreditoVH;
@@ -135,6 +136,8 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/trocaConsultar", new TrocaVH());
 		vhs.put(contextoApp + "/trocaAprovar", new TrocaVH());
 		vhs.put(contextoApp + "/statusTrocaSalvar", new StatusTrocaVH());
+		vhs.put(contextoApp + "/vendasAnalise", new AnaliseVH());
+		vhs.put(contextoApp + "/vendasAnaliseCategorias", new CategoriaVH());
 		vhs.put(contextoApp + "/404", new ErroVH());
 	}
 		
