@@ -86,7 +86,7 @@ public class CategoriaVH implements IViewHelper {
 		if(uri.equals(contexto + "/vendasAnaliseCategorias")) {
 			List<Categoria> categorias = (List<Categoria>) object;
 			request.setAttribute("categorias", categorias);
-			request.getRequestDispatcher("vendasAnalise?operacao=CONSULTAR").forward(request, response);
+			request.getRequestDispatcher("vendasAnalise?operacao=").forward(request, response);
 		}
 		
 		if(uri.equals(contexto + "/categoriaSalvar")) {

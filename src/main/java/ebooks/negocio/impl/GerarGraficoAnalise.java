@@ -32,59 +32,61 @@ public class GerarGraficoAnalise implements IStrategy {
 		StringBuilder sb = new StringBuilder();
 		Analise analise = (Analise) entidade;
 		IDAO pedidoDAO = new PedidoDAO();
-		try {
-			List<EntidadeDominio> pedidos = pedidoDAO.consultar(new Pedido());
-			if(!pedidos.isEmpty()) {
-				XYSeriesCollection dataset = new XYSeriesCollection();
-				for(Categoria categoria : analise.getCategorias()) {
-					IDAO categoriaDAO = new CategoriaDAO();
-					List<EntidadeDominio> consulta = categoriaDAO.consultar(categoria);
-					if(!consulta.isEmpty()) {
-						categoria = (Categoria) consulta.get(0);
-						XYSeries series = new XYSeries(categoria.getNome());
-						long[] quantidadesVendidasCategoriaMes = new long[12];
-						for(int i = 0; i < quantidadesVendidasCategoriaMes.length; i++) {
-							quantidadesVendidasCategoriaMes[i] = 0;
-						}
-						for(EntidadeDominio ent : pedidos) {
-							Pedido pedido = (Pedido) ent;
-							Calendar cal = Calendar.getInstance();
-							cal.setTime(pedido.getDataCadastro());
-							int mes = cal.get(Calendar.MONTH);
-							List<ItemPedido> itensPedido = pedido.getItensPedido();
-							for(ItemPedido item : itensPedido) {
-								List<Categoria> categoriasItem = item.getLivro().getCategorias();
-								for(Categoria categoriaItem : categoriasItem) {
-									if(categoria.getId().longValue() == categoriaItem.getId().longValue()) {
-										quantidadesVendidasCategoriaMes[mes] += item.getQuantidade();
-									}
-								}
-								
+		if(analise.getCategorias() != null && !analise.getCategorias().isEmpty()) {
+			try {
+				List<EntidadeDominio> pedidos = pedidoDAO.consultar(new Pedido());
+				if(!pedidos.isEmpty()) {
+					XYSeriesCollection dataset = new XYSeriesCollection();
+					for(Categoria categoria : analise.getCategorias()) {
+						IDAO categoriaDAO = new CategoriaDAO();
+						List<EntidadeDominio> consulta = categoriaDAO.consultar(categoria);
+						if(!consulta.isEmpty()) {
+							categoria = (Categoria) consulta.get(0);
+							XYSeries series = new XYSeries(categoria.getNome());
+							long[] quantidadesVendidasCategoriaMes = new long[12];
+							for(int i = 0; i < quantidadesVendidasCategoriaMes.length; i++) {
+								quantidadesVendidasCategoriaMes[i] = 0;
 							}
+							for(EntidadeDominio ent : pedidos) {
+								Pedido pedido = (Pedido) ent;
+								Calendar cal = Calendar.getInstance();
+								cal.setTime(pedido.getDataCadastro());
+								int mes = cal.get(Calendar.MONTH);
+								List<ItemPedido> itensPedido = pedido.getItensPedido();
+								for(ItemPedido item : itensPedido) {
+									List<Categoria> categoriasItem = item.getLivro().getCategorias();
+									for(Categoria categoriaItem : categoriasItem) {
+										if(categoria.getId().longValue() == categoriaItem.getId().longValue()) {
+											quantidadesVendidasCategoriaMes[mes] += item.getQuantidade();
+										}
+									}
+									
+								}
+							}
+							for(int i = 0; i < quantidadesVendidasCategoriaMes.length; i++) {
+								long quantidadeVendida = quantidadesVendidasCategoriaMes[i];
+								series.add(i+1, quantidadeVendida);
+							}
+							dataset.addSeries(series);
 						}
-						for(int i = 0; i < quantidadesVendidasCategoriaMes.length; i++) {
-							long quantidadeVendida = quantidadesVendidasCategoriaMes[i];
-							series.add(i+1, quantidadeVendida);
-						}
-						dataset.addSeries(series);
 					}
+					String title = "Volume de vendas por categoria e período";
+					String xAxisLabel = "Meses do ano de 2017";
+					String yAxisLabel = "Volume de vendas (unidade)";
+					JFreeChart grafico = ChartFactory.createXYLineChart(title, xAxisLabel, yAxisLabel, 
+							dataset, PlotOrientation.VERTICAL, true, true, false);
+					BufferedImage image = grafico.createBufferedImage(800, 600);
+					HttpSession session = analise.getSession();
+					session.setAttribute("grafico", image);
+					ChartUtilities.encodeAsPNG(image);
 				}
-				String title = "Volume de vendas por categoria e período";
-				String xAxisLabel = "Meses do ano de 2017";
-				String yAxisLabel = "Volume de vendas (unidade)";
-				JFreeChart grafico = ChartFactory.createXYLineChart(title, xAxisLabel, yAxisLabel, 
-						dataset, PlotOrientation.VERTICAL, true, true, false);
-				BufferedImage image = grafico.createBufferedImage(800, 600);
-				HttpSession session = analise.getSession();
-				session.setAttribute("grafico", image);
-				ChartUtilities.encodeAsPNG(image);
+				else {
+					sb.append("Nenhum pedido encontrado");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				sb.append("Problema na geração do gráfico:");
 			}
-			else {
-				sb.append("Nenhum pedido encontrado");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			sb.append("Problema na geração do gráfico:");
 		}
 		
 		if(sb.length() > 0) {

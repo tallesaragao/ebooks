@@ -22,7 +22,6 @@ public class AnaliseVH implements IViewHelper {
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
 		Analise analise = new Analise();
 		analise.setSession(request.getSession());
-		analise.setCategorias(new ArrayList<Categoria>());
 		String operacao = request.getParameter("operacao");
 		if(operacao.equals("CONSULTAR")) {
 			List<Categoria> categorias = new ArrayList<>();
@@ -50,10 +49,6 @@ public class AnaliseVH implements IViewHelper {
 				request.getRequestDispatcher("vendasAnaliseCategorias?operacao=CONSULTAR").forward(request, response);
 			}
 			else {
-				String caminhoGrafico = System.getProperty("user.home");
-				caminhoGrafico += "\\webapp\\ebooks\\grafico.png";
-				caminhoGrafico = caminhoGrafico.replace("\\", "/");
-				request.setAttribute("caminhoGrafico", caminhoGrafico);
 				request.getRequestDispatcher("WEB-INF/jsp/analise/view.jsp").forward(request, response);
 			}
 		}
@@ -61,7 +56,9 @@ public class AnaliseVH implements IViewHelper {
 			HttpSession session = request.getSession();
 			BufferedImage grafico = (BufferedImage) session.getAttribute("grafico");
 			response.setContentType("image/png");
-			ImageIO.write(grafico, "png", response.getOutputStream());
+			if(grafico != null) {
+				ImageIO.write(grafico, "png", response.getOutputStream());
+			}
 		}
 	}
 
