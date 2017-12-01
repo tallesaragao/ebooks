@@ -1,10 +1,12 @@
 package ebooks.negocio.impl;
 
+import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
@@ -13,6 +15,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import ebooks.dao.CategoriaDAO;
 import ebooks.dao.IDAO;
 import ebooks.dao.PedidoDAO;
 import ebooks.modelo.Analise;
@@ -28,46 +31,53 @@ public class GerarGraficoAnalise implements IStrategy {
 	public String processar(EntidadeDominio entidade) {
 		StringBuilder sb = new StringBuilder();
 		Analise analise = (Analise) entidade;
-		IDAO dao = new PedidoDAO();
+		IDAO pedidoDAO = new PedidoDAO();
 		try {
-			List<EntidadeDominio> pedidos = dao.consultar(new Pedido());
+			List<EntidadeDominio> pedidos = pedidoDAO.consultar(new Pedido());
 			if(!pedidos.isEmpty()) {
 				XYSeriesCollection dataset = new XYSeriesCollection();
 				for(Categoria categoria : analise.getCategorias()) {
-					XYSeries series = new XYSeries(categoria.getNome());
-					long[] quantidadesVendidasCategoriaMes = new long[12];
-					for(int i = 0; i < quantidadesVendidasCategoriaMes.length; i++) {
-						quantidadesVendidasCategoriaMes[i] = 0;
-					}
-					for(EntidadeDominio ent : pedidos) {
-						Pedido pedido = (Pedido) ent;
-						Calendar cal = Calendar.getInstance();
-						cal.setTime(pedido.getDataCadastro());
-						int mes = cal.get(Calendar.MONTH);
-						List<ItemPedido> itensPedido = pedido.getItensPedido();
-						for(ItemPedido item : itensPedido) {
-							List<Categoria> categoriasItem = item.getLivro().getCategorias();
-							for(Categoria categoriaItem : categoriasItem) {
-								if(categoria.getId().longValue() == categoriaItem.getId().longValue()) {
-									quantidadesVendidasCategoriaMes[mes] += item.getQuantidade();
-								}
-							}
-							
+					IDAO categoriaDAO = new CategoriaDAO();
+					List<EntidadeDominio> consulta = categoriaDAO.consultar(categoria);
+					if(!consulta.isEmpty()) {
+						categoria = (Categoria) consulta.get(0);
+						XYSeries series = new XYSeries(categoria.getNome());
+						long[] quantidadesVendidasCategoriaMes = new long[12];
+						for(int i = 0; i < quantidadesVendidasCategoriaMes.length; i++) {
+							quantidadesVendidasCategoriaMes[i] = 0;
 						}
+						for(EntidadeDominio ent : pedidos) {
+							Pedido pedido = (Pedido) ent;
+							Calendar cal = Calendar.getInstance();
+							cal.setTime(pedido.getDataCadastro());
+							int mes = cal.get(Calendar.MONTH);
+							List<ItemPedido> itensPedido = pedido.getItensPedido();
+							for(ItemPedido item : itensPedido) {
+								List<Categoria> categoriasItem = item.getLivro().getCategorias();
+								for(Categoria categoriaItem : categoriasItem) {
+									if(categoria.getId().longValue() == categoriaItem.getId().longValue()) {
+										quantidadesVendidasCategoriaMes[mes] += item.getQuantidade();
+									}
+								}
+								
+							}
+						}
+						for(int i = 0; i < quantidadesVendidasCategoriaMes.length; i++) {
+							long quantidadeVendida = quantidadesVendidasCategoriaMes[i];
+							series.add(i+1, quantidadeVendida);
+						}
+						dataset.addSeries(series);
 					}
-					for(int i = 0; i < quantidadesVendidasCategoriaMes.length; i++) {
-						long quantidadeVendida = quantidadesVendidasCategoriaMes[i];
-						series.add(i+1, quantidadeVendida);
-					}
-					dataset.addSeries(series);
 				}
 				String title = "Volume de vendas por categoria e período";
-				String xAxisLabel = "Mês";
-				String yAxisLabel = "Volume de vendas";
+				String xAxisLabel = "Meses do ano de 2017";
+				String yAxisLabel = "Volume de vendas (unidade)";
 				JFreeChart grafico = ChartFactory.createXYLineChart(title, xAxisLabel, yAxisLabel, 
-						dataset, PlotOrientation.HORIZONTAL, true, true, false);
-				OutputStream out = new FileOutputStream("D:\\Users\\tallesaragao\\Downloads\\grafico.png");
-				ChartUtilities.writeChartAsPNG(out, grafico, 550, 400);
+						dataset, PlotOrientation.VERTICAL, true, true, false);
+				BufferedImage image = grafico.createBufferedImage(800, 600);
+				HttpSession session = analise.getSession();
+				session.setAttribute("grafico", image);
+				ChartUtilities.encodeAsPNG(image);
 			}
 			else {
 				sb.append("Nenhum pedido encontrado");

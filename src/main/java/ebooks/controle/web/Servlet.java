@@ -137,6 +137,7 @@ public class Servlet extends HttpServlet {
 		vhs.put(contextoApp + "/trocaAprovar", new TrocaVH());
 		vhs.put(contextoApp + "/statusTrocaSalvar", new StatusTrocaVH());
 		vhs.put(contextoApp + "/vendasAnalise", new AnaliseVH());
+		vhs.put(contextoApp + "/graficoImagem", new AnaliseVH());
 		vhs.put(contextoApp + "/vendasAnaliseCategorias", new CategoriaVH());
 		vhs.put(contextoApp + "/404", new ErroVH());
 	}

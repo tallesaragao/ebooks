@@ -1,15 +1,28 @@
 package ebooks.modelo;
 
+import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.jfree.chart.JFreeChart;
 
 public class Analise extends EntidadeDominio {
+	private HttpSession session;
 	private JFreeChart grafico;
 	private List<Categoria> categorias;
 	private Date dataInicial;
 	private Date dataFinal;
+	private BufferedImage imagem;
+
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
 
 	public JFreeChart getGrafico() {
 		return grafico;
@@ -41,5 +54,13 @@ public class Analise extends EntidadeDominio {
 
 	public void setDataFinal(Date dataFinal) {
 		this.dataFinal = dataFinal;
+	}
+
+	public BufferedImage getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(BufferedImage imagem) {
+		this.imagem = imagem;
 	}
 }

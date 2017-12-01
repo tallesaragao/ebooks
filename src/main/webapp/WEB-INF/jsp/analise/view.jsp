@@ -14,7 +14,7 @@
 <body>
 	<c:import url="../cabecalho.jsp"/>
 	<div class="container">
-		<h1 class="page-header titulo">Lista de clientes</h1>
+		<h1 class="page-header titulo">Análise de vendas</h1>
 		<c:if test="${sucesso != null}">
 			<div class="row">
 				<div class="col-md-5">
@@ -44,7 +44,7 @@
 		</c:if>
 		<form action="#" method="post">
 			<fieldset>
-				<legend>Faça sua pesquisa</legend>
+				<legend>Escolha os filtros para gerar a análise</legend>
 				<div class="row">
 					<div class="col-xs-12 col-md-4">
 						<div class="form-group">
@@ -70,13 +70,18 @@
 						<div class="col-xs-6 col-sm-6 col-md-2">							
 							<button type="submit" class="btn btn-md btn-primary" id="btnAnalise"
 							name="operacao" value="CONSULTAR" formaction="vendasAnalise">
-								<span class="glyphicon glyphicon-search"></span> Pesquisar
+								Gerar gráfico
 							</button>
 						</div>
 					</div>
 				</div>
 				</div>
 			</fieldset>
+			<div class="row">
+				<div class="col-xs-10">
+					<img src="graficoImagem" class="img-responsive" alt="Gráfico do volume de vendas"/>
+				</div>
+			</div>
 			<c:if test="${not empty consulta}">
 				<div class="row">
 					<div class="table-responsive tabela-clientes">

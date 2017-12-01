@@ -1,12 +1,16 @@
 package ebooks.controle.web.vh;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import ebooks.modelo.Analise;
 import ebooks.modelo.Categoria;
@@ -17,10 +21,12 @@ public class AnaliseVH implements IViewHelper {
 	@Override
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
 		Analise analise = new Analise();
+		analise.setSession(request.getSession());
+		analise.setCategorias(new ArrayList<Categoria>());
 		String operacao = request.getParameter("operacao");
 		if(operacao.equals("CONSULTAR")) {
 			List<Categoria> categorias = new ArrayList<>();
-			String[] idsCategorias = request.getParameterValues("idsCategorias");
+			String[] idsCategorias = request.getParameterValues("categorias");
 			if(idsCategorias != null) {
 				for(String idCategoria : idsCategorias) {
 					Categoria categoria = new Categoria();
@@ -44,8 +50,18 @@ public class AnaliseVH implements IViewHelper {
 				request.getRequestDispatcher("vendasAnaliseCategorias?operacao=CONSULTAR").forward(request, response);
 			}
 			else {
+				String caminhoGrafico = System.getProperty("user.home");
+				caminhoGrafico += "\\webapp\\ebooks\\grafico.png";
+				caminhoGrafico = caminhoGrafico.replace("\\", "/");
+				request.setAttribute("caminhoGrafico", caminhoGrafico);
 				request.getRequestDispatcher("WEB-INF/jsp/analise/view.jsp").forward(request, response);
 			}
+		}
+		if(uri.equals(contexto + "/graficoImagem")) {
+			HttpSession session = request.getSession();
+			BufferedImage grafico = (BufferedImage) session.getAttribute("grafico");
+			response.setContentType("image/png");
+			ImageIO.write(grafico, "png", response.getOutputStream());
 		}
 	}
 

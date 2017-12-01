@@ -450,6 +450,11 @@
   <servlet-mapping>
   	<servlet-name>Servlet</servlet-name>
   	<url-pattern>/vendasAnaliseCategorias</url-pattern>
+  </servlet-mapping>    
+  
+  <servlet-mapping>
+  	<servlet-name>Servlet</servlet-name>
+  	<url-pattern>/graficoImagem</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
