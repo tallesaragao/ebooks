@@ -78,7 +78,7 @@
 				</div>
 			</fieldset>
 			<div class="row">
-				<div class="col-xs-10">
+				<div class="col-xs-12">
 					<img src="graficoImagem" class="img-responsive" alt="Gráfico do volume de vendas"/>
 				</div>
 			</div>

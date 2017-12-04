@@ -58,6 +58,7 @@ public class AnaliseVH implements IViewHelper {
 			response.setContentType("image/png");
 			if(grafico != null) {
 				ImageIO.write(grafico, "png", response.getOutputStream());
+				session.removeAttribute("grafico");
 			}
 		}
 	}
