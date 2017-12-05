@@ -2,7 +2,10 @@ package ebooks.controle.web.vh;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -24,6 +27,38 @@ public class AnaliseVH implements IViewHelper {
 		analise.setSession(request.getSession());
 		String operacao = request.getParameter("operacao");
 		if(operacao.equals("CONSULTAR")) {
+			String mesInicial = request.getParameter("mesInicial");
+			String anoInicial = request.getParameter("anoInicial");
+			String mesFinal = request.getParameter("mesFinal");
+			String anoFinal = request.getParameter("anoFinal");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date dataFormatada;
+			if(mesInicial != null && anoInicial != null && mesFinal != null && anoFinal != null) {
+				try {
+					boolean anoFinalBissexto = false;
+					long anoFinalLong = Long.valueOf(anoFinal);
+					if(anoFinalLong % 4 == 0) {
+						if(anoFinalLong % 100 == 0) {
+							if(anoFinalLong % 400 != 0) {
+								anoFinalBissexto = true;
+							}
+						}
+						else {
+							anoFinalBissexto = true;
+						}
+					}
+					String diaFinalMes = "0";
+					String dataInicialString = anoInicial + "-" + mesInicial  + "-01";
+					String dataFinalString = anoFinal + "-" + mesFinal  + "-01";
+					dataFormatada = sdf.parse(dataInicialString);
+					analise.setDataInicial(dataFormatada);
+					dataFormatada = sdf.parse(dataFinalString);
+					analise.setDataFinal(dataFormatada);
+				} catch (ParseException e) {
+					analise.setDataInicial(null);
+					analise.setDataFinal(null);
+				}
+			}
 			List<Categoria> categorias = new ArrayList<>();
 			String[] idsCategorias = request.getParameterValues("categorias");
 			if(idsCategorias != null) {
@@ -49,8 +84,17 @@ public class AnaliseVH implements IViewHelper {
 				request.getRequestDispatcher("vendasAnaliseCategorias?operacao=CONSULTAR").forward(request, response);
 			}
 			else {
+				HttpSession session = request.getSession();
+				String resposta = (String) session.getAttribute("resposta");
+				if(resposta != null) {
+					String[] mensagens = resposta.split(":");
+					request.setAttribute("mensagens", mensagens);
+					session.removeAttribute("resposta");
+				}
 				request.getRequestDispatcher("WEB-INF/jsp/analise/view.jsp").forward(request, response);
 			}
+			Analise analise = (Analise) getEntidade(request);
+			request.setAttribute("analise", analise);
 		}
 		if(uri.equals(contexto + "/graficoImagem")) {
 			HttpSession session = request.getSession();

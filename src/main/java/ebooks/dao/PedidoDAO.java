@@ -124,6 +124,8 @@ public class PedidoDAO extends AbstractDAO {
 			sql += " where p.id_cliente = ?";
 		}
 		
+		sql += " order by dt_cadastro asc";
+		
 		try {
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			if(pedidoConsulta.getId() != null) {

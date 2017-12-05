@@ -15,29 +15,16 @@
 	<c:import url="../cabecalho.jsp"/>
 	<div class="container">
 		<h1 class="page-header titulo">Análise de vendas</h1>
-		<c:if test="${sucesso != null}">
+		<c:if test="${mensagens != null}">
 			<div class="row">
-				<div class="col-md-5">
-					<div class="alert alert-success alert-dismissible">
-						<span class="glyphicon glyphicon-ok"></span>
-						<strong>${sucesso}.</strong>				
-						<button type="button" id="btnFecharMsgSucesso" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</c:if>
-			
-		<c:if test="${erro != null}">
-			<div class="row">
-				<div class="col-md-5">
-					<div class="alert alert-danger alert-dismissible">
-						<span class="glyphicon glyphicon-alert"></span>
-						<strong>${erro}.</strong>
-						<button type="button" id="btnFecharMsgErro" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+				<div class="col-sm-8 col-md-5">
+					<div class="alert alert-danger" role="alert">
+						<span class="glyphicon glyphicon-alert"></span><strong> Problema(s) detectados:</strong>
+						</br>
+						<c:forEach var="mensagem" items="${mensagens}">
+							${mensagem}.
+							</br>
+						</c:forEach>
 					</div>
 				</div>
 			</div>
@@ -45,6 +32,11 @@
 		<form action="#" method="post">
 			<fieldset>
 				<legend>Escolha os filtros para gerar a análise</legend>
+				<div class="row">
+					<div class="col-xs-12">
+						<p>OBS: Selecione as categorias e um intervalo de tempo de 3 a 12 meses.</p>
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-xs-12 col-md-4">
 						<div class="form-group">
@@ -63,6 +55,50 @@
 							</select>
 						</div>
 					</div>
+					<div class="form-group col-xs-6 col-md-2">
+						<label for="mesInicial" class="control-label">Mês inicial</label>
+						<select required name="mesInicial" class="form-control">
+							<option disabled selected>Escolha o mês</option>
+							<option value="01">Janeiro</option>
+							<option value="02">Fevereiro</option>
+							<option value="03">Março</option>
+							<option value="04">Abril</option>
+							<option value="05">Maio</option>
+							<option value="06">Junho</option>
+							<option value="07">Julho</option>
+							<option value="08">Agosto</option>
+							<option value="09">Setembro</option>
+							<option value="10">Outubro</option>
+							<option value="11">Novembro</option>
+							<option value="12">Dezembro</option>
+						</select>
+					</div>
+					<div class="form-group col-xs-6 col-md-2">
+						<label for="anoInicial" class="control-label">Ano inicial</label>
+						<input type="number" name="anoInicial" class="form-control" placeholder="Digite o ano"/>
+					</div>
+					<div class="form-group col-xs-6 col-md-2">
+						<label for="mesFinal" class="control-label">Mês final</label>
+						<select required name="mesFinal" class="form-control">
+							<option disabled selected>Escolha o mês</option>
+							<option value="01">Janeiro</option>
+							<option value="02">Fevereiro</option>
+							<option value="03">Março</option>
+							<option value="04">Abril</option>
+							<option value="05">Maio</option>
+							<option value="06">Junho</option>
+							<option value="07">Julho</option>
+							<option value="08">Agosto</option>
+							<option value="09">Setembro</option>
+							<option value="10">Outubro</option>
+							<option value="11">Novembro</option>
+							<option value="12">Dezembro</option>
+						</select>
+					</div>
+					<div class="form-group col-xs-6 col-md-2">
+						<label for="anoFinal" class="control-label">Ano final</label>
+						<input type="number" name="anoFinal" class="form-control" placeholder="Digite o ano"/>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-12">
@@ -79,7 +115,7 @@
 			</fieldset>
 			<div class="row">
 				<div class="col-xs-12">
-					<img src="graficoImagem" class="img-responsive" alt="Gráfico do volume de vendas"/>
+					<img src="graficoImagem" class="img-responsive"/>
 				</div>
 			</div>
 			<c:if test="${not empty consulta}">
