@@ -136,9 +136,11 @@
 							<select name="endereco" class="form-control">
 								<option value="" disabled>Escolha um endereço para prosseguir</option>
 								<c:forEach items="${pedido.cliente.enderecos}" var="end">
-									<option <c:if test="${pedido.enderecoEntrega.id eq end.id}">selected</c:if> value="${end.id}">
-										${end.identificacao}
-									</option>
+									<c:if test="${not endereco.excluido}">
+										<option <c:if test="${pedido.enderecoEntrega.id eq end.id}">selected</c:if> value="${end.id}">
+											${end.identificacao}
+										</option>
+									</c:if>
 								</c:forEach>
 							</select>
 						</div>

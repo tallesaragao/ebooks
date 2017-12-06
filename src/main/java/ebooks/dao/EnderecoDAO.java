@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.TipoEndereco;
@@ -20,7 +21,7 @@ public class EnderecoDAO extends AbstractDAO {
 		try {
 			conexao.setAutoCommit(false);
 			String sql = "insert into endereco(identificacao, logradouro, numero, complemento, bairro, cep, cidade,"
-					+ " estado, pais, fl_principal, dt_cadastro, id_tipo_endereco) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+					+ " estado, pais, fl_principal, dt_cadastro, id_tipo_endereco, excluido) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setString(1, endereco.getIdentificacao());
 			ps.setString(2, endereco.getLogradouro());
@@ -31,9 +32,10 @@ public class EnderecoDAO extends AbstractDAO {
 			ps.setString(7, endereco.getCidade());
 			ps.setString(8, endereco.getEstado());
 			ps.setString(9, endereco.getPais());
-			ps.setBoolean(10, endereco.isPrincipal());
+			ps.setBoolean(10, endereco.getPrincipal());
 			ps.setDate(11, new Date(endereco.getDataCadastro().getTime()));
 			ps.setLong(12, endereco.getTipoEndereco().getId());
+			ps.setBoolean(13, endereco.getExcluido());
 			ps.execute();
 			ResultSet generatedKeys = ps.getGeneratedKeys();
 			while(generatedKeys.next()) {
@@ -62,24 +64,31 @@ public class EnderecoDAO extends AbstractDAO {
 	@Override
 	public boolean alterar(EntidadeDominio entidade) throws SQLException {
 		Endereco endereco = (Endereco) entidade;
+		Endereco enderecoOld = new Endereco();
+		List<EntidadeDominio> consulta = consultar(endereco);
+		if(!consulta.isEmpty()) {
+			enderecoOld = (Endereco) consulta.get(0);
+		}
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
 			String sql = "update endereco set identificacao=?, logradouro=?, numero=?, complemento=?, bairro=?, cep=?, cidade=?,"
-					+ " estado=?, pais=?, fl_principal=?, id_tipo_endereco=? where id_endereco=?";
+					+ " estado=?, pais=?, fl_principal=?, id_tipo_endereco=?, excluido=? where id_endereco=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setString(1, endereco.getIdentificacao());
-			ps.setString(2, endereco.getLogradouro());
-			ps.setString(3, endereco.getNumero());
-			ps.setString(4, endereco.getComplemento());
-			ps.setString(5, endereco.getBairro());
-			ps.setString(6, endereco.getCep());
-			ps.setString(7, endereco.getCidade());
-			ps.setString(8, endereco.getEstado());
-			ps.setString(9, endereco.getPais());
-			ps.setBoolean(10, endereco.isPrincipal());
-			ps.setLong(11, endereco.getTipoEndereco().getId());
-			ps.setLong(12, endereco.getId());
+			ps.setString(1, endereco.getIdentificacao() != null ? endereco.getIdentificacao() : enderecoOld.getIdentificacao());
+			ps.setString(2, endereco.getLogradouro() != null ? endereco.getLogradouro() : enderecoOld.getLogradouro());
+			ps.setString(3, endereco.getNumero() != null ? endereco.getNumero() : enderecoOld.getNumero());
+			ps.setString(4, endereco.getComplemento() != null ? endereco.getComplemento() : enderecoOld.getComplemento());
+			ps.setString(5, endereco.getBairro() != null ? endereco.getBairro() : enderecoOld.getBairro());
+			ps.setString(6, endereco.getCep() != null ? endereco.getCep() : enderecoOld.getCep());
+			ps.setString(7, endereco.getCidade() != null ? endereco.getCidade() : enderecoOld.getCidade());
+			ps.setString(8, endereco.getEstado() != null ? endereco.getEstado() : enderecoOld.getEstado());
+			ps.setString(9, endereco.getPais() != null ? endereco.getPais() : enderecoOld.getPais());
+			ps.setBoolean(10, endereco.getPrincipal() != null ? endereco.getPrincipal() : enderecoOld.getPrincipal());
+			ps.setLong(11, endereco.getTipoEndereco() != null ?
+					endereco.getTipoEndereco().getId() : enderecoOld.getTipoEndereco().getId());
+			ps.setBoolean(12, endereco.getExcluido() != null ? endereco.getExcluido() : enderecoOld.getExcluido());
+			ps.setLong(13, endereco.getId());
 			ps.execute();
 			ps.close();
 			conexao.commit();
@@ -97,31 +106,13 @@ public class EnderecoDAO extends AbstractDAO {
 	@Override
 	public boolean excluir(EntidadeDominio entidade) throws SQLException {
 		Endereco endereco = (Endereco) entidade;
-		conexao = factory.getConnection();
 		try {
-			conexao.setAutoCommit(false);
-			String sql = "delete from cliente_endereco where id_cliente=? and id_endereco=?";
-			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setLong(1, endereco.getPessoa().getId());
-			ps.setLong(2, endereco.getId());
-			ps.execute();
-			ps.close();
-			
-			sql = "delete from endereco where id_endereco=?";
-			ps = conexao.prepareStatement(sql);
-			ps.setLong(1, endereco.getId());
-			ps.execute();
-			ps.close();
-			conexao.commit();
-			conexao.close();
-			return true;
+			endereco.setExcluido(true);
+			boolean alterar = alterar(endereco);
+			return alterar;
 		}
 		catch(SQLException e) {
-			conexao.rollback();
 			return false;
-		}
-		finally {
-			conexao.close();			
 		}
 	}
 
@@ -207,6 +198,7 @@ public class EnderecoDAO extends AbstractDAO {
 				endereco.setPais(rs.getString("e.pais"));
 				endereco.setDataCadastro(rs.getDate("e.dt_cadastro"));
 				endereco.setPrincipal(rs.getBoolean("e.fl_principal"));
+				endereco.setExcluido(rs.getBoolean("e.excluido"));
 				
 				consulta.add(endereco);
 			}

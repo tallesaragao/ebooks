@@ -9,6 +9,7 @@ public class CartaoCredito extends EntidadeDominio {
 	private String codigoSeguranca;
 	private Bandeira bandeira;
 	private Cliente cliente;
+	private Boolean excluido;
 
 	public String getNumero() {
 		return numero;
@@ -56,5 +57,13 @@ public class CartaoCredito extends EntidadeDominio {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public Boolean getExcluido() {
+		return excluido;
+	}
+
+	public void setExcluido(Boolean excluido) {
+		this.excluido = excluido;
 	}
 }

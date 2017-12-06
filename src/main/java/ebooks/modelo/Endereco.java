@@ -11,8 +11,9 @@ public class Endereco extends EntidadeDominio {
 	private String cidade;
 	private String estado;
 	private String pais;
-	private boolean principal;
+	private Boolean principal;
 	private Pessoa pessoa;
+	private Boolean excluido;
 
 	public TipoEndereco getTipoEndereco() {
 		return tipoEndereco;
@@ -94,11 +95,11 @@ public class Endereco extends EntidadeDominio {
 		this.pais = pais;
 	}
 
-	public boolean isPrincipal() {
+	public Boolean getPrincipal() {
 		return principal;
 	}
 
-	public void setPrincipal(boolean principal) {
+	public void setPrincipal(Boolean principal) {
 		this.principal = principal;
 	}
 
@@ -108,5 +109,13 @@ public class Endereco extends EntidadeDominio {
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
+	}
+
+	public Boolean getExcluido() {
+		return excluido;
+	}
+
+	public void setExcluido(Boolean excluido) {
+		this.excluido = excluido;
 	}
 }

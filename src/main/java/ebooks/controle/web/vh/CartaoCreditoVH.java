@@ -43,6 +43,8 @@ public class CartaoCreditoVH implements IViewHelper {
 				Bandeira bandeira = new Bandeira();
 				bandeira.setId(Long.valueOf(idBandeira));
 				cartaoCredito.setBandeira(bandeira);
+				cartaoCredito.setExcluido(false);
+				
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				Date dataFormatada;
 				if(dataVencimentoString != null) {

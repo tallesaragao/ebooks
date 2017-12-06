@@ -54,6 +54,7 @@ public class EnderecoVH implements IViewHelper {
 				TipoEndereco tipoEndereco = new TipoEndereco();
 				tipoEndereco.setId(Long.valueOf(tipoEnderecoId));
 				endereco.setTipoEndereco(tipoEndereco);
+				endereco.setExcluido(false);
 			}
 			if(operacao.equals("CONSULTAR")) {
 				String id = request.getParameter("id");

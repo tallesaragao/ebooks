@@ -143,23 +143,25 @@
 							<select multiple name="cartoesCredito" id="cartoesCredito" class="form-control">
 								<option disabled value="">Escolha um ou mais cartões</option>
 								<c:forEach items="${pedido.cliente.cartoesCredito}" var="cartao">
-									<option 
-									<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
-										<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoCartao'}">
-											<c:if test="${pagamento.cartaoCredito.id eq cartao.id}">
-												selected
+									<c:if test="${not cartao.excluido}">
+										<option 
+										<c:forEach items="${pedido.formaPagamento.pagamentos}" var="pagamento">
+											<c:if test="${pagamento.getClass().getSimpleName() eq 'PagamentoCartao'}">
+												<c:if test="${pagamento.cartaoCredito.id eq cartao.id}">
+													selected
+												</c:if>
 											</c:if>
-										</c:if>
-									</c:forEach>
-									value="${cartao.id}">
-										${cartao.bandeira.nome} - 
-										${fn:substring(cartao.numero, 0, 4)}
-										<c:set var="asteriscos" value=""/>
-										<c:forEach begin="1" end="${fn:length(cartao.numero) - 8}">
-											<c:out value="*"/>
 										</c:forEach>
-										${fn:substring(cartao.numero, fn:length(cartao.numero) - 4, fn:length(cartao.numero))}
-									</option>
+										value="${cartao.id}">
+											${cartao.bandeira.nome} - 
+											${fn:substring(cartao.numero, 0, 4)}
+											<c:set var="asteriscos" value=""/>
+											<c:forEach begin="1" end="${fn:length(cartao.numero) - 8}">
+												<c:out value="*"/>
+											</c:forEach>
+											${fn:substring(cartao.numero, fn:length(cartao.numero) - 4, fn:length(cartao.numero))}
+										</option>
+									</c:if>
 								</c:forEach>
 							</select>
 						</div>

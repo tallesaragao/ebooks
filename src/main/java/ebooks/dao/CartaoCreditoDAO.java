@@ -22,7 +22,7 @@ public class CartaoCreditoDAO extends AbstractDAO {
 		try {
 			conexao.setAutoCommit(false);
 			String sql = "insert into cartao_credito(numero, nome_titular, dt_vencimento, "
-					+ "codigo_seguranca, id_cliente, id_bandeira, dt_cadastro) values(?,?,?,?,?,?,?)";
+					+ "codigo_seguranca, id_cliente, id_bandeira, dt_cadastro, excluido) values(?,?,?,?,?,?,?,?)";
 			PreparedStatement ps = conexao.prepareStatement(sql);
 			ps.setString(1, cartaoCredito.getNumero());
 			ps.setString(2, cartaoCredito.getNomeTitular());
@@ -31,6 +31,7 @@ public class CartaoCreditoDAO extends AbstractDAO {
 			ps.setLong(5, cartaoCredito.getCliente().getId());
 			ps.setLong(6, cartaoCredito.getBandeira().getId());
 			ps.setDate(7, new Date(cartaoCredito.getDataCadastro().getTime()));
+			ps.setBoolean(8, cartaoCredito.getExcluido());
 			ps.execute();
 			ps.close();
 			conexao.commit();
@@ -49,19 +50,31 @@ public class CartaoCreditoDAO extends AbstractDAO {
 	@Override
 	public boolean alterar(EntidadeDominio entidade) throws SQLException {
 		CartaoCredito cartaoCredito = (CartaoCredito) entidade;
+		CartaoCredito cartaoCreditoOld = new CartaoCredito();
+		List<EntidadeDominio> consulta = consultar(cartaoCredito);
+		if(!consulta.isEmpty()) {
+			cartaoCreditoOld = (CartaoCredito) consulta.get(0);
+		}
 		conexao = factory.getConnection();
 		try {
 			conexao.setAutoCommit(false);
 			String sql = "update cartao_credito set numero=?, nome_titular=?, dt_vencimento=?, "
-					+ "codigo_seguranca=?, id_cliente=?, id_bandeira=? where id_cartao_credito=?";
+					+ "codigo_seguranca=?, id_cliente=?, id_bandeira=?, excluido=? where id_cartao_credito=?";
 			PreparedStatement ps = conexao.prepareStatement(sql);
-			ps.setString(1, cartaoCredito.getNumero());
-			ps.setString(2, cartaoCredito.getNomeTitular());
-			ps.setDate(3, new Date(cartaoCredito.getDataVencimento().getTime()));
-			ps.setString(4, cartaoCredito.getCodigoSeguranca());
-			ps.setLong(5, cartaoCredito.getCliente().getId());
-			ps.setLong(6, cartaoCredito.getBandeira().getId());
-			ps.setLong(7, cartaoCredito.getId());
+			ps.setString(1, cartaoCredito.getNumero() != null ? cartaoCredito.getNumero() : cartaoCreditoOld.getNumero());
+			ps.setString(2, cartaoCredito.getNomeTitular() != null ?
+					cartaoCredito.getNomeTitular() : cartaoCreditoOld.getNomeTitular());
+			ps.setDate(3, new Date(cartaoCredito.getDataVencimento() != null ?
+					cartaoCredito.getDataVencimento().getTime() : cartaoCreditoOld.getDataVencimento().getTime()));
+			ps.setString(4, cartaoCredito.getCodigoSeguranca() != null ? 
+					cartaoCredito.getCodigoSeguranca() : cartaoCreditoOld.getCodigoSeguranca());
+			ps.setLong(5, cartaoCredito.getCliente() != null ?
+					cartaoCredito.getCliente().getId() : cartaoCreditoOld.getCliente().getId());
+			ps.setLong(6, cartaoCredito.getBandeira() != null ?
+					cartaoCredito.getBandeira().getId() : cartaoCreditoOld.getBandeira().getId());
+			ps.setBoolean(7, cartaoCredito.getExcluido() != null ?
+					cartaoCredito.getExcluido() : cartaoCreditoOld.getExcluido());
+			ps.setLong(8, cartaoCredito.getId());
 			ps.execute();
 			ps.close();
 			conexao.commit();
@@ -79,33 +92,13 @@ public class CartaoCreditoDAO extends AbstractDAO {
 	@Override
 	public boolean excluir(EntidadeDominio entidade) throws SQLException {
 		CartaoCredito cartaoCredito = (CartaoCredito) entidade;
-		conexao = factory.getConnection();
 		try {
-			conexao.setAutoCommit(false);
-			String sql = "";
-			PreparedStatement ps = null;
-			if(cartaoCredito.getCliente() != null && cartaoCredito.getCliente().getId() != null) {
-				sql = "delete from cartao_credito where id_cliente=?";
-				ps = conexao.prepareStatement(sql);
-				ps.setLong(1, cartaoCredito.getCliente().getId());
-			}
-			else {
-				sql = "delete from cartao_credito where id_cartao_credito=?";
-				ps = conexao.prepareStatement(sql);
-				ps.setLong(1, cartaoCredito.getId());
-			}
-			ps.execute();
-			ps.close();
-			conexao.commit();
-			conexao.close();
-			return true;
+			cartaoCredito.setExcluido(true);
+			boolean alterar = alterar(cartaoCredito);
+			return alterar;
 		}
 		catch(SQLException e) {
-			conexao.rollback();
 			return false;
-		}
-		finally {
-			conexao.close();			
 		}
 	}
 
@@ -158,6 +151,7 @@ public class CartaoCreditoDAO extends AbstractDAO {
 				cartaoCredito.setDataVencimento(rs.getDate("c.dt_vencimento"));
 				cartaoCredito.setCodigoSeguranca(rs.getString("c.codigo_seguranca"));
 				cartaoCredito.setDataCadastro(rs.getDate("c.dt_cadastro"));
+				cartaoCredito.setExcluido(rs.getBoolean("c.excluido"));
 				
 				Cliente cliente = new Cliente();
 				cliente.setId(rs.getLong("c.id_cliente"));

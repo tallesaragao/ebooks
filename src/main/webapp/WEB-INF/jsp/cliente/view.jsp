@@ -102,13 +102,6 @@
 									</button>
 								</c:otherwise>
 							</c:choose>
-											
-							<button type="submit" name="operacao" method="get" data-toggle="tooltip"
-							title="Excluir" value="EXCLUIR"	onclick="return excluir()" id="btnClienteExcluir"
-							class="btn btn-sm btn-danger botao-excluir btn-icone"
-							 formaction="clienteExcluir?id=${cliente.id}">
-								<span class="glyphicon glyphicon-trash"></span>
-							</button>
 						
 						</c:if>
 					</div>
@@ -149,31 +142,32 @@
 								</thead>
 								<tbody>
 									<c:forEach items="${cliente.enderecos}" var="endereco">
-										<tr>
-											<td>${endereco.identificacao}</td>
-											<td>${endereco.logradouro}</td>
-											<td>${endereco.numero}</td>
-											<td>${endereco.complemento}</td>
-											<td>${endereco.bairro}</td>							
-											<td>${endereco.cep}</td>							
-											<td>${endereco.cidade}</td>							
-											<td>${endereco.estado}</td>					
-											<td>${endereco.pais}</td>					
-											<td>
-												<button type="submit" data-toggle="tooltip" title="Editar"
-												class="btn btn-sm btn-default btn-icone" method="get" id="btnEnderecoEdit${endereco.id}"
-												formaction="enderecoEdit?operacao=CONSULTAR&id=${endereco.id}&idCliente=${cliente.id}">
-													<span class="glyphicon glyphicon-pencil"></span>
-												</button>
-												<button type="submit" name="operacao" method="get" data-toggle="tooltip"
-												title="Excluir" value="EXCLUIR"	onclick="return excluir()" id="btnEnderecoExcluir${endereco.id}"
-												class="btn btn-sm btn-danger botao-excluir btn-icone"
-												 formaction="enderecoExcluir?id=${endereco.id}&idCliente=${cliente.id}">
-													<span class="glyphicon glyphicon-trash"></span>
-												</button>
-											</td>
-											</td>
-										</tr>
+										<c:if test="${not endereco.excluido}">
+											<tr>
+												<td>${endereco.identificacao}</td>
+												<td>${endereco.logradouro}</td>
+												<td>${endereco.numero}</td>
+												<td>${endereco.complemento}</td>
+												<td>${endereco.bairro}</td>							
+												<td>${endereco.cep}</td>							
+												<td>${endereco.cidade}</td>							
+												<td>${endereco.estado}</td>					
+												<td>${endereco.pais}</td>					
+												<td>
+													<button type="submit" data-toggle="tooltip" title="Editar"
+													class="btn btn-sm btn-default btn-icone" method="get" id="btnEnderecoEdit${endereco.id}"
+													formaction="enderecoEdit?operacao=CONSULTAR&id=${endereco.id}&idCliente=${cliente.id}">
+														<span class="glyphicon glyphicon-pencil"></span>
+													</button>
+													<button type="submit" name="operacao" method="get" data-toggle="tooltip"
+													title="Excluir" value="EXCLUIR"	onclick="return excluir()" id="btnEnderecoExcluir${endereco.id}"
+													class="btn btn-sm btn-danger botao-excluir btn-icone"
+													 formaction="enderecoExcluir?id=${endereco.id}&idCliente=${cliente.id}">
+														<span class="glyphicon glyphicon-trash"></span>
+													</button>
+												</td>
+											</tr>
+										</c:if>
 									</c:forEach>
 								</tbody>
 							</table>
@@ -211,26 +205,28 @@
 								</thead>
 								<tbody>
 									<c:forEach items="${cliente.cartoesCredito}" var="cartaoCredito">
-										<tr>
-											<td>${cartaoCredito.numero}</td>
-											<td>${cartaoCredito.nomeTitular}</td>
-											<td><fmt:formatDate value="${cartaoCredito.dataVencimento}" pattern="dd/MM/yyyy"/></td>
-											<td>${cartaoCredito.codigoSeguranca}</td>
-											<td>${cartaoCredito.bandeira.nome}</td>						
-											<td>
-												<button type="submit" data-toggle="tooltip" title="Editar"
-												class="btn btn-sm btn-default btn-icone" method="get" id="btnCarCredEdit${cartaoCredito.id}"
-												formaction="cartaoCreditoEdit?operacao=CONSULTAR&id=${cartaoCredito.id}&idCliente=${cliente.id}">
-													<span class="glyphicon glyphicon-pencil"></span>
-												</button>
-												<button type="submit" name="operacao" method="get" data-toggle="tooltip"
-												title="Excluir" value="EXCLUIR"	onclick="return excluir()" id="btnCarCredExcluir${cartaoCredito.id}"
-												class="btn btn-sm btn-danger botao-excluir btn-icone"
-												formaction="cartaoCreditoExcluir?id=${cartaoCredito.id}&idCliente=${cliente.id}">
-													<span class="glyphicon glyphicon-trash"></span>
-												</button>
-											</td>
-										</tr>
+										<c:if test="${not cartaoCredito.excluido}">
+											<tr>
+												<td>${cartaoCredito.numero}</td>
+												<td>${cartaoCredito.nomeTitular}</td>
+												<td><fmt:formatDate value="${cartaoCredito.dataVencimento}" pattern="dd/MM/yyyy"/></td>
+												<td>${cartaoCredito.codigoSeguranca}</td>
+												<td>${cartaoCredito.bandeira.nome}</td>						
+												<td>
+													<button type="submit" data-toggle="tooltip" title="Editar"
+													class="btn btn-sm btn-default btn-icone" method="get" id="btnCarCredEdit${cartaoCredito.id}"
+													formaction="cartaoCreditoEdit?operacao=CONSULTAR&id=${cartaoCredito.id}&idCliente=${cliente.id}">
+														<span class="glyphicon glyphicon-pencil"></span>
+													</button>
+													<button type="submit" name="operacao" method="get" data-toggle="tooltip"
+													title="Excluir" value="EXCLUIR"	onclick="return excluir()" id="btnCarCredExcluir${cartaoCredito.id}"
+													class="btn btn-sm btn-danger botao-excluir btn-icone"
+													formaction="cartaoCreditoExcluir?id=${cartaoCredito.id}&idCliente=${cliente.id}">
+														<span class="glyphicon glyphicon-trash"></span>
+													</button>
+												</td>
+											</tr>
+										</c:if>
 									</c:forEach>
 								</tbody>
 							</table>
