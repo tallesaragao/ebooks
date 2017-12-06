@@ -48,8 +48,20 @@ public class AnaliseVH implements IViewHelper {
 						}
 					}
 					String diaFinalMes = "0";
+					switch(mesFinal) {
+						case "02":
+							diaFinalMes = "28";
+							if(anoFinalBissexto) {
+								diaFinalMes = "29";
+							}
+						case "04": case "06": case "09": case "11":
+							diaFinalMes = "30";
+						default:
+							diaFinalMes = "31";
+						
+					}
 					String dataInicialString = anoInicial + "-" + mesInicial  + "-01";
-					String dataFinalString = anoFinal + "-" + mesFinal  + "-01";
+					String dataFinalString = anoFinal + "-" + mesFinal  + "-" + diaFinalMes;
 					dataFormatada = sdf.parse(dataInicialString);
 					analise.setDataInicial(dataFormatada);
 					dataFormatada = sdf.parse(dataFinalString);
