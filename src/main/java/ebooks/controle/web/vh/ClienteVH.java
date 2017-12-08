@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
@@ -179,7 +180,7 @@ public class ClienteVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
@@ -192,27 +193,27 @@ public class ClienteVH implements IViewHelper {
 			return;
 		}
 		if(uri.equals(contexto + "/clienteEdit")) {
-			List<Cliente> listaCliente = (List<Cliente>) object;
-			Cliente cliente = listaCliente.get(0);
+			List<EntidadeDominio> listaCliente = resultado.getEntidades();
+			Cliente cliente = (Cliente) listaCliente.get(0);
 			request.setAttribute("cliente", cliente);
 			request.getRequestDispatcher("clienteEditTiposEndereco?operacao=CONSULTAR").forward(request, response);
 			return;
 		}
 		if(uri.equals(contexto + "/clienteView")) {
-			List<Cliente> listaCliente = (List<Cliente>) object;
-			Cliente cliente = listaCliente.get(0);
+			List<EntidadeDominio> listaCliente = resultado.getEntidades();
+			Cliente cliente = (Cliente) listaCliente.get(0);
 			request.setAttribute("cliente", cliente);
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/view.jsp").forward(request, response);
 			return;
 		}
 		if(uri.equals(contexto + "/clienteSalvar")) {
-			if(object == null) {
+			if(resultado.getResposta() == null) {
 				String sucesso = "Cliente cadastrado com sucesso";
 				request.setAttribute("sucesso", sucesso);
 				request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
 				return;
 			}
-			String mensagem = (String) object;
+			String mensagem = resultado.getResposta();
 			String[] mensagens = mensagem.split(":");
 			Cliente cliente = (Cliente) this.getEntidade(request);
 			request.setAttribute("cliente", cliente);
@@ -222,20 +223,20 @@ public class ClienteVH implements IViewHelper {
 			return;
 		}
 		if(uri.equals(contexto + "/clienteConsultar")) {
-			if(object == null) {
+			if(resultado.getEntidades() == null) {
 				String erro = "Nenhum cliente encontrado";
 				request.setAttribute("erro", erro);
 				request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
 				return;
 			}
-			List<Cliente> consulta = (List<Cliente>) object;
+			List<EntidadeDominio> consulta = resultado.getEntidades();
 			request.setAttribute("consulta", consulta);
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
 			return;
 		}
 		if(uri.equals(contexto + "/clienteAlterar")) {
-			if (object != null) {
-				String mensagem = (String) object;
+			if (resultado.getResposta() != null) {
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				Cliente cliente = (Cliente) this.getEntidade(request);
 				request.setAttribute("cliente", cliente);
@@ -250,19 +251,19 @@ public class ClienteVH implements IViewHelper {
 			return;
 		}
 		if(uri.equals(contexto + "/clienteExcluir")) {
-			String sucesso = (String) object;
+			String sucesso = resultado.getResposta();
 			request.setAttribute("sucesso", sucesso);
 			request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/clienteAtivar")) {
-			if(object == null) {
+			if(resultado.getEntidades() == null) {
 				String erro = "Nenhum cliente encontrado para inativar";
 				request.setAttribute("erro", erro);
 				request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
 				return;
 			}
-			List<Cliente> listaCliente = (List<Cliente>) object;
-			Cliente cliente = listaCliente.get(0);
+			List<EntidadeDominio> listaCliente = resultado.getEntidades();
+			Cliente cliente = (Cliente) listaCliente.get(0);
 			cliente.setAtivo(true);
 			request.setAttribute("entidade", cliente);
 			request.setAttribute("identificacao", cliente.getNome());
@@ -271,14 +272,14 @@ public class ClienteVH implements IViewHelper {
 			return;
 		}
 		if(uri.equals(contexto + "/clienteInativar")) {
-			if(object == null) {
+			if(resultado.getEntidades() == null) {
 				String erro = "Nenhum cliente encontrado para inativar";
 				request.setAttribute("erro", erro);
 				request.getRequestDispatcher("WEB-INF/jsp/cliente/list.jsp").forward(request, response);
 				return;
 			}
-			List<Cliente> listaCliente = (List<Cliente>) object;
-			Cliente cliente = listaCliente.get(0);
+			List<EntidadeDominio> listaCliente = resultado.getEntidades();
+			Cliente cliente = (Cliente) listaCliente.get(0);
 			cliente.setAtivo(false);
 			request.setAttribute("entidade", cliente);
 			request.setAttribute("identificacao", cliente.getNome());

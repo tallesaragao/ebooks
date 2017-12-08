@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Pedido;
 import ebooks.modelo.Status;
@@ -40,7 +41,7 @@ public class StatusPedidoVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
@@ -49,8 +50,8 @@ public class StatusPedidoVH implements IViewHelper {
 			if(idPedido == null) {
 				idPedido = "";
 			}
-			if(object != null) {
-				String mensagem = (String) object;
+			if(resultado.getResposta() != null) {
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				request.setAttribute("mensagens", mensagens);
 				request.getRequestDispatcher("pedidoView?operacao=CONSULTAR&idPedido=" + idPedido).forward(request, response);

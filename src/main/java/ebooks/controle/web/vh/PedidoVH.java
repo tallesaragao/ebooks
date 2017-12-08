@@ -8,11 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.Carrinho;
-import ebooks.modelo.Cliente;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Pedido;
-import ebooks.modelo.Troca;
 
 public class PedidoVH implements IViewHelper {
 
@@ -24,9 +23,9 @@ public class PedidoVH implements IViewHelper {
 			if(operacao.equals("SALVAR")) {
 				Carrinho carrinho = new Carrinho();
 				HttpSession session = request.getSession();
-				carrinho.setSession(session);
 				Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
 				carrinho.setPedido(pedidoSession);
+				carrinho.setPedidoSession(pedidoSession);
 				carrinho.setPedidoFinalizado(true);
 				entidade = carrinho;
 			}
@@ -43,7 +42,7 @@ public class PedidoVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
@@ -51,8 +50,12 @@ public class PedidoVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/pedido/view.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pedidoConfirmarCompra")) {
-			if(object == null) {
-				HttpSession session = request.getSession();
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
+			if(resultado.getResposta() == null) {
 				Pedido pedido = (Pedido) session.getAttribute("pedido");
 				String numeroPedido = pedido.getNumero();
 				Long idPedido = pedido.getId();
@@ -66,8 +69,8 @@ public class PedidoVH implements IViewHelper {
 			}
 		}
 		if(uri.equals(contexto + "/pedidoView")) {
-			if(object != null) {
-				List<EntidadeDominio> consulta = (List<EntidadeDominio>) object;
+			if(resultado.getEntidades() != null) {
+				List<EntidadeDominio> consulta = resultado.getEntidades();
 				request.setAttribute("pedido", consulta.get(0));
 			}
 			request.getRequestDispatcher("WEB-INF/jsp/pedido/tracking.jsp").forward(request, response);
@@ -76,15 +79,15 @@ public class PedidoVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/pedido/list.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pedidoConsultar")) {
-			if(object != null) {
-				List<Pedido> consulta = (List<Pedido>) object;
+			if(resultado.getEntidades() != null) {
+				List<EntidadeDominio> consulta = resultado.getEntidades();
 				request.setAttribute("consulta", consulta);
 			}
 			request.getRequestDispatcher("WEB-INF/jsp/pedido/list.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pedidoTroca")) {
-			if(object != null) {
-				List<EntidadeDominio> consulta = (List<EntidadeDominio>) object;
+			if(resultado.getEntidades() != null) {
+				List<EntidadeDominio> consulta = resultado.getEntidades();
 				request.setAttribute("pedido", consulta.get(0));
 			}
 			String idPedido = request.getParameter("idPedido");

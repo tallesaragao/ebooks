@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.Categoria;
 import ebooks.modelo.EntidadeDominio;
 
@@ -55,7 +56,7 @@ public class CategoriaVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String uri = request.getRequestURI();
 		String contexto = request.getContextPath();
@@ -69,34 +70,34 @@ public class CategoriaVH implements IViewHelper {
 		}
 		
 		if(uri.equals(contexto + "/categoriaEdit")) {
-			List<Categoria> lista = (List<Categoria>) object;
-			Categoria categoria = lista.get(0);
+			List<EntidadeDominio> lista = resultado.getEntidades();
+			Categoria categoria = (Categoria) lista.get(0);
 			request.setAttribute("categoria", categoria);
 			request.setAttribute("operacao", ALTERAR);
 			request.getRequestDispatcher("WEB-INF/jsp/categoria/form.jsp").forward(request, response);
 		}
 		
 		if(uri.equals(contexto + "/livroFormCategorias")) {
-			List<Categoria> categorias = (List<Categoria>) object;
+			List<EntidadeDominio> categorias = resultado.getEntidades();
 			HttpSession session = request.getSession();
 			session.setAttribute("categorias", categorias);
 			request.getRequestDispatcher("livroFormGruposPrecificacao?operacao=CONSULTAR").forward(request, response);
 		}
 		
 		if(uri.equals(contexto + "/vendasAnaliseCategorias")) {
-			List<Categoria> categorias = (List<Categoria>) object;
+			List<EntidadeDominio> categorias = resultado.getEntidades();
 			request.setAttribute("categorias", categorias);
 			request.getRequestDispatcher("vendasAnalise?operacao=").forward(request, response);
 		}
 		
 		if(uri.equals(contexto + "/categoriaSalvar")) {
-			if(object == null) {
+			if(resultado.getResposta() == null) {
 				String sucesso = "Categoria cadastrada com sucesso";
 				request.setAttribute("sucesso", sucesso);
 				request.getRequestDispatcher("WEB-INF/jsp/categoria/list.jsp").forward(request, response);
 				return;
 			}
-			String mensagem = (String) object;
+			String mensagem = resultado.getResposta();
 			String[] mensagens = mensagem.split(":");
 			Categoria categoria = (Categoria) this.getEntidade(request);
 			request.setAttribute("categoria", categoria);
@@ -105,20 +106,20 @@ public class CategoriaVH implements IViewHelper {
 		}
 		
 		if(uri.equals(contexto + "/categoriaConsultar")) {
-			if(object == null) {
+			if(resultado.getEntidades() == null) {
 				String erro = "Nenhuma categoria encontrada";
 				request.setAttribute("erro", erro);
 				request.getRequestDispatcher("WEB-INF/jsp/categoria/list.jsp").forward(request, response);
 				return;
 			}
-			List<Categoria> consulta = (List<Categoria>) object;
+			List<EntidadeDominio> consulta = resultado.getEntidades();
 			request.setAttribute("consulta", consulta);
 			request.getRequestDispatcher("WEB-INF/jsp/categoria/list.jsp").forward(request, response);
 		}
 		
 		if(uri.equals(contexto + "/categoriaAlterar")) {
-			if (object != null) {
-				String mensagem = (String) object;
+			if(resultado.getResposta() != null) {
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				Categoria categoria = (Categoria) this.getEntidade(request);
 				request.setAttribute("mensagens", mensagens);
@@ -134,7 +135,7 @@ public class CategoriaVH implements IViewHelper {
 		}
 		
 		if(uri.equals(contexto + "/categoriaExcluir")) {
-			String sucesso = (String) object;
+			String sucesso = resultado.getResposta();
 			request.setAttribute("sucesso", sucesso);
 			request.getRequestDispatcher("WEB-INF/jsp/categoria/list.jsp").forward(request, response);
 		}

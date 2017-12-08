@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ebooks.controle.web.vh.IViewHelper;
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
@@ -79,7 +79,7 @@ public class EnderecoVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
@@ -90,8 +90,8 @@ public class EnderecoVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/endereco/form.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/enderecoEdit")) {
-			List<Endereco> listaEndereco = (List<Endereco>) object;
-			Endereco endereco = listaEndereco.get(0);
+			List<EntidadeDominio> listaEndereco = resultado.getEntidades();
+			Endereco endereco = (Endereco) listaEndereco.get(0);
 			request.setAttribute("endereco", endereco);
 			String idCliente = request.getParameter("idCliente");
 			request.setAttribute("idCliente", idCliente);
@@ -100,14 +100,14 @@ public class EnderecoVH implements IViewHelper {
 		}
 		if(uri.equals(contexto + "/enderecoSalvar")) {
 			String idCliente = request.getParameter("idCliente");
-			if(object == null) {
+			if(resultado.getResposta() == null) {
 				request.setAttribute("idCliente", idCliente);
 				String sucesso = "Endereço cadastrado com sucesso";
 				request.setAttribute("sucesso", sucesso);
 				request.getRequestDispatcher("clienteView?operacao=CONSULTAR&id=" + idCliente).forward(request, response);
 				return;
 			}
-			String mensagem = (String) object;
+			String mensagem = resultado.getResposta();
 			String[] mensagens = mensagem.split(":");
 			Endereco endereco = (Endereco) this.getEntidade(request);
 			request.setAttribute("idCliente", idCliente);
@@ -116,10 +116,10 @@ public class EnderecoVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/endereco/form.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/enderecoAlterar")) {
-			if (object != null) {
+			if (resultado.getResposta() != null) {
 				String idCliente = request.getParameter("idCliente");
 				request.setAttribute("idCliente", idCliente);
-				String mensagem = (String) object;
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				Endereco endereco = (Endereco) this.getEntidade(request);
 				String operacao = "ALTERAR";
@@ -138,7 +138,7 @@ public class EnderecoVH implements IViewHelper {
 		if(uri.equals(contexto + "/enderecoExcluir")) {
 			String idCliente = request.getParameter("idCliente");
 			request.setAttribute("idCliente", idCliente);
-			String sucesso = (String) object;
+			String sucesso = resultado.getResposta();
 			request.setAttribute("sucesso", sucesso);
 			request.getRequestDispatcher("clienteView?operacao=CONSULTAR&id=" + idCliente).forward(request, response);
 		}

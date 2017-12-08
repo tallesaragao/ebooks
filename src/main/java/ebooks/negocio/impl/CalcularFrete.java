@@ -153,11 +153,10 @@ public class CalcularFrete implements IStrategy {
 					frete.setPrazoEstimado(prazoEstimado);
 					new ComplementarDtCadastro().processar(frete);
 					pedido.setFrete(frete);
-					HttpSession session = carrinho.getSession();
-					Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+					Pedido pedidoSession = carrinho.getPedidoSession();
 					pedidoSession.setEnderecoEntrega(endereco);
 					pedidoSession.setFrete(frete);
-					session.setAttribute("pedido", pedidoSession);
+					carrinho.setPedidoSession(pedidoSession);
 				}
 				else {
 					sb.append("Endereço não encontrado:");

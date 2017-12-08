@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.controle.AlterarCommand;
 import ebooks.controle.ConsultarCommand;
 import ebooks.controle.ExcluirCommand;
@@ -145,16 +146,16 @@ public class Servlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String operacao = request.getParameter("operacao");
-		Object obj = null;
+		Resultado resultado = new Resultado();
 		String uri = request.getRequestURI();
 		IViewHelper vh = vhs.get(uri);
 		if(vh != null) {
 			if(operacao != null && !operacao.equals("")) {
 				EntidadeDominio entidade = vh.getEntidade(request);
 				ICommand cmd = commands.get(operacao);
-				obj = cmd.executar(entidade);
+				resultado = cmd.executar(entidade);
 			}
-			vh.setView(obj, request, response);
+			vh.setView(resultado, request, response);
 		}
 	}
 }

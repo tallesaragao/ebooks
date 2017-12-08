@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.Bandeira;
 import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.Cliente;
@@ -73,7 +74,7 @@ public class CartaoCreditoVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
@@ -84,8 +85,8 @@ public class CartaoCreditoVH implements IViewHelper {
 			request.getRequestDispatcher("cartaoCreditoFormBandeiras?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/cartaoCreditoEdit")) {
-			List<CartaoCredito> listaCartaoCredito = (List<CartaoCredito>) object;
-			CartaoCredito cartaoCredito = listaCartaoCredito.get(0);
+			List<EntidadeDominio> listaCartaoCredito = resultado.getEntidades();
+			CartaoCredito cartaoCredito = (CartaoCredito) listaCartaoCredito.get(0);
 			request.setAttribute("cartaoCredito", cartaoCredito);
 			request.setAttribute("operacao", "ALTERAR");
 			String idCliente = request.getParameter("idCliente");
@@ -93,14 +94,14 @@ public class CartaoCreditoVH implements IViewHelper {
 			request.getRequestDispatcher("cartaoCreditoEditBandeiras").forward(request, response);
 		}
 		if(uri.equals(contexto + "/cartaoCreditoSalvar")) {
-			if(object == null) {
+			if(resultado.getResposta() == null) {
 				String idCliente = request.getParameter("idCliente");
 				String sucesso = "Cartão de crédito cadastrado com sucesso";
 				request.setAttribute("sucesso", sucesso);
 				request.getRequestDispatcher("clienteView?operacao=CONSULTAR&id=" + idCliente).forward(request, response);
 				return;
 			}
-			String mensagem = (String) object;
+			String mensagem = resultado.getResposta();
 			String[] mensagens = mensagem.split(":");
 			CartaoCredito cartaoCredito = (CartaoCredito) this.getEntidade(request);
 			request.setAttribute("cartaoCredito", cartaoCredito);
@@ -110,8 +111,8 @@ public class CartaoCreditoVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/cartaoCredito/form.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/cartaoCreditoAlterar")) {
-			if (object != null) {
-				String mensagem = (String) object;
+			if (resultado.getResposta() != null) {
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				CartaoCredito cartaoCredito = (CartaoCredito) this.getEntidade(request);
 				request.setAttribute("cartaoCredito", cartaoCredito);
@@ -131,7 +132,7 @@ public class CartaoCreditoVH implements IViewHelper {
 		}
 		if(uri.equals(contexto + "/cartaoCreditoExcluir")) {
 			String idCliente = request.getParameter("idCliente");
-			String sucesso = (String) object;
+			String sucesso = resultado.getResposta();
 			request.setAttribute("sucesso", sucesso);
 			request.getRequestDispatcher("clienteView?operacao=CONSULTAR&id=" + idCliente).forward(request, response);
 		}

@@ -1,7 +1,8 @@
 package ebooks.controle;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.EntidadeDominio;
 
 public interface ICommand {
-	public Object executar(EntidadeDominio entidade);
+	public Resultado executar(EntidadeDominio entidade);
 }

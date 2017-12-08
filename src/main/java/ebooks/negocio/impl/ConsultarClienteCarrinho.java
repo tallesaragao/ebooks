@@ -28,8 +28,7 @@ public class ConsultarClienteCarrinho implements IStrategy {
 				if(!consulta.isEmpty()) {
 					Cliente cliente = (Cliente) consulta.get(0);
 					pedido.setCliente(cliente);
-					HttpSession session = carrinho.getSession();
-					session.setAttribute("pedido", pedido);
+					carrinho.setPedidoSession(pedido);
 				}
 				else {
 					sb.append("Cliente não encontrado:");

@@ -15,10 +15,9 @@ public class RetornarNumeroPedido implements IStrategy {
 		Carrinho carrinho = (Carrinho) entidade;
 		Pedido pedido = carrinho.getPedido();
 		String numero = pedido.getNumero();
-		HttpSession session = carrinho.getSession();
-		Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+		Pedido pedidoSession = carrinho.getPedidoSession();
 		pedidoSession.setNumero(numero);
-		session.setAttribute("pedido", pedidoSession);
+		carrinho.setPedidoSession(pedidoSession);
 		
 		if(sb.length() > 0) {
 			return sb.toString();

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.Carrinho;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.ItemPedido;
@@ -33,7 +34,8 @@ public class CarrinhoVH implements IViewHelper {
 		
 		String operacao = request.getParameter("operacao");
 		if(operacao.equals("SALVAR")) {
-			carrinho.setSession(request.getSession());
+			pedidoSession = (Pedido) session.getAttribute("pedido");
+			carrinho.setPedidoSession(pedidoSession);
 			Pedido pedido = new Pedido();
 			pedido.setItensPedido(new ArrayList<ItemPedido>());
 			Livro livro = new Livro();
@@ -47,7 +49,8 @@ public class CarrinhoVH implements IViewHelper {
 			carrinho.setPedido(pedido);
 		}
 		if(operacao.equals("ALTERAR")) {
-			carrinho.setSession(request.getSession());
+			pedidoSession = (Pedido) session.getAttribute("pedido");
+			carrinho.setPedidoSession(pedidoSession);
 			Livro livro = new Livro();
 			String idLivro = request.getParameter("id");
 			livro.setId(Long.valueOf(idLivro));
@@ -62,7 +65,8 @@ public class CarrinhoVH implements IViewHelper {
 			carrinho.setPedido(pedido);
 		}
 		if(operacao.equals("EXCLUIR")) {
-			carrinho.setSession(request.getSession());
+			pedidoSession = (Pedido) session.getAttribute("pedido");
+			carrinho.setPedidoSession(pedidoSession);
 			Pedido pedidoRequest = (Pedido) request.getAttribute("pedido");
 			List<ItemPedido> itensPedido = new ArrayList<>();
 			if(pedidoRequest != null) {
@@ -84,13 +88,14 @@ public class CarrinhoVH implements IViewHelper {
 		}
 		if(operacao.equals("CONSULTAR")) {
 			carrinho.setPedido(pedidoSession);
-			carrinho.setSession(request.getSession());
+			pedidoSession = (Pedido) session.getAttribute("pedido");
+			carrinho.setPedidoSession(pedidoSession);
 		}
 		return carrinho;
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
@@ -110,6 +115,11 @@ public class CarrinhoVH implements IViewHelper {
 			request.getRequestDispatcher("carrinhoConsultar?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/carrinhoConsultar")) {
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
 			String pagina = request.getParameter("pagina");
 			if(pagina != null && pagina.equals("pagamento")) {
 				request.getRequestDispatcher("carrinhoPagamento").forward(request, response);
@@ -119,8 +129,13 @@ public class CarrinhoVH implements IViewHelper {
 			}
 		}
 		if(uri.equals(contexto + "/carrinhoAdicionar")) {
-			if (object != null) {
-				String mensagem = (String) object;
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
+			if (resultado.getResposta() != null) {
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				if(mensagens.length > 0) {
 					request.setAttribute("erro", mensagens[0]);
@@ -130,8 +145,13 @@ public class CarrinhoVH implements IViewHelper {
 			}
 		}
 		if(uri.equals(contexto + "/carrinhoRemover")) {
-			if (object != null) {
-				String mensagem = (String) object;
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
+			if (resultado.getResposta() != null) {
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				if(mensagens.length > 0) {
 					request.setAttribute("erro", mensagens[0]);
@@ -141,8 +161,14 @@ public class CarrinhoVH implements IViewHelper {
 			}
 		}
 		if(uri.equals(contexto + "/carrinhoAlterar")) {
-			if (object != null) {
-				String mensagem = (String) object;
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
+			session.setAttribute("pedido", pedidoSession);
+			if (resultado.getResposta() != null) {
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				if(mensagens.length > 0) {
 					request.setAttribute("erro", mensagens[0]);
@@ -152,7 +178,12 @@ public class CarrinhoVH implements IViewHelper {
 			}
 		}
 		if(uri.equals(contexto + "/carrinhoPedidoRemover")) {
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
 			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
+			session.setAttribute("pedido", pedidoSession);
 			session.invalidate();
 			response.sendRedirect("loginSite");
 		}

@@ -35,8 +35,7 @@ public class AdicionarValeComprasPagamento implements IStrategy {
 							PagamentoValeCompras pagValeCompras = (PagamentoValeCompras) pagamento;
 							CupomTroca cupomTrocaConsulta = pagValeCompras.getCupomTroca();
 							if(cupomTrocaConsulta != null) {
-								HttpSession session = carrinho.getSession();
-								Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+								Pedido pedidoSession = carrinho.getPedidoSession();
 								IDAO dao = new CupomTrocaDAO();
 								try {
 									List<EntidadeDominio> consulta = dao.consultar(cupomTrocaConsulta);
@@ -74,13 +73,12 @@ public class AdicionarValeComprasPagamento implements IStrategy {
 												pagamentosSession.add(pagamentoValeCompras);
 												formaPagamentoSession.setPagamentos(pagamentosSession);
 												pedidoSession.setFormaPagamento(formaPagamentoSession);
-												session.setAttribute("pedido", pedidoSession);
 											}
 										}
 										else {
 											sb.append("O vale-compras está inativo:");
 										}
-										session.setAttribute("pedido", pedidoSession);	
+										carrinho.setPedidoSession(pedidoSession);
 									}
 									else {
 										sb.append("Código de vale-compras inválido:");

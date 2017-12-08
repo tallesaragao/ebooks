@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.Carrinho;
 import ebooks.modelo.CartaoCredito;
 import ebooks.modelo.CupomPromocional;
+import ebooks.modelo.CupomTroca;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.FormaPagamento;
 import ebooks.modelo.ItemPedido;
@@ -21,7 +23,6 @@ import ebooks.modelo.Pagamento;
 import ebooks.modelo.PagamentoCartao;
 import ebooks.modelo.PagamentoValeCompras;
 import ebooks.modelo.Pedido;
-import ebooks.modelo.CupomTroca;
 
 public class PagamentoVH implements IViewHelper {
 
@@ -96,11 +97,13 @@ public class PagamentoVH implements IViewHelper {
 			formaPagamento.setPagamentos(pagamentos);
 			pedido.setFormaPagamento(formaPagamento);
 			carrinho.setPedido(pedido);
-			carrinho.setSession(request.getSession());
+			pedidoSession = (Pedido) session.getAttribute("pedido");
+			carrinho.setPedidoSession(pedidoSession);
 		}
 		if(operacao.equals("CONSULTAR")) {
 			carrinho.setPedido(pedidoSession);
-			carrinho.setSession(request.getSession());
+			pedidoSession = (Pedido) session.getAttribute("pedido");
+			carrinho.setPedidoSession(pedidoSession);
 		}
 		if(operacao.equals("EXCLUIR")) {
 			String idVale = request.getParameter("idVale");
@@ -132,13 +135,14 @@ public class PagamentoVH implements IViewHelper {
 			}
 			pedido.setItensPedido(null);
 			carrinho.setPedido(pedido);
-			carrinho.setSession(request.getSession());
+			pedidoSession = (Pedido) session.getAttribute("pedido");
+			carrinho.setPedidoSession(pedidoSession);
 		}
 		return carrinho;
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
@@ -147,14 +151,29 @@ public class PagamentoVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/pagamento/view.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pagamentoSelecionarCartoes")) {
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
 			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pagamentoSelecionarCupons")) {
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
 			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pagamentoAdicionarCupom")) {
-			if(object != null) {
-				String mensagem = (String) object;
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
+			if(resultado.getResposta() != null) {
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				if(mensagens.length > 0) {
 					request.setAttribute("mensagens", mensagens);
@@ -163,11 +182,21 @@ public class PagamentoVH implements IViewHelper {
 			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pagamentoRemoverCupom")) {
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
 			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pagamentoAdicionarValeCompras")) {
-			if(object != null) {
-				String mensagem = (String) object;
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
+			if(resultado.getResposta() != null) {
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				if(mensagens.length > 0) {
 					request.setAttribute("mensagens", mensagens);
@@ -176,14 +205,29 @@ public class PagamentoVH implements IViewHelper {
 			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pagamentoRemoverValeCompras")) {
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
 			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/pagamentoRemoverCartao")) {
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
 			request.getRequestDispatcher("carrinhoPagamento?operacao=CONSULTAR").forward(request, response);
 		}
 		if(uri.equals(contexto + "/validarFormaPagamento")) {
-			if(object != null) {
-				String mensagem = (String) object;
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
+			if(resultado.getResposta() != null) {
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				if(mensagens.length > 0) {
 					request.setAttribute("mensagens", mensagens);

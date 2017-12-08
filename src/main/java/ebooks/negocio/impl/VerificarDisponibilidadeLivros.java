@@ -37,8 +37,7 @@ public class VerificarDisponibilidadeLivros implements IStrategy {
 							sb.append("A quantidade desejada do livro ("+ livro.getTitulo() + ") não está mais disponível:");
 							carrinho.setPedidoFinalizado(false); //Evita a finalização do pedido
 							if(quantidadeAtual.longValue() >= 0) {
-								HttpSession session = carrinho.getSession();
-								Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+								Pedido pedidoSession = carrinho.getPedidoSession();
 								List<ItemPedido> itensPedidoSession = pedidoSession.getItensPedido();
 								//Itera a lista de itens dentro da session para alterar a quantidade
 								Iterator<ItemPedido> iterator = itensPedidoSession.iterator();
@@ -53,7 +52,7 @@ public class VerificarDisponibilidadeLivros implements IStrategy {
 									}
 								}
 								pedidoSession.setItensPedido(itensPedidoSession);
-								session.setAttribute("pedido", pedidoSession);
+								carrinho.setPedidoSession(pedidoSession);
 							}
 						}
 					}

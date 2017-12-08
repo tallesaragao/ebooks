@@ -40,7 +40,7 @@ public class AcessoFilter implements Filter {
 		Acesso acesso = new Acesso();
 		acesso.setRequest(request);
 		acesso.setLogin(login);
- 		Object obj = command.executar(acesso);
+ 		command.executar(acesso);
  		if(acesso.isLiberado()) {
 			chain.doFilter(request, response);
 		}
@@ -58,7 +58,6 @@ public class AcessoFilter implements Filter {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 }

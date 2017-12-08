@@ -20,14 +20,13 @@ public class ValidarConsistenciaFrete implements IStrategy {
 	public String processar(EntidadeDominio entidade) {
 		StringBuilder sb = new StringBuilder();
 		Carrinho carrinho = (Carrinho) entidade;
-		HttpSession session = carrinho.getSession();
-		Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+		Pedido pedidoSession = carrinho.getPedidoSession();
 		Endereco enderecoSession = pedidoSession.getEnderecoEntrega();
 		List<ItemPedido> itensPedido = pedidoSession.getItensPedido();
 		if(enderecoSession == null || itensPedido == null || itensPedido.isEmpty()) {
 			pedidoSession.setEnderecoEntrega(null);
 			pedidoSession.setFrete(null);
-			session.setAttribute("pedido", pedidoSession);
+			carrinho.setPedidoSession(pedidoSession);
 		}
 		else {
 			IDAO dao = new EnderecoDAO();
@@ -36,7 +35,7 @@ public class ValidarConsistenciaFrete implements IStrategy {
 				if(consulta.isEmpty()) {
 					pedidoSession.setEnderecoEntrega(null);
 					pedidoSession.setFrete(null);
-					session.setAttribute("pedido", pedidoSession);
+					carrinho.setPedidoSession(pedidoSession);
 				}
 			} catch (SQLException e) {
 				sb.append("Problema na consulta de endereço:");

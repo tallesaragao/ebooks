@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.Login;
 import ebooks.modelo.Pedido;
@@ -46,7 +47,7 @@ public class LoginVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
@@ -70,13 +71,13 @@ public class LoginVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/login/form.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/loginSalvar")) {
-			if(object == null) {
+			if(resultado.getResposta() == null) {
 				String sucesso = "Login cadastrado com sucesso";
 				request.setAttribute("sucesso", sucesso);
 				request.getRequestDispatcher("WEB-INF/jsp/login/login.jsp").forward(request, response);
 				return;
 			}
-			String mensagem = (String) object;
+			String mensagem = resultado.getResposta();
 			String[] mensagens = mensagem.split(":");
 			Login login = (Login) this.getEntidade(request);
 			request.setAttribute("login", login);
@@ -84,10 +85,10 @@ public class LoginVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/login/form.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/loginConsultar")) {
-			if(object != null) {
+			if(resultado.getEntidades() != null) {
 				response.reset();
-				List<Login> resultado = (List<Login>) object;
-				Login login = resultado.get(0);
+				List<EntidadeDominio> consulta = resultado.getEntidades();
+				Login login = (Login) consulta.get(0);
 				HttpSession session = request.getSession();
 				session.setAttribute("login", login);
 				request.setAttribute("operacao", "");

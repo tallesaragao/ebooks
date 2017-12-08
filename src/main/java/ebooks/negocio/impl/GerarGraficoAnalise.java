@@ -59,8 +59,6 @@ public class GerarGraficoAnalise implements IStrategy {
 					}
 				}
 				if(sb.length() > 0) {
-					HttpSession session = analise.getSession();
-					session.setAttribute("resposta", sb.toString());
 					return sb.toString();
 				}
 				List<EntidadeDominio> pedidos = analiseDAO.consultar(analise);
@@ -122,10 +120,8 @@ public class GerarGraficoAnalise implements IStrategy {
 				String yAxisLabel = "Volume de vendas (unidade)";
 				JFreeChart grafico = ChartFactory.createLineChart(title, xAxisLabel, yAxisLabel, 
 						defDataset, PlotOrientation.VERTICAL, true, true, false);
-				BufferedImage image = grafico.createBufferedImage(1100, 600);
-				HttpSession session = analise.getSession();
-				session.setAttribute("grafico", image);
-				ChartUtilities.encodeAsPNG(image);
+				BufferedImage imagem = grafico.createBufferedImage(1100, 600);
+				analise.setGrafico(imagem);
 			} catch (Exception e) {
 				e.printStackTrace();
 				sb.append("Problema na geração do gráfico:");

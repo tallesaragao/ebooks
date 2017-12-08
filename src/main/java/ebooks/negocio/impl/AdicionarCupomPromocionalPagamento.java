@@ -23,8 +23,7 @@ public class AdicionarCupomPromocionalPagamento implements IStrategy {
 			Pedido pedido = carrinho.getPedido();
 			CupomPromocional cupomPromocionalConsulta = pedido.getCupomPromocional();
 			if(cupomPromocionalConsulta != null) {
-				HttpSession session = carrinho.getSession();
-				Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+				Pedido pedidoSession = carrinho.getPedidoSession();
 				pedidoSession.setCupomPromocional(null);
 				IDAO dao = new CupomPromocionalDAO();
 				try {
@@ -37,7 +36,7 @@ public class AdicionarCupomPromocionalPagamento implements IStrategy {
 						else {
 							sb.append("O cupom está inativo:");
 						}
-						session.setAttribute("pedido", pedidoSession);	
+						carrinho.setPedidoSession(pedidoSession);
 					}
 					else {
 						sb.append("Cupom inválido:");

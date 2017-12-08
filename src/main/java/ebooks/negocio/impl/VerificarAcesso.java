@@ -24,6 +24,9 @@ public class VerificarAcesso implements IStrategy {
 		boolean paginaEncontrada = false;
 		HttpServletRequest request = (HttpServletRequest) acesso.getRequest();
 		String caminhoAcesso = request.getRequestURI();
+		if(caminhoAcesso.equals(contexto + "/carrinhoAdicionar")) {
+			paginaEncontrada = true;
+		}
 		if(caminhoAcesso.contains("resources") 
 				|| caminhoAcesso.equals(contexto + "/404")
 				|| caminhoAcesso.equals(contexto + "/clienteForm")

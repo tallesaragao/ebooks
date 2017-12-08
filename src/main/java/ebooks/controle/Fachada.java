@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.dao.BandeiraDAO;
 import ebooks.dao.CartaoCreditoDAO;
 import ebooks.dao.CategoriaDAO;
@@ -85,6 +86,8 @@ public class Fachada implements IFachada {
 	private Map<String, Map<String, List<IStrategy>>> requisitos;
 	private Map<String, Map<String, List<IStrategy>>> requisitosAfter;
 	private Map<String, IDAO> daos;
+	
+	private Resultado resultado;
 
 	public Fachada() {
 		ComplementarDtCadastro compDtCad = new ComplementarDtCadastro();
@@ -357,90 +360,120 @@ public class Fachada implements IFachada {
 	}
 
 	@Override
-	public String salvar(EntidadeDominio entidade) {
+	public Resultado salvar(EntidadeDominio entidade) {
 		StringBuilder sb = executarRegras(entidade, SALVAR, requisitos);
+		Resultado resultado = new Resultado();
+		ArrayList<EntidadeDominio> consultaEntidade = new ArrayList<EntidadeDominio>();
+		consultaEntidade.add(entidade);
+		resultado.setEntidades(consultaEntidade);
 		if (sb.length() > 0) {
-			return sb.toString();
+			resultado.setResposta(sb.toString());
+			return resultado;
 		}
 		IDAO dao = daos.get(entidade.getClass().getName());
 		if(dao != null) {
 			try {
 				if(!dao.salvar(entidade)) {
-					return "Erro ao persistir a entidade";
+					resultado.setResposta("Erro ao persistir a entidade");
+					return resultado;
 				}
 				else {
 					sb = executarRegras(entidade, SALVAR, requisitosAfter);
 					if(sb.length() > 0) {
-						return sb.toString();
+						resultado.setResposta(sb.toString());
+						return resultado;
 					}
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				return "Problema na transação SQL";
+				resultado.setResposta("Problema na transação SQL");
+				return resultado;
 			}
 		}
-		return null;
+		return resultado;
 		
 	}
 
 	@Override
-	public String alterar(EntidadeDominio entidade) {
+	public Resultado alterar(EntidadeDominio entidade) {
+		StringBuilder sb = executarRegras(entidade, ALTERAR, requisitos);
+		Resultado resultado = new Resultado();
+		ArrayList<EntidadeDominio> consultaEntidade = new ArrayList<EntidadeDominio>();
+		consultaEntidade.add(entidade);
+		resultado.setEntidades(consultaEntidade);
+		if (sb.length() > 0) {
+			resultado.setResposta(sb.toString());
+			return resultado;
+		}
 		IDAO dao = daos.get(entidade.getClass().getName());
 		if(dao != null) {
-			StringBuilder sb = executarRegras(entidade, ALTERAR, requisitos);
-			if (sb.length() > 0) {
-				return sb.toString();
-			}
 			try {
 				if(!dao.alterar(entidade)) {
-					return "Problema na alteração";
+					resultado.setResposta("Problema na alteração");
+					return resultado;
 				}
 				else {
 					sb = executarRegras(entidade, ALTERAR, requisitosAfter);
 					if(sb.length() > 0) {
-						return sb.toString();
+						resultado.setResposta(sb.toString());
+						return resultado;
 					}
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				return "Problema na transação SQL";
+				resultado.setResposta("Problema na transação SQL");
+				return resultado;
 			}
 		}
-		return null;
+		return resultado;
 	}
 
 	@Override
-	public String excluir(EntidadeDominio entidade) {
+	public Resultado excluir(EntidadeDominio entidade) {
+		StringBuilder sb = executarRegras(entidade, EXCLUIR, requisitos);
+		Resultado resultado = new Resultado();
+		ArrayList<EntidadeDominio> consultaEntidade = new ArrayList<EntidadeDominio>();
+		consultaEntidade.add(entidade);
+		resultado.setEntidades(consultaEntidade);
+		if (sb.length() > 0) {
+			resultado.setResposta(sb.toString());
+			return resultado;
+		}
 		IDAO dao = daos.get(entidade.getClass().getName());
 		if(dao != null) {
-			StringBuilder sb = executarRegras(entidade, EXCLUIR, requisitos);
-			if (sb.length() > 0) {
-				return sb.toString();
-			}
 			try {
 				if (!dao.excluir(entidade)) {
-					return "Problema na exclusão";
+					resultado.setResposta("Problema na exclusão:");
+					return resultado;
 				}
 				else {
 					sb = executarRegras(entidade, EXCLUIR, requisitosAfter);
 					if(sb.length() > 0) {
-						return sb.toString();
+						resultado.setResposta(sb.toString());
+						return resultado;
 					}
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
-				return "Problema na transação SQL";
+				resultado.setResposta("Problema na transação SQL");
+				return resultado;
 			}
-			return "Exclusão efetuada com sucesso";
+			resultado.setResposta("Exclusão efetuada com sucesso");
+			return resultado;
 		}
-		return null;
+		return resultado;
 	}
 
 	@Override
-	public List<EntidadeDominio> consultar(EntidadeDominio entidade) {
+	public Resultado consultar(EntidadeDominio entidade) {
 		StringBuilder sb = executarRegras(entidade, CONSULTAR, requisitos);
+		Resultado resultado = new Resultado();
+		ArrayList<EntidadeDominio> consultaEntidade = new ArrayList<EntidadeDominio>();
+		consultaEntidade.add(entidade);
+		resultado.setEntidades(consultaEntidade);
 		if (sb.length() > 0) {
-			return null;
+			resultado.setResposta(sb.toString());
+			return resultado;
 		}
 		IDAO dao = daos.get(entidade.getClass().getName());
 		if(dao != null) {
@@ -448,19 +481,22 @@ public class Fachada implements IFachada {
 			try {
 				consulta = dao.consultar(entidade);
 				if(!consulta.isEmpty()) {
-					return consulta;
+					resultado.setEntidades(consulta);
+					return resultado;
 				}
 				else {
 					sb = executarRegras(entidade, EXCLUIR, requisitosAfter);
 					if(sb.length() > 0) {
-						return null;
+						resultado.setEntidades(null);
+						resultado.setResposta(sb.toString());
+						return resultado;
 					}
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return resultado;
 	}
 
 	private StringBuilder executarRegras(EntidadeDominio entidade, String operacao, Map<String, Map<String, List<IStrategy>>> requisitos) {

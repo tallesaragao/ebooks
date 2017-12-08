@@ -1,12 +1,14 @@
 package ebooks.controle.web.vh;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.Carrinho;
 import ebooks.modelo.Endereco;
 import ebooks.modelo.EntidadeDominio;
@@ -29,18 +31,23 @@ public class FreteVH implements IViewHelper {
 			endereco.setId(Long.valueOf(idEndereco));
 			pedidoSession.setEnderecoEntrega(endereco);
 			carrinho.setPedido(pedidoSession);
-			carrinho.setSession(session);
+			carrinho.setPedidoSession(pedidoSession);
 		}
 		return carrinho;
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
 		
 		if(uri.equals(contexto + "/freteCalcular")) {
+			List<EntidadeDominio> entidades = resultado.getEntidades();
+			Carrinho carrinho = (Carrinho) entidades.get(0);
+			Pedido pedidoSession = carrinho.getPedidoSession();
+			HttpSession session = request.getSession();
+			session.setAttribute("pedido", pedidoSession);
 			response.sendRedirect("carrinhoCliente");
 		}
 

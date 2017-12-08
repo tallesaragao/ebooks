@@ -19,8 +19,7 @@ public class RemoverCartaoCreditoCarrinho implements IStrategy {
 	public String processar(EntidadeDominio entidade) {
 		StringBuilder sb = new StringBuilder();
 		Carrinho carrinho = (Carrinho) entidade;
-		HttpSession session = carrinho.getSession();
-		Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+		Pedido pedidoSession = carrinho.getPedidoSession();
 		Pedido pedido = carrinho.getPedido();
 		FormaPagamento formaPagamento = pedido.getFormaPagamento();
 		if(formaPagamento != null) {

@@ -22,8 +22,7 @@ public class ValidarFormaPagamento implements IStrategy {
 		StringBuilder sb = new StringBuilder();
 		Carrinho carrinho = (Carrinho) entidade;
 		Pedido pedido = carrinho.getPedido();
-		HttpSession session = carrinho.getSession();
-		Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+		Pedido pedidoSession = carrinho.getPedidoSession();
 		long quantidadeCartoes = 0;
 		if(pedido != null) {
 			FormaPagamento formaPagamento = pedido.getFormaPagamento();
@@ -103,7 +102,7 @@ public class ValidarFormaPagamento implements IStrategy {
 						}
 						pedidoSession.setFormaPagamento(formaPagamentoSession);
 						pedidoSession.setValorTotal(valorTotalPedido);
-						session.setAttribute("pedido", pedidoSession);
+						carrinho.setPedidoSession(pedidoSession);
 					}
 					else {
 						if(valorTotalPagamentos.doubleValue() > 0) {

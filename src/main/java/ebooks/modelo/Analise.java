@@ -9,28 +9,10 @@ import javax.servlet.http.HttpSession;
 import org.jfree.chart.JFreeChart;
 
 public class Analise extends EntidadeDominio {
-	private HttpSession session;
-	private JFreeChart grafico;
 	private List<Categoria> categorias;
 	private Date dataInicial;
 	private Date dataFinal;
-	private BufferedImage imagem;
-
-	public HttpSession getSession() {
-		return session;
-	}
-
-	public void setSession(HttpSession session) {
-		this.session = session;
-	}
-
-	public JFreeChart getGrafico() {
-		return grafico;
-	}
-
-	public void setGrafico(JFreeChart grafico) {
-		this.grafico = grafico;
-	}
+	private BufferedImage grafico;
 
 	public List<Categoria> getCategorias() {
 		return categorias;
@@ -56,11 +38,11 @@ public class Analise extends EntidadeDominio {
 		this.dataFinal = dataFinal;
 	}
 
-	public BufferedImage getImagem() {
-		return imagem;
+	public BufferedImage getGrafico() {
+		return grafico;
 	}
 
-	public void setImagem(BufferedImage imagem) {
-		this.imagem = imagem;
+	public void setGrafico(BufferedImage grafico) {
+		this.grafico = grafico;
 	}
 }

@@ -22,11 +22,10 @@ public class ExcluirLivroCarrinho implements IStrategy {
 	public String processar(EntidadeDominio entidade) {
 		StringBuilder sb = new StringBuilder();
 		Carrinho carrinho = (Carrinho) entidade;
-		HttpSession session = carrinho.getSession();
 		List<ItemPedido> itensPedido = carrinho.getPedido().getItensPedido();
 		if(itensPedido != null) {
 			for(ItemPedido item : itensPedido) {
-				Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+				Pedido pedidoSession = carrinho.getPedidoSession();
 				List<ItemPedido> itensPedidoSession = pedidoSession.getItensPedido();
 				Iterator<ItemPedido> iterator = itensPedidoSession.iterator();
 				while(iterator.hasNext()) {
@@ -51,7 +50,7 @@ public class ExcluirLivroCarrinho implements IStrategy {
 					}
 				}
 				pedidoSession.setItensPedido(itensPedidoSession);
-				session.setAttribute("pedido", pedidoSession);
+				carrinho.setPedidoSession(pedidoSession);
 			}
 		}
 		if(sb.length() > 0) {

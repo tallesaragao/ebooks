@@ -3,17 +3,9 @@ package ebooks.modelo;
 import javax.servlet.http.HttpSession;
 
 public class Carrinho extends EntidadeDominio {
-	private HttpSession session;
 	private Pedido pedido;
+	private Pedido pedidoSession;
 	private boolean pedidoFinalizado;
-
-	public HttpSession getSession() {
-		return session;
-	}
-
-	public void setSession(HttpSession session) {
-		this.session = session;
-	}
 
 	public Pedido getPedido() {
 		return pedido;
@@ -21,6 +13,14 @@ public class Carrinho extends EntidadeDominio {
 
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
+	}
+
+	public Pedido getPedidoSession() {
+		return pedidoSession;
+	}
+
+	public void setPedidoSession(Pedido pedidoSession) {
+		this.pedidoSession = pedidoSession;
 	}
 
 	public boolean isPedidoFinalizado() {

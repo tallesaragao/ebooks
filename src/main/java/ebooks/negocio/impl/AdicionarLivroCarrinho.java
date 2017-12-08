@@ -48,8 +48,7 @@ public class AdicionarLivroCarrinho implements IStrategy {
 									subtotal = subtotal.multiply(new BigDecimal(item.getQuantidade()));
 									subtotal = subtotal.setScale(2, BigDecimal.ROUND_CEILING);
 									item.setSubtotal(subtotal);
-									HttpSession session = carrinho.getSession();
-									Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+									Pedido pedidoSession = carrinho.getPedidoSession();
 									itensPedido = pedidoSession.getItensPedido();
 									boolean livroIgual = false;
 									for(ItemPedido itemSession : itensPedido) {
@@ -68,7 +67,7 @@ public class AdicionarLivroCarrinho implements IStrategy {
 										
 									}
 									pedidoSession.setItensPedido(itensPedido);
-									session.setAttribute("pedido", pedidoSession);
+									carrinho.setPedidoSession(pedidoSession);
 								}
 							}
 							else {

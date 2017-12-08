@@ -24,13 +24,12 @@ public class AdicionarCartoesPagamento implements IStrategy {
 		StringBuilder sb = new StringBuilder();
 		Carrinho carrinho = (Carrinho) entidade;
 		if(!carrinho.isPedidoFinalizado()) {
-			HttpSession session = carrinho.getSession();
 			Pedido pedido = carrinho.getPedido();
 			FormaPagamento formaPagamentoConsulta = pedido.getFormaPagamento();
 			if(formaPagamentoConsulta != null) {
 				List<Pagamento> pagamentos = formaPagamentoConsulta.getPagamentos();
 				if(pagamentos != null) {
-					Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+					Pedido pedidoSession = carrinho.getPedidoSession();
 					FormaPagamento formaPagamentoSession = pedidoSession.getFormaPagamento();
 					if(formaPagamentoSession == null) {
 						formaPagamentoSession = new FormaPagamento();
@@ -66,7 +65,7 @@ public class AdicionarCartoesPagamento implements IStrategy {
 											}
 											if(!cartaoIgual) {
 												pagamentosSession.add(pagamentoCartao);
-												session.setAttribute("pedido", pedidoSession);
+												carrinho.setPedidoSession(pedidoSession);
 											}
 										}
 									}

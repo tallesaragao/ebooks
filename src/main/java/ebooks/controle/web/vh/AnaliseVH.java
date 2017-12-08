@@ -10,11 +10,11 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.Analise;
 import ebooks.modelo.Categoria;
 import ebooks.modelo.EntidadeDominio;
@@ -24,7 +24,6 @@ public class AnaliseVH implements IViewHelper {
 	@Override
 	public EntidadeDominio getEntidade(HttpServletRequest request) {
 		Analise analise = new Analise();
-		analise.setSession(request.getSession());
 		String operacao = request.getParameter("operacao");
 		if(operacao.equals("CONSULTAR")) {
 			String mesInicial = request.getParameter("mesInicial");
@@ -54,11 +53,13 @@ public class AnaliseVH implements IViewHelper {
 							if(anoFinalBissexto) {
 								diaFinalMes = "29";
 							}
+							break;
 						case "04": case "06": case "09": case "11":
 							diaFinalMes = "30";
+							break;
 						default:
 							diaFinalMes = "31";
-						
+							break;						
 					}
 					String dataInicialString = anoInicial + "-" + mesInicial  + "-01";
 					String dataFinalString = anoFinal + "-" + mesFinal  + "-" + diaFinalMes;
@@ -86,26 +87,31 @@ public class AnaliseVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/vendasAnalise")) {
+			List<EntidadeDominio> listaEntidade = resultado.getEntidades();
+			Analise analise = new Analise();
+			if(listaEntidade != null) {
+				analise = (Analise) listaEntidade.get(0);
+				HttpSession session = request.getSession();
+				session.setAttribute("grafico", analise.getGrafico());
+				String resposta = resultado.getResposta();
+				if(resposta != null) {
+					String[] mensagens = resposta.split(":");
+					request.setAttribute("mensagens", mensagens);
+				}
+			}
 			List<Categoria> categorias = (List<Categoria>) request.getAttribute("categorias");
 			if(categorias == null || categorias.isEmpty()) {
 				request.getRequestDispatcher("vendasAnaliseCategorias?operacao=CONSULTAR").forward(request, response);
 			}
 			else {
-				HttpSession session = request.getSession();
-				String resposta = (String) session.getAttribute("resposta");
-				if(resposta != null) {
-					String[] mensagens = resposta.split(":");
-					request.setAttribute("mensagens", mensagens);
-					session.removeAttribute("resposta");
-				}
 				request.getRequestDispatcher("WEB-INF/jsp/analise/view.jsp").forward(request, response);
 			}
-			Analise analise = (Analise) getEntidade(request);
+			analise = (Analise) getEntidade(request);
 			request.setAttribute("analise", analise);
 		}
 		if(uri.equals(contexto + "/graficoImagem")) {

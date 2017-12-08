@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.Bandeira;
 import ebooks.modelo.EntidadeDominio;
 
@@ -20,12 +21,12 @@ public class BandeiraVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/cartaoCreditoFormBandeiras") || uri.equals(contexto + "/cartaoCreditoEditBandeiras")) {
-			List<Bandeira> bandeiras = (List<Bandeira>) object;
+			List<EntidadeDominio> bandeiras = resultado.getEntidades();
 			HttpSession session = request.getSession();
 			String idCliente = request.getParameter("idCliente");
 			request.setAttribute("idCliente", idCliente);

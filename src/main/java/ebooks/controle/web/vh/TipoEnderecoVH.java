@@ -8,8 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ebooks.modelo.TipoEndereco;
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.EntidadeDominio;
+import ebooks.modelo.TipoEndereco;
 
 public class TipoEnderecoVH implements IViewHelper {
 
@@ -20,12 +21,12 @@ public class TipoEnderecoVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/clienteFormTiposEndereco") || uri.equals(contexto + "/clienteEditTiposEndereco")) {
-			List<TipoEndereco> tiposEndereco = (List<TipoEndereco>) object;
+			List<EntidadeDominio> tiposEndereco = resultado.getEntidades();
 			HttpSession session = request.getSession();
 			session.setAttribute("tiposEndereco", tiposEndereco);
 			if(uri.equals(contexto + "/clienteFormTiposEndereco")) {

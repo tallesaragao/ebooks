@@ -25,8 +25,7 @@ public class CalcularValorTotalPedido implements IStrategy {
 	public String processar(EntidadeDominio entidade) {
 		StringBuilder sb = new StringBuilder();
 		Carrinho carrinho = (Carrinho) entidade;
-		HttpSession session = carrinho.getSession();
-		Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+		Pedido pedidoSession = carrinho.getPedidoSession();
 		if(pedidoSession != null) {
 			List<ItemPedido> itensPedido = pedidoSession.getItensPedido();
 			Frete frete = pedidoSession.getFrete();
@@ -51,7 +50,7 @@ public class CalcularValorTotalPedido implements IStrategy {
 				valorTotal = valorTotal.setScale(2, BigDecimal.ROUND_CEILING);
 			}
 			pedidoSession.setValorTotal(valorTotal);
-			session.setAttribute("pedido", pedidoSession);
+			carrinho.setPedidoSession(pedidoSession);
 		}
 				
 		

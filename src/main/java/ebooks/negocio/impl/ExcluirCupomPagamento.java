@@ -17,12 +17,11 @@ public class ExcluirCupomPagamento implements IStrategy {
 		Pedido pedido = carrinho.getPedido();
 		CupomPromocional cupomPromocional = pedido.getCupomPromocional();
 		if(cupomPromocional != null) {
-			HttpSession session = carrinho.getSession();
-			Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+			Pedido pedidoSession = carrinho.getPedidoSession();
 			CupomPromocional cupomPromocionalSession = pedidoSession.getCupomPromocional();
 			if(cupomPromocional.getId().longValue() == cupomPromocionalSession.getId().longValue()) {
 				pedidoSession.setCupomPromocional(null);
-				session.setAttribute("pedido", pedidoSession);
+				carrinho.setPedidoSession(pedidoSession);
 			}
 			else {
 				sb.append("Não foi possível remover o cupom");

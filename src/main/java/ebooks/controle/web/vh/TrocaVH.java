@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.Cliente;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.ItemPedido;
@@ -91,7 +92,7 @@ public class TrocaVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
@@ -102,8 +103,8 @@ public class TrocaVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/troca/list.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/trocaSalvar")) {
-			if(object != null) {
-				String retorno = (String) object;
+			if(resultado != null) {
+				String retorno = resultado.getResposta();
 				String[] mensagens = retorno.split(":");
 				request.setAttribute("mensagens", mensagens);
 				String idPedido = request.getParameter("idPedido");
@@ -116,22 +117,22 @@ public class TrocaVH implements IViewHelper {
 			}
 		}
 		if(uri.equals(contexto + "/trocaConsultar")) {
-			if(object != null) {
-				List<Troca> consulta = (List<Troca>) object;
+			if(resultado.getEntidades() != null) {
+				List<EntidadeDominio> consulta = resultado.getEntidades();
 				request.setAttribute("consulta", consulta);
 			}
 			request.getRequestDispatcher("WEB-INF/jsp/troca/list.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/trocaView")) {
-			if(object != null) {
-				List<EntidadeDominio> consulta = (List<EntidadeDominio>) object;
+			if(resultado.getEntidades() != null) {
+				List<EntidadeDominio> consulta = resultado.getEntidades();
 				request.setAttribute("troca", consulta.get(0));
 			}
 			request.getRequestDispatcher("WEB-INF/jsp/troca/tracking.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/trocaAprovar")) {
-			if(object != null) {
-				List<Troca> consulta = (List<Troca>) object;
+			if(resultado.getEntidades() != null) {
+				List<EntidadeDominio> consulta = resultado.getEntidades();
 				if(!consulta.isEmpty()) {
 					Troca troca = (Troca) consulta.get(0);
 					request.setAttribute("troca", troca);

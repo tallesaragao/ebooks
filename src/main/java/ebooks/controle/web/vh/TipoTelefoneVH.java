@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.modelo.EntidadeDominio;
 import ebooks.modelo.TipoTelefone;
 
@@ -20,12 +21,12 @@ public class TipoTelefoneVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
 		if(uri.equals(contexto + "/clienteFormTiposTelefone") || uri.equals(contexto + "/clienteEditTiposTelefone")) {
-			List<TipoTelefone> tiposTelefone = (List<TipoTelefone>) object;
+			List<EntidadeDominio> tiposTelefone = resultado.getEntidades();
 			HttpSession session = request.getSession();
 			session.setAttribute("tiposTelefone", tiposTelefone);
 			if(uri.equals(contexto + "/clienteEditTiposTelefone")) {

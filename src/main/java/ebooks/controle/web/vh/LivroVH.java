@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ebooks.aplicacao.Resultado;
 import ebooks.dao.CategoriaDAO;
 import ebooks.dao.GrupoPrecificacaoDAO;
 import ebooks.modelo.Autor;
@@ -237,7 +238,7 @@ public class LivroVH implements IViewHelper {
 	}
 
 	@Override
-	public void setView(Object object, HttpServletRequest request, HttpServletResponse response)
+	public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String contexto = request.getContextPath();
 		String uri = request.getRequestURI();
@@ -249,15 +250,15 @@ public class LivroVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 		}
 		if (uri.equals(contexto + "/livroEdit")) {
-			List<Livro> listaLivros = (List<Livro>) object;
-			Livro livro = listaLivros.get(0);
+			List<EntidadeDominio> listaLivros = resultado.getEntidades();
+			Livro livro = (Livro) listaLivros.get(0);
 			request.setAttribute("livro", livro);
 			request.setAttribute("autor", livro.getAutores().get(0));
 			request.setAttribute("operacao", ALTERAR);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/form.jsp").forward(request, response);
 		}
 		if (uri.equals(contexto + "/livroSalvar")) {
-			if (object == null) {
+			if (resultado.getResposta() == null) {
 				String sucesso = "Livro cadastrado com sucesso";
 				request.setAttribute("sucesso", sucesso);
 				request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
@@ -273,7 +274,7 @@ public class LivroVH implements IViewHelper {
 			gpConsulta.setNome("");
 			List<EntidadeDominio> gruposPrecificacao = gpDAO.consultar(gpConsulta);
 			request.setAttribute("gruposPrecificacao", gruposPrecificacao);
-			String mensagem = (String) object;
+			String mensagem = resultado.getResposta();
 			String[] mensagens = mensagem.split(":");
 			Livro livro = (Livro) this.getEntidade(request);
 			request.setAttribute("livro", livro);
@@ -283,18 +284,18 @@ public class LivroVH implements IViewHelper {
 		}
 		if (uri.equals(contexto + "/livroConsultar")) {
 
-			if (object == null) {
+			if (resultado.getEntidades() == null) {
 				String erro = "Nenhum livro encontrado";
 				request.setAttribute("erro", erro);
 				request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 				return;
 			}
-			List<Livro> consulta = (List<Livro>) object;
+			List<EntidadeDominio> consulta = resultado.getEntidades();
 			request.setAttribute("consulta", consulta);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 		}
 		if (uri.equals(contexto + "/livroAlterar")) {
-			if (object != null) {
+			if (resultado.getResposta() != null) {
 				Categoria categoria = new Categoria();
 				categoria.setNome("");
 				CategoriaDAO dao = new CategoriaDAO();
@@ -303,7 +304,7 @@ public class LivroVH implements IViewHelper {
 				gpConsulta.setNome("");
 				List<EntidadeDominio> gruposPrecificacao = gpDAO.consultar(gpConsulta);
 				request.setAttribute("gruposPrecificacao", gruposPrecificacao);
-				String mensagem = (String) object;
+				String mensagem = resultado.getResposta();
 				String[] mensagens = mensagem.split(":");
 				Livro livro = (Livro) this.getEntidade(request);
 				request.setAttribute("livro", livro);
@@ -318,13 +319,13 @@ public class LivroVH implements IViewHelper {
 			return;
 		}
 		if (uri.equals(contexto + "/livroExcluir")) {
-			String sucesso = (String) object;
+			String sucesso = resultado.getResposta();
 			request.setAttribute("sucesso", sucesso);
 			request.getRequestDispatcher("WEB-INF/jsp/livro/list.jsp").forward(request, response);
 		}
 		if (uri.equals(contexto + "/carrinhoConsultarEstoque")) {
-			List<Livro> listaLivros = (List<Livro>) object;
-			Livro livro = listaLivros.get(0);
+			List<EntidadeDominio> listaLivros = resultado.getEntidades();
+			Livro livro = (Livro) listaLivros.get(0);
 			request.setAttribute("livro", livro);
 			request.setAttribute("operacao", "");
 			request.getRequestDispatcher("carrinhoAlterar?operacao=").forward(request, response);

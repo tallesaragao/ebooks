@@ -27,13 +27,12 @@ public class AdicionarCuponsTrocaPagamento implements IStrategy {
 		BigDecimal totalPagamentosCupom = new BigDecimal("0");
 		BigDecimal totalPedido = new BigDecimal("0");
 		if(!carrinho.isPedidoFinalizado()) {
-			HttpSession session = carrinho.getSession();
 			Pedido pedido = carrinho.getPedido();
 			FormaPagamento formaPagamentoConsulta = pedido.getFormaPagamento();
 			if(formaPagamentoConsulta != null) {
 				List<Pagamento> pagamentos = formaPagamentoConsulta.getPagamentos();
 				if(pagamentos != null) {
-					Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+					Pedido pedidoSession = carrinho.getPedidoSession();
 					totalPedido = pedidoSession.getValorTotal();
 					FormaPagamento formaPagamentoSession = pedidoSession.getFormaPagamento();
 					if(formaPagamentoSession == null) {
@@ -82,7 +81,7 @@ public class AdicionarCuponsTrocaPagamento implements IStrategy {
 														pagamentoValeCompras.setValorPago(valorPago);
 													}
 													pagamentosSession.add(pagamentoValeCompras);
-													session.setAttribute("pedido", pedidoSession);
+													carrinho.setPedidoSession(pedidoSession);
 												}
 												else {
 													sb.append("Não foi possível adicionar o cupom, valor do pedido extrapolado:");

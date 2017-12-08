@@ -36,8 +36,7 @@ public class AlterarQuantidadeItemCarrinho implements IStrategy {
 						long quantidadeAtual = livroConsultado.getEstoque().getQuantidadeAtual();
 						long quantidadeReservada = livroConsultado.getEstoque().getQuantidadeReservada();
 						
-						HttpSession session = carrinho.getSession();
-						Pedido pedidoSession = (Pedido) session.getAttribute("pedido");
+						Pedido pedidoSession = carrinho.getPedidoSession();
 						itensPedido = pedidoSession.getItensPedido();
 						for(ItemPedido itemSession : itensPedido) {
 							if(itemSession.getLivro().getId() == item.getLivro().getId()) {
@@ -75,7 +74,7 @@ public class AlterarQuantidadeItemCarrinho implements IStrategy {
 							}
 							
 							pedidoSession.setItensPedido(itensPedido);
-							session.setAttribute("pedido", pedidoSession);
+							carrinho.setPedidoSession(pedidoSession);
 						}
 					}		
 				} catch (SQLException e) {
