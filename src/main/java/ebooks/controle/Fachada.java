@@ -51,6 +51,7 @@ import ebooks.negocio.impl.AlterarStatusAtualTroca;
 import ebooks.negocio.impl.AlterarStatusCompraEmTroca;
 import ebooks.negocio.impl.AtivadorClientePrimeiroCadastro;
 import ebooks.negocio.impl.AtivadorLivroPrimeiroCadastro;
+import ebooks.negocio.impl.AutenticarUsuario;
 import ebooks.negocio.impl.CalcularFrete;
 import ebooks.negocio.impl.CalcularValorTotalPedido;
 import ebooks.negocio.impl.ComplementarDtCadastro;
@@ -124,6 +125,7 @@ public class Fachada implements IFachada {
 		AlterarStatusCompraEmTroca altStatusCompTroca = new AlterarStatusCompraEmTroca();
 		AlterarStatusAtualTroca altStatusAtualTroc = new AlterarStatusAtualTroca();
 		GerarGraficoAnalise gerarGraficoAnalise = new GerarGraficoAnalise();
+		AutenticarUsuario autUsuario = new AutenticarUsuario();
 
 		Map<String, List<IStrategy>> contextoCat = new HashMap<String, List<IStrategy>>();
 		List<IStrategy> lSalvarCat = new ArrayList<IStrategy>();
@@ -163,6 +165,7 @@ public class Fachada implements IFachada {
 		List<IStrategy> lLoginAlterar = new ArrayList<>();
 		List<IStrategy> lLoginExcluir = new ArrayList<>();
 		List<IStrategy> lLoginConsultar = new ArrayList<>();
+		lLoginConsultar.add(autUsuario);
 		contextoLogin.put(SALVAR, lLoginSalvar);
 		contextoLogin.put(ALTERAR, lLoginAlterar);
 		contextoLogin.put(EXCLUIR, lLoginExcluir);

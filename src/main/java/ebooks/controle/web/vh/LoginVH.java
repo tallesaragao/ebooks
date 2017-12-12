@@ -85,7 +85,7 @@ public class LoginVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/login/form.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/loginConsultar")) {
-			if(resultado.getEntidades() != null) {
+			if(resultado.getResposta() == null) {
 				response.reset();
 				List<EntidadeDominio> consulta = resultado.getEntidades();
 				Login login = (Login) consulta.get(0);
