@@ -28,18 +28,22 @@ public class TesteVendaItemCartao extends AbstractTest {
 		WebElement btnLogar = driver.findElement(By.id("btnLogar"));
 		usuario.sendKeys("tobias");
 		senha.sendKeys("Saibot00&");
+		aguardar();
 		btnLogar.click();
 		WebElement titulo = driver.findElement(By.name("titulo"));
 		titulo.sendKeys("Memórias Póstumas de Brás Cubas");
 		WebElement btnPesquisar = driver.findElement(By.id("btnPesquisar"));
+		aguardar();
 		btnPesquisar.click();
 		boolean livroAdicionado = false;
 		WebElement btnCarrinho2 = driver.findElement(By.id("btnCarrinho2"));
+		aguardar();
 		btnCarrinho2.click();
 		boolean freteCalculado = false;
 		Select enderecos = new Select(driver.findElement(By.name("endereco")));
 		enderecos.selectByIndex(2);
 		WebElement btnCalcularFrete = driver.findElement(By.id("btnCalcularFrete"));
+		aguardar();
 		btnCalcularFrete.click();
 		String pageSource = driver.getPageSource();
 		freteCalculado = pageSource.contains("Ir para pagamento");
@@ -48,6 +52,7 @@ public class TesteVendaItemCartao extends AbstractTest {
 		Select cuponsTroca = new Select(driver.findElement(By.id("cartoesCredito")));
 		cuponsTroca.selectByIndex(1);
 		WebElement btnSelecionarCartoes = driver.findElement(By.id("btnSelecionarCartoes"));
+		aguardar();
 		btnSelecionarCartoes.click();
 		pageSource = driver.getPageSource();
 		cartaoSelecionado = pageSource.contains("Digite o valor a ser pago nesse cartão");
@@ -58,11 +63,14 @@ public class TesteVendaItemCartao extends AbstractTest {
 		informado = valorCartao.getAttribute("value").equals("47");
 		boolean confirmada = false;
 		WebElement btnValidarFormaPagamento = driver.findElement(By.id("btnValidarFormaPagamento"));
+		aguardar();
 		btnValidarFormaPagamento.click();
 		WebElement btnPedidoConfirmarCompra = driver.findElement(By.id("btnPedidoConfirmarCompra"));
+		aguardar();
 		btnPedidoConfirmarCompra.click();
 		pageSource = driver.getPageSource();
 		confirmada = pageSource.contains("Compra confirmada com sucesso");
+		aguardar();
 		assertTrue(confirmada);
 	}
 	

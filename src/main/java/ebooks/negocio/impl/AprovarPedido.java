@@ -20,9 +20,11 @@ public class AprovarPedido implements IStrategy {
 			List<EntidadeDominio> consulta = dao.consultar(pedido);
 			if(!consulta.isEmpty()) {
 				pedido = (Pedido) consulta.get(0);
+				IStrategy strategy = new VerificarCuponsAtivos();
+				String resposta = strategy.processar(pedido);
 				//método temporário para aprovação do pedido
 				long aprovacao = Math.round(Math.random() * 10);
-				if(aprovacao < 1) {
+				if(aprovacao < 1 || resposta != null) {
 					sb.append("Pedido reprovado:");
 				}
 			}
