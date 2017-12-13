@@ -488,9 +488,9 @@ public class Fachada implements IFachada {
 					return resultado;
 				}
 				else {
+					resultado.setEntidades(null);
 					sb = executarRegras(entidade, EXCLUIR, requisitosAfter);
 					if(sb.length() > 0) {
-						resultado.setEntidades(null);
 						resultado.setResposta(sb.toString());
 						return resultado;
 					}

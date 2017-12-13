@@ -69,7 +69,7 @@ public class AlterarStatusAtualTroca implements IStrategy {
 									st.setAtual(false);
 									statusTrocaDAO.alterar(st);
 								}
-								if(statusTroca.getTroca().getCompraToda() != null && statusTroca.getTroca().getCompraToda()) {
+								if(troca.getCompraToda() != null && troca.getCompraToda()) {
 									Pedido pedido = troca.getPedido();
 									StatusPedido statusPedido = new StatusPedido();
 									Status statusNovo = new Status();

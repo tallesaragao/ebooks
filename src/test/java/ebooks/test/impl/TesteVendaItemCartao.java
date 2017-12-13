@@ -15,11 +15,11 @@ import ebooks.test.AbstractTest;
 public class TesteVendaItemCartao extends AbstractTest {
 	@Before
 	public void iniciar() {
-		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Talles\\Downloads\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "D:\\Users\\tallesaragao\\Downloads\\chromedriver.exe");
 		driver = new ChromeDriver();
 	}
 	
-	@Test
+	//@Test
 	public void testar() {
 		driver.get(contexto + "loginSite");
 		WebElement usuario = driver.findElement(By.name("usuario"));
@@ -55,7 +55,14 @@ public class TesteVendaItemCartao extends AbstractTest {
 		valorCartao.clear();
 		valorCartao.sendKeys("47");
 		informado = valorCartao.getAttribute("value").equals("47");
-		assertTrue(informado);
+		boolean confirmada = false;
+		WebElement btnValidarFormaPagamento = driver.findElement(By.id("btnValidarFormaPagamento"));
+		btnValidarFormaPagamento.click();
+		WebElement btnPedidoConfirmarCompra = driver.findElement(By.id("btnPedidoConfirmarCompra"));
+		btnPedidoConfirmarCompra.click();
+		pageSource = driver.getPageSource();
+		confirmada = pageSource.contains("Compra confirmada com sucesso");
+		assertTrue(confirmada);
 	}
 	
 	@After

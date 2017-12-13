@@ -147,6 +147,27 @@ public class AlterarStatusAtualPedido implements IStrategy {
 							statusPedidoDAO.salvar(statusPedido);
 						}
 					}
+					else if(status.getNome().equals("Trocado")) {
+						for(StatusPedido sp : pedido.getStatusesPedido()) {
+							if(sp.getAtual()) {
+								statusAtual = sp.getStatus();
+							}
+						}
+						if(statusAtual.getNome().equals("Em troca")) {
+							IStrategy strategy = new ComplementarDtCadastro();
+							strategy.processar(statusPedido);
+							statusPedido.setStatus(status);
+							statusPedido.setAtual(true);
+							Pedido p = new Pedido();
+							p.setId(statusPedido.getPedido().getId());
+							statusPedido.setPedido(p);
+							for(StatusPedido sp : pedido.getStatusesPedido()) {
+								sp.setAtual(false);
+								statusPedidoDAO.alterar(sp);
+							}
+							statusPedidoDAO.salvar(statusPedido);
+						}
+					}
 				}
 				else {
 					sb.append("Status não encontrado");

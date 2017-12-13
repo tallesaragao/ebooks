@@ -103,7 +103,7 @@ public class TrocaVH implements IViewHelper {
 			request.getRequestDispatcher("WEB-INF/jsp/troca/list.jsp").forward(request, response);
 		}
 		if(uri.equals(contexto + "/trocaSalvar")) {
-			if(resultado != null) {
+			if(resultado.getResposta() != null) {
 				String retorno = resultado.getResposta();
 				String[] mensagens = retorno.split(":");
 				request.setAttribute("mensagens", mensagens);

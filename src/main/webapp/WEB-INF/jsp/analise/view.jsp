@@ -118,46 +118,6 @@
 					<img src="graficoImagem" class="img-responsive"/>
 				</div>
 			</div>
-			<c:if test="${not empty consulta}">
-				<div class="row">
-					<div class="table-responsive tabela-clientes">
-						<div class="col-sm-11 col-sm-12 col-md-12">
-							<table class="table table-striped table-condensed">
-								<thead>
-									<tr>
-										<th>NOME</th>
-										<th>CPF</th>
-										<th>DATA NASCIMENTO</th>
-										<th>TELEFONE</th>
-										<th>EMAIL</th>
-										<th>
-											<span class="glyphicon glyphicon-cog icone-engrenagem text-center"></span>
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach items="${consulta}" var="cliente">
-										<tr>
-											<td>${cliente.nome}</td>
-											<td>${cliente.cpf}</td>
-											<td><fmt:formatDate value="${cliente.dataNascimento}" pattern="dd/MM/yyyy"/></td>
-											<td><span>${cliente.telefone.ddd} ${cliente.telefone.numero}</span></td>
-											<td>${cliente.email}</td>										
-											<td>
-												<button type="submit" data-toggle="tooltip" title="Detalhes" id="btnDetalhes${cliente.id}"
-												class="btn btn-sm btn-default btn-icone" method="get" name="detalhes"
-												formaction="clienteView?operacao=CONSULTAR&id=${cliente.id}">
-													<span class="glyphicon glyphicon-eye-open"></span>
-												</button>
-											</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</c:if>
 		</form>
 		
 	</div>

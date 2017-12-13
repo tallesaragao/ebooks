@@ -80,11 +80,6 @@
 								<span class="glyphicon glyphicon-search"></span> Pesquisar
 							</button>
 						</div>
-						<div class="col-xs-6 col-md-2 btn-adicionar">			  	
-							<button class="btn btn-primary" type="submit" formaction="clienteForm" id="btnNovoCliente">
-								<span class="glyphicon glyphicon-plus"></span> Novo cliente
-							</button>
-						</div>
 					</div>
 				</div>
 				</div>

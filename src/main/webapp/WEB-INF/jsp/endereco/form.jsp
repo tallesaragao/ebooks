@@ -130,8 +130,8 @@
 						</div>					
 					</c:otherwise>
 				</c:choose>
-				<div class="form-group col-xs-1 col-xs-offset-2 col-sm-offset-1 col-md-offset-0">
-					<a href="clienteList" class="btn btn-default">Cancelar</a>
+				<div class="form-group col-xs-1 col-xs-offset-2 col-sm-offset-1 col-md-offset-0">					
+					<button class="botao-voltar btn btn-default" id="btnCancelar" type="button">Cancelar</button>
 				</div>
 			</div>
 		</form>
@@ -140,5 +140,6 @@
 	<script src="resources/bootstrap/js/bootstrap.js"></script>
 	<script src="resources/js/jquery.mask.js"></script>
 	<script src="resources/js/clienteForm.js"></script>
+	<script src="resources/js/ebooks.js"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@ package ebooks.test;
 
 import org.openqa.selenium.WebDriver;
 
-public abstract class AbstractTest {
+public abstract class AbstractTest implements ITest {
 	protected WebDriver driver;
-	protected String contexto = "http://localhost:8081/ebooks/";
+	protected String contexto = "http://localhost:8080/ebooks/";
 }
