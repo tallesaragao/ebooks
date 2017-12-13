@@ -102,7 +102,8 @@
 														value="${itemPedido.quantidade}" class="form-control"/>
 														<span class="input-group-btn">
 															<button type="submit" data-toggle="tooltip" title="Alterar"
-															class="btn btn-default btn-icone" method="get" id="btnCarrinhoAlterar"
+															class="btn btn-default btn-icone" method="get" 
+															id="btnCarrinhoAlterar${itemPedido.livro.id}"
 															formaction="carrinhoAlterar?operacao=ALTERAR&id=${itemPedido.livro.id}">
 																<span class="glyphicon glyphicon-pencil"></span>
 															</button>

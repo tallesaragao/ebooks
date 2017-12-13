@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.Select;
 import ebooks.test.AbstractTest;
 
 public class TesteVendaItemCartao extends AbstractTest {
+	
 	@Before
 	public void iniciar() {
 		System.setProperty("webdriver.chrome.driver", "D:\\Users\\tallesaragao\\Downloads\\chromedriver.exe");

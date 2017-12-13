@@ -264,7 +264,7 @@ CREATE TABLE `cupom_troca` (
   PRIMARY KEY (`id_cupom_troca`),
   KEY `fk_cupom_troca_cliente_idx` (`id_cliente`),
   CONSTRAINT `fk_cupom_troca_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -273,7 +273,7 @@ CREATE TABLE `cupom_troca` (
 
 LOCK TABLES `cupom_troca` WRITE;
 /*!40000 ALTER TABLE `cupom_troca` DISABLE KEYS */;
-INSERT INTO `cupom_troca` VALUES (5,'WHRUWBFOTD',280.60,'2099-01-01',1,11),(8,'XQGVEMSJAM',88.12,'2099-01-01',0,1),(9,'JXEVUMLSCU',56.12,'2099-01-01',0,12);
+INSERT INTO `cupom_troca` VALUES (5,'WHRUWBFOTD',280.60,'2099-01-01',1,11),(8,'XQGVEMSJAM',88.12,'2099-01-01',0,1),(9,'JXEVUMLSCU',56.12,'2099-01-01',0,12),(10,'XTBYLBGHLV',16.00,'2099-01-01',1,11);
 /*!40000 ALTER TABLE `cupom_troca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -391,7 +391,7 @@ CREATE TABLE `estoque` (
 
 LOCK TABLES `estoque` WRITE;
 /*!40000 ALTER TABLE `estoque` DISABLE KEYS */;
-INSERT INTO `estoque` VALUES (1,'0','300','90','1'),(2,'0','30','25','0'),(5,'0','200','125','0'),(6,'0','200','96','0'),(7,'0','100','55','0'),(8,'0','50','23','0');
+INSERT INTO `estoque` VALUES (1,'0','300','90','0'),(2,'0','30','25','0'),(5,'0','200','125','0'),(6,'0','200','96','0'),(7,'0','100','55','0'),(8,'0','50','23','0');
 /*!40000 ALTER TABLE `estoque` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -549,7 +549,7 @@ CREATE TABLE `item_troca` (
   KEY `fk_item_troca_troca_idx` (`id_troca`),
   CONSTRAINT `fk_item_troca_item_pedido` FOREIGN KEY (`id_item_pedido`) REFERENCES `item_pedido` (`id_item_pedido`),
   CONSTRAINT `fk_item_troca_troca` FOREIGN KEY (`id_troca`) REFERENCES `troca` (`id_troca`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -558,7 +558,7 @@ CREATE TABLE `item_troca` (
 
 LOCK TABLES `item_troca` WRITE;
 /*!40000 ALTER TABLE `item_troca` DISABLE KEYS */;
-INSERT INTO `item_troca` VALUES (9,'5','5',3,8),(10,'5','5',4,8),(11,'1','0',7,9),(12,'1','0',8,9),(13,'3','0',9,11),(14,'1','0',10,11);
+INSERT INTO `item_troca` VALUES (9,'5','5',3,8),(10,'5','5',4,8),(11,'1','0',7,9),(12,'1','0',8,9),(13,'3','0',9,11),(14,'1','0',10,11),(15,'1','0',22,12);
 /*!40000 ALTER TABLE `item_troca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1020,7 +1020,7 @@ CREATE TABLE `status_pedido` (
   KEY `fk_status_pedido_status_idx` (`id_status`),
   CONSTRAINT `fk_status_pedido_pedido` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_status_pedido_status` FOREIGN KEY (`id_status`) REFERENCES `status` (`id_status`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1029,7 +1029,7 @@ CREATE TABLE `status_pedido` (
 
 LOCK TABLES `status_pedido` WRITE;
 /*!40000 ALTER TABLE `status_pedido` DISABLE KEYS */;
-INSERT INTO `status_pedido` VALUES (1,0,3,1,'2017-11-01 00:00:00'),(2,0,4,1,'2017-11-07 00:00:00'),(5,0,4,2,'2017-11-08 00:00:00'),(6,0,3,2,'2017-11-08 00:00:00'),(7,0,5,1,'2017-11-09 00:00:00'),(8,0,5,2,'2017-11-09 00:00:00'),(9,0,4,4,'2017-11-09 00:00:00'),(10,0,5,4,'2017-11-09 00:00:00'),(11,1,5,5,'2017-11-09 00:00:00'),(12,0,4,5,'2017-11-13 00:00:00'),(13,0,6,1,'2017-11-13 00:00:00'),(14,0,6,2,'2017-11-13 00:00:00'),(15,0,3,4,'2017-11-16 00:00:00'),(16,1,3,5,'2017-11-16 00:00:00'),(17,0,4,6,'2017-11-22 09:13:35'),(18,0,6,4,'2017-11-22 00:00:00'),(19,0,6,5,'2017-11-22 00:00:00'),(20,0,6,6,'2017-11-22 09:19:49'),(21,0,7,1,'2017-11-22 00:00:00'),(22,0,7,2,'2017-11-22 00:00:00'),(23,0,7,4,'2017-11-22 00:00:00'),(24,1,7,5,'2017-11-22 00:00:00'),(25,0,8,1,'2017-11-30 00:00:00'),(26,1,8,3,'2017-11-30 00:00:00'),(27,0,9,1,'2017-11-30 00:00:00'),(28,1,9,3,'2017-11-30 00:00:00'),(29,0,10,1,'2017-11-30 00:00:00'),(30,0,10,2,'2017-11-30 00:00:00'),(31,0,10,4,'2017-11-30 00:00:00'),(32,1,10,5,'2017-11-30 00:00:00'),(33,0,11,1,'2017-12-01 00:00:00'),(34,0,11,2,'2017-12-01 00:00:00'),(35,0,11,4,'2017-12-01 00:00:00'),(36,1,11,5,'2017-12-01 00:00:00'),(37,0,12,1,'2017-12-01 00:00:00'),(38,0,12,2,'2017-12-01 00:00:00'),(39,0,12,4,'2017-12-01 00:00:00'),(40,1,12,5,'2017-12-01 00:00:00'),(41,0,13,1,'2017-12-04 00:00:00'),(42,0,13,2,'2017-12-04 00:00:00'),(43,0,13,4,'2017-12-04 00:00:00'),(44,1,13,5,'2017-12-04 00:00:00'),(45,1,14,1,'2017-12-08 00:00:00'),(46,1,4,7,'2017-11-24 00:00:00'),(47,1,6,7,'2017-11-24 00:00:00');
+INSERT INTO `status_pedido` VALUES (1,0,3,1,'2017-11-01 00:00:00'),(2,0,4,1,'2017-11-07 00:00:00'),(5,0,4,2,'2017-11-08 00:00:00'),(6,0,3,2,'2017-11-08 00:00:00'),(7,0,5,1,'2017-11-09 00:00:00'),(8,0,5,2,'2017-11-09 00:00:00'),(9,0,4,4,'2017-11-09 00:00:00'),(10,0,5,4,'2017-11-09 00:00:00'),(11,1,5,5,'2017-11-09 00:00:00'),(12,0,4,5,'2017-11-13 00:00:00'),(13,0,6,1,'2017-11-13 00:00:00'),(14,0,6,2,'2017-11-13 00:00:00'),(15,0,3,4,'2017-11-16 00:00:00'),(16,1,3,5,'2017-11-16 00:00:00'),(17,0,4,6,'2017-11-22 09:13:35'),(18,0,6,4,'2017-11-22 00:00:00'),(19,0,6,5,'2017-11-22 00:00:00'),(20,0,6,6,'2017-11-22 09:19:49'),(21,0,7,1,'2017-11-22 00:00:00'),(22,0,7,2,'2017-11-22 00:00:00'),(23,0,7,4,'2017-11-22 00:00:00'),(24,1,7,5,'2017-11-22 00:00:00'),(25,0,8,1,'2017-11-30 00:00:00'),(26,1,8,3,'2017-11-30 00:00:00'),(27,0,9,1,'2017-11-30 00:00:00'),(28,1,9,3,'2017-11-30 00:00:00'),(29,0,10,1,'2017-11-30 00:00:00'),(30,0,10,2,'2017-11-30 00:00:00'),(31,0,10,4,'2017-11-30 00:00:00'),(32,1,10,5,'2017-11-30 00:00:00'),(33,0,11,1,'2017-12-01 00:00:00'),(34,0,11,2,'2017-12-01 00:00:00'),(35,0,11,4,'2017-12-01 00:00:00'),(36,1,11,5,'2017-12-01 00:00:00'),(37,0,12,1,'2017-12-01 00:00:00'),(38,0,12,2,'2017-12-01 00:00:00'),(39,0,12,4,'2017-12-01 00:00:00'),(40,1,12,5,'2017-12-01 00:00:00'),(41,0,13,1,'2017-12-04 00:00:00'),(42,0,13,2,'2017-12-04 00:00:00'),(43,0,13,4,'2017-12-04 00:00:00'),(44,1,13,5,'2017-12-04 00:00:00'),(45,0,14,1,'2017-12-08 00:00:00'),(46,1,4,7,'2017-11-24 00:00:00'),(47,1,6,7,'2017-11-24 00:00:00'),(48,0,14,2,'2017-12-13 00:00:00'),(49,0,14,4,'2017-12-13 00:00:00'),(50,0,14,5,'2017-12-13 00:00:00'),(51,0,14,6,'2017-12-13 00:00:00'),(52,1,14,7,'2017-12-13 00:00:00');
 /*!40000 ALTER TABLE `status_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1051,7 +1051,7 @@ CREATE TABLE `status_troca` (
   KEY `fk_status_troca_status_idx` (`id_status`),
   CONSTRAINT `fk_status_troca_status` FOREIGN KEY (`id_status`) REFERENCES `status` (`id_status`),
   CONSTRAINT `fk_status_troca_troca` FOREIGN KEY (`id_troca`) REFERENCES `troca` (`id_troca`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1060,7 +1060,7 @@ CREATE TABLE `status_troca` (
 
 LOCK TABLES `status_troca` WRITE;
 /*!40000 ALTER TABLE `status_troca` DISABLE KEYS */;
-INSERT INTO `status_troca` VALUES (6,0,8,6,'2017-11-22 00:00:00'),(7,0,9,6,'2017-11-22 00:00:00'),(8,0,11,6,'2017-11-22 00:00:00'),(9,1,8,7,'2017-11-24 08:43:12'),(11,1,11,7,'2017-11-24 09:39:17'),(12,1,9,7,'2017-11-24 00:00:00');
+INSERT INTO `status_troca` VALUES (6,0,8,6,'2017-11-22 00:00:00'),(7,0,9,6,'2017-11-22 00:00:00'),(8,0,11,6,'2017-11-22 00:00:00'),(9,1,8,7,'2017-11-24 08:43:12'),(11,1,11,7,'2017-11-24 09:39:17'),(12,1,9,7,'2017-11-24 00:00:00'),(13,0,12,6,'2017-12-13 00:00:00'),(14,1,12,7,'2017-12-13 00:00:00');
 /*!40000 ALTER TABLE `status_troca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1189,7 +1189,7 @@ CREATE TABLE `troca` (
   CONSTRAINT `fk_troca_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_troca_cupom_troca` FOREIGN KEY (`id_cupom_troca`) REFERENCES `cupom_troca` (`id_cupom_troca`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_troca_pedido` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1198,7 +1198,7 @@ CREATE TABLE `troca` (
 
 LOCK TABLES `troca` WRITE;
 /*!40000 ALTER TABLE `troca` DISABLE KEYS */;
-INSERT INTO `troca` VALUES (8,1,4,5,'2017-11-22 00:00:00',11),(9,1,6,9,'2017-11-22 00:00:00',12),(11,0,7,8,'2017-11-22 00:00:00',1);
+INSERT INTO `troca` VALUES (8,1,4,5,'2017-11-22 00:00:00',11),(9,1,6,9,'2017-11-22 00:00:00',12),(11,0,7,8,'2017-11-22 00:00:00',1),(12,1,14,10,'2017-12-13 00:00:00',11);
 /*!40000 ALTER TABLE `troca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1263,4 +1263,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-13 10:24:31
+-- Dump completed on 2017-12-13 11:59:59
