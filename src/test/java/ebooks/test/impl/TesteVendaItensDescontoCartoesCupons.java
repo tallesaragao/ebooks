@@ -20,7 +20,7 @@ public class TesteVendaItensDescontoCartoesCupons extends AbstractTest {
 		driver = new ChromeDriver();
 	}
 	
-	@Test
+	//@Test
 	public void testar() {
 		driver.get(contexto + "loginSite");
 		WebElement usuario = driver.findElement(By.name("usuario"));
